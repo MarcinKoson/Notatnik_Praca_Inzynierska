@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group>
+        <item
+            android:id="@+id/start"
+            android:title="Start"/>
+        <item
+            android:id="@+id/drawer_list"
+            android:title="Lista Notatek"/>
+        <item
+            android:id="@+id/add_note"
+            android:title="Dodaj Notatke"/>
+        <item
+            android:id="@+id/drawer_settings"
+            android:title="Ustawienia"/>
+        <item
+            android:id="@+id/drawer_debug"
+            android:title="Debug"
+            android:visible="true"/>
+    </group>
+
+    <item android:title="ABC"
+        android:visible="false"
+        >
+        <menu>
+            <item
+                android:id="@+id/aaa"
+                android:title="aaa"/>
+            <item
+                android:id="@+id/bbb"
+                android:title="bbb"/>
+        </menu>
+    </item>
+</menu>

@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Note</string>
+    <string name="appwidget_textEx">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+
+
+    <string name="groups_without_group">Brak grupy</string>
+
+    <string name="abdt">ActionBarDrawerToggle</string>
+    <string-array name="groups_array">
+        <item>Bez grupy</item>
+        <item>Grupa 1</item>
+        <item>Grupa 2</item>
+        <item>Grupa 3</item>
+
+    </string-array>
+
+    <string-array name="font_name">
+        <item>Nazwa czcionki</item>
+    </string-array>
+    <string-array name="font_size">
+        <item>Rozmiar czcionki</item>
+    </string-array>
+    <string-array name="font_color">
+        <item>Kolor czcionki</item>
+    </string-array>
+    <string-array name="background_color">
+        <item>Kolor tła</item>
+    </string-array>
+
+</resources>
