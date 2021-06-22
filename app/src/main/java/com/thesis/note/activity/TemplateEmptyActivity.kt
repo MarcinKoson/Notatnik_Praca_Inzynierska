@@ -23,7 +23,7 @@ class TemplateEmptyActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         super.onCreate(savedInstanceState)
         //setSupportActionBar(toolbar)
         setContentView(R.layout.template_empty_layout)      //NAZWA LAYOUTU
-        drawer_layout = template_drawer_layout;               //NAZWA DRAWER LAYOUTU
+        drawer_layout = template_drawer_layout;             //NAZWA DRAWER LAYOUTU
         navigationDrawer = NavigationDrawer(drawer_layout)
         navigationView.setNavigationItemSelectedListener(this);
 

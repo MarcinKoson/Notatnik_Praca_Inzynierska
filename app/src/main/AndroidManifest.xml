@@ -28,7 +28,8 @@
             android:noHistory="false"/>
         <activity android:name=".activity.VoiceToTextActivity"
             />
-
+        <activity android:name=".activity.NoteViewerActivity"
+            />
         <receiver android:name=".TestWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

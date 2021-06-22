@@ -127,9 +127,17 @@ class ListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 */
 
 
+
+/*
+
+//Opening text editor
         val listActivityIntent = Intent(this, TextEditorActivity::class.java)
         listActivityIntent.putExtra("noteID",listOfNotes[position].IdNote);
         this.startActivity(listActivityIntent)
+*/
+        val noteViewerActivityIntent = Intent(this, NoteViewerActivity::class.java)
+        noteViewerActivityIntent.putExtra("noteID",listOfNotes[position].IdNote);
+        this.startActivity(noteViewerActivityIntent)
 
     }
 
