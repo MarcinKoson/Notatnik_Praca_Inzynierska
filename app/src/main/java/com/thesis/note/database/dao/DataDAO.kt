@@ -1,10 +1,7 @@
 package com.thesis.note.database.dao
 
 import androidx.room.*
-import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
-import com.thesis.note.database.entity.Note
-import java.util.*
 
 @Dao
 interface DataDAO {

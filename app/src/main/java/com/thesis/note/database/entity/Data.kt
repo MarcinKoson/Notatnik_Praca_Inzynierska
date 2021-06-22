@@ -5,12 +5,12 @@ import com.thesis.note.database.NoteType
 
 @Entity(
     tableName = "data",
-    foreignKeys = arrayOf(
+    foreignKeys = [
         ForeignKey( entity = Note::class,
                     parentColumns = arrayOf("IdNote"),
                     childColumns = arrayOf("NoteId"),
                     onDelete = ForeignKey.SET_NULL)
-    )
+    ]
 )
 data class Data (
     @PrimaryKey(autoGenerate = true)
@@ -20,4 +20,3 @@ data class Data (
     var Content: String,
     var Info: String?
 )
-

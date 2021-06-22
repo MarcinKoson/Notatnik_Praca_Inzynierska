@@ -7,5 +7,4 @@ data class Tag (
     @PrimaryKey(autoGenerate = true)
     var IdTag: Int,
     var Name: String
-
 )

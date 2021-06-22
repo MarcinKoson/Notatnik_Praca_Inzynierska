@@ -5,7 +5,7 @@ import com.thesis.note.database.entity.TagOfNote
 
 @Dao
 interface TagOfNoteDAO {
-    @Query("SELECT * FROM tagofnote")
+    @Query("SELECT * FROM tagOfNote")
     fun getAll(): List<TagOfNote>
 
     @Insert
