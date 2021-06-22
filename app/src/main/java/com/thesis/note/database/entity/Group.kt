@@ -8,5 +8,4 @@ data class Group (
     var IdGroup: Int,
     var Name: String,
     var Color: Int?
-
 )

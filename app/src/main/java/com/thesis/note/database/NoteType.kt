@@ -1,6 +1,6 @@
 package com.thesis.note.database
 
-public enum class NoteType(val id:Int){
+enum class NoteType(val id:Int){
     Text(0),
     List(1),
     Photo(2),

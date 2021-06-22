@@ -6,23 +6,20 @@ class NoteTypeConverter{
 
     @TypeConverter
     fun intToEnum(value: Int?): NoteType? {
-        if(value == null )
-            return null;
-        else
-            when(value){
-                0 -> return NoteType.Text
-                1 -> return NoteType.List
-                2 -> return NoteType.Photo
-                3 -> return NoteType.Sound
-                4 -> return NoteType.Video
-                else -> return null
-            }
+        return if(value == null)
+                null
+            else
+                when(value){
+                    0 -> NoteType.Text
+                    1 -> NoteType.List
+                    2 -> NoteType.Photo
+                    3 -> NoteType.Sound
+                    4 -> NoteType.Video
+                    else -> null
+                }
     }
-
     @TypeConverter
-    fun enumToInt(notetype: NoteType?): Int? {
-        return notetype?.id;
+    fun enumToInt(noteType: NoteType?): Int? {
+        return noteType?.id
     }
-
-
 }
