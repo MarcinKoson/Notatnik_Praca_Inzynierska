@@ -1,17 +1,17 @@
 # Notatnik
 Notatnik is Android application for creating notes. It was created for a engineer's thesis.
 
-##Technologies
+## Technologies
 
 * Kotlin
 * Android Room
 
-##Features
+## Features
 
 * Creating text notes
 * Searching notes
 
-To Do:
+### To Do:
 
 * Creating picture notes
 * Creating audio notes
