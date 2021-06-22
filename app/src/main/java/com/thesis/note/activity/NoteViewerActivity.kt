@@ -88,6 +88,11 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         {
             Toast.makeText(applicationContext,"ERROR: cannot load note", Toast.LENGTH_SHORT).show()
         }
+
+
+
+
+
     }
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {

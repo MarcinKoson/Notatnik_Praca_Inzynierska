@@ -5,17 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.NoteType
+import com.thesis.note.database.NoteTypeConverter
 import com.thesis.note.database.entity.Data
-import com.thesis.note.database.entity.Note
-import com.thesis.note.R
 import kotlinx.android.synthetic.main.recycler_view_layout.view.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class NoteViewerAdapter (private var dataSet:List<Data>, onNoteListener: OnNoteListener) :
-    RecyclerView.Adapter<NoteViewerAdapter.MyViewHolder>() {
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val mOnNoteListener = onNoteListener;
 
@@ -24,7 +20,16 @@ class NoteViewerAdapter (private var dataSet:List<Data>, onNoteListener: OnNoteL
         notifyDataSetChanged()
     }
 
-    class MyViewHolder(val objectLayout: ConstraintLayout, val listener: OnNoteListener) : RecyclerView.ViewHolder(objectLayout), View.OnClickListener{
+    class TextViewHolder(val objectLayout: ConstraintLayout, val listener: OnNoteListener) : RecyclerView.ViewHolder(objectLayout), View.OnClickListener{
+        init{
+            objectLayout.setOnClickListener(this)
+        }
+        val onNoteListener = listener;
+        override fun onClick(v: View?) {
+            onNoteListener.onNoteClick(adapterPosition);
+        }
+    }
+    class OtherViewHolder(val objectLayout: ConstraintLayout, val listener: OnNoteListener) : RecyclerView.ViewHolder(objectLayout), View.OnClickListener{
         init{
             objectLayout.setOnClickListener(this)
         }
@@ -34,22 +39,33 @@ class NoteViewerAdapter (private var dataSet:List<Data>, onNoteListener: OnNoteL
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup,viewType: Int): NoteViewerAdapter.MyViewHolder {
-        // create a new view
-        val textView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.note_viewer_recycler_view_layout, parent, false) as ConstraintLayout
-        // set the view's size, margins, paddings and layout parameters
-        //...
-        return MyViewHolder(textView,mOnNoteListener)
+    override fun getItemViewType(position: Int): Int {
+        return dataSet[position].Type.id
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
+    override fun onCreateViewHolder(parent: ViewGroup,viewType: Int): RecyclerView.ViewHolder {
+        when(viewType){
+            0 -> {
+                val textView = LayoutInflater.from(parent.context).inflate(R.layout.note_viewer_recycler_view_layout, parent, false) as ConstraintLayout
+                return TextViewHolder(textView,mOnNoteListener)
+            }
+            1 -> {
 
-        holder.objectLayout.noteContent.text = dataSet[position].Content
+            }
+        }
+        return error("ERROR: NoteViewerAdapter - viewType not found")
+    }
 
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+       when(holder.itemViewType){
+           0 -> {
+               val viewHolder0:TextViewHolder = holder as TextViewHolder
+               viewHolder0.objectLayout.noteContent.text = dataSet[position].Content
+           }
+           1 -> {
+
+           }
+       }
     }
 
     // Return the size of your dataset (invoked by the layout manager)
