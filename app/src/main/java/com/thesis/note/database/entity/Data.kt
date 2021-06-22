@@ -9,7 +9,7 @@ import com.thesis.note.database.NoteType
         ForeignKey( entity = Note::class,
                     parentColumns = arrayOf("IdNote"),
                     childColumns = arrayOf("NoteId"),
-                    onDelete = ForeignKey.SET_NULL)
+                    onDelete = ForeignKey.CASCADE)
     ]
 )
 data class Data (

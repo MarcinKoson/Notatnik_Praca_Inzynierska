@@ -3,6 +3,7 @@ package com.thesis.note.activity
 import android.os.Bundle
 import android.text.Editable
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -60,6 +61,7 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         //Checking note ID
         val parameters = intent.extras
 
+        //TODO loading groups, tags, date, itp
         if(parameters!=null){
             noteID = parameters.getInt("noteID")
             //Get note from db
@@ -89,8 +91,21 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
             Toast.makeText(applicationContext,"ERROR: cannot load note", Toast.LENGTH_SHORT).show()
         }
 
+        //remove button
+        deleteButton.setOnClickListener(object: View.OnClickListener {
+            override fun onClick(v: View?) {
+                GlobalScope.launch {
+                    val db = AppDatabase(applicationContext)
+                    db.noteDao().delete(note)
+                }
+                finish()
+            }
+        })
+        //save button
+        //TODO save button
 
-
+        //share button
+        //TODO share button
 
 
     }
