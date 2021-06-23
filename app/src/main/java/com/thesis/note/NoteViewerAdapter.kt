@@ -45,6 +45,7 @@ class NoteViewerAdapter (private var dataSet:List<Data>, onNoteListener: OnNoteL
 
     override fun onCreateViewHolder(parent: ViewGroup,viewType: Int): RecyclerView.ViewHolder {
         when(viewType){
+            //NoteType.Text
             0 -> {
                 val textView = LayoutInflater.from(parent.context).inflate(R.layout.note_viewer_recycler_view_layout, parent, false) as ConstraintLayout
                 return TextViewHolder(textView,mOnNoteListener)

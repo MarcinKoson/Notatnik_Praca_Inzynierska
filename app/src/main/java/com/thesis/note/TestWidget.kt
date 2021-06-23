@@ -6,13 +6,10 @@ import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
-import android.widget.TextView
-import com.thesis.note.activity.MainActivity
-import com.thesis.note.activity.TextEditorActivity
+import com.thesis.note.activity.TextEditorActivityOld
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.entity.Note
 import com.thesis.note.database.entity.Widget
-import com.thesis.note.R
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -87,7 +84,7 @@ class TestWidget : AppWidgetProvider() {
 
 
 
-            val intent = Intent(context, TextEditorActivity::class.java)
+            val intent = Intent(context, TextEditorActivityOld::class.java)
             intent.putExtra("widgetID",appWidgetId)
             intent.putExtra("noteID", note?.IdNote)
             val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)

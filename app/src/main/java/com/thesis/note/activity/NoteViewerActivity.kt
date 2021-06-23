@@ -1,5 +1,6 @@
 package com.thesis.note.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.view.MenuItem
@@ -36,6 +37,7 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
     val db = AppDatabase.invoke(this)
     val NoteViewerActivityContext = this
 
+    var parameters: Bundle? = null
     var noteID:Int = -1
     lateinit var note:Note
     lateinit var dataList: List<Data>
@@ -58,12 +60,12 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         drawerToggle.syncState()
         //------------------------------------------------------------------------------------------
 
-        //Checking note ID
-        val parameters = intent.extras
+        //Load Note
+        parameters = intent.extras
 
         //TODO loading groups, tags, date, itp
         if(parameters!=null){
-            noteID = parameters.getInt("noteID")
+            noteID = parameters!!.getInt("noteID")
             //Get note from db
             GlobalScope.launch {
                 note = db.noteDao().getNoteById(noteID)
@@ -110,6 +112,20 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        //update dataList
+        if(parameters!=null) {
+            GlobalScope.launch {
+                //load data form db
+                dataList = db.dataDao().getDataFromNote(noteID)
+                //set new data to recycler view
+                viewAdapter = NoteViewerAdapter(dataList, NoteViewerActivityContext)
+                runOnUiThread{
+                    recyclerView.adapter = viewAdapter
+                    viewAdapter.notifyDataSetChanged()
+                }}}}
+
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
         finish()
         return navigationDrawer.onNavigationItemSelected(menuItem,this)
@@ -124,7 +140,19 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
     }
 
     override fun onNoteClick(position: Int) {
-        //TODO ("Not yet implemented")
-        //
+
+        when(viewAdapter.getItemViewType(position)){
+            //NoteType.Text
+            0 -> {
+                val textEditorActivityIntent = Intent(this, TextEditorActivity::class.java)
+                textEditorActivityIntent.putExtra("noteID",noteID)
+                textEditorActivityIntent.putExtra("dataID",dataList[position].IdData)
+                this.startActivity(textEditorActivityIntent)
+            }
+            else -> {
+                Toast.makeText(applicationContext,"ERROR:NoteViewerActivity - cannot open data", Toast.LENGTH_SHORT).show()
+            }
+
+        }
     }
 }

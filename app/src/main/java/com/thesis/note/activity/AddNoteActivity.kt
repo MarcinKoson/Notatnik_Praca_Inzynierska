@@ -14,7 +14,6 @@ import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_add_note.*
 import kotlinx.android.synthetic.main.activity_add_note.navigationView
 import kotlinx.android.synthetic.main.activity_add_note.toolbar
-import kotlinx.android.synthetic.main.activity_main.*
 import com.thesis.note.R
 
 class AddNoteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -36,7 +35,7 @@ class AddNoteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
         //------------------------------------------------------------------------------------------
 
 
-        val TextNoteIntent = Intent(this,TextEditorActivity::class.java)
+        val TextNoteIntent = Intent(this,TextEditorActivityOld::class.java)
         button.setOnClickListener(fun (v: View){
             this.startActivity(TextNoteIntent)
             //finish()
