@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.view.MenuItem
 import android.view.View
-import android.widget.AdapterView
-import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
@@ -15,27 +13,15 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.thesis.note.NavigationDrawer
 
-import com.thesis.note.TestWidget
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Note
-import com.thesis.note.database.entity.Widget
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_text_editor.*
 import kotlinx.android.synthetic.main.activity_text_editor.navigationView
 import kotlinx.android.synthetic.main.activity_text_editor.toolbar
-import kotlinx.android.synthetic.main.recycler_view_layout.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import android.appwidget.AppWidgetManager
-import android.content.ComponentName
-import androidx.core.view.accessibility.AccessibilityEventCompat.setAction
-import android.content.Intent
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import androidx.room.Database
 import com.thesis.note.database.entity.Group
 import com.thesis.note.R
 import com.thesis.note.database.entity.Data
@@ -90,12 +76,12 @@ class TextEditorActivityOld : AppCompatActivity(), NavigationView.OnNavigationIt
                      }
 */
                     var groupID:Int?
-                    if(groupSpinner.selectedItemPosition == 0){
+                    if(groupSpinnerOld.selectedItemPosition == 0){
                         groupID = null
                     }
                         else
                     {
-                        groupID = groupsList[groupSpinner.selectedItemPosition].IdGroup
+                        groupID = groupsList[groupSpinnerOld.selectedItemPosition].IdGroup
                     }
 
 
@@ -128,12 +114,12 @@ class TextEditorActivityOld : AppCompatActivity(), NavigationView.OnNavigationIt
 
                     editedNote.Name = nameNote.text.toString()
 
-                    if(groupSpinner.selectedItemPosition == 0){
+                    if(groupSpinnerOld.selectedItemPosition == 0){
                         editedNote.GroupID = null
                     }
                     else
                     {
-                        editedNote.GroupID  = groupsList[groupSpinner.selectedItemPosition].IdGroup
+                        editedNote.GroupID  = groupsList[groupSpinnerOld.selectedItemPosition].IdGroup
                     }
 
                     GlobalScope.launch {
@@ -184,7 +170,7 @@ class TextEditorActivityOld : AppCompatActivity(), NavigationView.OnNavigationIt
 
 
         //spinner : Groups
-        val spinner: Spinner = groupSpinner
+        val spinner: Spinner = groupSpinnerOld
 
         /*
         ArrayAdapter.createFromResource(
