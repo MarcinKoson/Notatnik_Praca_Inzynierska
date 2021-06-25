@@ -53,9 +53,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawerToggle.isDrawerIndicatorEnabled = true
         drawerToggle.syncState()
         //------------------------------------------------------------------------------------------
+        db = AppDatabase(this)
         //todo - untested bugged code
         /*
-        db = AppDatabase(this)
+
         val contextThisX = this
         contextThis = this
         GlobalScope.launch {
