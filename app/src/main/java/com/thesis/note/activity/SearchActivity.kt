@@ -21,10 +21,19 @@ import kotlinx.android.synthetic.main.activity_search.navigationView
 import kotlinx.android.synthetic.main.activity_search.toolbar
 import kotlinx.android.synthetic.main.activity_text_editor.*
 import com.thesis.note.R
+import com.thesis.note.database.AppDatabase
+import com.thesis.note.database.entity.Group
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
+//TODO
 class SearchActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var drawer_layout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer
+
+    lateinit var groupsList: List<Group>
+    val db = AppDatabase.invoke(this)
+    val SearchActivityContext = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,15 +63,21 @@ class SearchActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
 
         val spinner: Spinner = groupSpinner2
 
-        ArrayAdapter.createFromResource(
-            this,
-            R.array.groups_array,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
+        GlobalScope.launch {
+            var arrayGroups = db.groupDao().getAll()
+            groupsList = arrayGroups
+            var arrayGroupsString = arrayGroups.map { x -> x.Name }
 
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            var groupArrayAdapter: ArrayAdapter<String> = ArrayAdapter<String>(
+                SearchActivityContext,
+                android.R.layout.simple_spinner_item,
+                arrayGroupsString
+            )
 
-            spinner.adapter = adapter
+            groupArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            //groupArrayAdapter.insert(getString(R.string.groups_without_group), 0)
+            groupArrayAdapter.insert("dowolna", 0)
+            spinner.adapter = groupArrayAdapter
         }
 
         //------------------------------------------------------------------------------------------

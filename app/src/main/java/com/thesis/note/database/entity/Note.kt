@@ -1,20 +1,19 @@
 package com.thesis.note.database.entity
 
 import androidx.room.*
-import com.thesis.note.database.NoteType
 
 @Entity(
     tableName = "note",
-    foreignKeys = arrayOf(
+    foreignKeys = [
         ForeignKey( entity = Group::class,
                     parentColumns = arrayOf("IdGroup"),
                     childColumns = arrayOf("GroupID"),
                     onDelete = ForeignKey.SET_NULL),
         ForeignKey( entity = Data::class,
-            parentColumns = arrayOf("IdData"),
-            childColumns = arrayOf("MainData"),
-            onDelete = ForeignKey.SET_NULL)
-    )
+                    parentColumns = arrayOf("IdData"),
+                    childColumns = arrayOf("MainData"),
+                    onDelete = ForeignKey.SET_NULL)
+    ]
 )
 data class Note (
     @PrimaryKey(autoGenerate = true)

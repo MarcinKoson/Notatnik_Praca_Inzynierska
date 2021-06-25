@@ -14,6 +14,8 @@
 
         <activity android:name=".activity.TemplateEmptyActivity"
             />
+        <activity android:name=".activity.TextEditorActivityOld"
+            />
         <activity android:name=".activity.TextEditorActivity"
             />
         <activity android:name=".activity.ListActivity"
@@ -24,11 +26,14 @@
             />
         <activity android:name=".activity.GroupsEditorActivity"
             />
+        <activity android:name="TestActivity"
+            />
         <activity android:name=".activity.SettingsActivity"
             android:noHistory="false"/>
         <activity android:name=".activity.VoiceToTextActivity"
             />
-
+        <activity android:name=".activity.NoteViewerActivity"
+            />
         <receiver android:name=".TestWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

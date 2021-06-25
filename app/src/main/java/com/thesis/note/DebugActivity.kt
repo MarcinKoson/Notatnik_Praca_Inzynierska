@@ -3,19 +3,8 @@ package com.thesis.note
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.speech.tts.Voice
 import android.view.View
-import android.view.View.OnClickListener
-import androidx.room.Room
-import com.thesis.note.activity.TemplateEmptyActivity
-import com.thesis.note.activity.TextEditorActivity
-import com.thesis.note.activity.VoiceToTextActivity
-import com.thesis.note.database.AppDatabase
-import com.thesis.note.database.entity.Group
-import com.thesis.note.R
 import kotlinx.android.synthetic.main.activity_debug.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class DebugActivity : AppCompatActivity() {
 
@@ -23,6 +12,11 @@ class DebugActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_debug)
 
+        val intentTest = Intent(this, TestActivity::class.java)
+                testActivity.setOnClickListener(object: View.OnClickListener {
+                    override fun onClick(v: View?) {
+                       startActivity(intentTest)
+                    }})
 
 
         /*
