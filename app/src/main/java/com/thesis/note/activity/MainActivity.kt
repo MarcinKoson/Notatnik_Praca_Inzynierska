@@ -25,7 +25,7 @@ import com.thesis.note.database.entity.Note
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import com.thesis.note.R
-
+//TODO
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener ,
     RecyclerViewAdapter.OnNoteListener {
     lateinit var drawer_layout: DrawerLayout
@@ -53,29 +53,26 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawerToggle.isDrawerIndicatorEnabled = true
         drawerToggle.syncState()
         //------------------------------------------------------------------------------------------
+        //todo - untested bugged code
+        /*
         db = AppDatabase(this)
         val contextThisX = this
         contextThis = this
         GlobalScope.launch {
             listOfNotes = db.noteDao().getFavorite(true)
             listOfData = db.dataDao().getAll()
-            //TODO("poprawic")
+
             viewManager = LinearLayoutManager(contextThis)
             viewAdapter = RecyclerViewAdapter(listOfNotes,listOfData,contextThisX)
 
             recyclerView = findViewById<RecyclerView>(R.id.notes_recycler_view).apply {
-                // use this setting to improve performance if you know that changes
-                // in content do not change the layout size of the RecyclerView
+
                 setHasFixedSize(true)
-
-                // use a linear layout manager
                 layoutManager = viewManager
-
-                // specify an viewAdapter (see also next example)
                 adapter = viewAdapter
             }
         }
-
+*/
         //ADD button
 
         addButton.setOnClickListener(object: View.OnClickListener{
@@ -89,6 +86,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onRestart() {
         super.onRestart()
+        /*
         GlobalScope.launch {
             listOfNotes = db.noteDao().getFavorite(true)
             viewAdapter =
@@ -100,6 +98,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     }
        // viewAdapter.myDa
+       */
+
     }
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
@@ -117,23 +117,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onNoteClick(position: Int) {
-        //DUBLICATE -> ListActivity
-        /*
-        val noteType = listOfNotes[position].Type;
-            //TODO zmiana na noteviever
-        when(noteType){
-            NoteType.Text -> {
-                val listActivityIntent = Intent(this, TextEditorActivity::class.java)
-                listActivityIntent.putExtra("noteID",listOfNotes[position].IdNote);
-                this.startActivity(listActivityIntent)
-                finish()
-            }
-            else -> {
-                Toast.makeText(applicationContext,"error:nie obsługiwana notatka", Toast.LENGTH_SHORT).show()
-            }
-        }
 
-         */
     }
 
 }

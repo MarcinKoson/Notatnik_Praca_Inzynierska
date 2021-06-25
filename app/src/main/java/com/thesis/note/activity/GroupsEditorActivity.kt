@@ -26,7 +26,7 @@ import kotlinx.android.synthetic.main.template_empty_layout.toolbar
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import com.thesis.note.R
-
+//TODO
 class GroupsEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     RecyclerViewAdapterGroups.OnNoteListener {
 

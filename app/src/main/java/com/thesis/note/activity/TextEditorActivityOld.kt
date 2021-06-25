@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 import com.thesis.note.database.entity.Group
 import com.thesis.note.R
 import com.thesis.note.database.entity.Data
-
+//TODO
 class TextEditorActivityOld : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var drawer_layout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer
@@ -92,10 +92,17 @@ class TextEditorActivityOld : AppCompatActivity(), NavigationView.OnNavigationIt
                     noteID = id[0].toInt();
                         noteExistInDB = true;
 
-                        db.dataDao().insertAll(Data(0,noteID,NoteType.Text,textField.text.toString(),null))
+                        var addedData = db.dataDao().insertAll(Data(0,noteID,NoteType.Text,textField.text.toString(),null))
+                        //db.dataDao().updateTodo(id[0])
+
+
+
 
                     GlobalScope.launch{
                         editedNote = db.noteDao().getNoteById(noteID);
+                        editedNote.MainData = addedData[0].toInt()
+                        db.noteDao().updateTodo(editedNote)
+
                             dataNote = db.dataDao().getDataFromNote(editedNote.IdNote)
                     }
 
@@ -154,6 +161,7 @@ class TextEditorActivityOld : AppCompatActivity(), NavigationView.OnNavigationIt
 
 
                 Toast.makeText(applicationContext,"ZAPISANO", Toast.LENGTH_SHORT).show()
+                finish()
             }}
         )
         //Remove button

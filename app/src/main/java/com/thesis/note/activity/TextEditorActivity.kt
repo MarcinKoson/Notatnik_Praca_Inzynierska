@@ -98,6 +98,7 @@ class TextEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                     }
                 }
                 Toast.makeText(applicationContext,"ZAPISANO", Toast.LENGTH_SHORT).show()
+                finish()
             }})
 
         //REMOVE button

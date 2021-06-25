@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -14,21 +13,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.thesis.note.*
 import com.thesis.note.RecyclerViewAdapter.*
 import com.thesis.note.database.AppDatabase
-import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_list.*
-
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.util.stream.Collectors.toList
 import com.thesis.note.R
 
+//TODO
 class ListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnNoteListener {
     lateinit var drawer_layout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer
-
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
@@ -60,32 +56,27 @@ class ListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             listOfNotesUpdate()
 
-            //TODO("poprawic")
+            //TODO change adapter to support multiple note types
             viewManager = LinearLayoutManager(contextThis)
             viewAdapter = RecyclerViewAdapter(listOfNotes,listOfData,contextThis)
 
             recyclerView = findViewById<RecyclerView>(R.id.notes_recycler_view).apply {
-                // use this setting to improve performance if you know that changes
-                // in content do not change the layout size of the RecyclerView
                 setHasFixedSize(true)
-
-                // use a linear layout manager
                 layoutManager = viewManager
-
-                // specify an viewAdapter (see also next example)
                 adapter = viewAdapter
             }
         }
-            //-------------------------
-        //Add button
 
+        //-------------------------
+
+        //Add button
         addButton.setOnClickListener(object: View.OnClickListener{
             override fun onClick(v: View?) {
                 val intent = Intent(v?.context,AddNoteActivity::class.java)
                 startActivity(intent)
             }
         })
-
+        //Find button
         findButton.setOnClickListener(object: View.OnClickListener{
             override fun onClick(v: View?) {
                 val intent = Intent(v?.context,SearchActivity::class.java)
@@ -109,36 +100,9 @@ class ListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onNoteClick(position: Int) {
-        //DUBLICATE -> MainActivity
-        /*
-        val noteType = listOfNotes[position].Type;
-        //TODO zmiana na noteviever
-        when(noteType){
-            NoteType.Text -> {
-                val listActivityIntent = Intent(this, TextEditorActivity::class.java)
-                listActivityIntent.putExtra("noteID",listOfNotes[position].IdNote);
-                this.startActivity(listActivityIntent)
-               // finish()
-            }
-            else -> {
-                Toast.makeText(applicationContext,"error:nie obsługiwana notatka",Toast.LENGTH_SHORT).show()
-            }
-        }
-*/
-
-
-
-/*
-
-//Opening text editor
-        val listActivityIntent = Intent(this, TextEditorActivity::class.java)
-        listActivityIntent.putExtra("noteID",listOfNotes[position].IdNote);
-        this.startActivity(listActivityIntent)
-*/
         val noteViewerActivityIntent = Intent(this, NoteViewerActivity::class.java)
         noteViewerActivityIntent.putExtra("noteID",listOfNotes[position].IdNote);
         this.startActivity(noteViewerActivityIntent)
-
     }
 
     override fun onRestart() {
@@ -152,12 +116,11 @@ class ListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 recyclerView.setAdapter(viewAdapter)
                 viewAdapter.notifyDataSetChanged()
             }
-
         }
-        // viewAdapter.myDa
     }
 
     fun listOfNotesUpdate(){
+    /*
         val sv:SearchValues = SearchValues()
 
         val groups:MutableList<Int?> = db.groupDao().getAll().map { it.IdGroup }.toMutableList();
@@ -173,9 +136,42 @@ class ListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if(nameReg==null || nameReg=="")
             listOfNotes = db.noteDao().getAll()
         else {
-            //    listOfNotes = db.noteDao().getFiltered(groupsID = groups.toList(),favorite =  favorite.toList(), nameRegex = nameReg.toString())
+               listOfNotes = db.noteDao().getFiltered(groupsID = groups.toList(),favorite =  favorite.toList(), nameRegex = nameReg.toString())
 
         }
+*/
+        var favorite:MutableList<Boolean> = mutableListOf()
+       if(SearchValuesS.favorite)
+       {
+
+           favorite.add(true)
+       }
+        else{
+
+           favorite.add(true)
+           favorite.add(false)
+       }
+        var nameReg = SearchValuesS.name;
+        if(nameReg==null || nameReg==""){
+            nameReg = "%"
+        }
+
+        var groups:MutableList<Int?> = mutableListOf()
+        val groupsList = db.groupDao().getAll()
+        if(SearchValuesS.group == 0 || SearchValuesS.group ==null){
+           // groups = groupsList.map { it.IdGroup }.toMutableList();
+            //groups.add(null);
+            listOfNotes = db.noteDao().getFiltered(favorite,nameReg.toString())
+        }
+        else{
+            val groups:MutableList<Int?> = mutableListOf()
+            //groups.add(null);
+            var findGroupID:Int = SearchValuesS.group!!
+            groups.add(groupsList[findGroupID-1].IdGroup)
+            listOfNotes = db.noteDao().getFilteredGroup(groups,favorite,nameReg.toString())
+        }
+
+
 
         //--------------Data load--------------
         listOfData = db.dataDao().getAll()

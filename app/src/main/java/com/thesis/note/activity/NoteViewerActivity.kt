@@ -77,7 +77,7 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         //Load Note
         parameters = intent.extras
 
-        //TODO loading groups, tags, date, itp
+        //TODO loading tags, date, itp
         if(parameters!=null){
             noteID = parameters!!.getInt("noteID")
             //Get note from db
@@ -162,6 +162,7 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                 newFragment.show(supportFragmentManager, "add tags")
             }
         })
+        /*
         //load tags
         //TODO TAGS
         GlobalScope.launch {
@@ -185,7 +186,7 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                 adapter = viewAdapter
 
         }}
-
+*/
         //remove button
         deleteButton.setOnClickListener(object: View.OnClickListener {
             override fun onClick(v: View?) {
@@ -243,7 +244,6 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
             else -> {
                 Toast.makeText(applicationContext,"ERROR:NoteViewerActivity - cannot open data", Toast.LENGTH_SHORT).show()
             }
-
         }
     }
 }

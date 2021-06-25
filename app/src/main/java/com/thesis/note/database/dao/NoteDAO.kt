@@ -1,6 +1,7 @@
 package com.thesis.note.database.dao
 
 import androidx.room.*
+import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Note
 
 @Dao
@@ -23,17 +24,19 @@ interface NoteDAO {
     @Update
     fun updateTodo(vararg update: Note)
 
-    /*
-  @Query("SELECT * FROM note WHERE Type IN(:noteTypes) AND GroupID IN(:groupsID) AND Favorite IN(:favorite) AND Name LIKE(:nameRegex)")
-  fun getFiltered(
-      noteTypes: List<NoteType> = NoteType.values().toList(),
-      groupsID : List<Int?> ,
+
+  @Query("SELECT * FROM note WHERE GroupID IN(:groupsID) AND Favorite IN(:favorite) AND Name LIKE(:nameRegex)")
+  fun getFilteredGroup(
+      groupsID : List<Int?>,
       favorite : List<Boolean>,
-     // dateStart: String,
-     // dateStop: String,
       nameRegex : String = "%"
   ): List<Note>
-*/
+
+  @Query("SELECT * FROM note WHERE Favorite IN(:favorite) AND Name LIKE(:nameRegex)")
+    fun getFiltered(
+        favorite : List<Boolean>,
+        nameRegex : String = "%"
+    ): List<Note>
     //fun getFilteredWithContent
 
     /*

@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.template_empty_layout.*
 import kotlinx.android.synthetic.main.template_empty_layout.navigationView
 import kotlinx.android.synthetic.main.template_empty_layout.toolbar
 import com.thesis.note.R
-
+//TODO
 class TemplateEmptyActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var drawer_layout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer
