@@ -7,7 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Spinner
+
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -16,9 +16,9 @@ import androidx.drawerlayout.widget.DrawerLayout
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 
 import com.google.android.material.navigation.NavigationView
 import com.thesis.note.*
@@ -33,24 +33,25 @@ import kotlinx.android.synthetic.main.activity_note_viewer.deleteButton
 
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-
+//TODO TAGS
 
 class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     NoteViewerAdapter.OnNoteListener {
 
-    lateinit var drawer_layout: DrawerLayout
+    lateinit var drawerLayout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer
 
-    val db = AppDatabase.invoke(this)
-    val NoteViewerActivityContext = this
+    lateinit var db: AppDatabase
 
-    var parameters: Bundle? = null
+    private val noteViewerActivityContext = this
+
+    private var parameters: Bundle? = null
     var noteID:Int = -1
-    lateinit var note:Note
-    lateinit var dataList: List<Data>
-    lateinit var groupsList: List<Group>
-    lateinit var tagsList: List<Tag>
-    lateinit var tagsOfNoteList: List<TagOfNote>
+    private lateinit var note:Note
+    private lateinit var dataList: List<Data>
+    private lateinit var groupsList: List<Group>
+    private lateinit var tagsList: List<Tag>
+    private lateinit var tagsOfNoteList: List<TagOfNote>
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
@@ -64,143 +65,112 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         super.onCreate(savedInstanceState)
         //setSupportActionBar(toolbar)
         setContentView(R.layout.activity_note_viewer)
-        drawer_layout = activity_note_viewer_layout
-        navigationDrawer = NavigationDrawer(drawer_layout)
+        drawerLayout = activity_note_viewer_layout
+        navigationDrawer = NavigationDrawer(drawerLayout)
         navigationView.setNavigationItemSelectedListener(this)
 
-        val drawerToggle= ActionBarDrawerToggle(this,drawer_layout,toolbar,R.string.abdt,R.string.abdt)
-        drawer_layout.addDrawerListener(drawerToggle)
+        val drawerToggle= ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.abdt,R.string.abdt)
+        drawerLayout.addDrawerListener(drawerToggle)
         drawerToggle.isDrawerIndicatorEnabled = true
         drawerToggle.syncState()
         //------------------------------------------------------------------------------------------
-
+        db = AppDatabase(this)
         //Load Note
         parameters = intent.extras
-
-        //TODO loading tags, date, itp
-        if(parameters!=null){
-            noteID = parameters!!.getInt("noteID")
-            //Get note from db
+        if(parameters == null){
+            Toast.makeText(applicationContext,"ERROR: cannot load note", Toast.LENGTH_SHORT).show()
+        }
+        else{
             GlobalScope.launch {
+                noteID = parameters!!.getInt("noteID")
+                //Loading from db
                 note = db.noteDao().getNoteById(noteID)
                 dataList = db.dataDao().getDataFromNote(noteID)
-
+                groupsList = db.groupDao().getAll()
+                tagsList = db.tagDao().getAll()
+                tagsOfNoteList = db.tagOfNoteDAO().getAllNoteTags(note.IdNote)
                 //Setting note name
-                NoteViewerActivityContext.runOnUiThread(
+                noteViewerActivityContext.runOnUiThread(
                     fun(){
                         noteName.text = Editable.Factory.getInstance().newEditable(note.Name)
                     }
                 )
-                //RecyclerView init
-                viewManager = LinearLayoutManager(NoteViewerActivityContext)
-                viewAdapter = NoteViewerAdapter(dataList,NoteViewerActivityContext)
+                //Data RecyclerView init
+                viewManager = LinearLayoutManager(noteViewerActivityContext)
+                viewAdapter = NoteViewerAdapter(dataList,noteViewerActivityContext)
                 recyclerView = findViewById<RecyclerView>(R.id.note_viewer_recycler_view).apply {
                     setHasFixedSize(true)
                     layoutManager = viewManager
                     adapter = viewAdapter
                 }
-            }
-        }
-        else
-        {
-            Toast.makeText(applicationContext,"ERROR: cannot load note", Toast.LENGTH_SHORT).show()
-        }
-        //load Group spinner
-        val groupSpinner: Spinner = groupSpinner
-        GlobalScope.launch {
-            var arrayGroups = db.groupDao().getAll()
-            groupsList = arrayGroups
-            var arrayGroupsString = arrayGroups.map { x -> x.Name }
-
-            var groupArrayAdapter : ArrayAdapter<String> =  ArrayAdapter<String>(NoteViewerActivityContext,
-                android.R.layout.simple_spinner_item,
-                arrayGroupsString)
-
-            groupArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            groupArrayAdapter.insert(getString(R.string.groups_without_group),0)
-            groupSpinner.adapter = groupArrayAdapter
-
-            //show Group
-            var group :Group? = groupsList.firstOrNull{ x -> x.IdGroup == note.GroupID}
-            if (group == null) {
-
+                //load spinner of groups
+                val arrayGroupsString = groupsList.map { x -> x.Name }
+                val groupArrayAdapter : ArrayAdapter<String> =  ArrayAdapter<String>(noteViewerActivityContext,
+                    android.R.layout.simple_spinner_item,
+                    arrayGroupsString)
+                groupArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                groupArrayAdapter.insert(getString(R.string.groups_without_group),0)
+                groupSpinner.adapter = groupArrayAdapter
+                //set group of note
+                val group :Group? = groupsList.firstOrNull{ x -> x.IdGroup == note.GroupID}
+                if (group != null) {
+                    groupSpinner.setSelection(groupsList.indexOf(group)+1)
                 }
-            else {
-                //on first position is "no group" option
-                groupSpinner.setSelection(groupsList.indexOf(group)+1)
-            }
-
-
-        }
-        //save Group after change
-          val groupOnItemClickListener =   object:AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>,view: View?, pos: Int, id: Long
-                ) {
-
-                    GlobalScope.launch {
-                        if(pos == 0){
-                            note.GroupID = null
-                        }
-                        else {
-                            note.GroupID = groupsList[pos - 1].IdGroup
-                        }
-                        db.noteDao().updateTodo(note)
+                //set date
+                //TODO date
+                //Tags RecyclerView init
+                val tagListAdapterListener = object: TagListAdapter.OnNoteListener {
+                    override fun onNoteClick(position: Int) {
                     }
                 }
-                override fun onNothingSelected(parent: AdapterView<*>) {
+                tagsViewManager = FlexboxLayoutManager(noteViewerActivityContext)
+                (tagsViewManager as FlexboxLayoutManager).flexDirection = FlexDirection.ROW
+                (tagsViewManager as FlexboxLayoutManager).setJustifyContent(JustifyContent.FLEX_END)
+
+                tagsViewAdapter = TagListAdapter(tagsOfNoteList,tagsList,tagListAdapterListener)
+                tagsRecyclerView = findViewById<RecyclerView>(R.id.tagRecyclerView).apply {
+                    //setHasFixedSize(true)
+                    layoutManager = tagsViewManager
+                    adapter = tagsViewAdapter
                 }
             }
+        }
+        //save Group after change
+        val groupOnItemClickListener =   object:AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>,view: View?, pos: Int, id: Long
+            ) {
+                GlobalScope.launch {
+                    if(pos == 0){
+                        note.GroupID = null
+                    }
+                    else {
+                        note.GroupID = groupsList[pos - 1].IdGroup
+                    }
+                    db.noteDao().updateTodo(note)
+                }
+            }
+            override fun onNothingSelected(parent: AdapterView<*>) {
+            }
+        }
         groupSpinner.onItemSelectedListener = groupOnItemClickListener
 
+        //TODO save note name after change
 
-        //load date
-        //TODO date
         //add tag button
-        addTagButton.setOnClickListener(object: View.OnClickListener {
-            override fun onClick(v: View?) {
-                val newFragment = AddTagsDialogFragment()
-                newFragment.show(supportFragmentManager, "add tags")
-            }
-        })
-        /*
-        //load tags
-        //TODO TAGS
-        GlobalScope.launch {
-            tagsList = db.tagDao().getAll()
-            tagsOfNoteList = db.tagOfNoteDAO().getAllNoteTags(note.IdNote)
-
-            val tagListAdapterListener = object: TagListAdapter.OnNoteListener {
-                override fun onNoteClick(position: Int) {
-                }
-            }
-
-
-            tagsViewManager = FlexboxLayoutManager(NoteViewerActivityContext)
-            (tagsViewManager as FlexboxLayoutManager).flexDirection = FlexDirection.ROW
-
-
-            tagsViewAdapter = TagListAdapter(tagsOfNoteList,tagsList,tagListAdapterListener)
-            tagsRecyclerView = findViewById<RecyclerView>(R.id.tagRecyclerView).apply {
-                //setHasFixedSize(true)
-                layoutManager = viewManager
-                adapter = viewAdapter
-
-        }}
-*/
+        addTagButton.setOnClickListener {
+            val newFragment = AddTagsDialogFragment()
+            newFragment.show(supportFragmentManager, "add tags")
+        }
         //remove button
-        deleteButton.setOnClickListener(object: View.OnClickListener {
-            override fun onClick(v: View?) {
-                GlobalScope.launch {
-                    val db = AppDatabase(applicationContext)
-                    db.noteDao().delete(note)
-                }
-                finish()
+        deleteButton.setOnClickListener {
+            GlobalScope.launch {
+                val db = AppDatabase(applicationContext)
+                db.noteDao().delete(note)
             }
-        })
-
+            finish()
+        }
         //share button
         //TODO share button
-
 
     }
 
@@ -212,7 +182,7 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                 //load data form db
                 dataList = db.dataDao().getDataFromNote(noteID)
                 //set new data to recycler view
-                viewAdapter = NoteViewerAdapter(dataList, NoteViewerActivityContext)
+                viewAdapter = NoteViewerAdapter(dataList, noteViewerActivityContext)
                 runOnUiThread{
                     recyclerView.adapter = viewAdapter
                     viewAdapter.notifyDataSetChanged()
@@ -224,8 +194,8 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
     }
 
     override fun onBackPressed() {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-            drawer_layout.closeDrawer(GravityCompat.START)
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
         } else {
             super.onBackPressed()
         }
@@ -246,4 +216,7 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
             }
         }
     }
-}
+
+
+
+    }
