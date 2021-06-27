@@ -1,5 +1,6 @@
 package com.thesis.note.activity
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -14,11 +15,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 
+
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.flexbox.FlexDirection
+
 import com.google.android.flexbox.FlexboxLayoutManager
-import com.google.android.flexbox.JustifyContent
+
 
 import com.google.android.material.navigation.NavigationView
 import com.thesis.note.*
@@ -38,7 +40,7 @@ import kotlinx.coroutines.launch
 //TODO TAGS
 
 class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
-    NoteViewerAdapter.OnNoteListener {
+    NoteViewerAdapter.OnNoteListener, DialogInterface.OnDismissListener {
 
     lateinit var drawerLayout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer
@@ -62,6 +64,7 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
     private lateinit var tagsRecyclerView: RecyclerView
     private lateinit var tagsViewAdapter: RecyclerView.Adapter<*>
     private lateinit var tagsViewManager: RecyclerView.LayoutManager
+    private lateinit var tagListAdapterListener: TagListAdapter.OnNoteListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -121,13 +124,14 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                 //set date
                 //TODO date
                 //Tags RecyclerView init
-                val tagListAdapterListener = object: TagListAdapter.OnNoteListener {
+                //TODO tag list adapter listener
+                tagListAdapterListener = object: TagListAdapter.OnNoteListener {
                     override fun onNoteClick(position: Int) {
                     }
                 }
                 tagsViewManager = FlexboxLayoutManager(noteViewerActivityContext)
-                (tagsViewManager as FlexboxLayoutManager).flexDirection = FlexDirection.ROW
-                (tagsViewManager as FlexboxLayoutManager).setJustifyContent(JustifyContent.FLEX_END)
+                //(tagsViewManager as FlexboxLayoutManager).flexDirection = FlexDirection.ROW
+                //(tagsViewManager as FlexboxLayoutManager).setJustifyContent(JustifyContent.FLEX_END)
 
                 tagsViewAdapter = TagListAdapter(tagsOfNoteList,tagsList,tagListAdapterListener)
                 tagsRecyclerView = findViewById<RecyclerView>(R.id.tagRecyclerView).apply {
@@ -158,9 +162,14 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
 
         //TODO save note name after change
 
+
+
         //add tag button
         addTagButton.setOnClickListener {
             val newFragment = AddTagsDialogFragment()
+            val bundle = Bundle()
+            bundle.putInt("noteID",noteID)
+            newFragment.arguments = bundle
             newFragment.show(supportFragmentManager, "add tags")
         }
         //remove button
@@ -219,6 +228,18 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         }
     }
 
-
-
+    override fun onDismiss(dialog: DialogInterface?) {
+        //on dismiss DialogFragment
+        //update tag list
+        if(parameters!=null) {
+            GlobalScope.launch {
+                //load data form db
+                tagsOfNoteList = db.tagOfNoteDAO().getAllNoteTags(noteID)
+                //set new data to recycler view
+                tagsViewAdapter = TagListAdapter(tagsOfNoteList,tagsList,tagListAdapterListener)
+                runOnUiThread{
+                    tagsRecyclerView.adapter = tagsViewAdapter
+                    tagsViewAdapter.notifyDataSetChanged()
+                }}}
+    }
     }

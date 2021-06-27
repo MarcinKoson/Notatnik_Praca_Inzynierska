@@ -9,11 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.thesis.note.R
 import com.thesis.note.database.entity.Tag
 import com.thesis.note.database.entity.TagOfNote
+import kotlinx.android.synthetic.main.recycler_view_tag_fragment_list.view.*
 import kotlinx.android.synthetic.main.recycler_view_tag_list.view.*
 //TODO
 
-class TagListAdapter (private val myDataset: List<TagOfNote>, private val tagList:List<Tag>, onNoteListener: OnNoteListener) :
-    RecyclerView.Adapter<TagListAdapter.MyViewHolder>() {
+class AddTagFragmentAdapter (private val tagList:List<Tag>, onNoteListener: OnNoteListener) :
+    RecyclerView.Adapter<AddTagFragmentAdapter.MyViewHolder>() {
 
     val mOnNoteListener = onNoteListener;
 
@@ -31,23 +32,20 @@ class TagListAdapter (private val myDataset: List<TagOfNote>, private val tagLis
 
     override fun onCreateViewHolder(parent: ViewGroup,
                                     viewType: Int): MyViewHolder {
-        // create a new view
+
         val textView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.recycler_view_tag_list, parent, false) as ConstraintLayout
-        // set the view's size, margins, paddings and layout parameters
-        //...
+            .inflate(R.layout.recycler_view_tag_fragment_list, parent, false) as ConstraintLayout
+
         return MyViewHolder(textView,mOnNoteListener)
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
-        holder.textView.tagName.text = tagList.firstOrNull { x -> x.IdTag == myDataset[position].TagID }?.Name
+
+        holder.textView.tagNameButton.text = tagList[position].Name
     }
 
     // Return the size of your dataset (invoked by the layout manager)
-    override fun getItemCount() = myDataset.size
+    override fun getItemCount() = tagList.size
 
 
     interface  OnNoteListener {
