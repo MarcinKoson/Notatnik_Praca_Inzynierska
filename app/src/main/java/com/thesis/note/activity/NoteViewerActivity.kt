@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter
 
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -125,14 +126,32 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                 //TODO date
                 //Tags RecyclerView init
                 //TODO tag list adapter listener
+
                 tagListAdapterListener = object: TagListAdapter.OnNoteListener {
                     override fun onNoteClick(position: Int) {
+                        //create remove dialog
+                        val alertDialog: AlertDialog? = this?.let {
+                            val builder = AlertDialog.Builder(noteViewerActivityContext)
+                            builder.apply {
+                                setPositiveButton("Tak",
+                                    DialogInterface.OnClickListener { dialog, id ->
+                                        GlobalScope.launch {
+                                            db.tagOfNoteDAO().delete(tagsOfNoteList[position])
+                                            //TODO unsafe?
+                                            onDismiss(null)
+                                        }
+                                    })
+                                setNegativeButton("Nie",
+                                    DialogInterface.OnClickListener { dialog, id ->
+
+                                    })
+                            }
+                            builder.create()
+                        }
+                        alertDialog?.show()
                     }
                 }
                 tagsViewManager = FlexboxLayoutManager(noteViewerActivityContext)
-                //(tagsViewManager as FlexboxLayoutManager).flexDirection = FlexDirection.ROW
-                //(tagsViewManager as FlexboxLayoutManager).setJustifyContent(JustifyContent.FLEX_END)
-
                 tagsViewAdapter = TagListAdapter(tagsOfNoteList,tagsList,tagListAdapterListener)
                 tagsRecyclerView = findViewById<RecyclerView>(R.id.tagRecyclerView).apply {
                     //setHasFixedSize(true)
