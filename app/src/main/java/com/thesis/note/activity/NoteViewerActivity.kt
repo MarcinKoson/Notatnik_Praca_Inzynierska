@@ -14,6 +14,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.core.widget.doAfterTextChanged
 import androidx.drawerlayout.widget.DrawerLayout
 
 
@@ -38,7 +39,6 @@ import kotlinx.android.synthetic.main.activity_note_viewer.deleteButton
 
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-//TODO TAGS
 
 class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     NoteViewerAdapter.OnNoteListener, DialogInterface.OnDismissListener {
@@ -124,9 +124,7 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                 }
                 //set date
                 //TODO date
-                //Tags RecyclerView init
-                //TODO tag list adapter listener
-
+                //Tags RecyclerView onClick listener
                 tagListAdapterListener = object: TagListAdapter.OnNoteListener {
                     override fun onNoteClick(position: Int) {
                         //create remove dialog
@@ -151,6 +149,7 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                         alertDialog?.show()
                     }
                 }
+                //Tags RecyclerView init
                 tagsViewManager = FlexboxLayoutManager(noteViewerActivityContext)
                 tagsViewAdapter = TagListAdapter(tagsOfNoteList,tagsList,tagListAdapterListener)
                 tagsRecyclerView = findViewById<RecyclerView>(R.id.tagRecyclerView).apply {
@@ -178,11 +177,6 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
             }
         }
         groupSpinner.onItemSelectedListener = groupOnItemClickListener
-
-        //TODO save note name after change
-
-
-
         //add tag button
         addTagButton.setOnClickListener {
             val newFragment = AddTagsDialogFragment()
@@ -247,6 +241,15 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         }
     }
 
+    override fun onPause(){
+        super.onPause()
+        //save name of note after change
+        //TODO is this good solution?
+        GlobalScope.launch {
+            note.Name = noteName.text.toString()
+            db.noteDao().updateTodo(note)
+        }
+    }
     override fun onDismiss(dialog: DialogInterface?) {
         //on dismiss DialogFragment
         //update tag list
