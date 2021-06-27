@@ -3,7 +3,6 @@ package com.thesis.note.activity
 import android.app.Activity
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -11,22 +10,24 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.thesis.note.NavigationDrawer
-
-import com.thesis.note.RecyclerViewAdapterGroups
 import com.thesis.note.database.AppDatabase
-import com.thesis.note.database.entity.Group
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.activity_groups_editor.*
 import kotlinx.android.synthetic.main.template_empty_layout.navigationView
 import kotlinx.android.synthetic.main.template_empty_layout.toolbar
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import com.thesis.note.R
-//TODO
-class GroupsEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
-    RecyclerViewAdapterGroups.OnNoteListener {
+import com.thesis.note.TagsEditorRecyclerViewAdapter
+import com.thesis.note.database.entity.Tag
+import kotlinx.android.synthetic.main.activity_groups_editor.addTagButtonToDb
+import kotlinx.android.synthetic.main.activity_groups_editor.nameOfNewTag
+import kotlinx.android.synthetic.main.activity_tags_editor.*
 
-    lateinit var drawer_layout: DrawerLayout
+//TODO
+class TagEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
+    TagsEditorRecyclerViewAdapter.OnNoteListener {
+
+    lateinit var drawerLayout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer
 
     lateinit var db :AppDatabase
@@ -36,28 +37,26 @@ class GroupsEditorActivity : AppCompatActivity(), NavigationView.OnNavigationIte
     private lateinit var viewManager: RecyclerView.LayoutManager
     private val contextThis = this
 
-    private lateinit var listOfGroups: List<Group>
+    private lateinit var listOfTags: List<Tag>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setSupportActionBar(toolbar)
-        setContentView(R.layout.activity_groups_editor)      //NAZWA LAYOUTU
-        drawer_layout = groups_editor_layout;               //NAZWA DRAWER LAYOUTU
-        navigationDrawer = NavigationDrawer(drawer_layout)
-        navigationView.setNavigationItemSelectedListener(this);
+        setContentView(R.layout.activity_tags_editor)
+        drawerLayout = tags_editor_layout
+        navigationDrawer = NavigationDrawer(drawerLayout)
+        navigationView.setNavigationItemSelectedListener(this)
 
-        val drawerToggle= ActionBarDrawerToggle(this,drawer_layout,toolbar,R.string.abdt,R.string.abdt)
-        drawer_layout.addDrawerListener(drawerToggle)
+        val drawerToggle= ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.abdt,R.string.abdt)
+        drawerLayout.addDrawerListener(drawerToggle)
         drawerToggle.isDrawerIndicatorEnabled = true
         drawerToggle.syncState()
         //------------------------------------------------------------------------------------------
-        db = AppDatabase.invoke(this);
+        db = AppDatabase.invoke(this)
         GlobalScope.launch {
-            listOfGroupsUpdate()
+            listOfTagsUpdate()
 
             viewManager = LinearLayoutManager(contextThis)
-            viewAdapter = RecyclerViewAdapterGroups(listOfGroups,contextThis, contextThis)
-
+            viewAdapter = TagsEditorRecyclerViewAdapter(listOfTags,contextThis, contextThis)
             recyclerView = findViewById<RecyclerView>(R.id.groups_recycler_view).apply {
                 setHasFixedSize(true)
                 layoutManager = viewManager
@@ -66,21 +65,14 @@ class GroupsEditorActivity : AppCompatActivity(), NavigationView.OnNavigationIte
 
         }
         //------------------------add Button-----------------------------------------
-        addTagButtonToDb.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-
-                GlobalScope.launch {
-                db.groupDao().insertAll(Group(0,nameOfNewTag.text.toString(),null))
-                    (contextThis as Activity).runOnUiThread {
-                        contextThis.recreate()
-                    }
+        addTagButtonToDb.setOnClickListener {
+            GlobalScope.launch {
+                db.tagDao().insertAll(Tag(0, nameOfNewTag.text.toString()))
+                (contextThis as Activity).runOnUiThread {
+                    contextThis.recreate()
                 }
-            }})
-
-
-
-
-
+            }
+        }
 
 
     }
@@ -91,8 +83,8 @@ class GroupsEditorActivity : AppCompatActivity(), NavigationView.OnNavigationIte
     }
 
     override fun onBackPressed() {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-            drawer_layout.closeDrawer(GravityCompat.START)
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
         } else {
             super.onBackPressed()
         }
@@ -105,18 +97,18 @@ class GroupsEditorActivity : AppCompatActivity(), NavigationView.OnNavigationIte
         super.onRestart()
         GlobalScope.launch {
             //listOfNotes = db.noteDao().getAll()
-            listOfGroupsUpdate()
+            listOfTagsUpdate()
             viewAdapter =
-                RecyclerViewAdapterGroups(listOfGroups, contextThis as RecyclerViewAdapterGroups.OnNoteListener,contextThis)
+                TagsEditorRecyclerViewAdapter(listOfTags, contextThis as TagsEditorRecyclerViewAdapter.OnNoteListener,contextThis)
             runOnUiThread {
-                recyclerView.setAdapter(viewAdapter)
+                recyclerView.adapter = viewAdapter
                 viewAdapter.notifyDataSetChanged()
             }
         }
     }
 
-    fun listOfGroupsUpdate(){
-            listOfGroups = db.groupDao().getAll()
+    private fun listOfTagsUpdate(){
+            listOfTags = db.tagDao().getAll()
     }
 
 }

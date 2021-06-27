@@ -9,7 +9,6 @@ import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
-import com.thesis.note.R
 import kotlinx.android.synthetic.main.recycler_view_layout.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -70,7 +69,7 @@ class RecyclerViewAdapter (private var noteSet: List<Note>, private var dataSet:
         if(noteSet[position].GroupID !=null)
             GlobalScope.launch {
                 val groupName = AppDatabase(holder.objectLayout.context).groupDao().getId(noteSet[position].GroupID!!).Name
-                holder.objectLayout.groupName.text = groupName
+                holder.objectLayout.tagName.text = groupName
             }
 
 

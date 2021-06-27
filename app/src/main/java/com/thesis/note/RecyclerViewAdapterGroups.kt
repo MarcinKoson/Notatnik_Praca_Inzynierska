@@ -2,18 +2,13 @@ package com.thesis.note
 
 import android.app.Activity
 import android.content.Context
-import android.widget.CompoundButton
-import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.thesis.note.database.AppDatabase
-import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Group
-import com.thesis.note.database.entity.Note
 import kotlinx.android.synthetic.main.recycler_view_gropus_layout.view.*
-import kotlinx.android.synthetic.main.recycler_view_layout.view.*
-import kotlinx.android.synthetic.main.recycler_view_layout.view.groupName
+import kotlinx.android.synthetic.main.recycler_view_layout.view.tagName
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import android.widget.PopupWindow
@@ -21,17 +16,8 @@ import android.widget.LinearLayout
 //import android.R
 import android.content.Context.LAYOUT_INFLATER_SERVICE
 import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat.getSystemService
 import kotlinx.android.synthetic.main.popup_edit_group.view.*
-import android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT
-import androidx.core.content.ContextCompat.getSystemService
-import android.content.Context.INPUT_METHOD_SERVICE
-import androidx.core.content.ContextCompat.getSystemService
-import android.content.Context.INPUT_METHOD_SERVICE
 import android.view.*
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.content.ContextCompat.getSystemService
-import com.thesis.note.R
 
 
 class RecyclerViewAdapterGroups (private var myDataset: List<Group>, onNoteListener: OnNoteListener, var context:Context) :
@@ -73,7 +59,7 @@ class RecyclerViewAdapterGroups (private var myDataset: List<Group>, onNoteListe
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
 
-        holder.textView.groupName.text = myDataset[position].Name
+        holder.textView.tagName.text = myDataset[position].Name
 
         holder.textView.deleteButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
@@ -92,7 +78,7 @@ class RecyclerViewAdapterGroups (private var myDataset: List<Group>, onNoteListe
                 }
         }})
 
-        holder.textView.editGroupButton.setOnClickListener(object : View.OnClickListener {
+        holder.textView.editTagButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
 
                 (context as Activity).runOnUiThread {

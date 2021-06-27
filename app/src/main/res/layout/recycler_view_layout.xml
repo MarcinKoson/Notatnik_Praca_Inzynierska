@@ -49,12 +49,12 @@
         android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:text="Typ"
-        app:layout_constraintBottom_toTopOf="@+id/groupName"
+        app:layout_constraintBottom_toTopOf="@+id/tagName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/favoriteCheckBox" />
 
     <TextView
-        android:id="@+id/groupName"
+        android:id="@+id/tagName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Bez grupy"
