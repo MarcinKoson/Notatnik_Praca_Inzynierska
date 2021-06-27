@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -14,16 +13,12 @@ import com.thesis.note.NavigationDrawer
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-import com.thesis.note.RecyclerViewAdapter
+import com.thesis.note.recycler_view_adapters.RecyclerViewAdapter
 import com.thesis.note.database.AppDatabase
-import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import com.thesis.note.R
 //TODO
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener ,

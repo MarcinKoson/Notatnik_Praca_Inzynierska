@@ -1,15 +1,14 @@
-package com.thesis.note
+package com.thesis.note.recycler_view_adapters
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.thesis.note.database.NoteType
-import com.thesis.note.database.NoteTypeConverter
+import com.thesis.note.R
 import com.thesis.note.database.entity.Data
 import kotlinx.android.synthetic.main.recycler_view_layout.view.*
-
+//TODO
 class NoteViewerAdapter (private var dataSet:List<Data>, onNoteListener: OnNoteListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -60,7 +59,7 @@ class NoteViewerAdapter (private var dataSet:List<Data>, onNoteListener: OnNoteL
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
        when(holder.itemViewType){
            0 -> {
-               val viewHolder0:TextViewHolder = holder as TextViewHolder
+               val viewHolder0: TextViewHolder = holder as TextViewHolder
                viewHolder0.objectLayout.noteContent.text = dataSet[position].Content
            }
            1 -> {

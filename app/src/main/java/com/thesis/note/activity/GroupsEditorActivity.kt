@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.thesis.note.NavigationDrawer
 
-import com.thesis.note.RecyclerViewAdapterGroups
+import com.thesis.note.recycler_view_adapters.RecyclerViewAdapterGroups
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.entity.Group
 import com.google.android.material.navigation.NavigationView

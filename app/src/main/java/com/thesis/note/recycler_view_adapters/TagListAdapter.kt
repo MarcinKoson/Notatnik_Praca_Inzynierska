@@ -1,4 +1,4 @@
-package com.thesis.note
+package com.thesis.note.recycler_view_adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +9,7 @@ import com.thesis.note.R
 import com.thesis.note.database.entity.Tag
 import com.thesis.note.database.entity.TagOfNote
 import kotlinx.android.synthetic.main.recycler_view_tag_list.view.*
+//TODO
 
 class TagListAdapter (private val myDataset: List<TagOfNote>, private val tagList:List<Tag>, onNoteListener: OnNoteListener) :
     RecyclerView.Adapter<TagListAdapter.MyViewHolder>() {
@@ -28,7 +29,7 @@ class TagListAdapter (private val myDataset: List<TagOfNote>, private val tagLis
     }
 
     override fun onCreateViewHolder(parent: ViewGroup,
-                                    viewType: Int): TagListAdapter.MyViewHolder {
+                                    viewType: Int): MyViewHolder {
         // create a new view
         val textView = LayoutInflater.from(parent.context)
             .inflate(R.layout.recycler_view_tag_list, parent, false) as TextView

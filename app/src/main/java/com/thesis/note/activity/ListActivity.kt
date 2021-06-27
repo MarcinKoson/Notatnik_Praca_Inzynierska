@@ -11,7 +11,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.thesis.note.*
-import com.thesis.note.RecyclerViewAdapter.*
+import com.thesis.note.recycler_view_adapters.RecyclerViewAdapter.*
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.activity_list.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import com.thesis.note.R
+import com.thesis.note.recycler_view_adapters.RecyclerViewAdapter
 
 //TODO
 class ListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnNoteListener {
@@ -111,7 +112,7 @@ class ListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             //listOfNotes = db.noteDao().getAll()
             listOfNotesUpdate()
             viewAdapter =
-                RecyclerViewAdapter(listOfNotes, listOfData,contextThis as RecyclerViewAdapter.OnNoteListener)
+                RecyclerViewAdapter(listOfNotes, listOfData,contextThis as OnNoteListener)
             runOnUiThread {
                 recyclerView.setAdapter(viewAdapter)
                 viewAdapter.notifyDataSetChanged()

@@ -1,4 +1,4 @@
-package com.thesis.note
+package com.thesis.note.recycler_view_adapters
 
 import android.app.Activity
 import android.content.Context
@@ -17,8 +17,9 @@ import android.content.Context.LAYOUT_INFLATER_SERVICE
 import android.view.inputmethod.InputMethodManager
 import kotlinx.android.synthetic.main.popup_edit_group.view.*
 import android.view.*
+import com.thesis.note.R
 import com.thesis.note.database.entity.Tag
-
+//TODO
 class TagsEditorRecyclerViewAdapter (private var myDataset: List<Tag>, onNoteListener: OnNoteListener, var context:Context) :
     RecyclerView.Adapter<TagsEditorRecyclerViewAdapter.MyViewHolder>() {
 

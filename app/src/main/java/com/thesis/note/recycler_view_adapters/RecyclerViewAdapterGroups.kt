@@ -1,4 +1,4 @@
-package com.thesis.note
+package com.thesis.note.recycler_view_adapters
 
 import android.app.Activity
 import android.content.Context
@@ -18,6 +18,8 @@ import android.content.Context.LAYOUT_INFLATER_SERVICE
 import android.view.inputmethod.InputMethodManager
 import kotlinx.android.synthetic.main.popup_edit_group.view.*
 import android.view.*
+import com.thesis.note.R
+//TODO
 
 
 class RecyclerViewAdapterGroups (private var myDataset: List<Group>, onNoteListener: OnNoteListener, var context:Context) :
@@ -45,7 +47,7 @@ class RecyclerViewAdapterGroups (private var myDataset: List<Group>, onNoteListe
     }
 
     override fun onCreateViewHolder(parent: ViewGroup,
-                                    viewType: Int): RecyclerViewAdapterGroups.MyViewHolder {
+                                    viewType: Int): MyViewHolder {
         // create a new view
         val textView = LayoutInflater.from(parent.context)
             .inflate(R.layout.recycler_view_gropus_layout, parent, false) as ConstraintLayout

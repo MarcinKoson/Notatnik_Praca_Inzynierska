@@ -28,6 +28,8 @@ import kotlinx.android.synthetic.main.template_empty_layout.toolbar
 
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.entity.*
+import com.thesis.note.recycler_view_adapters.NoteViewerAdapter
+import com.thesis.note.recycler_view_adapters.TagListAdapter
 import kotlinx.android.synthetic.main.activity_note_viewer.*
 import kotlinx.android.synthetic.main.activity_note_viewer.deleteButton
 
