@@ -143,6 +143,7 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                                     DialogInterface.OnClickListener { dialog, id ->
 
                                     })
+                                setTitle("Czy usunąć tag?")
                             }
                             builder.create()
                         }
