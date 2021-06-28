@@ -1,5 +1,6 @@
 package com.thesis.note.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.view.MenuItem
@@ -25,13 +26,21 @@ import kotlinx.coroutines.launch
 
 import com.thesis.note.R
 import com.thesis.note.database.entity.Data
+import com.thesis.note.database.entity.Note
+import kotlinx.android.synthetic.main.activity_text_editor.*
 import kotlinx.android.synthetic.main.activity_text_editor_new.*
+import kotlinx.android.synthetic.main.activity_text_editor_new.deleteButton
+import kotlinx.android.synthetic.main.activity_text_editor_new.navigationView
+import kotlinx.android.synthetic.main.activity_text_editor_new.saveButton
+import kotlinx.android.synthetic.main.activity_text_editor_new.textField
+import kotlinx.android.synthetic.main.activity_text_editor_new.toolbar
 
 class TextEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var drawer_layout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer
 
     var dataExistInDB:Boolean = false
+    var noteExistInDB:Boolean = false
     var dataID:Int = -1
     var noteID:Int = -1
 
@@ -41,6 +50,7 @@ class TextEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
 
     val db = AppDatabase.invoke(this)
 
+    lateinit var noteViewerActivityIntent : Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +64,7 @@ class TextEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         drawerToggle.isDrawerIndicatorEnabled = true
         drawerToggle.syncState()
         //------------------------------------------------------------------------------------------
-
+        noteViewerActivityIntent = Intent(this, NoteViewerActivity::class.java)
         //Check if new data or edit of existing
         val parameters = intent.extras
 
@@ -74,9 +84,13 @@ class TextEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                     TextEditorActivityContext.runOnUiThread(
                         fun(){
                             textField.text = Editable.Factory.getInstance().newEditable(editedData.Content)
-                        })}}}
+                        })}}
+            //check if new note
+            noteExistInDB = noteID == -1
+                }
         else{
             dataExistInDB = false
+            noteExistInDB = false
         }
 
         //SAVE button
@@ -90,11 +104,32 @@ class TextEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                     }
                 }
                 else{
+                    if(noteExistInDB){
                     //Add new data to database
                     GlobalScope.launch {
                         val newDataID = db.dataDao().insertAll(Data(0,noteID,NoteType.Text,textField.text.toString(),null))
                         dataID = newDataID[0].toInt()
                         dataExistInDB = true
+                    }}
+                    else{
+                        GlobalScope.launch {
+                            //add new note
+                            var idNewNote = db.noteDao().insertAll(Note(0,"",null,null,false,null,null,null))
+                            noteID = idNewNote[0].toInt()
+                            //add new data
+                            val newDataID = db.dataDao().insertAll(Data(0,noteID,NoteType.Text,textField.text.toString(),null))
+                            dataID = newDataID[0].toInt()
+                            val note = db.noteDao().getNoteById(noteID)
+                            note.MainData = dataID
+                            db.noteDao().updateTodo(note)
+                            //open new note
+                            noteViewerActivityIntent.putExtra("noteID",noteID)
+                            TextEditorActivityContext.startActivity(noteViewerActivityIntent)
+                        }
+
+
+
+
                     }
                 }
                 Toast.makeText(applicationContext,"ZAPISANO", Toast.LENGTH_SHORT).show()

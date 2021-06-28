@@ -35,7 +35,8 @@ class AddNoteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
         //------------------------------------------------------------------------------------------
 
 
-        val TextNoteIntent = Intent(this,TextEditorActivityOld::class.java)
+        //val TextNoteIntent = Intent(this,TextEditorActivityOld::class.java)
+        val TextNoteIntent = Intent(this,TextEditorActivity::class.java)
         button.setOnClickListener(fun (v: View){
             this.startActivity(TextNoteIntent)
             finish()
