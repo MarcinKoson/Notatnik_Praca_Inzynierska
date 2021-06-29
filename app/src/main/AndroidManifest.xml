@@ -32,6 +32,9 @@
             />
         <activity android:name=".activity.SettingsActivity"
             android:noHistory="false"/>
+        <activity android:name=".activity.ImageNoteActivity"
+            android:noHistory="false"/>
+
         <activity android:name=".activity.VoiceToTextActivity"
             />
         <activity android:name=".activity.NoteViewerActivity"
@@ -53,6 +56,11 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
         </activity>
-    </application>
 
+
+    </application>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION"/>
 </manifest>

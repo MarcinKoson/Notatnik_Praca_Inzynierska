@@ -38,7 +38,7 @@ import kotlinx.android.synthetic.main.activity_text_editor_new.toolbar
 class TextEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var drawer_layout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer
-
+//todo do sth with exitstInDB booleans
     var dataExistInDB:Boolean = false
     var noteExistInDB:Boolean = false
     var dataID:Int = -1
