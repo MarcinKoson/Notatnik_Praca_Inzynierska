@@ -15,7 +15,7 @@ class DebugActivity : AppCompatActivity() {
 
         val intentTest = Intent(this, ImageNoteActivity::class.java)
         intentTest.putExtra("dataID", -1)
-
+        intentTest.putExtra("noteID", -1)
                 testActivity.setOnClickListener(object: View.OnClickListener {
                     override fun onClick(v: View?) {
                        startActivity(intentTest)

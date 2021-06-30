@@ -1,33 +1,37 @@
 package com.thesis.note.activity
 
-import android.R.attr.data
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.net.toFile
-import androidx.core.net.toUri
+import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import com.thesis.note.NavigationDrawer
 import com.thesis.note.R
 import com.thesis.note.database.AppDatabase
+import com.thesis.note.database.NoteType
+import com.thesis.note.database.entity.Data
+import com.thesis.note.database.entity.Note
 import kotlinx.android.synthetic.main.activity_image_note.*
 import kotlinx.android.synthetic.main.template_empty_layout.navigationView
 import kotlinx.android.synthetic.main.template_empty_layout.toolbar
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.io.File
+import java.text.SimpleDateFormat
 
 //TODO
 class ImageNoteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -95,9 +99,9 @@ class ImageNoteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
         //save button
         saveButton.setOnClickListener {
-            if(dataID == -1){
+            if(dataID == -1) {
                 //create data,copy to storage
-           //     Environment.getExternalStorageDirectory() + File.separator + "myApp" + File.separator
+                //     Environment.getExternalStorageDirectory() + File.separator + "myApp" + File.separator
                 val sth = activityContext.applicationContext.getExternalFilesDir(null)
 
                 //File(sth, "testF").mkdir()
@@ -106,24 +110,72 @@ class ImageNoteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                 nUri = nUri?.drop(6)
                 val imageFile = java.io.File(nUri)
 
-                debugImageNote.text =sth?.path
-               //val toF = imageUri?.toFile()
+                debugImageNote.text = sth?.path
+                //val toF = imageUri?.toFile()
 
-               imageFile?.copyTo(sth!!,true)
-                Toast.makeText(applicationContext,"ZAPISANO", Toast.LENGTH_SHORT).show()
+                val permission = ActivityCompat.checkSelfPermission(
+                    activityContext,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                );
+
+                val PERMISSIONS_STORAGE = arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
+                if (permission != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(
+                        activityContext,
+                        PERMISSIONS_STORAGE,
+                        1
+                    );
+                }
+
+                val newFile = imageFile?.copyTo(sth!!, true)
+                val currenttime = SimpleDateFormat("yyyy.MM.dd-HH:mm:ss")
 
 
 
-                if(noteID == -1){
-                    //create note, open note
+                newFile.renameTo(File(sth,"image"+currenttime.toPattern()))
+
+                //db.dataDao().insertAll(Data(0,))
+                //create data
+
+
+
+
+
+                if (noteID == -1) {
+                    //create new note , create new data, open note
+                   GlobalScope.launch {
+                       val newNote =
+                           db.noteDao().insertAll(Note(0, "", null, null, false, null, null, null))
+
+                       val newData = db.dataDao().insertAll(
+                           Data(
+                               0,
+                               newNote[0].toInt(),
+                               NoteType.Photo,
+                               newFile.path,
+                               null
+                           )
+                       )
+
+                       val note = db.noteDao().getNoteById(newNote[0].toInt())
+                       note.MainData = newData[0].toInt()
+                       db.noteDao().updateTodo(note)
+                   }
+                    //TODO open note
                 }
                 else{
-                    //save data
+                    GlobalScope.launch {
+                    val newData = db.dataDao().insertAll(Data(0,noteID,NoteType.Photo,newFile.path,null))}
                 }
             }
             else{
                 //update image
+            //TODO update image
             }
+            Toast.makeText(applicationContext, "ZAPISANO", Toast.LENGTH_SHORT).show()
         }
     }
 
