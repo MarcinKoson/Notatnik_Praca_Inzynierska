@@ -20,12 +20,13 @@ import kotlinx.android.synthetic.main.activity_list.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import com.thesis.note.R
-import com.thesis.note.recycler_view_adapters.RecyclerViewAdapter
+import com.thesis.note.recycler_view_adapters.NoteListAdapter
+
 
 //TODO
 
 //TODO change layout manager to FlexboxLayoutManager
-class ListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnNoteListener {
+class ListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, NoteListAdapter.OnNoteClickListener {
     lateinit var drawer_layout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer
 
@@ -61,7 +62,7 @@ class ListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             //TODO change adapter to support multiple note types
             viewManager = LinearLayoutManager(contextThis)
-            viewAdapter = RecyclerViewAdapter(listOfNotes,listOfData,contextThis)
+            viewAdapter = NoteListAdapter(listOfNotes,listOfData,contextThis)
 
             recyclerView = findViewById<RecyclerView>(R.id.notes_recycler_view).apply {
                 setHasFixedSize(true)
@@ -114,7 +115,7 @@ class ListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             //listOfNotes = db.noteDao().getAll()
             listOfNotesUpdate()
             viewAdapter =
-                RecyclerViewAdapter(listOfNotes, listOfData,contextThis as OnNoteListener)
+                NoteListAdapter(listOfNotes, listOfData,contextThis)
             runOnUiThread {
                 recyclerView.setAdapter(viewAdapter)
                 viewAdapter.notifyDataSetChanged()
