@@ -23,6 +23,8 @@ import com.thesis.note.R
 import com.thesis.note.recycler_view_adapters.RecyclerViewAdapter
 
 //TODO
+
+//TODO change layout manager to FlexboxLayoutManager
 class ListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnNoteListener {
     lateinit var drawer_layout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer

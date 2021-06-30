@@ -141,9 +141,6 @@ class ImageNoteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                 //create data
 
 
-
-
-
                 if (noteID == -1) {
                     //create new note , create new data, open note
                    GlobalScope.launch {

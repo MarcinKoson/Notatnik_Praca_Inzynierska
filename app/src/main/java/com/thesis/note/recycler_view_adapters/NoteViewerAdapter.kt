@@ -1,5 +1,6 @@
 package com.thesis.note.recycler_view_adapters
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.thesis.note.R
 import com.thesis.note.database.entity.Data
+import kotlinx.android.synthetic.main.note_viewer_recycler_view_image_layout.view.*
 import kotlinx.android.synthetic.main.recycler_view_layout.view.*
 //TODO
 class NoteViewerAdapter (private var dataSet:List<Data>, onNoteListener: OnNoteListener) :
@@ -52,6 +54,10 @@ class NoteViewerAdapter (private var dataSet:List<Data>, onNoteListener: OnNoteL
             1 -> {
 
             }
+            2 -> {
+                val textView = LayoutInflater.from(parent.context).inflate(R.layout.note_viewer_recycler_view_image_layout, parent, false) as ConstraintLayout
+                return TextViewHolder(textView,mOnNoteListener)
+            }
         }
         return error("ERROR: NoteViewerAdapter - viewType not found")
     }
@@ -64,6 +70,11 @@ class NoteViewerAdapter (private var dataSet:List<Data>, onNoteListener: OnNoteL
            }
            1 -> {
 
+           }
+           2 ->{
+               val viewHolder0: TextViewHolder = holder as TextViewHolder
+               val imageUri = Uri.parse(dataSet[position].Content)
+               viewHolder0.objectLayout.imageView2!!.setImageURI(imageUri)
            }
        }
     }
