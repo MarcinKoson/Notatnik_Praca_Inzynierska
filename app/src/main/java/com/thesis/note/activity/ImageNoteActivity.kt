@@ -32,6 +32,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.File
 import java.text.SimpleDateFormat
+import java.util.*
 
 //TODO
 class ImageNoteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -91,21 +92,21 @@ class ImageNoteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             }
             else{
                 //load image from storage
+                    GlobalScope.launch {
                 val data = db.dataDao().getDataById(noteID)
                 imageUri = Uri.parse(data.Content)
                 imageView!!.setImageURI(imageUri)
+                    }
             }
         }
 
         //save button
+        //TODO cleanup
         saveButton.setOnClickListener {
             if(dataID == -1) {
                 //create data,copy to storage
                 //     Environment.getExternalStorageDirectory() + File.separator + "myApp" + File.separator
                 val sth = activityContext.applicationContext.getExternalFilesDir(null)
-
-                //File(sth, "testF").mkdir()
-
                 var nUri = imageUri?.path
                 nUri = nUri?.drop(6)
                 val imageFile = java.io.File(nUri)
@@ -130,12 +131,17 @@ class ImageNoteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                     );
                 }
 
-                val newFile = imageFile?.copyTo(sth!!, true)
                 val currenttime = SimpleDateFormat("yyyy.MM.dd-HH:mm:ss")
+                val fileNameDate = "/image"+currenttime.format(Date())
+                val fileNameToCopy = File(sth,fileNameDate)
+                fileNameToCopy.createNewFile()
+                debugImageNote.text = fileNameToCopy.path
+                val newFile = imageFile?.copyTo(fileNameToCopy, true)
 
+             //   val newFile = imageFile?.copyTo(sth!!, true)
+             //   val currenttime = SimpleDateFormat("yyyy.MM.dd-HH:mm:ss")
 
-
-                newFile.renameTo(File(sth,"image"+currenttime.toPattern()))
+              //  newFile.renameTo(File(sth,"image"+currenttime.toPattern()))
 
                 //db.dataDao().insertAll(Data(0,))
                 //create data
@@ -170,9 +176,48 @@ class ImageNoteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             }
             else{
                 //update image
-            //TODO update image
+                val sth = activityContext.applicationContext.getExternalFilesDir(null)
+                var nUri = imageUri?.path
+                nUri = nUri?.drop(6)
+                val imageFile = java.io.File(nUri)
+
+                debugImageNote.text = sth?.path
+                //val toF = imageUri?.toFile()
+
+                val permission = ActivityCompat.checkSelfPermission(
+                    activityContext,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                );
+
+                val PERMISSIONS_STORAGE = arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
+                if (permission != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(
+                        activityContext,
+                        PERMISSIONS_STORAGE,
+                        1
+                    );
+                }
+
+                val currenttime = SimpleDateFormat("yyyy.MM.dd-HH:mm:ss")
+                val fileNameDate = "/image"+currenttime.format(Date())
+                val fileNameToCopy = File(sth,fileNameDate)
+                fileNameToCopy.createNewFile()
+                debugImageNote.text = fileNameToCopy.path
+                val newFile = imageFile?.copyTo(fileNameToCopy, true)
+
+                GlobalScope.launch {
+                    val dataUpdate = db.dataDao().getDataById(dataID)
+                    dataUpdate.Content = newFile.path
+                    db.dataDao().updateTodo(dataUpdate)
+                }
+
+
             }
             Toast.makeText(applicationContext, "ZAPISANO", Toast.LENGTH_SHORT).show()
+            finish()
         }
     }
 

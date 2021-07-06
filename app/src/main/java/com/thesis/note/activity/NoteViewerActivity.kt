@@ -31,6 +31,7 @@ import kotlinx.android.synthetic.main.template_empty_layout.navigationView
 import kotlinx.android.synthetic.main.template_empty_layout.toolbar
 
 import com.thesis.note.database.AppDatabase
+import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.*
 import com.thesis.note.recycler_view_adapters.NoteViewerAdapter
 import com.thesis.note.recycler_view_adapters.TagListAdapter
@@ -230,11 +231,17 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
 
         when(viewAdapter.getItemViewType(position)){
             //NoteType.Text
-            0 -> {
+            NoteType.Text.id  -> {
                 val textEditorActivityIntent = Intent(this, TextEditorActivity::class.java)
                 textEditorActivityIntent.putExtra("noteID",noteID)
                 textEditorActivityIntent.putExtra("dataID",dataList[position].IdData)
                 this.startActivity(textEditorActivityIntent)
+            }
+            NoteType.Photo.id -> {
+                val ImageNoteIntent = Intent(this, ImageNoteActivity::class.java)
+                ImageNoteIntent.putExtra("dataID", dataList[position].IdData)
+                ImageNoteIntent.putExtra("noteID", noteID)
+                startActivity(ImageNoteIntent)
             }
             else -> {
                 Toast.makeText(applicationContext,"ERROR:NoteViewerActivity - cannot open data", Toast.LENGTH_SHORT).show()
