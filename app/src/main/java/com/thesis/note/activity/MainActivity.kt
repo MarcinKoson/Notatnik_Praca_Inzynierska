@@ -13,6 +13,7 @@ import com.thesis.note.NavigationDrawer
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.thesis.note.recycler_view_adapters.RecyclerViewAdapter
@@ -20,9 +21,18 @@ import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
 import com.thesis.note.R
+import com.thesis.note.SearchValuesS
+import com.thesis.note.recycler_view_adapters.NoteListAdapter
+import kotlinx.android.synthetic.main.activity_list.*
+import kotlinx.android.synthetic.main.activity_main.addButton
+import kotlinx.android.synthetic.main.activity_main.navigationView
+import kotlinx.android.synthetic.main.activity_main.toolbar
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+
 //TODO
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener ,
-    RecyclerViewAdapter.OnNoteListener {
+    NoteListAdapter.OnNoteClickListener {
     lateinit var drawer_layout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer
 
@@ -31,7 +41,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
-    private lateinit var contextThis: Context
+    private  val contextThis = this
     private lateinit var listOfNotes: List<Note>
     private lateinit var listOfData: List<Data>
 
@@ -49,28 +59,29 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawerToggle.syncState()
         //------------------------------------------------------------------------------------------
         db = AppDatabase(this)
-        //todo - untested bugged code
-        /*
+        //TODO remove temp list
+        //Database
+        db = AppDatabase.invoke(this)
 
-        val contextThisX = this
-        contextThis = this
         GlobalScope.launch {
-            listOfNotes = db.noteDao().getFavorite(true)
-            listOfData = db.dataDao().getAll()
-
+            listOfNotesUpdate()
             viewManager = LinearLayoutManager(contextThis)
-            viewAdapter = RecyclerViewAdapter(listOfNotes,listOfData,contextThisX)
-
+            viewAdapter = NoteListAdapter(listOfNotes,listOfData,contextThis as NoteListAdapter.OnNoteClickListener)
             recyclerView = findViewById<RecyclerView>(R.id.notes_recycler_view).apply {
-
                 setHasFixedSize(true)
                 layoutManager = viewManager
                 adapter = viewAdapter
             }
-        }
-*/
-        //ADD button
 
+            //If no notes show message
+            if(listOfNotes.isEmpty()){
+                listActivityMessage2.visibility = android.view.View.VISIBLE
+            }
+        }
+
+
+
+        //ADD button
         addButton.setOnClickListener(object: View.OnClickListener{
             override fun onClick(v: View?) {
                 val intent = Intent(v?.context,AddNoteActivity::class.java)
@@ -82,24 +93,29 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onRestart() {
         super.onRestart()
-        /*
-        GlobalScope.launch {
-            listOfNotes = db.noteDao().getFavorite(true)
-            viewAdapter =
-                RecyclerViewAdapter(listOfNotes, listOfData,contextThis as RecyclerViewAdapter.OnNoteListener)
-            runOnUiThread {
-            recyclerView.setAdapter(viewAdapter)
-            viewAdapter.notifyDataSetChanged()
-        }
 
-    }
-       // viewAdapter.myDa
-       */
+        GlobalScope.launch {
+            //listOfNotes = db.noteDao().getAll()
+            listOfNotesUpdate()
+            viewAdapter =
+                NoteListAdapter(listOfNotes, listOfData, contextThis)
+            runOnUiThread {
+                recyclerView.setAdapter(viewAdapter)
+                viewAdapter.notifyDataSetChanged()
+            }
+
+            runOnUiThread {
+                //If no notes show message
+                if (listOfNotes.isEmpty()) {
+                    listActivityMessage2.visibility = View.VISIBLE
+                } else
+                    listActivityMessage2.visibility = View.GONE
+            }
+        }
 
     }
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
-
         return navigationDrawer.onNavigationItemSelected(menuItem,this)
     }
 
@@ -108,13 +124,56 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             drawer_layout.closeDrawer(GravityCompat.START)
         } else {
             super.onBackPressed()
-
         }
     }
 
     override fun onNoteClick(position: Int) {
 
+        val noteViewerActivityIntent = Intent(this, NoteViewerActivity::class.java)
+        noteViewerActivityIntent.putExtra("noteID",listOfNotes[position].IdNote);
+        this.startActivity(noteViewerActivityIntent)
+
     }
+
+    @Deprecated("only for temporary list")
+    fun listOfNotesUpdate(){
+        var favorite:MutableList<Boolean> = mutableListOf()
+        if(SearchValuesS.favorite)
+        {
+
+            favorite.add(true)
+        }
+        else{
+
+            favorite.add(true)
+            favorite.add(false)
+        }
+        var nameReg = SearchValuesS.name;
+        if(nameReg==null || nameReg==""){
+            nameReg = "%"
+        }
+
+        var groups:MutableList<Int?> = mutableListOf()
+        val groupsList = db.groupDao().getAll()
+        if(SearchValuesS.group == 0 || SearchValuesS.group ==null){
+            // groups = groupsList.map { it.IdGroup }.toMutableList();
+            //groups.add(null);
+            listOfNotes = db.noteDao().getFiltered(favorite,nameReg.toString())
+        }
+        else{
+            val groups:MutableList<Int?> = mutableListOf()
+            //groups.add(null);
+            var findGroupID:Int = SearchValuesS.group!!
+            groups.add(groupsList[findGroupID-1].IdGroup)
+            listOfNotes = db.noteDao().getFilteredGroup(groups,favorite,nameReg.toString())
+        }
+
+        //--------------Data load--------------
+        listOfData = db.dataDao().getAll()
+
+    }
+
+
 
 }
 

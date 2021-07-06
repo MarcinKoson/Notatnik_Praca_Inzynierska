@@ -75,13 +75,13 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName"
+                android:hint="tutaj wpisz nazwę notatki"
 
+                android:inputType="textPersonName"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
 
-                />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <View
                 android:layout_width="match_parent"

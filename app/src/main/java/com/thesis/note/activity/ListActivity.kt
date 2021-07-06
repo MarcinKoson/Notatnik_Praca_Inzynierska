@@ -56,17 +56,18 @@ class ListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         db = AppDatabase.invoke(this)
 
         GlobalScope.launch {
-
             listOfNotesUpdate()
-
-            //TODO change adapter to support multiple note types
             viewManager = LinearLayoutManager(contextThis)
             viewAdapter = NoteListAdapter(listOfNotes,listOfData,contextThis)
-
             recyclerView = findViewById<RecyclerView>(R.id.notes_recycler_view).apply {
                 setHasFixedSize(true)
                 layoutManager = viewManager
                 adapter = viewAdapter
+            }
+
+            //If no notes show message
+            if(listOfNotes.isEmpty()){
+                listActivityMessage.visibility = android.view.View.VISIBLE
             }
         }
 
@@ -114,10 +115,18 @@ class ListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             //listOfNotes = db.noteDao().getAll()
             listOfNotesUpdate()
             viewAdapter =
-                NoteListAdapter(listOfNotes, listOfData,contextThis)
+                NoteListAdapter(listOfNotes, listOfData, contextThis)
             runOnUiThread {
                 recyclerView.setAdapter(viewAdapter)
                 viewAdapter.notifyDataSetChanged()
+            }
+
+            runOnUiThread {
+                //If no notes show message
+                if (listOfNotes.isEmpty()) {
+                    listActivityMessage.visibility = View.VISIBLE
+                } else
+                    listActivityMessage.visibility = View.GONE
             }
         }
     }
