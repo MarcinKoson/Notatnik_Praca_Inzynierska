@@ -28,11 +28,11 @@ import com.thesis.note.database.entity.Note
 import kotlinx.android.synthetic.main.activity_image_note.*
 import kotlinx.android.synthetic.main.template_empty_layout.navigationView
 import kotlinx.android.synthetic.main.template_empty_layout.toolbar
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.coroutines.CoroutineContext
 
 //TODO
 class ImageNoteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -66,20 +66,24 @@ class ImageNoteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         navigationDrawer = NavigationDrawer(drawerLayout)
         navigationView.setNavigationItemSelectedListener(this)
 
-        val drawerToggle= ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.abdt,R.string.abdt)
+        val drawerToggle =
+            ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.abdt, R.string.abdt)
         drawerLayout.addDrawerListener(drawerToggle)
         drawerToggle.isDrawerIndicatorEnabled = true
         drawerToggle.syncState()
         //------------------------------------------------------------------------------------------
         db = AppDatabase.invoke(this)
         imageView = findViewById<View>(R.id.imageView) as ImageView
-
-        //findViewById<View>(R.id.openGalleryButton).
+        //TODO ask for permissions earlier
+        //TODO error when saving without permissions
+        askForPermisions()
+        //set listener for open gallery button
         openGalleryButton.
         setOnClickListener { startForResult.launch(Intent(
             Intent.ACTION_PICK,
             MediaStore.Images.Media.INTERNAL_CONTENT_URI
         ))}
+
 
         val parameters = intent.extras
 
@@ -88,7 +92,8 @@ class ImageNoteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             noteID = parameters.getInt("noteID")
             if(dataID == -1){
                 //open gallery and load image
-                startForResult.launch(Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI))
+                //TODO error with asking for permissions
+                //startForResult.launch(Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI))
             }
             else{
                 //load image from storage
@@ -109,27 +114,10 @@ class ImageNoteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                 val sth = activityContext.applicationContext.getExternalFilesDir(null)
                 var nUri = imageUri?.path
                 nUri = nUri?.drop(6)
-                val imageFile = java.io.File(nUri)
+                val imageFile = File(nUri)
 
                 debugImageNote.text = sth?.path
                 //val toF = imageUri?.toFile()
-
-                val permission = ActivityCompat.checkSelfPermission(
-                    activityContext,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                );
-
-                val PERMISSIONS_STORAGE = arrayOf(
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                )
-                if (permission != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(
-                        activityContext,
-                        PERMISSIONS_STORAGE,
-                        1
-                    );
-                }
 
                 val currenttime = SimpleDateFormat("yyyy.MM.dd-HH:mm:ss")
                 val fileNameDate = "/image"+currenttime.format(Date())
@@ -179,27 +167,11 @@ class ImageNoteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                 val sth = activityContext.applicationContext.getExternalFilesDir(null)
                 var nUri = imageUri?.path
                 nUri = nUri?.drop(6)
-                val imageFile = java.io.File(nUri)
+                val imageFile = File(nUri)
 
                 debugImageNote.text = sth?.path
                 //val toF = imageUri?.toFile()
 
-                val permission = ActivityCompat.checkSelfPermission(
-                    activityContext,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                );
-
-                val PERMISSIONS_STORAGE = arrayOf(
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                )
-                if (permission != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(
-                        activityContext,
-                        PERMISSIONS_STORAGE,
-                        1
-                    );
-                }
 
                 val currenttime = SimpleDateFormat("yyyy.MM.dd-HH:mm:ss")
                 val fileNameDate = "/image"+currenttime.format(Date())
@@ -232,5 +204,25 @@ class ImageNoteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         } else {
             super.onBackPressed()
         }
+    }
+
+    private fun askForPermisions() {
+
+            val permission = ActivityCompat.checkSelfPermission(
+                activityContext,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            )
+
+            val PERMISSIONS_STORAGE = arrayOf(
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            )
+            if (permission != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(
+                    activityContext,
+                    PERMISSIONS_STORAGE,
+                    1
+                )
+            }
     }
 }
