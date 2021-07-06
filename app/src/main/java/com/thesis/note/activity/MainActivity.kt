@@ -22,6 +22,8 @@ import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
 import com.thesis.note.R
 import com.thesis.note.SearchValuesS
+import com.thesis.note.database.entity.Group
+import com.thesis.note.database.entity.Tag
 import com.thesis.note.recycler_view_adapters.NoteListAdapter
 import kotlinx.android.synthetic.main.activity_list.*
 import kotlinx.android.synthetic.main.activity_main.addButton
@@ -58,6 +60,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawerToggle.isDrawerIndicatorEnabled = true
         drawerToggle.syncState()
         //------------------------------------------------------------------------------------------
+        checkFirstStart()
         db = AppDatabase(this)
         //TODO remove temp list
         //Database
@@ -89,6 +92,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         })
 
+    }
+
+    private fun checkFirstStart() {
+        val sharedPrefs = getSharedPreferences("appSharedPrefs",MODE_PRIVATE)
+        val notFirstStart = sharedPrefs.getBoolean("notFirstStart", false)
+        if(!notFirstStart){
+            GlobalScope.launch {
+                val db = AppDatabase(contextThis)
+                db.groupDao().insertAll(Group(0,"Grupa 1",null))
+                db.groupDao().insertAll(Group(0,"Grupa 2",null))
+                db.groupDao().insertAll(Group(0,"Grupa 3",null))
+                db.tagDao().insertAll(Tag(0,"Tag 1"))
+                db.tagDao().insertAll(Tag(0,"Tag 2"))
+                db.tagDao().insertAll(Tag(0,"Tag 3"))
+            }
+            sharedPrefs.edit().putBoolean("notFirstStart", true).apply()
+        }
     }
 
     override fun onRestart() {
