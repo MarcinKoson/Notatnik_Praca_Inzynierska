@@ -26,10 +26,15 @@
             />
         <activity android:name=".activity.GroupsEditorActivity"
             />
+        <activity android:name=".activity.TagEditorActivity"
+            />
         <activity android:name="TestActivity"
             />
         <activity android:name=".activity.SettingsActivity"
             android:noHistory="false"/>
+        <activity android:name=".activity.ImageNoteActivity"
+            android:noHistory="false"/>
+
         <activity android:name=".activity.VoiceToTextActivity"
             />
         <activity android:name=".activity.NoteViewerActivity"
@@ -51,6 +56,9 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
         </activity>
-    </application>
 
+
+    </application>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 </manifest>

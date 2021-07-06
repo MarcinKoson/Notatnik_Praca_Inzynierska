@@ -1,19 +1,19 @@
-package com.thesis.note
+package com.thesis.note.recycler_view_adapters
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.thesis.note.R
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
-import com.thesis.note.R
 import kotlinx.android.synthetic.main.recycler_view_layout.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-
+//TODO
 class RecyclerViewAdapter (private var noteSet: List<Note>, private var dataSet:List<Data>, onNoteListener: OnNoteListener) :
     RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder>() {
 
@@ -34,7 +34,7 @@ class RecyclerViewAdapter (private var noteSet: List<Note>, private var dataSet:
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup,viewType: Int): RecyclerViewAdapter.MyViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup,viewType: Int): MyViewHolder {
         // create a new view
         val textView = LayoutInflater.from(parent.context)
             .inflate(R.layout.recycler_view_layout, parent, false) as ConstraintLayout
@@ -70,7 +70,7 @@ class RecyclerViewAdapter (private var noteSet: List<Note>, private var dataSet:
         if(noteSet[position].GroupID !=null)
             GlobalScope.launch {
                 val groupName = AppDatabase(holder.objectLayout.context).groupDao().getId(noteSet[position].GroupID!!).Name
-                holder.objectLayout.groupName.text = groupName
+                holder.objectLayout.tagName.text = groupName
             }
 
 

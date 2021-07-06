@@ -1,21 +1,23 @@
-package com.thesis.note
+package com.thesis.note.recycler_view_adapters
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.thesis.note.R
 import com.thesis.note.database.entity.Tag
 import com.thesis.note.database.entity.TagOfNote
 import kotlinx.android.synthetic.main.recycler_view_tag_list.view.*
+//TODO
 
 class TagListAdapter (private val myDataset: List<TagOfNote>, private val tagList:List<Tag>, onNoteListener: OnNoteListener) :
     RecyclerView.Adapter<TagListAdapter.MyViewHolder>() {
 
     val mOnNoteListener = onNoteListener;
 
-    class MyViewHolder(val textView: TextView, val listener: OnNoteListener) : RecyclerView.ViewHolder(textView), View.OnClickListener{
+    class MyViewHolder(val textView: ConstraintLayout, val listener: OnNoteListener) : RecyclerView.ViewHolder(textView), View.OnClickListener{
         init{
             textView.setOnClickListener(this)
         }
@@ -28,10 +30,10 @@ class TagListAdapter (private val myDataset: List<TagOfNote>, private val tagLis
     }
 
     override fun onCreateViewHolder(parent: ViewGroup,
-                                    viewType: Int): TagListAdapter.MyViewHolder {
+                                    viewType: Int): MyViewHolder {
         // create a new view
         val textView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.recycler_view_tag_list, parent, false) as TextView
+            .inflate(R.layout.recycler_view_tag_list, parent, false) as ConstraintLayout
         // set the view's size, margins, paddings and layout parameters
         //...
         return MyViewHolder(textView,mOnNoteListener)

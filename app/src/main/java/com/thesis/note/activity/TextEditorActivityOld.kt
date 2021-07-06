@@ -26,6 +26,7 @@ import com.thesis.note.database.entity.Group
 import com.thesis.note.R
 import com.thesis.note.database.entity.Data
 //TODO
+@Deprecated(message = "use TextEditorActivity insted")
 class TextEditorActivityOld : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var drawer_layout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer

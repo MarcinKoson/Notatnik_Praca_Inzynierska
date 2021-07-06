@@ -1,4 +1,4 @@
-package com.thesis.note
+package com.thesis.note.recycler_view_adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.thesis.note.R
-
+//TODO
 class RecyclerViewAdapter2 (private val myDataset: Array<String>, onNoteListener: OnNoteListener) :
     RecyclerView.Adapter<RecyclerViewAdapter2.MyViewHolder>() {
 
@@ -28,7 +28,7 @@ class RecyclerViewAdapter2 (private val myDataset: Array<String>, onNoteListener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup,
-                                    viewType: Int): RecyclerViewAdapter2.MyViewHolder {
+                                    viewType: Int): MyViewHolder {
         // create a new view
         val textView = LayoutInflater.from(parent.context)
             .inflate(R.layout.my_text_view, parent, false) as TextView

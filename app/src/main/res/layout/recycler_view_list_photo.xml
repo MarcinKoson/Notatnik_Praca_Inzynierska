@@ -2,9 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="100dp">
+    android:layout_height="150dp"
+    android:orientation="vertical">
 
 
     <TextView
@@ -25,16 +25,6 @@
         android:layout_height="2dp"
         android:background="@android:color/darker_gray"
         app:layout_constraintBottom_toBottomOf="parent" />
-
-    <TextView
-        android:id="@+id/noteContent"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="Content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/noteType"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/noteName" />
 
     <CheckBox
         android:id="@+id/favoriteCheckBox"
@@ -61,7 +51,18 @@
         android:text="Bez grupy"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/noteContent"
+        app:layout_constraintStart_toStartOf="@+id/noteType"
         app:layout_constraintTop_toBottomOf="@+id/noteType" />
+
+    <ImageView
+        android:id="@+id/noteContentImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constrainedHeight="true"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toTopOf="@+id/note_rv_line"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/noteName"
+        app:srcCompat="@drawable/frame_transparent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

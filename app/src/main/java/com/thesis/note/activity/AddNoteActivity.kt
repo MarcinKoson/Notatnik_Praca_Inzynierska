@@ -15,6 +15,8 @@ import kotlinx.android.synthetic.main.activity_add_note.*
 import kotlinx.android.synthetic.main.activity_add_note.navigationView
 import kotlinx.android.synthetic.main.activity_add_note.toolbar
 import com.thesis.note.R
+import kotlinx.android.synthetic.main.activity_debug.*
+
 //TODO
 class AddNoteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var drawer_layout: DrawerLayout
@@ -22,9 +24,8 @@ class AddNoteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setSupportActionBar(toolbar)
-        setContentView(R.layout.activity_add_note)      //NAZWA LAYOUTU
-        drawer_layout = add_note_drawer_layout;               //NAZWA DRAWER LAYOUTU
+        setContentView(R.layout.activity_add_note)
+        drawer_layout = add_note_drawer_layout;
         navigationDrawer = NavigationDrawer(drawer_layout)
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -34,13 +35,19 @@ class AddNoteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
         drawerToggle.syncState()
         //------------------------------------------------------------------------------------------
 
+        val TextNoteIntent = Intent(this,TextEditorActivity::class.java)
+        button.setOnClickListener{
+                startActivity(TextNoteIntent)
+                finish()
+            }
 
-        val TextNoteIntent = Intent(this,TextEditorActivityOld::class.java)
-        button.setOnClickListener(fun (v: View){
-            this.startActivity(TextNoteIntent)
+        val ImageNoteIntent = Intent(this, ImageNoteActivity::class.java)
+        ImageNoteIntent.putExtra("dataID", -1)
+        ImageNoteIntent.putExtra("noteID", -1)
+        button4.setOnClickListener {
+            startActivity(ImageNoteIntent)
             finish()
-        })
-
+        }
     }
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {

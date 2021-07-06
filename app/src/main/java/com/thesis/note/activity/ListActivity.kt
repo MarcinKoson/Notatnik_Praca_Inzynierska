@@ -11,7 +11,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.thesis.note.*
-import com.thesis.note.RecyclerViewAdapter.*
+import com.thesis.note.recycler_view_adapters.RecyclerViewAdapter.*
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
@@ -20,9 +20,13 @@ import kotlinx.android.synthetic.main.activity_list.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import com.thesis.note.R
+import com.thesis.note.recycler_view_adapters.NoteListAdapter
+
 
 //TODO
-class ListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, OnNoteListener {
+
+//TODO change layout manager to FlexboxLayoutManager
+class ListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, NoteListAdapter.OnNoteClickListener {
     lateinit var drawer_layout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer
 
@@ -38,9 +42,8 @@ class ListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setSupportActionBar(toolbar)
-        setContentView(R.layout.activity_list)      //NAZWA LAYOUTU
-        drawer_layout = list_layout;               //NAZWA DRAWER LAYOUTU
+        setContentView(R.layout.activity_list)
+        drawer_layout = list_layout;
         navigationDrawer = NavigationDrawer(drawer_layout)
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -53,17 +56,18 @@ class ListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         db = AppDatabase.invoke(this)
 
         GlobalScope.launch {
-
             listOfNotesUpdate()
-
-            //TODO change adapter to support multiple note types
             viewManager = LinearLayoutManager(contextThis)
-            viewAdapter = RecyclerViewAdapter(listOfNotes,listOfData,contextThis)
-
+            viewAdapter = NoteListAdapter(listOfNotes,listOfData,contextThis)
             recyclerView = findViewById<RecyclerView>(R.id.notes_recycler_view).apply {
                 setHasFixedSize(true)
                 layoutManager = viewManager
                 adapter = viewAdapter
+            }
+
+            //If no notes show message
+            if(listOfNotes.isEmpty()){
+                listActivityMessage.visibility = android.view.View.VISIBLE
             }
         }
 
@@ -111,10 +115,18 @@ class ListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             //listOfNotes = db.noteDao().getAll()
             listOfNotesUpdate()
             viewAdapter =
-                RecyclerViewAdapter(listOfNotes, listOfData,contextThis as RecyclerViewAdapter.OnNoteListener)
+                NoteListAdapter(listOfNotes, listOfData, contextThis)
             runOnUiThread {
                 recyclerView.setAdapter(viewAdapter)
                 viewAdapter.notifyDataSetChanged()
+            }
+
+            runOnUiThread {
+                //If no notes show message
+                if (listOfNotes.isEmpty()) {
+                    listActivityMessage.visibility = View.VISIBLE
+                } else
+                    listActivityMessage.visibility = View.GONE
             }
         }
     }
@@ -125,7 +137,7 @@ class ListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val groups:MutableList<Int?> = db.groupDao().getAll().map { it.IdGroup }.toMutableList();
         groups.add(null);
-        //TODO bug not finding notes without group(null)
+
         val favorite:MutableList<Boolean> = mutableListOf();
         favorite.add(true)
         favorite.add(false)
@@ -170,8 +182,6 @@ class ListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             groups.add(groupsList[findGroupID-1].IdGroup)
             listOfNotes = db.noteDao().getFilteredGroup(groups,favorite,nameReg.toString())
         }
-
-
 
         //--------------Data load--------------
         listOfData = db.dataDao().getAll()
