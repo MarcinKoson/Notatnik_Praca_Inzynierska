@@ -1,5 +1,6 @@
 package com.thesis.note.recycler_view_adapters
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +13,12 @@ import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
 
 
-import kotlinx.android.synthetic.main.recycler_view_layout.view.*
+import kotlinx.android.synthetic.main.recycler_view_layout.view.favoriteCheckBox
+import kotlinx.android.synthetic.main.recycler_view_layout.view.noteContent
+import kotlinx.android.synthetic.main.recycler_view_layout.view.noteName
+import kotlinx.android.synthetic.main.recycler_view_layout.view.noteType
+import kotlinx.android.synthetic.main.recycler_view_layout.view.tagName
+import kotlinx.android.synthetic.main.recycler_view_list_photo.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -45,7 +51,7 @@ class NoteListAdapter (private var noteList: List<Note>, private var dataList:Li
             }
             NoteType.Photo.id -> {
                 return NoteListViewHolder(
-                    LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_layout, parent, false) as ConstraintLayout ,
+                    LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_list_photo, parent, false) as ConstraintLayout ,
                     onNoteClickListener)
             }
             else ->{
@@ -93,8 +99,8 @@ class NoteListAdapter (private var noteList: List<Note>, private var dataList:Li
            NoteType.Text.id -> {
                holder.objectLayout.noteContent.text = mainData?.Content
            }
-           NoteType.Photo.id ->{
-               holder.objectLayout.noteContent.text = mainData?.Content
+           NoteType.Photo.id -> {
+               holder.objectLayout.noteContentImage!!.setImageURI(Uri.parse(mainData?.Content))
            }
         }
     }

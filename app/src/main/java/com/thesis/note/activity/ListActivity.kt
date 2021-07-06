@@ -42,9 +42,8 @@ class ListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setSupportActionBar(toolbar)
-        setContentView(R.layout.activity_list)      //NAZWA LAYOUTU
-        drawer_layout = list_layout;               //NAZWA DRAWER LAYOUTU
+        setContentView(R.layout.activity_list)
+        drawer_layout = list_layout;
         navigationDrawer = NavigationDrawer(drawer_layout)
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -129,7 +128,7 @@ class ListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val groups:MutableList<Int?> = db.groupDao().getAll().map { it.IdGroup }.toMutableList();
         groups.add(null);
-        //TODO bug not finding notes without group(null)
+
         val favorite:MutableList<Boolean> = mutableListOf();
         favorite.add(true)
         favorite.add(false)
@@ -174,8 +173,6 @@ class ListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             groups.add(groupsList[findGroupID-1].IdGroup)
             listOfNotes = db.noteDao().getFilteredGroup(groups,favorite,nameReg.toString())
         }
-
-
 
         //--------------Data load--------------
         listOfData = db.dataDao().getAll()
