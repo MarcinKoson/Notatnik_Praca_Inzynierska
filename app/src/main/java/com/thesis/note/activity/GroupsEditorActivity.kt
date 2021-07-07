@@ -42,7 +42,7 @@ class GroupsEditorActivity : AppCompatActivity(), NavigationView.OnNavigationIte
         super.onCreate(savedInstanceState)
         //setSupportActionBar(toolbar)
         setContentView(R.layout.activity_groups_editor)      //NAZWA LAYOUTU
-        drawer_layout = groups_editor_layout;               //NAZWA DRAWER LAYOUTU
+        drawer_layout = activity_groups_editor_layout;               //NAZWA DRAWER LAYOUTU
         navigationDrawer = NavigationDrawer(drawer_layout)
         navigationView.setNavigationItemSelectedListener(this);
 

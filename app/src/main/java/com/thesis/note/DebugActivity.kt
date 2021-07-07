@@ -11,7 +11,7 @@ class DebugActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_debug)
+        setContentView(R.layout.debug_activity)
 
         val intentTest = Intent(this, ImageNoteActivity::class.java)
         intentTest.putExtra("dataID", -1)

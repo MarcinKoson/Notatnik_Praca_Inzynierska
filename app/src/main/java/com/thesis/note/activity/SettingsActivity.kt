@@ -21,7 +21,7 @@ class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-        drawerLayout = settings_drawer_layout
+        drawerLayout = activity_settings_layout
         navigationDrawer = NavigationDrawer(drawerLayout)
         navigationView.setNavigationItemSelectedListener(this)
 

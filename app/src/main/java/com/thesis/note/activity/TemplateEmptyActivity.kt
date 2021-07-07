@@ -9,7 +9,6 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.thesis.note.NavigationDrawer
 
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.template_empty_layout.*
 import kotlinx.android.synthetic.main.template_empty_layout.navigationView
 import kotlinx.android.synthetic.main.template_empty_layout.toolbar
@@ -23,7 +22,7 @@ class TemplateEmptyActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         super.onCreate(savedInstanceState)
         //setSupportActionBar(toolbar)
         setContentView(R.layout.template_empty_layout)      //NAZWA LAYOUTU
-        drawer_layout = template_drawer_layout;             //NAZWA DRAWER LAYOUTU
+        drawer_layout = activity_template_layout;             //NAZWA DRAWER LAYOUTU
         navigationDrawer = NavigationDrawer(drawer_layout)
         navigationView.setNavigationItemSelectedListener(this);
 

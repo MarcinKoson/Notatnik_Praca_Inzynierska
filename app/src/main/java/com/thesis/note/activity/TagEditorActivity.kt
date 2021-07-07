@@ -42,7 +42,7 @@ class TagEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tags_editor)
-        drawerLayout = tags_editor_layout
+        drawerLayout = activity_tags_editor_layout
         navigationDrawer = NavigationDrawer(drawerLayout)
         navigationView.setNavigationItemSelectedListener(this)
 

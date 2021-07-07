@@ -28,6 +28,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
 //TODO
+@Deprecated("old")
 class VoiceToTextActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,View.OnClickListener {
     lateinit var drawer_layout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer
@@ -41,7 +42,7 @@ class VoiceToTextActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         super.onCreate(savedInstanceState)
        // setSupportActionBar(toolbar)
         setContentView(R.layout.activity_voice_to_text)      //NAZWA LAYOUTU
-        drawer_layout = voice_to_text_layout;               //NAZWA DRAWER LAYOUTU
+        drawer_layout = activity_voice_to_text_layout;               //NAZWA DRAWER LAYOUTU
         navigationDrawer = NavigationDrawer(drawer_layout)
         navigationView.setNavigationItemSelectedListener(this);
 

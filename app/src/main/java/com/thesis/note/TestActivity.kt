@@ -9,7 +9,7 @@ class TestActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_test)
+        setContentView(R.layout.test_activity)
 
         button10.setOnClickListener(object: View.OnClickListener {
             override fun onClick(v: View?) {

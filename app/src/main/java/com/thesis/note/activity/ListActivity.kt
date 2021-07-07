@@ -11,7 +11,6 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.thesis.note.*
-import com.thesis.note.recycler_view_adapters.RecyclerViewAdapter.*
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
@@ -43,7 +42,7 @@ class ListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)
-        drawer_layout = list_layout;
+        drawer_layout = activity_list_layout;
         navigationDrawer = NavigationDrawer(drawer_layout)
         navigationView.setNavigationItemSelectedListener(this);
 

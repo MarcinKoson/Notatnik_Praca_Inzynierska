@@ -49,7 +49,7 @@ class TextEditorActivityOld : AppCompatActivity(), NavigationView.OnNavigationIt
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //setSupportActionBar(toolbar)
-        setContentView(R.layout.activity_text_editor)
+        setContentView(R.layout.activity_text_editor_old)
         drawer_layout = activity_text_editor_layout;
         navigationDrawer = NavigationDrawer(drawer_layout)
         navigationView.setNavigationItemSelectedListener(this);

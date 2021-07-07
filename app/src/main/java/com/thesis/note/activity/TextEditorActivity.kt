@@ -28,12 +28,6 @@ import com.thesis.note.R
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
 import kotlinx.android.synthetic.main.activity_text_editor.*
-import kotlinx.android.synthetic.main.activity_text_editor_new.*
-import kotlinx.android.synthetic.main.activity_text_editor_new.deleteButton
-import kotlinx.android.synthetic.main.activity_text_editor_new.navigationView
-import kotlinx.android.synthetic.main.activity_text_editor_new.saveButton
-import kotlinx.android.synthetic.main.activity_text_editor_new.textField
-import kotlinx.android.synthetic.main.activity_text_editor_new.toolbar
 
 class TextEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var drawer_layout: DrawerLayout
@@ -54,8 +48,8 @@ class TextEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_text_editor_new)
-        drawer_layout = activity_text_editor_new_layout
+        setContentView(R.layout.activity_text_editor)
+        drawer_layout = activity_text_editor_layout
         navigationDrawer = NavigationDrawer(drawer_layout)
         navigationView.setNavigationItemSelectedListener(this)
 

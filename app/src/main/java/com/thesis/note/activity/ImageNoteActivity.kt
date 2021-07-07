@@ -32,7 +32,6 @@ import kotlinx.coroutines.*
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.coroutines.CoroutineContext
 
 //TODO
 class ImageNoteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -62,7 +61,7 @@ class ImageNoteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image_note)
-        drawerLayout = image_note_drawer_layout
+        drawerLayout = activity_image_note_layout
         navigationDrawer = NavigationDrawer(drawerLayout)
         navigationView.setNavigationItemSelectedListener(this)
 

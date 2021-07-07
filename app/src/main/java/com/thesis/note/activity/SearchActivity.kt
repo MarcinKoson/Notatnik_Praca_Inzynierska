@@ -1,6 +1,5 @@
 package com.thesis.note.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -15,11 +14,9 @@ import com.thesis.note.NavigationDrawer
 import com.thesis.note.SearchValues
 import com.thesis.note.SearchValuesS
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.activity_list.*
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.activity_search.navigationView
 import kotlinx.android.synthetic.main.activity_search.toolbar
-import kotlinx.android.synthetic.main.activity_text_editor.*
 import com.thesis.note.R
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.entity.Group
@@ -39,7 +36,7 @@ class SearchActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
         super.onCreate(savedInstanceState)
         //setSupportActionBar(toolbar)
         setContentView(R.layout.activity_search)      //NAZWA LAYOUTU
-        drawer_layout = search_drawer_layout;               //NAZWA DRAWER LAYOUTU
+        drawer_layout = activity_search_layout;               //NAZWA DRAWER LAYOUTU
         navigationDrawer = NavigationDrawer(drawer_layout)
         navigationView.setNavigationItemSelectedListener(this);
 

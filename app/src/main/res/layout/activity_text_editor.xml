@@ -14,13 +14,12 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
+            app:title="Edycja notatki"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:layout_constraintTop_toTopOf="parent"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:title="Edycja notatki"
-            tools:visibility="visible">
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
 
             <ImageButton
@@ -32,13 +31,12 @@
                 android:visibility="gone"
                 tools:layout_editor_absoluteX="371dp"
                 tools:layout_editor_absoluteY="8dp" />
-
-            <ImageButton
-                android:id="@+id/saveButton"
-                android:layout_width="wrap_content"
+            <ImageButton android:background="@drawable/ic_save_black_24dp"
                 android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
                 android:layout_gravity="end"
-                android:background="@drawable/ic_save_black_24dp" />
+                android:id="@+id/saveButton"
+                />
 
             <ImageButton
                 android:id="@+id/shareButton"
@@ -53,41 +51,20 @@
 
         </androidx.appcompat.widget.Toolbar>
 
-        <Spinner
-            android:id="@+id/groupSpinnerOld"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nameNote"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
             tools:layout_editor_absoluteX="124dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textField"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="top"
-                android:hint="pisz tutaj" />
+                android:gravity="top" />
         </com.google.android.material.textfield.TextInputLayout>
-
-        <EditText
-            android:id="@+id/nameNote"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="wpisz nazwę notatki"
-            android:inputType="textPersonName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/groupSpinnerOld" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linearLayout"
@@ -105,7 +82,7 @@
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:visibility="invisible"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -114,7 +91,7 @@
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:visibility="invisible"
                 app:layout_constraintStart_toEndOf="@+id/s1"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -123,7 +100,7 @@
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:visibility="invisible"
                 app:layout_constraintStart_toEndOf="@+id/s4"
                 app:layout_constraintTop_toBottomOf="@+id/s2" />
 
@@ -132,7 +109,7 @@
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:visibility="invisible"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/s2" />
 
@@ -143,7 +120,7 @@
                 android:layout_weight="1"
                 android:text="B"
                 android:textStyle="bold"
-                android:visibility="gone"
+                android:visibility="invisible"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/s4" />
 
@@ -154,7 +131,7 @@
                 android:layout_weight="1"
                 android:text="I"
                 android:textStyle="italic"
-                android:visibility="gone"
+                android:visibility="invisible"
                 app:layout_constraintStart_toEndOf="@+id/button6"
                 app:layout_constraintTop_toBottomOf="@+id/s4" />
 
@@ -164,7 +141,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="U"
-                android:visibility="gone"
+                android:visibility="invisible"
                 app:layout_constraintStart_toEndOf="@+id/button7"
                 app:layout_constraintTop_toTopOf="@+id/button6" />
 
