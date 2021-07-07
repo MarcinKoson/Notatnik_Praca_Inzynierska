@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.thesis.note.NavigationDrawer
 
-import com.thesis.note.recycler_view_adapters.RecyclerViewAdapterGroups
+import com.thesis.note.recycler_view_adapters.GroupsEditorAdapter
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.entity.Group
 import com.google.android.material.navigation.NavigationView
@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 import com.thesis.note.R
 //TODO
 class GroupsEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
-    RecyclerViewAdapterGroups.OnNoteListener {
+    GroupsEditorAdapter.OnNoteListener {
 
     lateinit var drawer_layout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer
@@ -56,7 +56,7 @@ class GroupsEditorActivity : AppCompatActivity(), NavigationView.OnNavigationIte
             listOfGroupsUpdate()
 
             viewManager = LinearLayoutManager(contextThis)
-            viewAdapter = RecyclerViewAdapterGroups(listOfGroups,contextThis, contextThis)
+            viewAdapter = GroupsEditorAdapter(listOfGroups,contextThis, contextThis)
 
             recyclerView = findViewById<RecyclerView>(R.id.groups_recycler_view).apply {
                 setHasFixedSize(true)
@@ -107,7 +107,7 @@ class GroupsEditorActivity : AppCompatActivity(), NavigationView.OnNavigationIte
             //listOfNotes = db.noteDao().getAll()
             listOfGroupsUpdate()
             viewAdapter =
-                RecyclerViewAdapterGroups(listOfGroups, contextThis as RecyclerViewAdapterGroups.OnNoteListener,contextThis)
+                GroupsEditorAdapter(listOfGroups, contextThis as GroupsEditorAdapter.OnNoteListener,contextThis)
             runOnUiThread {
                 recyclerView.setAdapter(viewAdapter)
                 viewAdapter.notifyDataSetChanged()

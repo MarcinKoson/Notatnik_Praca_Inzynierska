@@ -7,36 +7,25 @@ import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.thesis.note.R
+import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
-import kotlinx.android.synthetic.main.note_viewer_recycler_view_image_layout.view.*
-import kotlinx.android.synthetic.main.recycler_view_layout.view.*
-//TODO
-class NoteViewerAdapter (private var dataSet:List<Data>, onNoteListener: OnNoteListener) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+import kotlinx.android.synthetic.main.recycler_view_note_viewer_image.view.*
+import kotlinx.android.synthetic.main.recycler_view_note_viewer_text.view.*
 
-    val mOnNoteListener = onNoteListener;
+class NoteViewerAdapter (private var dataSet:List<Data>, private var onDataClickListener: OnDataClickListener)
+    :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    fun changeDataset(newData: List<Data>){
-        dataSet = newData
-        notifyDataSetChanged()
+    interface  OnDataClickListener {
+        fun onDataClick(position:Int)
     }
 
-    class TextViewHolder(val objectLayout: ConstraintLayout, val listener: OnNoteListener) : RecyclerView.ViewHolder(objectLayout), View.OnClickListener{
+    class DataHolder(val objectLayout: ConstraintLayout, val listener: OnDataClickListener)
+        :RecyclerView.ViewHolder(objectLayout), View.OnClickListener{
         init{
             objectLayout.setOnClickListener(this)
         }
-        val onNoteListener = listener;
         override fun onClick(v: View?) {
-            onNoteListener.onNoteClick(adapterPosition);
-        }
-    }
-    class OtherViewHolder(val objectLayout: ConstraintLayout, val listener: OnNoteListener) : RecyclerView.ViewHolder(objectLayout), View.OnClickListener{
-        init{
-            objectLayout.setOnClickListener(this)
-        }
-        val onNoteListener = listener;
-        override fun onClick(v: View?) {
-            onNoteListener.onNoteClick(adapterPosition);
+            listener.onDataClick(adapterPosition);
         }
     }
 
@@ -46,17 +35,15 @@ class NoteViewerAdapter (private var dataSet:List<Data>, onNoteListener: OnNoteL
 
     override fun onCreateViewHolder(parent: ViewGroup,viewType: Int): RecyclerView.ViewHolder {
         when(viewType){
-            //NoteType.Text
-            0 -> {
-                val textView = LayoutInflater.from(parent.context).inflate(R.layout.note_viewer_recycler_view_layout, parent, false) as ConstraintLayout
-                return TextViewHolder(textView,mOnNoteListener)
+            NoteType.Text.id -> {
+                return DataHolder(
+                    LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_note_viewer_text, parent, false) as ConstraintLayout
+                    ,onDataClickListener)
             }
-            1 -> {
-
-            }
-            2 -> {
-                val textView = LayoutInflater.from(parent.context).inflate(R.layout.note_viewer_recycler_view_image_layout, parent, false) as ConstraintLayout
-                return TextViewHolder(textView,mOnNoteListener)
+            NoteType.Photo.id -> {
+                return DataHolder(
+                    LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_note_viewer_image, parent, false) as ConstraintLayout
+                    ,onDataClickListener)
             }
         }
         return error("ERROR: NoteViewerAdapter - viewType not found")
@@ -64,25 +51,17 @@ class NoteViewerAdapter (private var dataSet:List<Data>, onNoteListener: OnNoteL
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
        when(holder.itemViewType){
-           0 -> {
-               val viewHolder0: TextViewHolder = holder as TextViewHolder
-               viewHolder0.objectLayout.noteContent.text = dataSet[position].Content
+           NoteType.Text.id -> {
+               val viewHolder0: DataHolder = holder as DataHolder
+               viewHolder0.objectLayout.note_viewer_content.text = dataSet[position].Content
            }
-           1 -> {
-
-           }
-           2 ->{
-               val viewHolder0: TextViewHolder = holder as TextViewHolder
+           NoteType.Photo.id ->{
+               val viewHolder0: DataHolder = holder as DataHolder
                val imageUri = Uri.parse(dataSet[position].Content)
-               viewHolder0.objectLayout.imageView2!!.setImageURI(imageUri)
+               viewHolder0.objectLayout.note_viewer_image!!.setImageURI(imageUri)
            }
        }
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = dataSet.size
-
-    interface  OnNoteListener {
-         fun onNoteClick(position:Int)
-    }
 }

@@ -6,9 +6,8 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.thesis.note.database.AppDatabase
-import com.thesis.note.database.entity.Group
 import kotlinx.android.synthetic.main.recycler_view_gropus_layout.view.*
-import kotlinx.android.synthetic.main.recycler_view_layout.view.tagName
+
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import android.widget.PopupWindow
@@ -19,66 +18,56 @@ import android.view.inputmethod.InputMethodManager
 import kotlinx.android.synthetic.main.popup_edit_group.view.*
 import android.view.*
 import com.thesis.note.R
-//TODO
+import com.thesis.note.database.entity.Tag
+//TODO context??
+class TagsEditorAdapter (private var myDataset: List<Tag>, onNoteListener: OnNoteListener, var context:Context) :
+    RecyclerView.Adapter<TagsEditorAdapter.MyViewHolder>() {
 
+    private val mOnNoteListener = onNoteListener
 
-class RecyclerViewAdapterGroups (private var myDataset: List<Group>, onNoteListener: OnNoteListener, var context:Context) :
-    RecyclerView.Adapter<RecyclerViewAdapterGroups.MyViewHolder>() {
-
-    val mOnNoteListener = onNoteListener;
-
-    fun changeDataset(newData: List<Group>){
+    fun changeDataset(newData: List<Tag>){
         myDataset = newData
         notifyDataSetChanged()
     }
 
-    class MyViewHolder(val textView: ConstraintLayout, val listener: OnNoteListener) : RecyclerView.ViewHolder(textView), View.OnClickListener{
+    class MyViewHolder(val textView: ConstraintLayout, listener: OnNoteListener) : RecyclerView.ViewHolder(textView), View.OnClickListener{
         init{
             textView.setOnClickListener(this)
         }
-        val onNoteListener = listener;
-
-
+        val onNoteListener = listener
 
         override fun onClick(v: View?) {
-            onNoteListener.onNoteClick(adapterPosition);
+            onNoteListener.onNoteClick(adapterPosition)
         }
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup,
                                     viewType: Int): MyViewHolder {
-        // create a new view
+
         val textView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.recycler_view_gropus_layout, parent, false) as ConstraintLayout
-        // set the view's size, margins, paddings and layout parameters
-        //...
+            .inflate(R.layout.recycler_view_tags_editor_layout, parent, false) as ConstraintLayout
+
         return MyViewHolder(textView,mOnNoteListener)
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
+
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
 
         holder.textView.tagName.text = myDataset[position].Name
 
-        holder.textView.deleteButton.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
+        holder.textView.deleteButton.setOnClickListener {
+            GlobalScope.launch {
+                val db = AppDatabase(context)
+                db.tagDao().delete(myDataset[position])
 
-
-
-                GlobalScope.launch {
-                    val db = AppDatabase(context)
-                    db.groupDao().delete(myDataset[position])
-
-                    (context as Activity).runOnUiThread{
-                        Toast.makeText(context,"USUNIETO", Toast.LENGTH_SHORT).show()
-                        (context as Activity).recreate()
-                    }
-
+                (context as Activity).runOnUiThread {
+                    Toast.makeText(context, "USUNIETO", Toast.LENGTH_SHORT).show()
+                    (context as Activity).recreate()
                 }
-        }})
+
+            }
+        }
 
         holder.textView.editTagButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
@@ -91,38 +80,36 @@ class RecyclerViewAdapterGroups (private var myDataset: List<Group>, onNoteListe
                     popupView.newGroupName.setText(myDataset[position].Name)
                     popupView.newGroupName.setSelection( popupView.newGroupName.text.length)
 
-                    popupView.newGroupName.setOnKeyListener(object: View.OnKeyListener{
-                        override fun onKey(v: View?, keyCode: Int, event: KeyEvent?): Boolean {
-                            if (event?.getAction()!=KeyEvent.ACTION_DOWN){
-                                //TODO do funkcji
-                                GlobalScope.launch {
-                                    var db = AppDatabase(context)
-                                    var newGroup = myDataset[position]
-                                    newGroup.Name = popupView.newGroupName.text.toString()
-                                    db.groupDao().update(newGroup)
-                                    (context as Activity).runOnUiThread{
-                                        (context as Activity).recreate()}
+                    popupView.newGroupName.setOnKeyListener { v, keyCode, event ->
+                        if (event?.action != KeyEvent.ACTION_DOWN) {
+                            //TODO do funkcji
+                            GlobalScope.launch {
+                                val db = AppDatabase(context)
+                                val newGroup = myDataset[position]
+                                newGroup.Name = popupView.newGroupName.text.toString()
+                                db.tagDao().updateTodo(newGroup)
+                                (context as Activity).runOnUiThread {
+                                    (context as Activity).recreate()
                                 }
                             }
-                            return true
                         }
-                    })
+                        true
+                    }
 
 
 
 
-                    popupView.saveGroupButton.setOnClickListener(object: View.OnClickListener {
-                        override fun onClick(v: View?) {
-                            //TODO do funkcji
+                    popupView.saveGroupButton.setOnClickListener { //TODO do funkcji
                         GlobalScope.launch {
-                            var db = AppDatabase(context)
-                            var newGroup = myDataset[position]
-                            newGroup.Name = popupView.newGroupName.text.toString()
-                            db.groupDao().update(newGroup)
-                            (context as Activity).runOnUiThread{
-                            (context as Activity).recreate()}
+                            val db = AppDatabase(context)
+                            val newTag = myDataset[position]
+                            newTag.Name = popupView.newGroupName.text.toString()
+                            db.tagDao().updateTodo(newTag)
+                            (context as Activity).runOnUiThread {
+                                (context as Activity).recreate()
+                            }
                         }
-                    }})
+                    }
 
                     val width = LinearLayout.LayoutParams.WRAP_CONTENT
                     val height = LinearLayout.LayoutParams.WRAP_CONTENT

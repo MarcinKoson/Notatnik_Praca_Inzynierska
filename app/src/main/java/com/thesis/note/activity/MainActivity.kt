@@ -16,7 +16,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-import com.thesis.note.recycler_view_adapters.RecyclerViewAdapter
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note

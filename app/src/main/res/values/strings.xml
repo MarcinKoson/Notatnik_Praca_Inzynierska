@@ -27,5 +27,12 @@
     <string-array name="background_color">
         <item>Kolor tła</item>
     </string-array>
+    <string name="error_empty">ERROR_EMPTY</string>
+    <string name="note_type_text">Text</string>
+    <string name="note_type_list">List</string>
+    <string name="note_type_video">Video</string>
+    <string name="note_type_sound">Sound</string>
+    <string name="note_type_photo">Photo</string>
+    <string name="note_type_other">Other</string>
 
 </resources>

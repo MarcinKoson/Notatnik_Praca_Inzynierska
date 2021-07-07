@@ -11,20 +11,17 @@ import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
-
-
-import kotlinx.android.synthetic.main.recycler_view_layout.view.favoriteCheckBox
-import kotlinx.android.synthetic.main.recycler_view_layout.view.noteContent
-import kotlinx.android.synthetic.main.recycler_view_layout.view.noteName
-import kotlinx.android.synthetic.main.recycler_view_layout.view.noteType
-import kotlinx.android.synthetic.main.recycler_view_layout.view.tagName
-import kotlinx.android.synthetic.main.recycler_view_list_photo.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.android.synthetic.main.recycler_view_note_list_text.view.*
+import kotlinx.android.synthetic.main.recycler_view_note_list_photo.view.noteContentImage
 
-//TODO
-class NoteListAdapter (private var noteList: List<Note>, private var dataList:List<Data>, private val onNoteClickListener: OnNoteClickListener) :
-    RecyclerView.Adapter<NoteListAdapter.NoteListViewHolder>() {
+class NoteListAdapter (private var noteList: List<Note>, private var dataList:List<Data>, private val onNoteClickListener: OnNoteClickListener)
+    :RecyclerView.Adapter<NoteListAdapter.NoteListViewHolder>() {
+
+    interface  OnNoteClickListener {
+        fun onNoteClick(position:Int)
+    }
 
     class NoteListViewHolder(val objectLayout: ConstraintLayout, val listener: OnNoteClickListener) : RecyclerView.ViewHolder(objectLayout), View.OnClickListener{
         init{
@@ -46,17 +43,17 @@ class NoteListAdapter (private var noteList: List<Note>, private var dataList:Li
         when(viewType){
             NoteType.Text.id -> {
                 return NoteListViewHolder(
-                    LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_layout, parent, false) as ConstraintLayout ,
+                    LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_note_list_text, parent, false) as ConstraintLayout ,
                     onNoteClickListener)
             }
             NoteType.Photo.id -> {
                 return NoteListViewHolder(
-                    LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_list_photo, parent, false) as ConstraintLayout ,
+                    LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_note_list_photo, parent, false) as ConstraintLayout ,
                     onNoteClickListener)
             }
             else ->{
                 return NoteListViewHolder(
-                    LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_layout, parent, false) as ConstraintLayout ,
+                    LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_note_list_text, parent, false) as ConstraintLayout ,
                     onNoteClickListener)
             }
         }
@@ -69,14 +66,13 @@ class NoteListAdapter (private var noteList: List<Note>, private var dataList:Li
         holder.objectLayout.noteName.text = noteList[position].Name
         holder.objectLayout.favoriteCheckBox.isChecked = noteList[position].Favorite
         //note type
-        //TODO use string.xml
         val noteTypeStr: String = when(mainData?.Type){
-            NoteType.Text -> "Tekstowa"
-            NoteType.List -> "Lista"
-            NoteType.Video -> "Wideo"
-            NoteType.Sound -> "Dziękowa"
-            NoteType.Photo -> "Obraz"
-            else -> "Inna"
+            NoteType.Text -> holder.objectLayout.context.getString(R.string.note_type_text)
+            NoteType.List -> holder.objectLayout.context.getString(R.string.note_type_list)
+            NoteType.Video -> holder.objectLayout.context.getString(R.string.note_type_video)
+            NoteType.Sound -> holder.objectLayout.context.getString(R.string.note_type_sound)
+            NoteType.Photo -> holder.objectLayout.context.getString(R.string.note_type_photo)
+            else -> holder.objectLayout.context.getString(R.string.note_type_other)
         }
         holder.objectLayout.noteType.text = noteTypeStr
         //checking group
@@ -94,10 +90,11 @@ class NoteListAdapter (private var noteList: List<Note>, private var dataList:Li
                 }
             }
         )
+        //TODO create new layouts
         //set content
         when(holder.itemViewType){
            NoteType.Text.id -> {
-               holder.objectLayout.noteContent.text = mainData?.Content
+               holder.objectLayout.note_list_content.text = mainData?.Content
            }
            NoteType.Photo.id -> {
                holder.objectLayout.noteContentImage!!.setImageURI(Uri.parse(mainData?.Content))
@@ -106,8 +103,4 @@ class NoteListAdapter (private var noteList: List<Note>, private var dataList:Li
     }
 
     override fun getItemCount() = noteList.size
-
-    interface  OnNoteClickListener {
-         fun onNoteClick(position:Int)
-    }
 }

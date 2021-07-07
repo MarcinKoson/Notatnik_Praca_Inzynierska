@@ -14,7 +14,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.core.widget.doAfterTextChanged
 import androidx.drawerlayout.widget.DrawerLayout
 
 
@@ -42,7 +41,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
-    NoteViewerAdapter.OnNoteListener, DialogInterface.OnDismissListener {
+    NoteViewerAdapter.OnDataClickListener, DialogInterface.OnDismissListener {
 
     lateinit var drawerLayout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer
@@ -66,7 +65,7 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
     private lateinit var tagsRecyclerView: RecyclerView
     private lateinit var tagsViewAdapter: RecyclerView.Adapter<*>
     private lateinit var tagsViewManager: RecyclerView.LayoutManager
-    private lateinit var tagListAdapterListener: TagListAdapter.OnNoteListener
+    private lateinit var tagListAdapterListener: TagListAdapter.OnTagClickListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -126,7 +125,7 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                 //set date
                 //TODO date
                 //Tags RecyclerView onClick listener
-                tagListAdapterListener = object: TagListAdapter.OnNoteListener {
+                tagListAdapterListener = object: TagListAdapter.OnTagClickListener {
                     override fun onNoteClick(position: Int) {
                         //create remove dialog
                         val alertDialog: AlertDialog? = this?.let {
@@ -227,7 +226,7 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         }
     }
 
-    override fun onNoteClick(position: Int) {
+    override fun onDataClick(position: Int) {
 
         when(viewAdapter.getItemViewType(position)){
             //NoteType.Text

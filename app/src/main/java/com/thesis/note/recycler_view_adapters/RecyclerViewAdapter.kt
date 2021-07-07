@@ -10,10 +10,11 @@ import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
-import kotlinx.android.synthetic.main.recycler_view_layout.view.*
+
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 //TODO
+@Deprecated("old")
 class RecyclerViewAdapter (private var noteSet: List<Note>, private var dataSet:List<Data>, onNoteListener: OnNoteListener) :
     RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder>() {
 
@@ -37,7 +38,7 @@ class RecyclerViewAdapter (private var noteSet: List<Note>, private var dataSet:
     override fun onCreateViewHolder(parent: ViewGroup,viewType: Int): MyViewHolder {
         // create a new view
         val textView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.recycler_view_layout, parent, false) as ConstraintLayout
+            .inflate(R.layout.recycler_view_note_list_text, parent, false) as ConstraintLayout
         // set the view's size, margins, paddings and layout parameters
         //...
         return MyViewHolder(textView,mOnNoteListener)
@@ -49,7 +50,7 @@ class RecyclerViewAdapter (private var noteSet: List<Note>, private var dataSet:
         // - replace the contents of the view with that element
 
         val mainData = dataSet.firstOrNull{it.IdData == noteSet[position].MainData}
-
+/*
         holder.objectLayout.noteName.text = noteSet[position].Name
         holder.objectLayout.noteContent.text = mainData?.Content
         holder.objectLayout.favoriteCheckBox.isChecked = noteSet[position].Favorite
@@ -84,7 +85,7 @@ class RecyclerViewAdapter (private var noteSet: List<Note>, private var dataSet:
             }
         )
 
-
+*/
     }
 
     // Return the size of your dataset (invoked by the layout manager)

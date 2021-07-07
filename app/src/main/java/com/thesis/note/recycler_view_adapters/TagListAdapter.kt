@@ -3,7 +3,6 @@ package com.thesis.note.recycler_view_adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.thesis.note.R
@@ -12,45 +11,33 @@ import com.thesis.note.database.entity.TagOfNote
 import kotlinx.android.synthetic.main.recycler_view_tag_list.view.*
 //TODO
 
-class TagListAdapter (private val myDataset: List<TagOfNote>, private val tagList:List<Tag>, onNoteListener: OnNoteListener) :
-    RecyclerView.Adapter<TagListAdapter.MyViewHolder>() {
+class TagListAdapter (private val myDataset: List<TagOfNote>, private val tagList:List<Tag>, private val onTagClickListener: OnTagClickListener)
+    :RecyclerView.Adapter<TagListAdapter.TagHolder>() {
 
-    val mOnNoteListener = onNoteListener;
+    interface  OnTagClickListener {
+        fun onNoteClick(position:Int)
+    }
 
-    class MyViewHolder(val textView: ConstraintLayout, val listener: OnNoteListener) : RecyclerView.ViewHolder(textView), View.OnClickListener{
+    class TagHolder(val objectLayout: ConstraintLayout, val listener: OnTagClickListener)
+        :RecyclerView.ViewHolder(objectLayout), View.OnClickListener{
         init{
-            textView.setOnClickListener(this)
+            objectLayout.setOnClickListener(this)
         }
-        val onNoteListener = listener;
-
         override fun onClick(v: View?) {
-            onNoteListener.onNoteClick(adapterPosition);
+            listener.onNoteClick(adapterPosition);
         }
-
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup,
-                                    viewType: Int): MyViewHolder {
-        // create a new view
-        val textView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.recycler_view_tag_list, parent, false) as ConstraintLayout
-        // set the view's size, margins, paddings and layout parameters
-        //...
-        return MyViewHolder(textView,mOnNoteListener)
+    override fun onCreateViewHolder(parent: ViewGroup,viewType: Int): TagHolder {
+        return TagHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_tag_list, parent, false) as ConstraintLayout
+            ,onTagClickListener)
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
-        holder.textView.tagName.text = tagList.firstOrNull { x -> x.IdTag == myDataset[position].TagID }?.Name
+    override fun onBindViewHolder(holder: TagHolder, position: Int) {
+        holder.objectLayout.tagName.text = tagList.firstOrNull { x -> x.IdTag == myDataset[position].TagID }?.Name
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = myDataset.size
 
-
-    interface  OnNoteListener {
-         fun onNoteClick(position:Int)
-    }
 }

@@ -3,7 +3,7 @@ package com.thesis.note
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_test.*
+
 
 class TestActivity : AppCompatActivity() {
 
@@ -11,6 +11,7 @@ class TestActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.test_activity)
 
+        /*
         button10.setOnClickListener(object: View.OnClickListener {
             override fun onClick(v: View?) {
 
@@ -18,4 +19,6 @@ class TestActivity : AppCompatActivity() {
                 newFragment.show(supportFragmentManager, "test")
             }
     })
+    */
+
 }}

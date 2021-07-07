@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.template_empty_layout.toolbar
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import com.thesis.note.R
-import com.thesis.note.recycler_view_adapters.TagsEditorRecyclerViewAdapter
+import com.thesis.note.recycler_view_adapters.TagsEditorAdapter
 import com.thesis.note.database.entity.Tag
 import kotlinx.android.synthetic.main.activity_groups_editor.addTagButtonToDb
 import kotlinx.android.synthetic.main.activity_groups_editor.nameOfNewTag
@@ -25,7 +25,7 @@ import kotlinx.android.synthetic.main.activity_tags_editor.*
 
 //TODO
 class TagEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
-    TagsEditorRecyclerViewAdapter.OnNoteListener {
+    TagsEditorAdapter.OnNoteListener {
 
     lateinit var drawerLayout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer
@@ -56,7 +56,7 @@ class TagEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             listOfTagsUpdate()
 
             viewManager = LinearLayoutManager(contextThis)
-            viewAdapter = TagsEditorRecyclerViewAdapter(listOfTags,contextThis, contextThis)
+            viewAdapter = TagsEditorAdapter(listOfTags,contextThis, contextThis)
             recyclerView = findViewById<RecyclerView>(R.id.groups_recycler_view).apply {
                 setHasFixedSize(true)
                 layoutManager = viewManager
@@ -99,7 +99,7 @@ class TagEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
             //listOfNotes = db.noteDao().getAll()
             listOfTagsUpdate()
             viewAdapter =
-                TagsEditorRecyclerViewAdapter(listOfTags, contextThis as TagsEditorRecyclerViewAdapter.OnNoteListener,contextThis)
+                TagsEditorAdapter(listOfTags, contextThis as TagsEditorAdapter.OnNoteListener,contextThis)
             runOnUiThread {
                 recyclerView.adapter = viewAdapter
                 viewAdapter.notifyDataSetChanged()

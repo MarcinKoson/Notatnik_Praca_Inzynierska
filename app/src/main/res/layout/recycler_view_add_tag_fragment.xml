@@ -9,11 +9,11 @@
         android:id="@+id/tagNameButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="2dp"
         android:background="@drawable/frame_transparent"
-        android:text="TextView"
-        android:layout_margin = "2dp"
-        android:textSize="20dp"
         android:padding="2dp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/error_empty" />
 </androidx.constraintlayout.widget.ConstraintLayout>
