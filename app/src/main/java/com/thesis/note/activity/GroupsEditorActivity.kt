@@ -17,8 +17,6 @@ import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.entity.Group
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_groups_editor.*
-import kotlinx.android.synthetic.main.template_empty_layout.navigationView
-import kotlinx.android.synthetic.main.template_empty_layout.toolbar
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import com.thesis.note.R

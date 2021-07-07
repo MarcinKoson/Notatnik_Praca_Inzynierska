@@ -10,8 +10,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.thesis.note.NavigationDrawer
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_settings.*
-import kotlinx.android.synthetic.main.template_empty_layout.navigationView
-import kotlinx.android.synthetic.main.template_empty_layout.toolbar
+
 import com.thesis.note.R
 
 class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {

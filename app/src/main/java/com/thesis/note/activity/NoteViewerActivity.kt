@@ -26,8 +26,7 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.material.navigation.NavigationView
 import com.thesis.note.*
 
-import kotlinx.android.synthetic.main.template_empty_layout.navigationView
-import kotlinx.android.synthetic.main.template_empty_layout.toolbar
+
 
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.NoteType

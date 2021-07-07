@@ -25,7 +25,15 @@ import kotlinx.coroutines.launch
 import com.thesis.note.database.entity.Group
 import com.thesis.note.R
 import com.thesis.note.database.entity.Data
-//TODO
+import kotlinx.android.synthetic.main.activity_text_editor.deleteButton
+import kotlinx.android.synthetic.main.activity_text_editor.s1
+import kotlinx.android.synthetic.main.activity_text_editor.s2
+import kotlinx.android.synthetic.main.activity_text_editor.s3
+import kotlinx.android.synthetic.main.activity_text_editor.s4
+import kotlinx.android.synthetic.main.activity_text_editor.saveButton
+import kotlinx.android.synthetic.main.activity_text_editor.textField
+import kotlinx.android.synthetic.main.activity_text_editor_old.*
+
 @Deprecated(message = "use TextEditorActivity insted")
 class TextEditorActivityOld : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var drawer_layout: DrawerLayout

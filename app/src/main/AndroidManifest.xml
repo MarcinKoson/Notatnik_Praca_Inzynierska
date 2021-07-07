@@ -12,7 +12,7 @@
         <activity android:name=".DebugActivity"
             android:noHistory="true"/>
 
-        <activity android:name=".activity.TemplateEmptyActivity"
+        <activity android:name=".activity.XTemplateEmptyActivity"
             />
         <activity android:name=".activity.TextEditorActivityOld"
             />

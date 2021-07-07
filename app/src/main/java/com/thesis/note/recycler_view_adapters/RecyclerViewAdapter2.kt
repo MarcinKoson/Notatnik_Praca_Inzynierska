@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.thesis.note.R
-//TODO
+
 @Deprecated("old")
 class RecyclerViewAdapter2 (private val myDataset: Array<String>, onNoteListener: OnNoteListener) :
     RecyclerView.Adapter<RecyclerViewAdapter2.MyViewHolder>() {

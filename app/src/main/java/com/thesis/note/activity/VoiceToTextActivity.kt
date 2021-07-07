@@ -27,7 +27,6 @@ import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
-//TODO
 @Deprecated("old")
 class VoiceToTextActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,View.OnClickListener {
     lateinit var drawer_layout: DrawerLayout
@@ -52,7 +51,7 @@ class VoiceToTextActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         drawerToggle.syncState()
         //------------------------------------------------------------------------------------------
 
-        textViewA = textView2
+        textViewA = template_textView
         startRecordButton.setOnClickListener(this)
 
         voiceRecognitor = SpeechRecognizer.createSpeechRecognizer(this)

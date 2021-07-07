@@ -34,5 +34,6 @@
     <string name="note_type_sound">Sound</string>
     <string name="note_type_photo">Photo</string>
     <string name="note_type_other">Other</string>
+    <string name="error_template">TEMPLATE</string>
 
 </resources>

@@ -26,8 +26,7 @@ import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
 import kotlinx.android.synthetic.main.activity_image_note.*
-import kotlinx.android.synthetic.main.template_empty_layout.navigationView
-import kotlinx.android.synthetic.main.template_empty_layout.toolbar
+
 import kotlinx.coroutines.*
 import java.io.File
 import java.text.SimpleDateFormat

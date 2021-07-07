@@ -13,7 +13,7 @@ import com.thesis.note.database.entity.Note
 
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-//TODO
+
 @Deprecated("old")
 class RecyclerViewAdapter (private var noteSet: List<Note>, private var dataSet:List<Data>, onNoteListener: OnNoteListener) :
     RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder>() {
@@ -55,7 +55,7 @@ class RecyclerViewAdapter (private var noteSet: List<Note>, private var dataSet:
         holder.objectLayout.noteContent.text = mainData?.Content
         holder.objectLayout.favoriteCheckBox.isChecked = noteSet[position].Favorite
 
-        //TODO multimedialna
+
         val noteTypeStr: String
         noteTypeStr = when(mainData?.Type){
             NoteType.Text -> "Tekstowa"

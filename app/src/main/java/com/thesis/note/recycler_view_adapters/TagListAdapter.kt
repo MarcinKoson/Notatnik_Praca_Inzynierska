@@ -9,9 +9,8 @@ import com.thesis.note.R
 import com.thesis.note.database.entity.Tag
 import com.thesis.note.database.entity.TagOfNote
 import kotlinx.android.synthetic.main.recycler_view_tag_list.view.*
-//TODO
 
-class TagListAdapter (private val myDataset: List<TagOfNote>, private val tagList:List<Tag>, private val onTagClickListener: OnTagClickListener)
+class TagListAdapter (private val tagOfNoteList: List<TagOfNote>, private val tagList:List<Tag>, private val onTagClickListener: OnTagClickListener)
     :RecyclerView.Adapter<TagListAdapter.TagHolder>() {
 
     interface  OnTagClickListener {
@@ -24,7 +23,7 @@ class TagListAdapter (private val myDataset: List<TagOfNote>, private val tagLis
             objectLayout.setOnClickListener(this)
         }
         override fun onClick(v: View?) {
-            listener.onNoteClick(adapterPosition);
+            listener.onNoteClick(adapterPosition)
         }
     }
 
@@ -35,9 +34,9 @@ class TagListAdapter (private val myDataset: List<TagOfNote>, private val tagLis
     }
 
     override fun onBindViewHolder(holder: TagHolder, position: Int) {
-        holder.objectLayout.tagName.text = tagList.firstOrNull { x -> x.IdTag == myDataset[position].TagID }?.Name
+        holder.objectLayout.tagName.text = tagList.firstOrNull { x -> x.IdTag == tagOfNoteList[position].TagID }?.Name
     }
 
-    override fun getItemCount() = myDataset.size
+    override fun getItemCount() = tagOfNoteList.size
 
 }
