@@ -154,7 +154,7 @@ class ImageNoteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
                        val note = db.noteDao().getNoteById(newNote[0].toInt())
                        note.MainData = newData[0].toInt()
-                       db.noteDao().updateTodo(note)
+                       db.noteDao().update(note)
                    }
                     //TODO open note
                 }
@@ -184,7 +184,7 @@ class ImageNoteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                 GlobalScope.launch {
                     val dataUpdate = db.dataDao().getDataById(dataID)
                     dataUpdate.Content = newFile.path
-                    db.dataDao().updateTodo(dataUpdate)
+                    db.dataDao().update(dataUpdate)
                 }
 
 

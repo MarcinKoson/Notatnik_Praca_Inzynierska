@@ -172,7 +172,7 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                     else {
                         note.GroupID = groupsList[pos - 1].IdGroup
                     }
-                    db.noteDao().updateTodo(note)
+                    db.noteDao().update(note)
                 }
             }
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -255,7 +255,7 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         //TODO is this good solution?
         GlobalScope.launch {
             note.Name = binding.noteName.text.toString()
-            db.noteDao().updateTodo(note)
+            db.noteDao().update(note)
         }
     }
     override fun onDismiss(dialog: DialogInterface?) {

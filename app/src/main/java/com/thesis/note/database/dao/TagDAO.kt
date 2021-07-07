@@ -15,5 +15,5 @@ interface TagDAO {
     fun delete(delete: Tag)
 
     @Update
-    fun updateTodo(vararg update: Tag)
+    fun update(vararg update: Tag)
 }

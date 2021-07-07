@@ -90,7 +90,7 @@ class TagsEditorAdapter (private var myDataset: List<Tag>, onNoteListener: OnNot
                                 val db = AppDatabase(context)
                                 val newGroup = myDataset[position]
                                 newGroup.Name = bindingPopup.newGroupName.text.toString()
-                                db.tagDao().updateTodo(newGroup)
+                                db.tagDao().update(newGroup)
                                 (context as Activity).runOnUiThread {
                                     (context as Activity).recreate()
                                 }
@@ -107,7 +107,7 @@ class TagsEditorAdapter (private var myDataset: List<Tag>, onNoteListener: OnNot
                             val db = AppDatabase(context)
                             val newTag = myDataset[position]
                             newTag.Name = bindingPopup.newGroupName.text.toString()
-                            db.tagDao().updateTodo(newTag)
+                            db.tagDao().update(newTag)
                             (context as Activity).runOnUiThread {
                                 (context as Activity).recreate()
                             }

@@ -98,7 +98,7 @@ class TextEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                     //Update data
                     editedData.Content = binding.textField.text.toString()
                     GlobalScope.launch {
-                        db.dataDao().updateTodo(editedData)
+                        db.dataDao().update(editedData)
                     }
                 }
                 else{
@@ -119,7 +119,7 @@ class TextEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                             dataID = newDataID[0].toInt()
                             val note = db.noteDao().getNoteById(noteID)
                             note.MainData = dataID
-                            db.noteDao().updateTodo(note)
+                            db.noteDao().update(note)
                             //open new note
                             noteViewerActivityIntent.putExtra("noteID",noteID)
                             TextEditorActivityContext.startActivity(noteViewerActivityIntent)

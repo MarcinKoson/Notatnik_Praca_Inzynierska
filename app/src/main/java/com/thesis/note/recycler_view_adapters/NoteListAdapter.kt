@@ -96,7 +96,7 @@ class NoteListAdapter (private var noteList: List<Note>, private var dataList:Li
                     fun (_:View){
                         noteList[position].Favorite = binding.favoriteCheckBox.isChecked
                         GlobalScope.launch{
-                            AppDatabase(holder.objectLayout.context).noteDao().updateTodo(noteList[position])
+                            AppDatabase(holder.objectLayout.context).noteDao().update(noteList[position])
                         }
                     }
                 )
@@ -120,7 +120,7 @@ class NoteListAdapter (private var noteList: List<Note>, private var dataList:Li
                     fun (_:View){
                         noteList[position].Favorite = binding.favoriteCheckBox.isChecked
                         GlobalScope.launch{
-                            AppDatabase(holder.objectLayout.context).noteDao().updateTodo(noteList[position])
+                            AppDatabase(holder.objectLayout.context).noteDao().update(noteList[position])
                         }
                     }
                 )

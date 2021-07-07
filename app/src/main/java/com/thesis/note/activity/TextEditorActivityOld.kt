@@ -24,7 +24,6 @@ import com.thesis.note.database.entity.Group
 import com.thesis.note.R
 import com.thesis.note.database.entity.Data
 import com.thesis.note.databinding.ActivityTextEditorOldBinding
-import com.thesis.note.databinding.XTemplateEmptyLayoutBinding
 
 @Deprecated(message = "use TextEditorActivity insted")
 class TextEditorActivityOld : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -104,7 +103,7 @@ class TextEditorActivityOld : AppCompatActivity(), NavigationView.OnNavigationIt
                     GlobalScope.launch{
                         editedNote = db.noteDao().getNoteById(noteID);
                         editedNote.MainData = addedData[0].toInt()
-                        db.noteDao().updateTodo(editedNote)
+                        db.noteDao().update(editedNote)
 
                             dataNote = db.dataDao().getDataFromNote(editedNote.IdNote)
                     }
@@ -133,8 +132,8 @@ class TextEditorActivityOld : AppCompatActivity(), NavigationView.OnNavigationIt
                     }
 
                     GlobalScope.launch {
-                        db.noteDao().updateTodo(editedNote)
-                        db.dataDao().updateTodo(dataNote[0])
+                        db.noteDao().update(editedNote)
+                        db.dataDao().update(dataNote[0])
 
                         /*
                         if(isWidget){
