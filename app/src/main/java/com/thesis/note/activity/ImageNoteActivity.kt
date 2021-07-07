@@ -25,7 +25,8 @@ import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
-import kotlinx.android.synthetic.main.activity_image_note.*
+import com.thesis.note.databinding.ActivityImageNoteBinding
+
 
 import kotlinx.coroutines.*
 import java.io.File
@@ -36,6 +37,7 @@ import java.util.*
 class ImageNoteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var drawerLayout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer
+    private lateinit var binding: ActivityImageNoteBinding
 
   //  var dataExistInDB = false
     var noteID = -1
@@ -59,13 +61,14 @@ class ImageNoteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_image_note)
-        drawerLayout = activity_image_note_layout
+        binding = ActivityImageNoteBinding.inflate(layoutInflater) //LAYOUT BINDING CLASS
+        setContentView(binding.root)
+        drawerLayout = binding.activityImageNoteLayout
         navigationDrawer = NavigationDrawer(drawerLayout)
-        navigationView.setNavigationItemSelectedListener(this)
+        binding.navigationView.setNavigationItemSelectedListener(this)
 
         val drawerToggle =
-            ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.abdt, R.string.abdt)
+            ActionBarDrawerToggle(this, drawerLayout, binding.toolbar, R.string.abdt, R.string.abdt)
         drawerLayout.addDrawerListener(drawerToggle)
         drawerToggle.isDrawerIndicatorEnabled = true
         drawerToggle.syncState()
@@ -76,7 +79,7 @@ class ImageNoteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         //TODO error when saving without permissions
         askForPermisions()
         //set listener for open gallery button
-        openGalleryButton.
+        binding.openGalleryButton.
         setOnClickListener { startForResult.launch(Intent(
             Intent.ACTION_PICK,
             MediaStore.Images.Media.INTERNAL_CONTENT_URI
@@ -105,7 +108,7 @@ class ImageNoteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
         //save button
         //TODO cleanup
-        saveButton.setOnClickListener {
+        binding.saveButton.setOnClickListener {
             if(dataID == -1) {
                 //create data,copy to storage
                 //     Environment.getExternalStorageDirectory() + File.separator + "myApp" + File.separator
@@ -114,14 +117,14 @@ class ImageNoteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                 nUri = nUri?.drop(6)
                 val imageFile = File(nUri)
 
-                debugImageNote.text = sth?.path
+                binding.debugImageNote.text = sth?.path
                 //val toF = imageUri?.toFile()
 
                 val currenttime = SimpleDateFormat("yyyy.MM.dd-HH:mm:ss")
                 val fileNameDate = "/image"+currenttime.format(Date())
                 val fileNameToCopy = File(sth,fileNameDate)
                 fileNameToCopy.createNewFile()
-                debugImageNote.text = fileNameToCopy.path
+                binding.debugImageNote.text = fileNameToCopy.path
                 val newFile = imageFile?.copyTo(fileNameToCopy, true)
 
              //   val newFile = imageFile?.copyTo(sth!!, true)
@@ -167,7 +170,7 @@ class ImageNoteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                 nUri = nUri?.drop(6)
                 val imageFile = File(nUri)
 
-                debugImageNote.text = sth?.path
+                binding.debugImageNote.text = sth?.path
                 //val toF = imageUri?.toFile()
 
 
@@ -175,7 +178,7 @@ class ImageNoteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                 val fileNameDate = "/image"+currenttime.format(Date())
                 val fileNameToCopy = File(sth,fileNameDate)
                 fileNameToCopy.createNewFile()
-                debugImageNote.text = fileNameToCopy.path
+                binding.debugImageNote.text = fileNameToCopy.path
                 val newFile = imageFile?.copyTo(fileNameToCopy, true)
 
                 GlobalScope.launch {

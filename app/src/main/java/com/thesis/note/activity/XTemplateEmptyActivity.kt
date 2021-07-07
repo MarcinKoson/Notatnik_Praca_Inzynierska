@@ -9,20 +9,21 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.thesis.note.NavigationDrawer
 import com.google.android.material.navigation.NavigationView
 import com.thesis.note.R
-import kotlinx.android.synthetic.main.x_template_empty_layout.*
+import com.thesis.note.databinding.XTemplateEmptyLayoutBinding
 
 class XTemplateEmptyActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var drawerLayout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer
+    private lateinit var binding: XTemplateEmptyLayoutBinding //LAYOUT BINDING CLASS
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.x_template_empty_layout)       //NAZWA LAYOUTU
-        drawerLayout = activity_template_layout              //ID DRAWER LAYOUTU
+        binding = XTemplateEmptyLayoutBinding.inflate(layoutInflater) //LAYOUT BINDING CLASS
+        setContentView(binding.root)
+        drawerLayout = binding.activityTemplateLayout     //ID DRAWER LAYOUTU
         navigationDrawer = NavigationDrawer(drawerLayout)
-        navigationView.setNavigationItemSelectedListener(this)
-
-        val drawerToggle= ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.abdt,R.string.abdt)
+        binding.navigationView.setNavigationItemSelectedListener(this)
+        val drawerToggle= ActionBarDrawerToggle(this,drawerLayout,binding.toolbar,R.string.abdt,R.string.abdt)
         drawerLayout.addDrawerListener(drawerToggle)
         drawerToggle.isDrawerIndicatorEnabled = true
         drawerToggle.syncState()

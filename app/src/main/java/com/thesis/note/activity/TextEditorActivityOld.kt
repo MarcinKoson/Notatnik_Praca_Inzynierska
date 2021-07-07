@@ -17,27 +17,21 @@ import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Note
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.activity_text_editor.*
-import kotlinx.android.synthetic.main.activity_text_editor.navigationView
-import kotlinx.android.synthetic.main.activity_text_editor.toolbar
+
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import com.thesis.note.database.entity.Group
 import com.thesis.note.R
 import com.thesis.note.database.entity.Data
-import kotlinx.android.synthetic.main.activity_text_editor.deleteButton
-import kotlinx.android.synthetic.main.activity_text_editor.s1
-import kotlinx.android.synthetic.main.activity_text_editor.s2
-import kotlinx.android.synthetic.main.activity_text_editor.s3
-import kotlinx.android.synthetic.main.activity_text_editor.s4
-import kotlinx.android.synthetic.main.activity_text_editor.saveButton
-import kotlinx.android.synthetic.main.activity_text_editor.textField
-import kotlinx.android.synthetic.main.activity_text_editor_old.*
+import com.thesis.note.databinding.ActivityTextEditorOldBinding
+import com.thesis.note.databinding.XTemplateEmptyLayoutBinding
 
 @Deprecated(message = "use TextEditorActivity insted")
 class TextEditorActivityOld : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var drawer_layout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer
+    private lateinit var binding: ActivityTextEditorOldBinding
+
 
     var noteExistInDB:Boolean = false;
     var noteID:Int = -1;
@@ -56,13 +50,13 @@ class TextEditorActivityOld : AppCompatActivity(), NavigationView.OnNavigationIt
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setSupportActionBar(toolbar)
-        setContentView(R.layout.activity_text_editor_old)
-        drawer_layout = activity_text_editor_layout;
+        binding = ActivityTextEditorOldBinding.inflate(layoutInflater) //LAYOUT BINDING CLASS
+        setContentView(binding.root)
+        drawer_layout = binding.activityTextEditorLayoutOld
         navigationDrawer = NavigationDrawer(drawer_layout)
-        navigationView.setNavigationItemSelectedListener(this);
+        binding.navigationView.setNavigationItemSelectedListener(this);
 
-        val drawerToggle= ActionBarDrawerToggle(this,drawer_layout,toolbar,R.string.abdt,R.string.abdt)
+        val drawerToggle= ActionBarDrawerToggle(this,drawer_layout,binding.toolbar,R.string.abdt,R.string.abdt)
         drawer_layout.addDrawerListener(drawerToggle)
         drawerToggle.isDrawerIndicatorEnabled = true
         drawerToggle.syncState()
@@ -70,7 +64,7 @@ class TextEditorActivityOld : AppCompatActivity(), NavigationView.OnNavigationIt
 
 
         //SAVE button
-        saveButton.setOnClickListener(object: View.OnClickListener {
+        binding.saveButton.setOnClickListener(object: View.OnClickListener {
             override fun onClick(v: View?) {
                 if(noteExistInDB==false){
                     GlobalScope.launch {
@@ -85,23 +79,23 @@ class TextEditorActivityOld : AppCompatActivity(), NavigationView.OnNavigationIt
                      }
 */
                     var groupID:Int?
-                    if(groupSpinnerOld.selectedItemPosition == 0){
+                    if(binding.groupSpinnerOld.selectedItemPosition == 0){
                         groupID = null
                     }
                         else
                     {
-                        groupID = groupsList[groupSpinnerOld.selectedItemPosition].IdGroup
+                        groupID = groupsList[binding.groupSpinnerOld.selectedItemPosition].IdGroup
                     }
 
 
                     //var id = db.noteDao().insertAll(Note(0,nameNote.text.toString(),NoteType.Text,textField.text.toString(),groupID,false,null,null,null))
 
-                        var id = db.noteDao().insertAll(Note(0,nameNote.text.toString(),null,groupID,false,null,null,null))
+                        var id = db.noteDao().insertAll(Note(0,binding.nameNote.text.toString(),null,groupID,false,null,null,null))
 
                     noteID = id[0].toInt();
                         noteExistInDB = true;
 
-                        var addedData = db.dataDao().insertAll(Data(0,noteID,NoteType.Text,textField.text.toString(),null))
+                        var addedData = db.dataDao().insertAll(Data(0,noteID,NoteType.Text,binding.textField.text.toString(),null))
                         //db.dataDao().updateTodo(id[0])
 
 
@@ -126,16 +120,16 @@ class TextEditorActivityOld : AppCompatActivity(), NavigationView.OnNavigationIt
                 }
                 else{
                     //editedNote.Content = textField.getText().toString()
-                        dataNote[0].Content = textField.getText().toString()
+                        dataNote[0].Content = binding.textField.getText().toString()
 
-                    editedNote.Name = nameNote.text.toString()
+                    editedNote.Name = binding.nameNote.text.toString()
 
-                    if(groupSpinnerOld.selectedItemPosition == 0){
+                    if(binding.groupSpinnerOld.selectedItemPosition == 0){
                         editedNote.GroupID = null
                     }
                     else
                     {
-                        editedNote.GroupID  = groupsList[groupSpinnerOld.selectedItemPosition].IdGroup
+                        editedNote.GroupID  = groupsList[binding.groupSpinnerOld.selectedItemPosition].IdGroup
                     }
 
                     GlobalScope.launch {
@@ -174,7 +168,7 @@ class TextEditorActivityOld : AppCompatActivity(), NavigationView.OnNavigationIt
             }}
         )
         //Remove button
-        deleteButton.setOnClickListener(object : View.OnClickListener{
+        binding.deleteButton.setOnClickListener(object : View.OnClickListener{
             override fun onClick(v: View?) {
                 if(noteExistInDB)
                 GlobalScope.launch {
@@ -187,7 +181,7 @@ class TextEditorActivityOld : AppCompatActivity(), NavigationView.OnNavigationIt
 
 
         //spinner : Groups
-        val spinner: Spinner = groupSpinnerOld
+        val spinner: Spinner = binding.groupSpinnerOld
 
         /*
         ArrayAdapter.createFromResource(
@@ -216,25 +210,25 @@ class TextEditorActivityOld : AppCompatActivity(), NavigationView.OnNavigationIt
         }
 
         //4 spinners
-        val s1a: Spinner = s1
+        val s1a: Spinner = binding.s1
         ArrayAdapter.createFromResource(this, R.array.font_name, android.R.layout.simple_spinner_item
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             s1a.adapter = adapter
         }
-        val s2a: Spinner = s2
+        val s2a: Spinner = binding.s2
         ArrayAdapter.createFromResource(this, R.array.font_size, android.R.layout.simple_spinner_item
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             s2a.adapter = adapter
         }
-        val s3a: Spinner = s3
+        val s3a: Spinner = binding.s3
         ArrayAdapter.createFromResource(this, R.array.font_color, android.R.layout.simple_spinner_item
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             s3a.adapter = adapter
         }
-        val s4a: Spinner = s4
+        val s4a: Spinner = binding.s4
         ArrayAdapter.createFromResource(this, R.array.background_color, android.R.layout.simple_spinner_item
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -262,8 +256,8 @@ class TextEditorActivityOld : AppCompatActivity(), NavigationView.OnNavigationIt
 
                     TextEditorActivityContext.runOnUiThread(
                         fun(){
-                            textField.text = Editable.Factory.getInstance().newEditable(dataNote[0].Content)
-                            nameNote.text = Editable.Factory.getInstance().newEditable(editedNote.Name)
+                            binding.textField.text = Editable.Factory.getInstance().newEditable(dataNote[0].Content)
+                            binding.nameNote.text = Editable.Factory.getInstance().newEditable(editedNote.Name)
 
                         }
                     )

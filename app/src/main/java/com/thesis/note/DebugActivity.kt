@@ -5,12 +5,23 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.thesis.note.activity.ImageNoteActivity
+import com.thesis.note.activity.ListActivity
+import com.thesis.note.activity.XTemplateEmptyActivity
+import com.thesis.note.databinding.DebugActivityBinding
 
 class DebugActivity : AppCompatActivity() {
 
+    private lateinit var binding:DebugActivityBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.debug_activity)
+        binding = DebugActivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.templatebutton.setOnClickListener{
+            val template = Intent(this, XTemplateEmptyActivity::class.java)
+            startActivity(template)
+        }
 
         /*
         //DB remove

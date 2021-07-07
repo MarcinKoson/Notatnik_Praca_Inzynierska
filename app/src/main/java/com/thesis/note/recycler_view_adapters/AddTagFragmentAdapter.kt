@@ -7,8 +7,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.thesis.note.R
 import com.thesis.note.database.entity.Tag
-import kotlinx.android.synthetic.main.recycler_view_add_tag_fragment.view.*
-
+import com.thesis.note.databinding.RecyclerViewAddTagFragmentBinding
 
 class AddTagFragmentAdapter (private val tagList:List<Tag>, private val onTagClickListener: OnTagClickListener)
     :RecyclerView.Adapter<AddTagFragmentAdapter.TagHolder>() {
@@ -34,7 +33,8 @@ class AddTagFragmentAdapter (private val tagList:List<Tag>, private val onTagCli
     }
 
     override fun onBindViewHolder(holder: TagHolder, position: Int) {
-        holder.objectLayout.tagNameButton.text = tagList[position].Name
+        val binding = RecyclerViewAddTagFragmentBinding.bind(holder.objectLayout)
+        binding.tagNameButton.text = tagList[position].Name
     }
 
     override fun getItemCount() = tagList.size

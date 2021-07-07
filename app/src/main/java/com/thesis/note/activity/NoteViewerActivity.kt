@@ -31,10 +31,11 @@ import com.thesis.note.*
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.*
+import com.thesis.note.databinding.ActivityNoteViewerBinding
+
 import com.thesis.note.recycler_view_adapters.NoteViewerAdapter
 import com.thesis.note.recycler_view_adapters.TagListAdapter
-import kotlinx.android.synthetic.main.activity_note_viewer.*
-import kotlinx.android.synthetic.main.activity_note_viewer.deleteButton
+
 
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -44,6 +45,7 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
 
     lateinit var drawerLayout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer
+    private lateinit var binding: ActivityNoteViewerBinding
 
     lateinit var db: AppDatabase
 
@@ -68,13 +70,13 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //setSupportActionBar(toolbar)
-        setContentView(R.layout.activity_note_viewer)
-        drawerLayout = activity_note_viewer_layout
+        binding = ActivityNoteViewerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        drawerLayout = binding.activityNoteViewerLayout
         navigationDrawer = NavigationDrawer(drawerLayout)
-        navigationView.setNavigationItemSelectedListener(this)
+        binding.navigationView.setNavigationItemSelectedListener(this)
 
-        val drawerToggle= ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.abdt,R.string.abdt)
+        val drawerToggle= ActionBarDrawerToggle(this,drawerLayout,binding.toolbar,R.string.abdt,R.string.abdt)
         drawerLayout.addDrawerListener(drawerToggle)
         drawerToggle.isDrawerIndicatorEnabled = true
         drawerToggle.syncState()
@@ -97,7 +99,7 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                 //Setting note name
                 noteViewerActivityContext.runOnUiThread(
                     fun(){
-                        noteName.text = Editable.Factory.getInstance().newEditable(note.Name)
+                        binding.noteName.text = Editable.Factory.getInstance().newEditable(note.Name)
                     }
                 )
                 //Data RecyclerView init
@@ -115,11 +117,11 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                     arrayGroupsString)
                 groupArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 groupArrayAdapter.insert(getString(R.string.groups_without_group),0)
-                groupSpinner.adapter = groupArrayAdapter
+                binding.groupSpinner.adapter = groupArrayAdapter
                 //set group of note
                 val group :Group? = groupsList.firstOrNull{ x -> x.IdGroup == note.GroupID}
                 if (group != null) {
-                    groupSpinner.setSelection(groupsList.indexOf(group)+1)
+                    binding.groupSpinner.setSelection(groupsList.indexOf(group)+1)
                 }
                 //set date
                 //TODO date
@@ -176,9 +178,9 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
             override fun onNothingSelected(parent: AdapterView<*>) {
             }
         }
-        groupSpinner.onItemSelectedListener = groupOnItemClickListener
+        binding.groupSpinner.onItemSelectedListener = groupOnItemClickListener
         //add tag button
-        addTagButton.setOnClickListener {
+        binding.addTagButton.setOnClickListener {
             val newFragment = AddTagsDialogFragment()
             val bundle = Bundle()
             bundle.putInt("noteID",noteID)
@@ -186,7 +188,7 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
             newFragment.show(supportFragmentManager, "add tags")
         }
         //remove button
-        deleteButton.setOnClickListener {
+        binding.deleteButton.setOnClickListener {
             GlobalScope.launch {
                 val db = AppDatabase(applicationContext)
                 db.noteDao().delete(note)
@@ -252,7 +254,7 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         //save name of note after change
         //TODO is this good solution?
         GlobalScope.launch {
-            note.Name = noteName.text.toString()
+            note.Name = binding.noteName.text.toString()
             db.noteDao().updateTodo(note)
         }
     }

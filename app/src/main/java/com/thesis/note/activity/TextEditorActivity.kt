@@ -27,11 +27,14 @@ import kotlinx.coroutines.launch
 import com.thesis.note.R
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
-import kotlinx.android.synthetic.main.activity_text_editor.*
+import com.thesis.note.databinding.ActivityTextEditorBinding
+
 
 class TextEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var drawer_layout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer
+    private lateinit var binding: ActivityTextEditorBinding
+
 //todo do sth with exitstInDB booleans
     var dataExistInDB:Boolean = false
     var noteExistInDB:Boolean = false
@@ -48,12 +51,13 @@ class TextEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_text_editor)
-        drawer_layout = activity_text_editor_layout
+        binding = ActivityTextEditorBinding.inflate(layoutInflater) //LAYOUT BINDING CLASS
+        setContentView(binding.root)
+        drawer_layout = binding.activityTextEditorLayout
         navigationDrawer = NavigationDrawer(drawer_layout)
-        navigationView.setNavigationItemSelectedListener(this)
+        binding.navigationView.setNavigationItemSelectedListener(this)
 
-        val drawerToggle= ActionBarDrawerToggle(this,drawer_layout,toolbar,R.string.abdt,R.string.abdt)
+        val drawerToggle= ActionBarDrawerToggle(this,drawer_layout,binding.toolbar,R.string.abdt,R.string.abdt)
         drawer_layout.addDrawerListener(drawerToggle)
         drawerToggle.isDrawerIndicatorEnabled = true
         drawerToggle.syncState()
@@ -77,7 +81,7 @@ class TextEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                     //show data in textField
                     TextEditorActivityContext.runOnUiThread(
                         fun(){
-                            textField.text = Editable.Factory.getInstance().newEditable(editedData.Content)
+                            binding.textField.text = Editable.Factory.getInstance().newEditable(editedData.Content)
                         })}}
             //check if new note
             noteExistInDB = noteID == -1
@@ -88,11 +92,11 @@ class TextEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         }
 
         //SAVE button
-        saveButton.setOnClickListener(object : View.OnClickListener{
+        binding.saveButton.setOnClickListener(object : View.OnClickListener{
             override fun onClick(v: View?) {
                 if(dataExistInDB){
                     //Update data
-                    editedData.Content = textField.text.toString()
+                    editedData.Content = binding.textField.text.toString()
                     GlobalScope.launch {
                         db.dataDao().updateTodo(editedData)
                     }
@@ -101,7 +105,7 @@ class TextEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                     if(noteExistInDB){
                     //Add new data to database
                     GlobalScope.launch {
-                        val newDataID = db.dataDao().insertAll(Data(0,noteID,NoteType.Text,textField.text.toString(),null))
+                        val newDataID = db.dataDao().insertAll(Data(0,noteID,NoteType.Text,binding.textField.text.toString(),null))
                         dataID = newDataID[0].toInt()
                         dataExistInDB = true
                     }}
@@ -111,7 +115,7 @@ class TextEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                             var idNewNote = db.noteDao().insertAll(Note(0,"",null,null,false,null,null,null))
                             noteID = idNewNote[0].toInt()
                             //add new data
-                            val newDataID = db.dataDao().insertAll(Data(0,noteID,NoteType.Text,textField.text.toString(),null))
+                            val newDataID = db.dataDao().insertAll(Data(0,noteID,NoteType.Text,binding.textField.text.toString(),null))
                             dataID = newDataID[0].toInt()
                             val note = db.noteDao().getNoteById(noteID)
                             note.MainData = dataID
@@ -131,7 +135,7 @@ class TextEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
             }})
 
         //REMOVE button
-        deleteButton.setOnClickListener(object : View.OnClickListener{
+        binding.deleteButton.setOnClickListener(object : View.OnClickListener{
             override fun onClick(v: View?) {
                 if(dataExistInDB)
                 GlobalScope.launch {

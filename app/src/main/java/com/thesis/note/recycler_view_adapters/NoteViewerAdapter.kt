@@ -9,11 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.thesis.note.R
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
-import kotlinx.android.synthetic.main.recycler_view_note_viewer_image.view.*
-import kotlinx.android.synthetic.main.recycler_view_note_viewer_text.view.*
+import com.thesis.note.databinding.RecyclerViewNoteViewerImageBinding
+import com.thesis.note.databinding.RecyclerViewNoteViewerTextBinding
 
-class NoteViewerAdapter (private var dataSet:List<Data>, private var onDataClickListener: OnDataClickListener)
-    :RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class NoteViewerAdapter (private var dataList:List<Data>, private var onDataClickListener: OnDataClickListener)
+    :RecyclerView.Adapter<NoteViewerAdapter.DataHolder>() {
 
     interface  OnDataClickListener {
         fun onDataClick(position:Int)
@@ -30,10 +30,10 @@ class NoteViewerAdapter (private var dataSet:List<Data>, private var onDataClick
     }
 
     override fun getItemViewType(position: Int): Int {
-        return dataSet[position].Type.id
+        return dataList[position].Type.id
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup,viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup,viewType: Int): DataHolder {
         when(viewType){
             NoteType.Text.id -> {
                 return DataHolder(
@@ -49,19 +49,19 @@ class NoteViewerAdapter (private var dataSet:List<Data>, private var onDataClick
         return error("ERROR: NoteViewerAdapter - viewType not found")
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: DataHolder, position: Int) {
        when(holder.itemViewType){
            NoteType.Text.id -> {
-               val viewHolder0: DataHolder = holder as DataHolder
-               viewHolder0.objectLayout.note_viewer_content.text = dataSet[position].Content
+               val binding = RecyclerViewNoteViewerTextBinding.bind(holder.objectLayout)
+               binding.noteViewerContent.text = dataList[position].Content
            }
            NoteType.Photo.id ->{
-               val viewHolder0: DataHolder = holder as DataHolder
-               val imageUri = Uri.parse(dataSet[position].Content)
-               viewHolder0.objectLayout.note_viewer_image!!.setImageURI(imageUri)
+               val binding = RecyclerViewNoteViewerImageBinding.bind(holder.objectLayout)
+               val imageUri = Uri.parse(dataList[position].Content)
+               binding.noteViewerImage!!.setImageURI(imageUri)
            }
        }
     }
 
-    override fun getItemCount() = dataSet.size
+    override fun getItemCount() = dataList.size
 }

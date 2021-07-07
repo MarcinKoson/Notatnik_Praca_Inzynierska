@@ -13,7 +13,7 @@ import com.thesis.note.NavigationDrawer
 import com.thesis.note.R
 import com.google.android.material.navigation.NavigationView
 
-import kotlinx.android.synthetic.main.activity_voice_to_text.*
+
 
 import android.view.View
 import android.speech.RecognizerIntent
@@ -26,12 +26,14 @@ import android.util.Log
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.thesis.note.databinding.ActivityVoiceToTextBinding
+
 
 @Deprecated("old")
 class VoiceToTextActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,View.OnClickListener {
     lateinit var drawer_layout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer
-
+    private lateinit var binding: ActivityVoiceToTextBinding
 
     lateinit var voiceRecognitor : SpeechRecognizer
 
@@ -39,20 +41,20 @@ class VoiceToTextActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-       // setSupportActionBar(toolbar)
-        setContentView(R.layout.activity_voice_to_text)      //NAZWA LAYOUTU
-        drawer_layout = activity_voice_to_text_layout;               //NAZWA DRAWER LAYOUTU
+        binding = ActivityVoiceToTextBinding.inflate(layoutInflater) //LAYOUT BINDING CLASS
+        setContentView(binding.root)
+        drawer_layout = binding.activityVoiceToTextLayout               //NAZWA DRAWER LAYOUTU
         navigationDrawer = NavigationDrawer(drawer_layout)
-        navigationView.setNavigationItemSelectedListener(this);
+        binding.navigationView.setNavigationItemSelectedListener(this);
 
-        val drawerToggle= ActionBarDrawerToggle(this,drawer_layout,toolbar,R.string.abdt,R.string.abdt)
+        val drawerToggle= ActionBarDrawerToggle(this,drawer_layout,binding.toolbar,R.string.abdt,R.string.abdt)
         drawer_layout.addDrawerListener(drawerToggle)
         drawerToggle.isDrawerIndicatorEnabled = true
         drawerToggle.syncState()
         //------------------------------------------------------------------------------------------
 
-        textViewA = template_textView
-        startRecordButton.setOnClickListener(this)
+        //textViewA = binding.template_textView
+        binding.startRecordButton.setOnClickListener(this)
 
         voiceRecognitor = SpeechRecognizer.createSpeechRecognizer(this)
         voiceRecognitor.setRecognitionListener(listener())

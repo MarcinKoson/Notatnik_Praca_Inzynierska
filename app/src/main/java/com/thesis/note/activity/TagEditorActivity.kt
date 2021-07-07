@@ -18,9 +18,8 @@ import kotlinx.coroutines.launch
 import com.thesis.note.R
 import com.thesis.note.recycler_view_adapters.TagsEditorAdapter
 import com.thesis.note.database.entity.Tag
-import kotlinx.android.synthetic.main.activity_groups_editor.addTagButtonToDb
-import kotlinx.android.synthetic.main.activity_groups_editor.nameOfNewTag
-import kotlinx.android.synthetic.main.activity_tags_editor.*
+import com.thesis.note.databinding.ActivityTagsEditorBinding
+
 
 //TODO
 class TagEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
@@ -28,6 +27,7 @@ class TagEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
     lateinit var drawerLayout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer
+    private lateinit var binding: ActivityTagsEditorBinding
 
     lateinit var db :AppDatabase
 
@@ -40,12 +40,13 @@ class TagEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_tags_editor)
-        drawerLayout = activity_tags_editor_layout
+        binding = ActivityTagsEditorBinding.inflate(layoutInflater) //LAYOUT BINDING CLASS
+        setContentView(binding.root)
+        drawerLayout = binding.activityTagsEditorLayout
         navigationDrawer = NavigationDrawer(drawerLayout)
-        navigationView.setNavigationItemSelectedListener(this)
+        binding.navigationView.setNavigationItemSelectedListener(this)
 
-        val drawerToggle= ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.abdt,R.string.abdt)
+        val drawerToggle= ActionBarDrawerToggle(this,drawerLayout,binding.toolbar,R.string.abdt,R.string.abdt)
         drawerLayout.addDrawerListener(drawerToggle)
         drawerToggle.isDrawerIndicatorEnabled = true
         drawerToggle.syncState()
@@ -64,9 +65,9 @@ class TagEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
         }
         //------------------------add Button-----------------------------------------
-        addTagButtonToDb.setOnClickListener {
+        binding.addTagButtonToDb.setOnClickListener {
             GlobalScope.launch {
-                db.tagDao().insertAll(Tag(0, nameOfNewTag.text.toString()))
+                db.tagDao().insertAll(Tag(0, binding.nameOfNewTag.text.toString()))
                 (contextThis as Activity).runOnUiThread {
                     contextThis.recreate()
                 }
