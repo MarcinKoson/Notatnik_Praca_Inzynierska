@@ -74,7 +74,8 @@ class ImageNoteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         drawerToggle.syncState()
         //------------------------------------------------------------------------------------------
         db = AppDatabase.invoke(this)
-        imageView = findViewById<View>(R.id.imageView) as ImageView
+        //imageView = findViewById<View>(R.id.imageView) as ImageView
+        imageView = binding.imageView
         //TODO ask for permissions earlier
         //TODO error when saving without permissions
         askForPermisions()

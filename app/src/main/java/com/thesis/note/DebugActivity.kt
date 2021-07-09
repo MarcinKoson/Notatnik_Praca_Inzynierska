@@ -23,6 +23,10 @@ class DebugActivity : AppCompatActivity() {
             startActivity(template)
         }
 
+        binding.testbutton.setOnClickListener{
+            val test = Intent(this, TestActivity::class.java)
+            startActivity(test)
+        }
         /*
         //DB remove
         deleteDBbutton.setOnClickListener(object: OnClickListener{
