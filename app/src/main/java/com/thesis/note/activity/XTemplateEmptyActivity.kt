@@ -23,7 +23,7 @@ class XTemplateEmptyActivity : AppCompatActivity(), NavigationView.OnNavigationI
         drawerLayout = binding.activityTemplateLayout     //ID DRAWER LAYOUTU
         navigationDrawer = NavigationDrawer(drawerLayout)
         binding.navigationView.setNavigationItemSelectedListener(this)
-        val drawerToggle= ActionBarDrawerToggle(this,drawerLayout,binding.toolbar,R.string.abdt,R.string.abdt)
+        val drawerToggle = ActionBarDrawerToggle(this,drawerLayout,binding.toolbar,R.string.abdt,R.string.abdt)
         drawerLayout.addDrawerListener(drawerToggle)
         drawerToggle.isDrawerIndicatorEnabled = true
         drawerToggle.syncState()

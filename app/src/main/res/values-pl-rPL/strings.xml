@@ -7,4 +7,7 @@
     <string name="note_type_sound">Dzwiękowa</string>
     <string name="note_type_photo">Zdjęcie</string>
     <string name="note_type_other">Inna</string>
+    <string name="activity_image_note_gallery">Otwórz Galerie</string>
+    <string name="activity_image_note_camera">Otwórz Aparat</string>
+    <string name="save_OK">Zapisano</string>
 </resources>

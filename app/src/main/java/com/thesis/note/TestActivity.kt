@@ -16,8 +16,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
-import com.thesis.note.databinding.DebugActivityBinding
-import com.thesis.note.databinding.TestActivityBinding
+
+import com.thesis.note.databinding.XActivityTestBinding
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.File
@@ -29,54 +29,22 @@ import java.util.*
 
 class TestActivity : AppCompatActivity() {
 
-    private lateinit var binding:TestActivityBinding
-
-    private lateinit var contextThis : Context
+    private lateinit var binding: XActivityTestBinding
+    private lateinit var contextThis: Context
 
     private var imageView: ImageView? = null
     val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
     { result: ActivityResult ->
 
         if (result.resultCode == Activity.RESULT_OK) {
-            val imageBitmap = result.data?.extras?.get("data") as Bitmap
-            imageView?.setImageBitmap(imageBitmap)
-
-
-
-            //  var nUri = imageUri?.path
-            //   nUri = nUri?.drop(6)
-            //   val imageFile = File(nUri)
-
-
-            // imageBitmap
-//TUTAJ
-
-/*
-            val currenttime = SimpleDateFormat("yyyy.MM.dd-HH:mm:ss")
-            val fileNameDate = "/image" + currenttime.format(Date())
-            val fileNameToCopy = File(sth, fileNameDate)
-            fileNameToCopy.createNewFile()
-
-
-            GlobalScope.launch {
-            val outStream = FileOutputStream(fileNameToCopy)
-            val kompre = imageBitmap.compress(Bitmap.CompressFormat.PNG, 0, outStream)
-
-            outStream.flush()
-            outStream.close()
-runOnUiThread {
-                binding.textView2.text = kompre.toString()}
+          //  val imageBitmap = result.data?.extras?.get("data") as Bitmap
+         //   imageView?.setImageBitmap(imageBitmap)
         }
-*/
-
-         //   binding.debugImageNote.text = fileNameToCopy.path
-           // val newFile = imageFile?.copyTo(fileNameToCopy, true)
-
-        }}
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = TestActivityBinding.inflate(layoutInflater)
+        binding = XActivityTestBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         contextThis = this.applicationContext
@@ -86,9 +54,7 @@ runOnUiThread {
             dispatchTakePictureIntent()
 
 
-
         }
-
 
 
     }
@@ -97,49 +63,34 @@ runOnUiThread {
 
     private fun dispatchTakePictureIntent() {
 
-        val takePictureIntent =
-        try {
-           // startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-               val inttus = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            val sth = contextThis.applicationContext. getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            // Ensure that there's a camera activity to handle the intent
+            takePictureIntent.resolveActivity(packageManager)?.also {
+                // Create the File where the photo should go
+                val photoFile: File? = try {
+                    createImageFile()
+                } catch (ex: IOException) {
+                    // Error occurred while creating the File
 
-            ///var nUri = imageUri?.path
-           // //nUri = nUri?.drop(6)
-        //    /val imageFile = File(nUri)
-
-
-            val currenttime = SimpleDateFormat("yyyy.MM.dd-HH:mm:ss")
-            val fileNameDate = "/image" + currenttime.format(Date())
-            val fileNameToCopy = File(sth, fileNameDate)
-            fileNameToCopy.createNewFile()
-
-          //  var nurisd = fileNameToCopy.toUri().path
-
-         //   nurisd= nurisd?.drop(6)
-
-
-            inttus.  putExtra(MediaStore.EXTRA_OUTPUT,
-                fileNameToCopy.toUri()
-                ///Uri.parse(nurisd)
-                )
-
-            startForResult.launch(inttus)
-        } catch (e: ActivityNotFoundException) {
-            // display error state to the user
+                    null
+                }
+                // Continue only if the File was successfully created
+                photoFile?.also {
+                    val photoURI: Uri = FileProvider.getUriForFile(
+                        this,
+                        "com.example.android.fileprovider",
+                        it
+                    )
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    //startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+                    startForResult.launch(takePictureIntent)
+                }
+            }
         }
-
-
-
-
-
-
-
-
-
-}
-
+    }
     lateinit var currentPhotoPath: String
 
+    @Throws(IOException::class)
     private fun createImageFile(): File {
         // Create an image file name
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
@@ -153,9 +104,6 @@ runOnUiThread {
             currentPhotoPath = absolutePath
         }
     }
-
-
-
 }
 
 

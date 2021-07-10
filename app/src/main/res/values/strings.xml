@@ -35,5 +35,14 @@
     <string name="note_type_photo">Photo</string>
     <string name="note_type_other">Other</string>
     <string name="error_template">TEMPLATE</string>
+    <string name="activity_image_note_gallery">Open Gallery</string>
+    <string name="activity_image_note_camera">Open Camera</string>
+    <string name="image">Image</string>
+    <string name="delete">Delete</string>
+    <string name="share">Share</string>
+    <string name="save">Save</string>
+    <string name="error_create_file">ERROR: CANNOT CREATE FILE</string>
+    <string name="save_OK">Data saved</string>
+    <string name="activity_image_note_no_image">There is no image chosen</string>
 
 </resources>

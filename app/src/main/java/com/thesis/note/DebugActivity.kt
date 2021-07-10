@@ -3,19 +3,16 @@ package com.thesis.note
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import com.thesis.note.activity.ImageNoteActivity
-import com.thesis.note.activity.ListActivity
 import com.thesis.note.activity.XTemplateEmptyActivity
-import com.thesis.note.databinding.DebugActivityBinding
+import com.thesis.note.databinding.XActivityDebugBinding
 
 class DebugActivity : AppCompatActivity() {
 
-    private lateinit var binding:DebugActivityBinding
+    private lateinit var binding:XActivityDebugBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DebugActivityBinding.inflate(layoutInflater)
+        binding = XActivityDebugBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.templatebutton.setOnClickListener{

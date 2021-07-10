@@ -23,7 +23,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/openGalleryButton"
-            app:srcCompat="@drawable/frame_transparent" />
+            app:srcCompat="@drawable/frame_transparent"
+            tools:ignore="ContentDescription" />
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -41,14 +42,16 @@
                 android:background="@drawable/ic_delete_black_24dp"
                 android:visibility="gone"
                 tools:layout_editor_absoluteX="371dp"
-                tools:layout_editor_absoluteY="8dp" />
+                tools:layout_editor_absoluteY="8dp"
+                android:contentDescription="@string/delete" />
 
             <ImageButton
                 android:id="@+id/saveButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:background="@drawable/ic_save_black_24dp" />
+                android:background="@drawable/ic_save_black_24dp"
+                android:contentDescription="@string/save" />
 
             <ImageButton
                 android:id="@+id/shareButton"
@@ -58,7 +61,8 @@
                 android:background="@drawable/ic_share_black_24dp"
                 android:visibility="gone"
                 tools:layout_editor_absoluteX="331dp"
-                tools:layout_editor_absoluteY="8dp" />
+                tools:layout_editor_absoluteY="8dp"
+                android:contentDescription="@string/share" />
 
             </androidx.appcompat.widget.Toolbar>
 
@@ -66,18 +70,17 @@
             android:id="@+id/openGalleryButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Otwórz Galerie"
+            android:text="@string/activity_image_note_gallery"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-        <TextView
-            android:id="@+id/debugImageNote"
+        <Button
+            android:id="@+id/openCameraButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
-            android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/openGalleryButton" />
+            android:text="@string/activity_image_note_camera"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,10 +1,15 @@
 package com.thesis.note.activity
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.thesis.note.NavigationDrawer
@@ -16,10 +21,14 @@ import com.thesis.note.databinding.ActivityAddNoteBinding
 
 
 //TODO
-class AddNoteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class AddNoteActivity
+    : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, ActivityCompat.OnRequestPermissionsResultCallback{
     lateinit var drawer_layout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer
     private lateinit var binding: ActivityAddNoteBinding
+    val activityContext = this
+
+    lateinit var ImageNoteIntent: Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,12 +49,13 @@ class AddNoteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
                 finish()
             }
 
-        val ImageNoteIntent = Intent(this, ImageNoteActivity::class.java)
+        ImageNoteIntent = Intent(this, ImageNoteActivity::class.java)
         ImageNoteIntent.putExtra("dataID", -1)
         ImageNoteIntent.putExtra("noteID", -1)
         binding.button4.setOnClickListener {
-            startActivity(ImageNoteIntent)
-            finish()
+
+            askForPermisions()
+
         }
     }
 
@@ -61,4 +71,43 @@ class AddNoteActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
             super.onBackPressed()
         }
     }
+
+
+    private fun askForPermisions() {
+
+        val permission = ActivityCompat.checkSelfPermission(
+            activityContext,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
+
+        val PERMISSIONS_STORAGE = arrayOf(
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activityContext, PERMISSIONS_STORAGE, 1)
+        }
+        else{
+            startActivity(ImageNoteIntent)
+            finish()
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if(grantResults.all { x -> x == PERMISSION_GRANTED }){
+            startActivity(ImageNoteIntent)
+            finish()
+        }
+        else{
+            Toast.makeText(applicationContext, "Brak uprawnień", Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
 }
