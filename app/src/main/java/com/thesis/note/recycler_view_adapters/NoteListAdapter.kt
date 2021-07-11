@@ -1,6 +1,6 @@
 package com.thesis.note.recycler_view_adapters
 
-import android.net.Uri
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +15,8 @@ import com.thesis.note.databinding.RecyclerViewNoteListPhotoBinding
 import com.thesis.note.databinding.RecyclerViewNoteListTextBinding
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlin.math.max
+import kotlin.math.min
 
 
 class NoteListAdapter (private var noteList: List<Note>, private var dataList:List<Data>, private val onNoteClickListener: OnNoteClickListener)
@@ -125,10 +127,22 @@ class NoteListAdapter (private var noteList: List<Note>, private var dataList:Li
                     }
                 )
                 //set content
-                binding.noteContentImage.setImageURI(Uri.parse(mainData?.Content))
+                ///binding.noteContentImage.setImageURI(Uri.parse(mainData?.Content))
+                setImage(binding, mainData?.Content )
             }
         }
     }
 
     override fun getItemCount() = noteList.size
+
+    private fun setImage(binding : RecyclerViewNoteListPhotoBinding, path:String?) {
+        //TODO image scaling
+        val opts = BitmapFactory.Options().apply {
+            inJustDecodeBounds = true
+            BitmapFactory.decodeFile(path, this)
+            inJustDecodeBounds = false
+            inSampleSize = max(1, min(outWidth / 150, outHeight / 150))
+        }
+        binding.noteContentImage.setImageBitmap(BitmapFactory.decodeFile(path, opts))
+    }
 }

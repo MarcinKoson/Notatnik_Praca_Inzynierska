@@ -1,4 +1,4 @@
-package com.thesis.note
+package com.thesis.note.test
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
+import com.thesis.note.R
 import com.thesis.note.activity.TextEditorActivityOld
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.entity.Note

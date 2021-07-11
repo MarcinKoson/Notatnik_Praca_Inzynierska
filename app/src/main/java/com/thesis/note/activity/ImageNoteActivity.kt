@@ -2,6 +2,7 @@ package com.thesis.note.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -28,6 +29,8 @@ import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.max
+import kotlin.math.min
 
 class ImageNoteActivity
     :AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -68,7 +71,10 @@ class ImageNoteActivity
                 //load image
                 GlobalScope.launch {
                     val data = db.dataDao().getDataById(noteID)
-                    binding.imageView.setImageURI(Uri.parse(data.Content))
+                    //binding.imageView.setImageURI(Uri.parse(data.Content))
+                    runOnUiThread{
+                        setImage(binding,data.Content)
+                    }
                 }
             }
         }
@@ -174,6 +180,8 @@ class ImageNoteActivity
             //Handle loaded image from gallery
             val imageUri = result.data?.data
             currentPhotoPath = imageUri?.path!!
+            //TODO image scaling
+            // setImage(binding,currentPhotoPath)
             binding.imageView.setImageURI(imageUri)
         }
 
@@ -184,7 +192,7 @@ class ImageNoteActivity
         if (result.resultCode == Activity.RESULT_OK) {
             imageState = ImageState.NewCameraImage
             //load image
-            binding.imageView.setImageURI(Uri.parse(currentPhotoPath))
+            setImage(binding,currentPhotoPath)
         }
     }
 
@@ -196,6 +204,17 @@ class ImageNoteActivity
         return File.createTempFile("image_${timeStamp}_",".jpg",storageDir).apply {
             currentPhotoPath = absolutePath
         }
+    }
+
+    private fun setImage(binding : ActivityImageNoteBinding, path:String?) {
+        //TODO image scaling
+        val opts = BitmapFactory.Options().apply {
+            inJustDecodeBounds = true
+            BitmapFactory.decodeFile(path, this)
+            inJustDecodeBounds = false
+            inSampleSize = max(1, min(outWidth / 150, outHeight / 150))
+        }
+        binding.imageView.setImageBitmap(BitmapFactory.decodeFile(path, opts))
     }
 
     enum class ImageState(val id:Int) {

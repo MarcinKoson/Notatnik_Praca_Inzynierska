@@ -79,8 +79,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
 
-
-
         //ADD button
         binding.addButton.setOnClickListener(object: View.OnClickListener{
             override fun onClick(v: View?) {

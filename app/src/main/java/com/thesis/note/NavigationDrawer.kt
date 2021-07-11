@@ -3,16 +3,13 @@ package com.thesis.note
 import android.content.Context
 import android.content.Intent
 import android.view.MenuItem
-import android.view.View
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.thesis.note.activity.AddNoteActivity
 import com.thesis.note.activity.ListActivity
 import com.thesis.note.activity.SettingsActivity
-import androidx.core.content.ContextCompat.startActivity
 import com.thesis.note.activity.MainActivity
-import com.thesis.note.R
+import com.thesis.note.test.DebugActivity
 
 
 class NavigationDrawer(drawer_layout: DrawerLayout) {

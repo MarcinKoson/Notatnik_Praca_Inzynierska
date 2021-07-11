@@ -1,4 +1,4 @@
-package com.thesis.note
+package com.thesis.note.test
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity

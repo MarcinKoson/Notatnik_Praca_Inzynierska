@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Note">
-        <activity android:name=".DebugActivity"
+        <activity android:name=".test.DebugActivity"
             android:noHistory="true"/>
 
         <activity android:name=".activity.XTemplateEmptyActivity"
@@ -28,7 +28,7 @@
             />
         <activity android:name=".activity.TagEditorActivity"
             />
-        <activity android:name="TestActivity"
+        <activity android:name=".test.TestActivity"
             />
         <activity android:name=".activity.SettingsActivity"
             android:noHistory="false"/>
@@ -39,7 +39,7 @@
             />
         <activity android:name=".activity.NoteViewerActivity"
             />
-        <receiver android:name=".TestWidget">
+        <receiver android:name=".test.TestWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
