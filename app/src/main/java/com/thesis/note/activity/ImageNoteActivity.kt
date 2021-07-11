@@ -29,7 +29,6 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-//TODO
 class ImageNoteActivity
     :AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var drawerLayout: DrawerLayout
@@ -101,16 +100,9 @@ class ImageNoteActivity
                 Toast.makeText(applicationContext, R.string.activity_image_note_no_image, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            if(imageState == ImageState.OldImage) {
-                //do nothing
-            }
             if(imageState == ImageState.NewGalleryImage || imageState == ImageState.NewCameraImage) {
-
                 if(imageState == ImageState.NewGalleryImage){
                     saveImageFromGallery()
-                }
-                if(imageState == ImageState.NewCameraImage){
-
                 }
                 //save to DB
                 if (noteID == -1 && dataID == -1) {
@@ -169,40 +161,10 @@ class ImageNoteActivity
         }
     }
 
-    //TODO new
-    private val activityContext = this
     private fun saveImageFromGallery(){
-        //val path = createImageFile()
-
-
-        //create data,copy to storage
-        //     Environment.getExternalStorageDirectory() + File.separator + "myApp" + File.separator
-        val sth = activityContext.applicationContext.getExternalFilesDir(null)
-        var nUri = currentPhotoPath
-        nUri = nUri?.drop(6)
-        val imageFile = File(nUri)
-
-        //    binding.debugImageNote.text = sth?.path
-        //val toF = imageUri?.toFile()
-
-        val currenttime = SimpleDateFormat("yyyy.MM.dd-HH:mm:ss")
-        val fileNameDate = "/image"+currenttime.format(Date())
-        val fileNameToCopy = File(sth,fileNameDate)
-        fileNameToCopy.createNewFile()
-        //   binding.debugImageNote.text = fileNameToCopy.path
-        val newFile  = imageFile?.copyTo(fileNameToCopy, true)
-
-
-        currentPhotoPath = newFile.path
-        //   val newFile = imageFile?.copyTo(sth!!, true)
-        //   val currenttime = SimpleDateFormat("yyyy.MM.dd-HH:mm:ss")
-
-        //  newFile.renameTo(File(sth,"image"+currenttime.toPattern()))
-
-        //db.dataDao().insertAll(Data(0,))
-        //create data
-
-
+        val oldFilePath = currentPhotoPath.drop(6) //remove "/raw/" from path
+        val oldFile = File(oldFilePath)
+        oldFile.copyTo(createImageFile(),true)
     }
 
     private val galleryStartForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
@@ -216,6 +178,7 @@ class ImageNoteActivity
         }
 
     }
+
     private val cameraStartForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
     { result: ActivityResult ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -228,7 +191,7 @@ class ImageNoteActivity
     @Throws(IOException::class)
     private fun createImageFile(): File {
         //Create an image file name
-        val timeStamp: String = SimpleDateFormat("yyyy.MM.dd-HH:mm:ss").format(Date())
+        val timeStamp: String = SimpleDateFormat("yyyy.MM.dd-HH:mm:ss", Locale.US).format(Date())
         val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile("image_${timeStamp}_",".jpg",storageDir).apply {
             currentPhotoPath = absolutePath
