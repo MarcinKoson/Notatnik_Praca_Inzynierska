@@ -3,7 +3,9 @@ package com.thesis.note.test
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.thesis.note.activity.SoundEditorActivity
 import com.thesis.note.activity.XTemplateEmptyActivity
+import com.thesis.note.databinding.ActivitySoundEditorBinding
 import com.thesis.note.databinding.XActivityDebugBinding
 
 class DebugActivity : AppCompatActivity() {
@@ -22,6 +24,11 @@ class DebugActivity : AppCompatActivity() {
 
         binding.testbutton.setOnClickListener{
             val test = Intent(this, TestActivity::class.java)
+            startActivity(test)
+        }
+
+        binding.button9.setOnClickListener {
+            val test = Intent(this, SoundEditorActivity::class.java)
             startActivity(test)
         }
         /*

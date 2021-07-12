@@ -44,5 +44,12 @@
     <string name="error_create_file">ERROR: CANNOT CREATE FILE</string>
     <string name="save_OK">Data saved</string>
     <string name="activity_image_note_no_image">There is no image chosen</string>
+    <string name="sound_editor_no_recording">No recording</string>
+    <string name="sound_editor_recording">Recording</string>
+    <string name="sound_editor_recorded">Recorded</string>
+    <string name="sound_editor_playing">Playing</string>
+    <string name="sound_editor_start_recording">Start recording</string>
+    <string name="sound_editor_stop_recording">Stop recording</string>
+    <string name="sound_editor_play">Play</string>
 
 </resources>

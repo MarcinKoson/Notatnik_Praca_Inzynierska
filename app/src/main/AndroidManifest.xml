@@ -28,8 +28,13 @@
             />
         <activity android:name=".activity.TagEditorActivity"
             />
+
         <activity android:name=".test.TestActivity"
             />
+
+        <activity android:name=".activity.SoundEditorActivity"
+            />
+
         <activity android:name=".activity.SettingsActivity"
             android:noHistory="false"/>
         <activity android:name=".activity.ImageNoteActivity"
@@ -71,4 +76,6 @@
     </application>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
 </manifest>
