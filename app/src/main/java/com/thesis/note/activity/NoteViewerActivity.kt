@@ -243,6 +243,12 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                 ImageNoteIntent.putExtra("noteID", noteID)
                 startActivity(ImageNoteIntent)
             }
+            NoteType.Sound.id -> {
+                val SoundNoteIntent = Intent(this, SoundEditorActivity::class.java)
+                SoundNoteIntent.putExtra("dataID", dataList[position].IdData)
+                SoundNoteIntent.putExtra("noteID", noteID)
+                startActivity(SoundNoteIntent)
+            }
             else -> {
                 Toast.makeText(applicationContext,"ERROR:NoteViewerActivity - cannot open data", Toast.LENGTH_SHORT).show()
             }

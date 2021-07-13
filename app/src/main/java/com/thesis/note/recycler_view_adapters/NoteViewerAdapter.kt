@@ -49,6 +49,12 @@ class NoteViewerAdapter (private var dataList:List<Data>, private var onDataClic
                     LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_note_viewer_image, parent, false) as ConstraintLayout
                     ,onDataClickListener)
             }
+            NoteType.Sound.id -> {
+                //TODO layout for sound notes
+                return DataHolder(
+                    LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_note_viewer_text, parent, false) as ConstraintLayout
+                    ,onDataClickListener)
+            }
         }
         return error("ERROR: NoteViewerAdapter - viewType not found")
     }
@@ -64,6 +70,10 @@ class NoteViewerAdapter (private var dataList:List<Data>, private var onDataClic
                //val imageUri = Uri.parse(dataList[position].Content)
                //binding.noteViewerImage!!.setImageURI(imageUri)
                setImage(binding,dataList[position].Content)
+           }
+           NoteType.Sound.id -> {
+               val binding = RecyclerViewNoteViewerTextBinding.bind(holder.objectLayout)
+               binding.noteViewerContent.text = "NAGRANIE \n\n"
            }
        }
     }

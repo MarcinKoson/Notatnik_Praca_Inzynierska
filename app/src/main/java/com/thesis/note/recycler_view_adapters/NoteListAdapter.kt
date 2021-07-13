@@ -57,6 +57,13 @@ class NoteListAdapter (private var noteList: List<Note>, private var dataList:Li
                     ,onNoteClickListener
                     )
             }
+            NoteType.Sound.id -> {
+                //TODO layout for sound notes
+                return NoteListViewHolder(
+                    LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_note_list_text, parent, false) as ConstraintLayout
+                    ,onNoteClickListener
+                )
+            }
             else ->{
                 return NoteListViewHolder(
                     LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_note_list_text, parent, false) as ConstraintLayout
@@ -129,6 +136,32 @@ class NoteListAdapter (private var noteList: List<Note>, private var dataList:Li
                 //set content
                 ///binding.noteContentImage.setImageURI(Uri.parse(mainData?.Content))
                 setImage(binding, mainData?.Content )
+            }
+            NoteType.Text.id -> {
+                val binding = RecyclerViewNoteListTextBinding.bind(holder.objectLayout)
+                //name, favorite, note type
+                binding.noteName.text = noteList[position].Name
+                binding.favoriteCheckBox.isChecked = noteList[position].Favorite
+                binding.noteType.text = noteTypeStr
+                //checking group
+                if(noteList[position].GroupID !=null)
+                    GlobalScope.launch {
+                        val groupName = AppDatabase(holder.objectLayout.context).groupDao().getId(noteList[position].GroupID!!).Name
+                        binding.tagName.text = groupName
+                    }
+                //set listener for favorite button
+                binding.favoriteCheckBox.setOnClickListener (
+                    fun (_:View){
+                        noteList[position].Favorite = binding.favoriteCheckBox.isChecked
+                        GlobalScope.launch{
+                            AppDatabase(holder.objectLayout.context).noteDao().update(noteList[position])
+                        }
+                    }
+                )
+                //set content
+                binding.noteListContent.text = "NAGRANIE \n\n"
+
+
             }
         }
     }

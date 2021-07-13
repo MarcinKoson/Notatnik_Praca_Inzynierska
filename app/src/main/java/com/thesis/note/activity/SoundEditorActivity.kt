@@ -1,6 +1,7 @@
 package com.thesis.note.activity
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.media.MediaRecorder
@@ -17,7 +18,9 @@ import com.thesis.note.NavigationDrawer
 import com.google.android.material.navigation.NavigationView
 import com.thesis.note.R
 import com.thesis.note.database.AppDatabase
+import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
+import com.thesis.note.database.entity.Note
 import com.thesis.note.databinding.ActivitySoundEditorBinding
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -36,6 +39,8 @@ class SoundEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     private var mediaRecorder: MediaRecorder? = null
     private var mediaPlayer: MediaPlayer? = null
     private var isRecording = false
+
+    private var isRecorded = false
 
     private var noteID = -1
     private var dataID = -1
@@ -57,18 +62,7 @@ class SoundEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         drawerToggle.syncState()
         //------------------------------------------------------------------------------------------
         //TODO move to add note
-        val permission = ActivityCompat.checkSelfPermission(
-            this,
-            Manifest.permission.RECORD_AUDIO
-        )
 
-        val PERMISSIONS_STORAGE = arrayOf(
-            Manifest.permission.RECORD_AUDIO
-        )
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, PERMISSIONS_STORAGE, 1)
-
-        }
 
         //------------
         db = AppDatabase.invoke(this)
@@ -90,6 +84,7 @@ class SoundEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                 data = db.dataDao().getDataById(dataID)
                 filePath = data?.Content!!
                 binding.soundEditorStatus.text = getString(R.string.sound_editor_recorded)
+                isRecorded = true
             }
         }
         binding.recordButton.setOnClickListener {
@@ -103,7 +98,44 @@ class SoundEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItem
             startPlaying()
         }
         binding.saveButton.setOnClickListener {
-            //TODO saving sound notes
+           if(!isRecorded){
+               Toast.makeText(applicationContext, R.string.sound_editor_no_recording, Toast.LENGTH_SHORT).show()
+           }
+            else{
+               if (noteID == -1 && dataID == -1) {
+                   //create intent for note viewer
+                   val noteViewerActivityIntent = Intent(this, NoteViewerActivity::class.java)
+                   //create new Note and Data
+                   GlobalScope.launch {
+                       val newNoteID =
+                           db.noteDao().insertAll(Note(0, "", null, null, false, null, null, null))
+                       val newDataID = db.dataDao().insertAll(
+                           Data(
+                               0,
+                               newNoteID[0].toInt(),
+                               NoteType.Sound,
+                               filePath,
+                               null))
+                       val newNote = db.noteDao().getNoteById(newNoteID[0].toInt())
+                       newNote.MainData = newDataID[0].toInt()
+                       db.noteDao().update(newNote)
+                       noteViewerActivityIntent.putExtra("noteID", newNote.IdNote)
+                       startActivity(noteViewerActivityIntent)
+                   }
+               }else if (dataID == -1) {
+                   //create new Data
+                   GlobalScope.launch {
+                       db.dataDao().insertAll(Data(0, noteID, NoteType.Photo, filePath, null))
+                   }
+               }else {
+                   //update Data
+                   GlobalScope.launch {
+                       val dataUpdate = db.dataDao().getDataById(dataID)
+                       dataUpdate.Content = filePath
+                       db.dataDao().update(dataUpdate)
+                   }
+               }
+           }
         }
     }
 
@@ -153,6 +185,7 @@ class SoundEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     private fun stopRecording() {
         binding.soundEditorStatus.text = getString(R.string.sound_editor_recorded)
+        isRecorded = true
         mediaRecorder?.apply {
             stop()
             release()

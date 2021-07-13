@@ -29,6 +29,9 @@ class AddNoteActivity
     val activityContext = this
 
     lateinit var ImageNoteIntent: Intent
+    lateinit var SoundNoteIntent: Intent
+
+    var noteType = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,9 +56,34 @@ class AddNoteActivity
         ImageNoteIntent.putExtra("dataID", -1)
         ImageNoteIntent.putExtra("noteID", -1)
         binding.button4.setOnClickListener {
-
+           noteType = 1
             askForPermisions()
+        }
 
+        SoundNoteIntent = Intent(this,SoundEditorActivity::class.java)
+
+        binding.button3.setOnClickListener {
+            noteType = 2
+            askForSoundPremissions()
+        }
+    }
+
+    private fun askForSoundPremissions() {
+        val permission = ActivityCompat.checkSelfPermission(
+            this,
+            Manifest.permission.RECORD_AUDIO
+        )
+
+        val PERMISSIONS_STORAGE = arrayOf(
+            Manifest.permission.RECORD_AUDIO
+        )
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, PERMISSIONS_STORAGE, 1)
+
+        }
+        else{
+            startActivity(SoundNoteIntent)
+            finish()
         }
     }
 
@@ -101,8 +129,14 @@ class AddNoteActivity
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         if(grantResults.all { x -> x == PERMISSION_GRANTED }){
-            startActivity(ImageNoteIntent)
-            finish()
+           if(noteType == 1) {
+               startActivity(ImageNoteIntent)
+               finish()
+           }
+            else{
+                startActivity(SoundNoteIntent)
+                finish()
+            }
         }
         else{
             Toast.makeText(applicationContext, "Brak uprawnień", Toast.LENGTH_SHORT).show()
