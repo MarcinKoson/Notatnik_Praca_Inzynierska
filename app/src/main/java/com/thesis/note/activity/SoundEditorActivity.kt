@@ -101,7 +101,9 @@ class SoundEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItem
            if(!isRecorded){
                Toast.makeText(applicationContext, R.string.sound_editor_no_recording, Toast.LENGTH_SHORT).show()
            }
-            else{
+            else if(isRecording) {
+               Toast.makeText(applicationContext, R.string.sound_editor_recording, Toast.LENGTH_SHORT).show()
+           }else{
                if (noteID == -1 && dataID == -1) {
                    //create intent for note viewer
                    val noteViewerActivityIntent = Intent(this, NoteViewerActivity::class.java)
@@ -171,6 +173,7 @@ class SoundEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     private fun startRecording() {
         binding.soundEditorStatus.text = getString(R.string.sound_editor_recording)
+        binding.recordButton.text = getString(R.string.sound_editor_stop_recording)
         isRecording = true
         mediaRecorder = MediaRecorder().apply {
             setAudioSource(MediaRecorder.AudioSource.MIC)
@@ -188,7 +191,9 @@ class SoundEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     private fun stopRecording() {
         binding.soundEditorStatus.text = getString(R.string.sound_editor_recorded)
+        binding.recordButton.text = getString(R.string.sound_editor_start_recording)
         isRecorded = true
+        isRecording = false
         mediaRecorder?.apply {
             stop()
             release()
