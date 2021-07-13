@@ -9,32 +9,35 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.thesis.note.NavigationDrawer
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.activity_settings.*
-import kotlinx.android.synthetic.main.template_empty_layout.navigationView
-import kotlinx.android.synthetic.main.template_empty_layout.toolbar
+
+
 import com.thesis.note.R
+import com.thesis.note.databinding.ActivitySettingsBinding
+
 
 class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var drawerLayout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer
+    private lateinit var binding: ActivitySettingsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
-        drawerLayout = settings_drawer_layout
+        binding = ActivitySettingsBinding.inflate(layoutInflater) //LAYOUT BINDING CLASS
+        setContentView(binding.root)
+        drawerLayout = binding.activitySettingsLayout
         navigationDrawer = NavigationDrawer(drawerLayout)
-        navigationView.setNavigationItemSelectedListener(this)
+        binding.navigationView.setNavigationItemSelectedListener(this)
 
-        val drawerToggle= ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.abdt,R.string.abdt)
+        val drawerToggle= ActionBarDrawerToggle(this,drawerLayout,binding.toolbar,R.string.abdt,R.string.abdt)
         drawerLayout.addDrawerListener(drawerToggle)
         drawerToggle.isDrawerIndicatorEnabled = true
         drawerToggle.syncState()
         //------------------------------------------------------------------------------------------
         val groupsEditorIntent = Intent(this, GroupsEditorActivity::class.java)
-        groupsEditor.setOnClickListener { startActivity(groupsEditorIntent) }
+        binding.groupsEditor.setOnClickListener { startActivity(groupsEditorIntent) }
 
         val tagsEditorIntent = Intent(this, TagEditorActivity::class.java)
-        tagsEditor.setOnClickListener { startActivity(tagsEditorIntent) }
+        binding.tagsEditor.setOnClickListener { startActivity(tagsEditorIntent) }
 
     }
 

@@ -11,15 +11,15 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.thesis.note.*
-import com.thesis.note.recycler_view_adapters.RecyclerViewAdapter.*
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.activity_list.*
+
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import com.thesis.note.R
+import com.thesis.note.databinding.ActivityListBinding
 import com.thesis.note.recycler_view_adapters.NoteListAdapter
 
 
@@ -27,8 +27,9 @@ import com.thesis.note.recycler_view_adapters.NoteListAdapter
 
 //TODO change layout manager to FlexboxLayoutManager
 class ListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, NoteListAdapter.OnNoteClickListener {
-    lateinit var drawer_layout: DrawerLayout
+    lateinit var drawerLayout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer
+    private lateinit var binding: ActivityListBinding
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
@@ -42,13 +43,14 @@ class ListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_list)
-        drawer_layout = list_layout;
-        navigationDrawer = NavigationDrawer(drawer_layout)
-        navigationView.setNavigationItemSelectedListener(this);
+        binding = ActivityListBinding.inflate(layoutInflater) //LAYOUT BINDING CLASS
+        setContentView(binding.root)
+        drawerLayout = binding.activityListLayout
+        navigationDrawer = NavigationDrawer(drawerLayout)
+        binding.navigationView.setNavigationItemSelectedListener(this);
 
-        val drawerToggle= ActionBarDrawerToggle(this,drawer_layout,toolbar,R.string.abdt,R.string.abdt)
-        drawer_layout.addDrawerListener(drawerToggle)
+        val drawerToggle= ActionBarDrawerToggle(this,drawerLayout,binding.toolbar,R.string.abdt,R.string.abdt)
+        drawerLayout.addDrawerListener(drawerToggle)
         drawerToggle.isDrawerIndicatorEnabled = true
         drawerToggle.syncState()
         //------------------------------------------------------------------------------------------
@@ -67,21 +69,21 @@ class ListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             //If no notes show message
             if(listOfNotes.isEmpty()){
-                listActivityMessage.visibility = android.view.View.VISIBLE
+                binding.listActivityMessage.visibility = android.view.View.VISIBLE
             }
         }
 
         //-------------------------
 
         //Add button
-        addButton.setOnClickListener(object: View.OnClickListener{
+        binding.addButton.setOnClickListener(object: View.OnClickListener{
             override fun onClick(v: View?) {
                 val intent = Intent(v?.context,AddNoteActivity::class.java)
                 startActivity(intent)
             }
         })
         //Find button
-        findButton.setOnClickListener(object: View.OnClickListener{
+        binding.findButton.setOnClickListener(object: View.OnClickListener{
             override fun onClick(v: View?) {
                 val intent = Intent(v?.context,SearchActivity::class.java)
                 startActivity(intent)
@@ -96,8 +98,8 @@ class ListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onBackPressed() {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-            drawer_layout.closeDrawer(GravityCompat.START)
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
         } else {
             super.onBackPressed()
         }
@@ -124,9 +126,9 @@ class ListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             runOnUiThread {
                 //If no notes show message
                 if (listOfNotes.isEmpty()) {
-                    listActivityMessage.visibility = View.VISIBLE
+                    binding.listActivityMessage.visibility = View.VISIBLE
                 } else
-                    listActivityMessage.visibility = View.GONE
+                    binding.listActivityMessage.visibility = View.GONE
             }
         }
     }

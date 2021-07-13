@@ -22,33 +22,19 @@ interface NoteDAO {
     fun delete(delete: Note)
 
     @Update
-    fun updateTodo(vararg update: Note)
+    fun update(vararg update: Note)
 
+    @Query("SELECT * FROM note WHERE GroupID IN(:groupsID) AND Favorite IN(:favorite) AND Name LIKE(:nameRegex)")
+    fun getFilteredGroup(
+        groupsID : List<Int?>,
+        favorite : List<Boolean>,
+        nameRegex : String = "%"
+    ): List<Note>
 
-  @Query("SELECT * FROM note WHERE GroupID IN(:groupsID) AND Favorite IN(:favorite) AND Name LIKE(:nameRegex)")
-  fun getFilteredGroup(
-      groupsID : List<Int?>,
-      favorite : List<Boolean>,
-      nameRegex : String = "%"
-  ): List<Note>
-
-  @Query("SELECT * FROM note WHERE Favorite IN(:favorite) AND Name LIKE(:nameRegex)")
+    @Query("SELECT * FROM note WHERE Favorite IN(:favorite) AND Name LIKE(:nameRegex)")
     fun getFiltered(
         favorite : List<Boolean>,
         nameRegex : String = "%"
     ): List<Note>
-    //fun getFilteredWithContent
-
-    /*
-    @Query("SELECT * FROM note JOIN tagOfNote WHERE NoteID=IdNote AND Type IN(:noteTypes)")
-    fun getFilteredWithTags(
-
-        tags : List<Int>,
-
-        noteTypes: List<NoteType> = NoteType.values().toList()
-
-    ):List<Note>
-    */
-    //fun getFilteredWithContentAngTags
 
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.thesis.note">
-
+<!-- Activity sort -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,10 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Note">
-        <activity android:name=".DebugActivity"
+        <activity android:name=".test.DebugActivity"
             android:noHistory="true"/>
 
-        <activity android:name=".activity.TemplateEmptyActivity"
+        <activity android:name=".activity.XTemplateEmptyActivity"
             />
         <activity android:name=".activity.TextEditorActivityOld"
             />
@@ -28,8 +28,13 @@
             />
         <activity android:name=".activity.TagEditorActivity"
             />
-        <activity android:name="TestActivity"
+
+        <activity android:name=".test.TestActivity"
             />
+
+        <activity android:name=".activity.SoundEditorActivity"
+            />
+
         <activity android:name=".activity.SettingsActivity"
             android:noHistory="false"/>
         <activity android:name=".activity.ImageNoteActivity"
@@ -39,7 +44,7 @@
             />
         <activity android:name=".activity.NoteViewerActivity"
             />
-        <receiver android:name=".TestWidget">
+        <receiver android:name=".test.TestWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -57,8 +62,20 @@
         </intent-filter>
         </activity>
 
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.thesis.note.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"></meta-data>
+        </provider>
+
 
     </application>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
 </manifest>

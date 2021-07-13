@@ -27,5 +27,29 @@
     <string-array name="background_color">
         <item>Kolor tła</item>
     </string-array>
+    <string name="error_empty">ERROR_EMPTY</string>
+    <string name="note_type_text">Text</string>
+    <string name="note_type_list">List</string>
+    <string name="note_type_video">Video</string>
+    <string name="note_type_sound">Sound</string>
+    <string name="note_type_photo">Photo</string>
+    <string name="note_type_other">Other</string>
+    <string name="error_template">TEMPLATE</string>
+    <string name="activity_image_note_gallery">Open Gallery</string>
+    <string name="activity_image_note_camera">Open Camera</string>
+    <string name="image">Image</string>
+    <string name="delete">Delete</string>
+    <string name="share">Share</string>
+    <string name="save">Save</string>
+    <string name="error_create_file">ERROR: CANNOT CREATE FILE</string>
+    <string name="save_OK">Data saved</string>
+    <string name="activity_image_note_no_image">There is no image chosen</string>
+    <string name="sound_editor_no_recording">No recording</string>
+    <string name="sound_editor_recording">Recording</string>
+    <string name="sound_editor_recorded">Recorded</string>
+    <string name="sound_editor_playing">Playing</string>
+    <string name="sound_editor_start_recording">Start recording</string>
+    <string name="sound_editor_stop_recording">Stop recording</string>
+    <string name="sound_editor_play">Play</string>
 
 </resources>

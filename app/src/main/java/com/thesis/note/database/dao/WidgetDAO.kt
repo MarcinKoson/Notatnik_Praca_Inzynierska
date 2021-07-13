@@ -15,5 +15,5 @@ interface WidgetDAO {
     fun delete(delete: Widget)
 
     @Update
-    fun updateTodo(vararg update: Widget)
+    fun update(vararg update: Widget)
 }

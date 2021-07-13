@@ -22,5 +22,5 @@ interface DataDAO {
     fun delete(delete: Data)
 
     @Update
-    fun updateTodo(vararg update: Data)
+    fun update(vararg update: Data)
 }

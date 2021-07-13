@@ -6,22 +6,24 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.thesis.note.database.AppDatabase
-import kotlinx.android.synthetic.main.recycler_view_gropus_layout.view.*
-import kotlinx.android.synthetic.main.recycler_view_layout.view.tagName
+
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import android.widget.PopupWindow
 import android.widget.LinearLayout
-//import android.R
+
 import android.content.Context.LAYOUT_INFLATER_SERVICE
 import android.view.inputmethod.InputMethodManager
-import kotlinx.android.synthetic.main.popup_edit_group.view.*
+
 import android.view.*
 import com.thesis.note.R
 import com.thesis.note.database.entity.Tag
-//TODO
-class TagsEditorRecyclerViewAdapter (private var myDataset: List<Tag>, onNoteListener: OnNoteListener, var context:Context) :
-    RecyclerView.Adapter<TagsEditorRecyclerViewAdapter.MyViewHolder>() {
+import com.thesis.note.databinding.PopupEditGroupBinding
+import com.thesis.note.databinding.RecyclerViewTagsEditorLayoutBinding
+
+//TODO context??
+class TagsEditorAdapter (private var myDataset: List<Tag>, onNoteListener: OnNoteListener, var context:Context) :
+    RecyclerView.Adapter<TagsEditorAdapter.MyViewHolder>() {
 
     private val mOnNoteListener = onNoteListener
 
@@ -53,10 +55,10 @@ class TagsEditorRecyclerViewAdapter (private var myDataset: List<Tag>, onNoteLis
 
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        val binding = RecyclerViewTagsEditorLayoutBinding.bind(holder.itemView)
+        binding.tagName.text = myDataset[position].Name
 
-        holder.textView.tagName.text = myDataset[position].Name
-
-        holder.textView.deleteButton.setOnClickListener {
+        binding.deleteButton.setOnClickListener {
             GlobalScope.launch {
                 val db = AppDatabase(context)
                 db.tagDao().delete(myDataset[position])
@@ -69,25 +71,26 @@ class TagsEditorRecyclerViewAdapter (private var myDataset: List<Tag>, onNoteLis
             }
         }
 
-        holder.textView.editTagButton.setOnClickListener(object : View.OnClickListener {
+        binding.editTagButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
 
                 (context as Activity).runOnUiThread {
-
+                    //TODO fix
                     val inflater = (context as Activity).getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
                     val popupView = inflater.inflate(R.layout.popup_edit_group, null)
+                    val bindingPopup = PopupEditGroupBinding.bind(popupView)
 
-                    popupView.newGroupName.setText(myDataset[position].Name)
-                    popupView.newGroupName.setSelection( popupView.newGroupName.text.length)
+                    bindingPopup.newGroupName.setText(myDataset[position].Name)
+                    bindingPopup.newGroupName.setSelection( bindingPopup.newGroupName.text.length)
 
-                    popupView.newGroupName.setOnKeyListener { v, keyCode, event ->
+                    bindingPopup.newGroupName.setOnKeyListener { v, keyCode, event ->
                         if (event?.action != KeyEvent.ACTION_DOWN) {
                             //TODO do funkcji
                             GlobalScope.launch {
                                 val db = AppDatabase(context)
                                 val newGroup = myDataset[position]
-                                newGroup.Name = popupView.newGroupName.text.toString()
-                                db.tagDao().updateTodo(newGroup)
+                                newGroup.Name = bindingPopup.newGroupName.text.toString()
+                                db.tagDao().update(newGroup)
                                 (context as Activity).runOnUiThread {
                                     (context as Activity).recreate()
                                 }
@@ -99,12 +102,12 @@ class TagsEditorRecyclerViewAdapter (private var myDataset: List<Tag>, onNoteLis
 
 
 
-                    popupView.saveGroupButton.setOnClickListener { //TODO do funkcji
+                    bindingPopup.saveGroupButton.setOnClickListener { //TODO do funkcji
                         GlobalScope.launch {
                             val db = AppDatabase(context)
                             val newTag = myDataset[position]
-                            newTag.Name = popupView.newGroupName.text.toString()
-                            db.tagDao().updateTodo(newTag)
+                            newTag.Name = bindingPopup.newGroupName.text.toString()
+                            db.tagDao().update(newTag)
                             (context as Activity).runOnUiThread {
                                 (context as Activity).recreate()
                             }
@@ -116,7 +119,7 @@ class TagsEditorRecyclerViewAdapter (private var myDataset: List<Tag>, onNoteLis
                     val focusable = true // lets taps outside the popup also dismiss it
                     val popupWindow = PopupWindow(popupView, width, height, focusable)
 
-                    popupView.newGroupName.requestFocus()
+                    bindingPopup.newGroupName.requestFocus()
                     val imm = (context as Activity).getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
                     imm!!.toggleSoftInput(
                         InputMethodManager.SHOW_FORCED,
