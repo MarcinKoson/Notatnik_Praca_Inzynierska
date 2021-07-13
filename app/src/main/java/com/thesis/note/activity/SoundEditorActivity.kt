@@ -125,7 +125,7 @@ class SoundEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                }else if (dataID == -1) {
                    //create new Data
                    GlobalScope.launch {
-                       db.dataDao().insertAll(Data(0, noteID, NoteType.Photo, filePath, null))
+                       db.dataDao().insertAll(Data(0, noteID, NoteType.Sound, filePath, null))
                    }
                }else {
                    //update Data
@@ -135,7 +135,10 @@ class SoundEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                        db.dataDao().update(dataUpdate)
                    }
                }
-           }
+               Toast.makeText(applicationContext, R.string.save_OK, Toast.LENGTH_SHORT).show()
+               finish()
+            }
+
         }
     }
 

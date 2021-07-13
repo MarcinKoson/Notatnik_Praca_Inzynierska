@@ -137,7 +137,7 @@ class NoteListAdapter (private var noteList: List<Note>, private var dataList:Li
                 ///binding.noteContentImage.setImageURI(Uri.parse(mainData?.Content))
                 setImage(binding, mainData?.Content )
             }
-            NoteType.Text.id -> {
+            NoteType.Sound.id -> {
                 val binding = RecyclerViewNoteListTextBinding.bind(holder.objectLayout)
                 //name, favorite, note type
                 binding.noteName.text = noteList[position].Name
