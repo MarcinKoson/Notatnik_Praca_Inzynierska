@@ -212,7 +212,7 @@ class ImageNoteActivity
             inJustDecodeBounds = true
             BitmapFactory.decodeFile(path, this)
             inJustDecodeBounds = false
-            inSampleSize = max(1, min(outWidth / 150, outHeight / 150))
+            inSampleSize = max(1, min(outWidth / 600, outHeight / 600))
         }
         binding.imageView.setImageBitmap(BitmapFactory.decodeFile(path, opts))
     }
