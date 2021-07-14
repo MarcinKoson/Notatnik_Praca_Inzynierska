@@ -1,7 +1,9 @@
 package com.thesis.note.activity
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
@@ -24,6 +26,10 @@ import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
 import com.thesis.note.databinding.ActivityImageNoteBinding
+import id.zelory.compressor.Compressor
+import id.zelory.compressor.constraint.destination
+import id.zelory.compressor.constraint.format
+import id.zelory.compressor.constraint.size
 import kotlinx.coroutines.*
 import java.io.File
 import java.io.IOException
@@ -38,6 +44,7 @@ class ImageNoteActivity
     lateinit var navigationDrawer : NavigationDrawer
     private lateinit var binding: ActivityImageNoteBinding
     private lateinit var db: AppDatabase
+    private lateinit var activityContext: Context
 
     //note&data ID
     private var noteID = -1
@@ -59,6 +66,7 @@ class ImageNoteActivity
         drawerToggle.isDrawerIndicatorEnabled = true
         drawerToggle.syncState()
         //------------------------------------------------------------------------------------------
+        activityContext = this
         //open database
         db = AppDatabase.invoke(this)
         //get parameters
@@ -110,6 +118,22 @@ class ImageNoteActivity
                 if(imageState == ImageState.NewGalleryImage){
                     saveImageFromGallery()
                 }
+                //create thumbnail
+               // val thumbnail = createThumbnailOfCurrentPhoto()
+                val imageToCompress = File(currentPhotoPath)
+                val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+                val thumbnailFile = File(storageDir, imageToCompress.name.dropLast(4)+"_thumbnail.jpg").apply {
+                    createNewFile()
+                }
+                GlobalScope.launch {
+                    Compressor.compress(activityContext, imageToCompress){
+                        size(100000)
+                        format(Bitmap.CompressFormat.JPEG)
+                        destination(thumbnailFile)
+                    }
+                }
+
+
                 //save to DB
                 if (noteID == -1 && dataID == -1) {
                     //create intent for note viewer
@@ -124,7 +148,7 @@ class ImageNoteActivity
                                 newNoteID[0].toInt(),
                                 NoteType.Photo,
                                 currentPhotoPath,
-                                null
+                                thumbnailFile?.absolutePath
                             )
                         )
                         val newNote = db.noteDao().getNoteById(newNoteID[0].toInt())
@@ -137,18 +161,18 @@ class ImageNoteActivity
                 }else if (dataID == -1) {
                     //create new Data
                     GlobalScope.launch {
-                        db.dataDao().insertAll(Data(0, noteID, NoteType.Photo, currentPhotoPath, null))
+                        db.dataDao().insertAll(Data(0, noteID, NoteType.Photo, currentPhotoPath, thumbnailFile?.absolutePath))
                     }
                 }else {
                     //update Data
                     GlobalScope.launch {
                         val dataUpdate = db.dataDao().getDataById(dataID)
                         dataUpdate.Content = currentPhotoPath
+                        dataUpdate.Info = thumbnailFile?.absolutePath
                         db.dataDao().update(dataUpdate)
                     }
                 }
             }
-
             Toast.makeText(applicationContext, R.string.save_OK, Toast.LENGTH_SHORT).show()
             finish()
         }
@@ -201,13 +225,16 @@ class ImageNoteActivity
         //Create an image file name
         val timeStamp: String = SimpleDateFormat("yyyy.MM.dd-HH:mm:ss", Locale.US).format(Date())
         val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile("image_${timeStamp}_",".jpg",storageDir).apply {
+        // return File.createTempFile("image_${timeStamp}_",".jpg",storageDir).apply {
+        //   currentPhotoPath = absolutePath
+        // }
+        return File(storageDir, "image_${timeStamp}.jpg").apply {
+            createNewFile()
             currentPhotoPath = absolutePath
         }
     }
 
-    private fun setImage(binding : ActivityImageNoteBinding, path:String?) {
-        //TODO image scaling
+    private fun setImageScaling(binding : ActivityImageNoteBinding, path:String?) {
         val opts = BitmapFactory.Options().apply {
             inJustDecodeBounds = true
             BitmapFactory.decodeFile(path, this)
@@ -215,6 +242,16 @@ class ImageNoteActivity
             inSampleSize = max(1, min(outWidth / 600, outHeight / 600))
         }
         binding.imageView.setImageBitmap(BitmapFactory.decodeFile(path, opts))
+    }
+
+    private fun setImage(binding : ActivityImageNoteBinding, path:String?){
+        binding.imageView.setImageURI(Uri.parse(path))
+    }
+
+    private fun createThumbnailOfCurrentPhoto(): File?{
+
+      //  return thumbnailFile
+        return null
     }
 
     enum class ImageState(val id:Int) {

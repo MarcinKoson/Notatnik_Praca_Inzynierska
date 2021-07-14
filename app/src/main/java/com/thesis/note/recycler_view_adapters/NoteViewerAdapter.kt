@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.thesis.note.R
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
-import com.thesis.note.databinding.RecyclerViewNoteListPhotoBinding
 import com.thesis.note.databinding.RecyclerViewNoteViewerImageBinding
 import com.thesis.note.databinding.RecyclerViewNoteViewerTextBinding
 import kotlin.math.max
@@ -29,7 +28,7 @@ class NoteViewerAdapter (private var dataList:List<Data>, private var onDataClic
             objectLayout.setOnClickListener(this)
         }
         override fun onClick(v: View?) {
-            listener.onDataClick(adapterPosition);
+            listener.onDataClick(adapterPosition)
         }
     }
 
@@ -69,7 +68,7 @@ class NoteViewerAdapter (private var dataList:List<Data>, private var onDataClic
                val binding = RecyclerViewNoteViewerImageBinding.bind(holder.objectLayout)
                //val imageUri = Uri.parse(dataList[position].Content)
                //binding.noteViewerImage!!.setImageURI(imageUri)
-               setImage(binding,dataList[position].Content)
+               setImage(binding,dataList[position].Info)
            }
            NoteType.Sound.id -> {
                val binding = RecyclerViewNoteViewerTextBinding.bind(holder.objectLayout)
@@ -81,8 +80,7 @@ class NoteViewerAdapter (private var dataList:List<Data>, private var onDataClic
 
     override fun getItemCount() = dataList.size
 
-    private fun setImage(binding : RecyclerViewNoteViewerImageBinding, path:String?) {
-        //TODO image scaling
+    private fun setImageScaling(binding : RecyclerViewNoteViewerImageBinding, path:String?) {
         val opts = BitmapFactory.Options().apply {
             inJustDecodeBounds = true
             BitmapFactory.decodeFile(path, this)
@@ -91,4 +89,10 @@ class NoteViewerAdapter (private var dataList:List<Data>, private var onDataClic
         }
         binding.noteViewerImage.setImageBitmap(BitmapFactory.decodeFile(path, opts))
     }
+
+    private fun setImage(binding : RecyclerViewNoteViewerImageBinding, path:String?){
+        if(path != null)
+        binding.noteViewerImage?.setImageURI(Uri.parse(path))
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.thesis.note.recycler_view_adapters
 
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -135,7 +136,7 @@ class NoteListAdapter (private var noteList: List<Note>, private var dataList:Li
                 )
                 //set content
                 ///binding.noteContentImage.setImageURI(Uri.parse(mainData?.Content))
-                setImage(binding, mainData?.Content )
+                setImage(binding, mainData?.Info )
             }
             NoteType.Sound.id -> {
                 val binding = RecyclerViewNoteListTextBinding.bind(holder.objectLayout)
@@ -168,7 +169,7 @@ class NoteListAdapter (private var noteList: List<Note>, private var dataList:Li
 
     override fun getItemCount() = noteList.size
 
-    private fun setImage(binding : RecyclerViewNoteListPhotoBinding, path:String?) {
+    private fun setImageScaling(binding : RecyclerViewNoteListPhotoBinding, path:String?) {
         //TODO image scaling
         val opts = BitmapFactory.Options().apply {
             inJustDecodeBounds = true
@@ -178,4 +179,10 @@ class NoteListAdapter (private var noteList: List<Note>, private var dataList:Li
         }
         binding.noteContentImage.setImageBitmap(BitmapFactory.decodeFile(path, opts))
     }
+
+    private fun setImage(binding : RecyclerViewNoteListPhotoBinding, path:String?){
+        if(path != null)
+        binding.noteContentImage.setImageURI(Uri.parse(path))
+    }
+
 }

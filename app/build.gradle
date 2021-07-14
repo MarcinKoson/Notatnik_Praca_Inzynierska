@@ -69,5 +69,6 @@ dependencies {
     implementation("androidx.fragment:fragment-ktx:$fragment_version")
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
 
+    implementation 'id.zelory:compressor:3.0.1'
 
 }
