@@ -37,6 +37,8 @@
             android:noHistory="false"/>
         <activity android:name=".activity.SoundEditorActivity"
             />
+        <activity android:name=".activity.SpeechToTextActivity"
+            />
         <activity android:name=".activity.TagEditorActivity"
             />
         <activity android:name=".activity.TextEditorActivity"
