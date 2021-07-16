@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import com.thesis.note.NavigationDrawer
 import com.thesis.note.R
@@ -81,7 +82,12 @@ class ImageNoteActivity
                     val data = db.dataDao().getDataById(noteID)
                     //binding.imageView.setImageURI(Uri.parse(data.Content))
                     runOnUiThread{
-                        setImage(binding,data.Content)
+                        //setImage(binding,data.Content)
+                        Glide.with(activityContext)
+                            .load(data.Content)
+                            .fitCenter()
+                            .placeholder(R.drawable.ic_search_black_24dp)
+                            .into(binding.imageView)
                     }
                 }
             }
@@ -120,6 +126,7 @@ class ImageNoteActivity
                 }
                 //create thumbnail
                // val thumbnail = createThumbnailOfCurrentPhoto()
+                /*
                 val imageToCompress = File(currentPhotoPath)
                 val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
                 val thumbnailFile = File(storageDir, imageToCompress.name.dropLast(4)+"_thumbnail.jpg").apply {
@@ -132,7 +139,7 @@ class ImageNoteActivity
                         destination(thumbnailFile)
                     }
                 }
-
+*/
 
                 //save to DB
                 if (noteID == -1 && dataID == -1) {
@@ -148,7 +155,8 @@ class ImageNoteActivity
                                 newNoteID[0].toInt(),
                                 NoteType.Photo,
                                 currentPhotoPath,
-                                thumbnailFile?.absolutePath
+                                //thumbnailFile?.absolutePath
+                                null
                             )
                         )
                         val newNote = db.noteDao().getNoteById(newNoteID[0].toInt())
@@ -161,14 +169,14 @@ class ImageNoteActivity
                 }else if (dataID == -1) {
                     //create new Data
                     GlobalScope.launch {
-                        db.dataDao().insertAll(Data(0, noteID, NoteType.Photo, currentPhotoPath, thumbnailFile?.absolutePath))
+                        db.dataDao().insertAll(Data(0, noteID, NoteType.Photo, currentPhotoPath,null)) //thumbnailFile?.absolutePath))
                     }
                 }else {
                     //update Data
                     GlobalScope.launch {
                         val dataUpdate = db.dataDao().getDataById(dataID)
                         dataUpdate.Content = currentPhotoPath
-                        dataUpdate.Info = thumbnailFile?.absolutePath
+                        dataUpdate.Info = null //thumbnailFile?.absolutePath
                         db.dataDao().update(dataUpdate)
                     }
                 }
@@ -208,7 +216,6 @@ class ImageNoteActivity
             // setImage(binding,currentPhotoPath)
             binding.imageView.setImageURI(imageUri)
         }
-
     }
 
     private val cameraStartForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
@@ -229,8 +236,8 @@ class ImageNoteActivity
         //   currentPhotoPath = absolutePath
         // }
         return File(storageDir, "image_${timeStamp}.jpg").apply {
-            createNewFile()
             currentPhotoPath = absolutePath
+            createNewFile()
         }
     }
 

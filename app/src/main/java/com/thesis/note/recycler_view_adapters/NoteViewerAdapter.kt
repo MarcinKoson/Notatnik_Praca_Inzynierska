@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.thesis.note.R
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
@@ -68,7 +69,12 @@ class NoteViewerAdapter (private var dataList:List<Data>, private var onDataClic
                val binding = RecyclerViewNoteViewerImageBinding.bind(holder.objectLayout)
                //val imageUri = Uri.parse(dataList[position].Content)
                //binding.noteViewerImage!!.setImageURI(imageUri)
-               setImage(binding,dataList[position].Info)
+               //setImage(binding,dataList[position].Info)
+               Glide.with(holder.itemView)
+                   .load(dataList[position]?.Content)
+                   .fitCenter()
+                   .placeholder(R.drawable.ic_search_black_24dp)
+                   .into(binding.noteViewerImage)
            }
            NoteType.Sound.id -> {
                val binding = RecyclerViewNoteViewerTextBinding.bind(holder.objectLayout)

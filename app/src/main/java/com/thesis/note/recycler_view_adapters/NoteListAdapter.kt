@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.thesis.note.R
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.NoteType
@@ -136,7 +137,12 @@ class NoteListAdapter (private var noteList: List<Note>, private var dataList:Li
                 )
                 //set content
                 ///binding.noteContentImage.setImageURI(Uri.parse(mainData?.Content))
-                setImage(binding, mainData?.Info )
+                //setImage(binding, mainData?.Info )
+                Glide.with(holder.itemView)
+                    .load(mainData?.Content)
+                    .fitCenter()
+                    .placeholder(R.drawable.ic_search_black_24dp)
+                    .into(binding.noteContentImage)
             }
             NoteType.Sound.id -> {
                 val binding = RecyclerViewNoteListTextBinding.bind(holder.objectLayout)
@@ -182,7 +188,8 @@ class NoteListAdapter (private var noteList: List<Note>, private var dataList:Li
 
     private fun setImage(binding : RecyclerViewNoteListPhotoBinding, path:String?){
         if(path != null)
-        binding.noteContentImage.setImageURI(Uri.parse(path))
+            binding.noteContentImage.setImageURI(Uri.parse(path))
+
     }
 
 }
