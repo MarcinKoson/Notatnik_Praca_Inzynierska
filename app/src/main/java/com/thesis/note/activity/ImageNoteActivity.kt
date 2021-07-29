@@ -3,8 +3,6 @@ package com.thesis.note.activity
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -27,17 +25,11 @@ import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
 import com.thesis.note.databinding.ActivityImageNoteBinding
-import id.zelory.compressor.Compressor
-import id.zelory.compressor.constraint.destination
-import id.zelory.compressor.constraint.format
-import id.zelory.compressor.constraint.size
 import kotlinx.coroutines.*
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.math.max
-import kotlin.math.min
 
 class ImageNoteActivity
     :AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -80,14 +72,8 @@ class ImageNoteActivity
                 //load image
                 GlobalScope.launch {
                     val data = db.dataDao().getDataById(noteID)
-                    //binding.imageView.setImageURI(Uri.parse(data.Content))
                     runOnUiThread{
-                        //setImage(binding,data.Content)
-                        Glide.with(activityContext)
-                            .load(data.Content)
-                            .fitCenter()
-                            .placeholder(R.drawable.ic_search_black_24dp)
-                            .into(binding.imageView)
+                        setImage(data.Content)
                     }
                 }
             }
@@ -124,23 +110,6 @@ class ImageNoteActivity
                 if(imageState == ImageState.NewGalleryImage){
                     saveImageFromGallery()
                 }
-                //create thumbnail
-               // val thumbnail = createThumbnailOfCurrentPhoto()
-                /*
-                val imageToCompress = File(currentPhotoPath)
-                val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-                val thumbnailFile = File(storageDir, imageToCompress.name.dropLast(4)+"_thumbnail.jpg").apply {
-                    createNewFile()
-                }
-                GlobalScope.launch {
-                    Compressor.compress(activityContext, imageToCompress){
-                        size(100000)
-                        format(Bitmap.CompressFormat.JPEG)
-                        destination(thumbnailFile)
-                    }
-                }
-*/
-
                 //save to DB
                 if (noteID == -1 && dataID == -1) {
                     //create intent for note viewer
@@ -155,7 +124,6 @@ class ImageNoteActivity
                                 newNoteID[0].toInt(),
                                 NoteType.Photo,
                                 currentPhotoPath,
-                                //thumbnailFile?.absolutePath
                                 null
                             )
                         )
@@ -169,14 +137,14 @@ class ImageNoteActivity
                 }else if (dataID == -1) {
                     //create new Data
                     GlobalScope.launch {
-                        db.dataDao().insertAll(Data(0, noteID, NoteType.Photo, currentPhotoPath,null)) //thumbnailFile?.absolutePath))
+                        db.dataDao().insertAll(Data(0, noteID, NoteType.Photo, currentPhotoPath,null))
                     }
                 }else {
                     //update Data
                     GlobalScope.launch {
                         val dataUpdate = db.dataDao().getDataById(dataID)
                         dataUpdate.Content = currentPhotoPath
-                        dataUpdate.Info = null //thumbnailFile?.absolutePath
+                        dataUpdate.Info = null
                         db.dataDao().update(dataUpdate)
                     }
                 }
@@ -200,9 +168,8 @@ class ImageNoteActivity
     }
 
     private fun saveImageFromGallery(){
-        val oldFilePath = currentPhotoPath.drop(6) //remove "/raw/" from path
-        val oldFile = File(oldFilePath)
-        oldFile.copyTo(createImageFile(),true)
+        val originalFile = File(currentPhotoPath)
+        originalFile.copyTo(createImageFile(),true)
     }
 
     private val galleryStartForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
@@ -212,9 +179,8 @@ class ImageNoteActivity
             //Handle loaded image from gallery
             val imageUri = result.data?.data
             currentPhotoPath = imageUri?.path!!
-            //TODO image scaling
-            // setImage(binding,currentPhotoPath)
-            binding.imageView.setImageURI(imageUri)
+            currentPhotoPath = currentPhotoPath.drop(6)  //remove "/raw/" from path
+            setImage(currentPhotoPath)
         }
     }
 
@@ -223,7 +189,7 @@ class ImageNoteActivity
         if (result.resultCode == Activity.RESULT_OK) {
             imageState = ImageState.NewCameraImage
             //load image
-            setImage(binding,currentPhotoPath)
+            setImage(currentPhotoPath)
         }
     }
 
@@ -232,33 +198,18 @@ class ImageNoteActivity
         //Create an image file name
         val timeStamp: String = SimpleDateFormat("yyyy.MM.dd-HH:mm:ss", Locale.US).format(Date())
         val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        // return File.createTempFile("image_${timeStamp}_",".jpg",storageDir).apply {
-        //   currentPhotoPath = absolutePath
-        // }
         return File(storageDir, "image_${timeStamp}.jpg").apply {
             currentPhotoPath = absolutePath
             createNewFile()
         }
     }
 
-    private fun setImageScaling(binding : ActivityImageNoteBinding, path:String?) {
-        val opts = BitmapFactory.Options().apply {
-            inJustDecodeBounds = true
-            BitmapFactory.decodeFile(path, this)
-            inJustDecodeBounds = false
-            inSampleSize = max(1, min(outWidth / 600, outHeight / 600))
-        }
-        binding.imageView.setImageBitmap(BitmapFactory.decodeFile(path, opts))
-    }
-
-    private fun setImage(binding : ActivityImageNoteBinding, path:String?){
-        binding.imageView.setImageURI(Uri.parse(path))
-    }
-
-    private fun createThumbnailOfCurrentPhoto(): File?{
-
-      //  return thumbnailFile
-        return null
+    private fun setImage(path:String?){
+        Glide.with(activityContext)
+            .load(path)
+            .fitCenter()
+            .placeholder(R.drawable.ic_loading_24)
+            .into(binding.chosenImage)
     }
 
     enum class ImageState(val id:Int) {
