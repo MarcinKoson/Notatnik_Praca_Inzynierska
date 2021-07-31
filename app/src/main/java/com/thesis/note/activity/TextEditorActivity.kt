@@ -105,17 +105,17 @@ class TextEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                     if(noteExistInDB){
                     //Add new data to database
                     GlobalScope.launch {
-                        val newDataID = db.dataDao().insertAll(Data(0,noteID,NoteType.Text,binding.textField.text.toString(),null))
+                        val newDataID = db.dataDao().insertAll(Data(0,noteID,NoteType.Text,binding.textField.text.toString(),null,null,null))
                         dataID = newDataID[0].toInt()
                         dataExistInDB = true
                     }}
                     else{
                         GlobalScope.launch {
                             //add new note
-                            var idNewNote = db.noteDao().insertAll(Note(0,"",null,null,false,null,null,null))
+                            var idNewNote = db.noteDao().insertAll(Note(0,"",null,null,false,null,null,null,null))
                             noteID = idNewNote[0].toInt()
                             //add new data
-                            val newDataID = db.dataDao().insertAll(Data(0,noteID,NoteType.Text,binding.textField.text.toString(),null))
+                            val newDataID = db.dataDao().insertAll(Data(0,noteID,NoteType.Text,binding.textField.text.toString(),null,null,null))
                             dataID = newDataID[0].toInt()
                             val note = db.noteDao().getNoteById(noteID)
                             note.MainData = dataID

@@ -21,6 +21,7 @@ import com.google.android.material.navigation.NavigationView
 import com.thesis.note.NavigationDrawer
 import com.thesis.note.R
 import com.thesis.note.database.AppDatabase
+import com.thesis.note.database.NoteColor
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
@@ -117,14 +118,15 @@ class ImageNoteActivity
                     //create new Note and Data
                     GlobalScope.launch {
                         val newNoteID =
-                            db.noteDao().insertAll(Note(0, "", null, null, false, null, null, null))
+                            db.noteDao().insertAll(Note(0, "", null, null, false, null, null, null,null))
                         val newDataID = db.dataDao().insertAll(
                             Data(
                                 0,
                                 newNoteID[0].toInt(),
                                 NoteType.Photo,
                                 currentPhotoPath,
-                                null
+                                null,
+                                null,null
                             )
                         )
                         val newNote = db.noteDao().getNoteById(newNoteID[0].toInt())
@@ -137,7 +139,7 @@ class ImageNoteActivity
                 }else if (dataID == -1) {
                     //create new Data
                     GlobalScope.launch {
-                        db.dataDao().insertAll(Data(0, noteID, NoteType.Photo, currentPhotoPath,null))
+                        db.dataDao().insertAll(Data(0, noteID, NoteType.Photo, currentPhotoPath,null,null,null))
                     }
                 }else {
                     //update Data
