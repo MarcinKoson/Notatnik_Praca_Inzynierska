@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.room.Database
 import com.thesis.note.R
 import com.thesis.note.activity.SoundEditorActivity
+import com.thesis.note.activity.TextEditorNewActivity
 import com.thesis.note.activity.XTemplateEmptyActivity
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.entity.Data
@@ -39,11 +40,14 @@ class DebugActivity : AppCompatActivity() {
             //val test = Intent(this, TestActivity::class.java)
             //startActivity(test)
 
-            Toast.makeText(applicationContext, list[0].Info, Toast.LENGTH_SHORT).show()
+          //  Toast.makeText(applicationContext, list[0].Info, Toast.LENGTH_SHORT).show()
         }
 
         binding.button9.setOnClickListener {
-            val test = Intent(this, SoundEditorActivity::class.java)
+            val test = Intent(this, TextEditorNewActivity::class.java).apply{
+                putExtra("noteID", -1)
+                putExtra("dataID", -1)
+            }
             startActivity(test)
 
         }

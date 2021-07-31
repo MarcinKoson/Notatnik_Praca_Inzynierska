@@ -1,6 +1,7 @@
 package com.thesis.note.activity
 
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Editable
 import android.view.MenuItem
@@ -13,6 +14,7 @@ import com.thesis.note.NavigationDrawer
 import com.google.android.material.navigation.NavigationView
 import com.thesis.note.R
 import com.thesis.note.database.AppDatabase
+import com.thesis.note.database.NoteColor
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
@@ -34,11 +36,18 @@ class TextEditorNewActivity : AppCompatActivity(), NavigationView.OnNavigationIt
 
     lateinit var noteViewerActivityIntent : Intent
 
+    var itallic = false
+    var bold = false
+    var fontSize = 10
+    var fontColor = NoteColor.Black
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTextEditorNewLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        drawerLayout = binding.activityTextEditorLayoutLayout
+        drawerLayout = binding.activityTextEditorNewLayout
         navigationDrawer = NavigationDrawer(drawerLayout)
         binding.navigationView.setNavigationItemSelectedListener(this)
         val drawerToggle = ActionBarDrawerToggle(this,drawerLayout,binding.toolbar,R.string.abdt,R.string.abdt)
@@ -79,7 +88,7 @@ class TextEditorNewActivity : AppCompatActivity(), NavigationView.OnNavigationIt
                         val newDataID = db.dataDao().insertAll(
                             Data(
                                 0, noteID,
-                                NoteType.Text, binding.editedText.text.toString(), null
+                                NoteType.Text, binding.editedText.text.toString(), null,10,NoteColor.White //TODO size color
                             )
                         )
                         dataID = newDataID[0].toInt()
@@ -88,13 +97,13 @@ class TextEditorNewActivity : AppCompatActivity(), NavigationView.OnNavigationIt
                     GlobalScope.launch {
                         //add new note
                         val idNewNote =
-                            db.noteDao().insertAll(Note(0, "", null, null, false, null, null, null))
+                            db.noteDao().insertAll(Note(0, "", null, null, false, null, null, null, NoteColor.White))//TODO color
                         noteID = idNewNote[0].toInt()
                         //add new data
                         val newDataID = db.dataDao().insertAll(
                             Data(
                                 0, noteID,
-                                NoteType.Text, binding.editedText.text.toString(), null
+                                NoteType.Text, binding.editedText.text.toString(), null,10, NoteColor.Black  //TODO size
                             )
                         )
                         dataID = newDataID[0].toInt()
@@ -127,19 +136,70 @@ class TextEditorNewActivity : AppCompatActivity(), NavigationView.OnNavigationIt
             //TODO underline
         }
         binding.italicTextButton.setOnClickListener{
-            //TODO italic
-            setItalicText()
+            if(itallic){
+                itallic = false
+                setItalicText(false)
+
+            }
+            else{
+                itallic = true
+                setItalicText(true)
+
+
+            }
         }
         binding.boldTextButton.setOnClickListener {
-            //TODO bold
+            if(bold){
+                bold = false
+                setBoldText(false)
+
+            }
+            else{
+                bold = true
+                setBoldText(true)
+
+            }
         }
 
     }
 
-    private fun setItalicText() {
-        TODO("Not yet implemented")
+    private fun setItalicText(value: Boolean) {
+        if(value){
+            if(bold){
+                setBoldItalicText()
+            }else{
+                binding.editedText.typeface = Typeface.create(Typeface.DEFAULT, Typeface.ITALIC)
+            }
+        }
+        else{
+            if(bold){
+                setBoldText(true)
+            }else{
+                binding.editedText.typeface = Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
+            }
+        }
     }
 
+    private fun setBoldText(value: Boolean) {
+        if(value){
+            if(itallic){
+                setBoldItalicText()
+            }else{
+                binding.editedText.typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
+            }
+        }
+        else{
+            if(itallic){
+                setItalicText(true)
+            }else{
+                binding.editedText.typeface = Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
+            }
+        }
+    }
+
+    private fun setBoldItalicText() {
+        binding.editedText.typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD_ITALIC)
+    }
 
     override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
         finish()

@@ -43,6 +43,8 @@
             />
         <activity android:name=".activity.TextEditorActivity"
             />
+        <activity android:name=".activity.TextEditorNewActivity"
+            />
         <activity android:name=".activity.VoiceToTextActivity"
             />
 
