@@ -32,6 +32,7 @@ import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.*
 import com.thesis.note.databinding.ActivityNoteViewerBinding
+import com.thesis.note.fragment.AddTagsDialogFragment
 
 import com.thesis.note.recycler_view_adapters.NoteViewerAdapter
 import com.thesis.note.recycler_view_adapters.TagListAdapter

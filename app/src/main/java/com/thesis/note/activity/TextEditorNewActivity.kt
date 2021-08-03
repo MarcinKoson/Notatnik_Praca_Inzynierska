@@ -10,8 +10,8 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import com.thesis.note.NavigationDrawer
 import com.google.android.material.navigation.NavigationView
+import com.thesis.note.NavigationDrawer
 import com.thesis.note.R
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.NoteColor
@@ -19,6 +19,7 @@ import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
 import com.thesis.note.databinding.ActivityTextEditorNewLayoutBinding
+import com.thesis.note.fragment.ChooseColorFragment
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -36,10 +37,12 @@ class TextEditorNewActivity : AppCompatActivity(), NavigationView.OnNavigationIt
 
     lateinit var noteViewerActivityIntent : Intent
 
-    var itallic = false
+    private var italic = false
     var bold = false
     var fontSize = 10
     var fontColor = NoteColor.Black
+
+
 
 
 
@@ -123,11 +126,28 @@ class TextEditorNewActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         binding.shareButton.setOnClickListener {
             //TODO share
         }
-        binding.backgroundButton.setOnClickListener {
-            //TODO background
+
+
+        supportFragmentManager.setFragmentResultListener("requestKey",this) { key, bundle ->
+            val result = bundle.getString("bundleKey")
+binding.editedText.text = Editable.Factory.getInstance().newEditable(result)
+
+
+            when(result){
+                "1" ->   binding.editedText.setTextColor(resources.getColor(R.color.blue_400,null))
+                "2" ->   binding.editedText.setTextColor(resources.getColor(R.color.green_400,null))
+                "3" ->   binding.editedText.setTextColor(resources.getColor(R.color.red_400,null))
+                //    "3"->   binding.editedText.background = ContextCompat.getDrawable(textEditorActivityContext, R.color.red_400)
+            }
+
         }
+
+
         binding.textColorButton.setOnClickListener {
-            //TODO font color
+            val newFragment = ChooseColorFragment()
+            newFragment.show(supportFragmentManager,"tag")
+
+
         }
         binding.textSizeButton.setOnClickListener {
             //TODO font size
@@ -136,13 +156,13 @@ class TextEditorNewActivity : AppCompatActivity(), NavigationView.OnNavigationIt
             //TODO underline
         }
         binding.italicTextButton.setOnClickListener{
-            if(itallic){
-                itallic = false
+            if(italic){
+                italic = false
                 setItalicText(false)
 
             }
             else{
-                itallic = true
+                italic = true
                 setItalicText(true)
 
 
@@ -182,14 +202,14 @@ class TextEditorNewActivity : AppCompatActivity(), NavigationView.OnNavigationIt
 
     private fun setBoldText(value: Boolean) {
         if(value){
-            if(itallic){
+            if(italic){
                 setBoldItalicText()
             }else{
                 binding.editedText.typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
             }
         }
         else{
-            if(itallic){
+            if(italic){
                 setItalicText(true)
             }else{
                 binding.editedText.typeface = Typeface.create(Typeface.DEFAULT, Typeface.NORMAL)
