@@ -35,7 +35,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:background="@drawable/ic_share_black_24dp"
-                />
+                android:visibility="gone"
+                tools:layout_editor_absoluteX="331dp"
+                tools:layout_editor_absoluteY="8dp" />
 
             <ImageButton
                 android:id="@+id/backgroundButton"
@@ -69,7 +71,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:background="@drawable/ic_baseline_format_underlined_24"
-                />
+                android:visibility="gone"
+                tools:layout_editor_absoluteX="251dp"
+                tools:layout_editor_absoluteY="8dp" />
 
             <ImageButton
                 android:id="@+id/italicTextButton"

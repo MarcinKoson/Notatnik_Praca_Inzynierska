@@ -1,47 +1,68 @@
 package com.thesis.note.fragment
 
-import android.app.Activity
 import android.app.Dialog
 import android.content.DialogInterface
-import android.net.Uri
 import android.os.Bundle
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContract
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.flexbox.FlexboxLayoutManager
-import com.thesis.note.R
-import com.thesis.note.database.AppDatabase
-import com.thesis.note.database.entity.TagOfNote
 import com.thesis.note.databinding.DialogChooseColorBinding
-import com.thesis.note.recycler_view_adapters.AddTagFragmentAdapter
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class ChooseColorFragment:DialogFragment(){
     private lateinit var binding: DialogChooseColorBinding
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        //val view = requireActivity().layoutInflater.inflate(R.layout.dialog_add_note,null)
         binding = DialogChooseColorBinding.inflate(requireActivity().layoutInflater)
 
+        binding.color0.setOnClickListener {
+            setFragmentResult("color", bundleOf("colorID" to "0"))
+            dismiss()
+        }
         binding.color1.setOnClickListener {
-            setFragmentResult("requestKey", bundleOf("bundleKey" to "1"))
+            setFragmentResult("color", bundleOf("colorID" to "1"))
             dismiss()
         }
         binding.color2.setOnClickListener {
-            setFragmentResult("requestKey", bundleOf("bundleKey" to "2"))
+            setFragmentResult("color", bundleOf("colorID" to "2"))
             dismiss()
         }
         binding.color3.setOnClickListener {
-            setFragmentResult("requestKey", bundleOf("bundleKey" to "3"))
+            setFragmentResult("color", bundleOf("colorID" to "3"))
             dismiss()
         }
-
+        binding.color4.setOnClickListener {
+            setFragmentResult("color", bundleOf("colorID" to "4"))
+            dismiss()
+        }
+        binding.color5.setOnClickListener {
+            setFragmentResult("color", bundleOf("colorID" to "5"))
+            dismiss()
+        }
+        binding.color6.setOnClickListener {
+            setFragmentResult("color", bundleOf("colorID" to "6"))
+            dismiss()
+        }
+        binding.color7.setOnClickListener {
+            setFragmentResult("color", bundleOf("colorID" to "7"))
+            dismiss()
+        }
+        binding.color8.setOnClickListener {
+            setFragmentResult("color", bundleOf("colorID" to "8"))
+            dismiss()
+        }
+        binding.color9.setOnClickListener {
+            setFragmentResult("color", bundleOf("colorID" to "9"))
+            dismiss()
+        }
+        binding.color10.setOnClickListener {
+            setFragmentResult("color", bundleOf("colorID" to "10"))
+            dismiss()
+        }
+        binding.color11.setOnClickListener {
+            setFragmentResult("color", bundleOf("colorID" to "11"))
+            dismiss()
+        }
 
         return activity?.let {
             val builder = AlertDialog.Builder(it)

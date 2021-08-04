@@ -15,6 +15,7 @@ import com.thesis.note.NavigationDrawer
 import com.thesis.note.R
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.NoteColor
+import com.thesis.note.database.NoteColorConverter
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
@@ -26,24 +27,21 @@ import kotlinx.coroutines.launch
 class TextEditorNewActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var drawerLayout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer
-    private lateinit var binding: ActivityTextEditorNewLayoutBinding
+    lateinit var binding: ActivityTextEditorNewLayoutBinding
 
     private val textEditorActivityContext = this
 
     private lateinit var db: AppDatabase
-    var dataID:Int = -1
-    var noteID:Int = -1
+    private var dataID:Int = -1
+    private var noteID:Int = -1
     private lateinit var editedData: Data
 
-    lateinit var noteViewerActivityIntent : Intent
+    private lateinit var noteViewerActivityIntent : Intent
 
     private var italic = false
-    var bold = false
-    var fontSize = 10
-    var fontColor = NoteColor.Black
-
-
-
+    private var bold = false
+    private var fontSize = 10
+    private var fontColor = NoteColor.Black
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,24 +56,57 @@ class TextEditorNewActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         drawerToggle.isDrawerIndicatorEnabled = true
         drawerToggle.syncState()
         //------------------------------------------------------------------------------------------
+        //load from db
         db = AppDatabase.invoke(this)
-
         val parameters = intent.extras
-
         if(parameters != null) {
             dataID = parameters.getInt("dataID")
             noteID = parameters.getInt("noteID")
-
+            //load data
             if(dataID != -1){
                 GlobalScope.launch {
                     editedData = db.dataDao().getDataById(dataID)
                     //show data in textField
-                    textEditorActivityContext.runOnUiThread(
-                        fun(){
-                            setText()
-                        })}}
+                    textEditorActivityContext.runOnUiThread {
+                        setText(editedData.Content)
+                        //TODO load graphic options
+                    }
+                }}
         }
-
+        //bold text
+        binding.boldTextButton.setOnClickListener {
+            if(bold){
+                setBoldText(false)
+            }
+            else{
+                setBoldText(true)
+            }
+        }
+        //italic text
+        binding.italicTextButton.setOnClickListener{
+            if(italic){
+                setItalicText(false)
+            }
+            else{
+                setItalicText(true)
+            }
+        }
+        //text size
+        binding.textSizeButton.setOnClickListener {
+            //TODO font size
+        }
+        //text color
+        binding.textColorButton.setOnClickListener {
+            ChooseColorFragment().show(supportFragmentManager,"tag")
+        }
+        supportFragmentManager.setFragmentResultListener("color",this) { key, bundle ->
+            val result = bundle.getString("colorID")
+            val colorID = result?.toInt()
+            fontColor = NoteColorConverter().intToEnum(colorID)!!
+            binding.editedText.setTextColor(NoteColorConverter().intToColor(colorID,resources))
+        }
+        //save button
+        //TODO save new stuff
         noteViewerActivityIntent = Intent(this, NoteViewerActivity::class.java)
         binding.saveButton.setOnClickListener {
             if (dataID != -1) {
@@ -123,67 +154,10 @@ class TextEditorNewActivity : AppCompatActivity(), NavigationView.OnNavigationIt
             finish()
         }
 
-        binding.shareButton.setOnClickListener {
-            //TODO share
-        }
-
-
-        supportFragmentManager.setFragmentResultListener("requestKey",this) { key, bundle ->
-            val result = bundle.getString("bundleKey")
-binding.editedText.text = Editable.Factory.getInstance().newEditable(result)
-
-
-            when(result){
-                "1" ->   binding.editedText.setTextColor(resources.getColor(R.color.blue_400,null))
-                "2" ->   binding.editedText.setTextColor(resources.getColor(R.color.green_400,null))
-                "3" ->   binding.editedText.setTextColor(resources.getColor(R.color.red_400,null))
-                //    "3"->   binding.editedText.background = ContextCompat.getDrawable(textEditorActivityContext, R.color.red_400)
-            }
-
-        }
-
-
-        binding.textColorButton.setOnClickListener {
-            val newFragment = ChooseColorFragment()
-            newFragment.show(supportFragmentManager,"tag")
-
-
-        }
-        binding.textSizeButton.setOnClickListener {
-            //TODO font size
-        }
-        binding.underlinedTextButton.setOnClickListener {
-            //TODO underline
-        }
-        binding.italicTextButton.setOnClickListener{
-            if(italic){
-                italic = false
-                setItalicText(false)
-
-            }
-            else{
-                italic = true
-                setItalicText(true)
-
-
-            }
-        }
-        binding.boldTextButton.setOnClickListener {
-            if(bold){
-                bold = false
-                setBoldText(false)
-
-            }
-            else{
-                bold = true
-                setBoldText(true)
-
-            }
-        }
-
     }
 
     private fun setItalicText(value: Boolean) {
+        italic = value
         if(value){
             if(bold){
                 setBoldItalicText()
@@ -201,6 +175,7 @@ binding.editedText.text = Editable.Factory.getInstance().newEditable(result)
     }
 
     private fun setBoldText(value: Boolean) {
+        bold = value
         if(value){
             if(italic){
                 setBoldItalicText()
@@ -234,7 +209,7 @@ binding.editedText.text = Editable.Factory.getInstance().newEditable(result)
         }
     }
 
-    private fun setText(){
-        binding.editedText.text = Editable.Factory.getInstance().newEditable(editedData.Content)
+    private fun setText(content: String?){
+        binding.editedText.text = Editable.Factory.getInstance().newEditable(content)
     }
 }
