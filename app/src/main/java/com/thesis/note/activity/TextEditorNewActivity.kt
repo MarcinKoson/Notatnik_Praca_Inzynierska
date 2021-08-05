@@ -40,9 +40,8 @@ class TextEditorNewActivity : AppCompatActivity(), NavigationView.OnNavigationIt
 
     private var italic = false
     private var bold = false
-    private var fontSize = 10
+    private var fontSize = 16
     private var fontColor = NoteColor.Black
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,10 +65,23 @@ class TextEditorNewActivity : AppCompatActivity(), NavigationView.OnNavigationIt
             if(dataID != -1){
                 GlobalScope.launch {
                     editedData = db.dataDao().getDataById(dataID)
+                    fontSize = editedData.Size!!
+                    fontColor = editedData.Color!!
+                    when(editedData.Info){
+                        "B" -> bold = true
+                        "I" -> italic = true
+                        "BI" -> {
+                            bold = true
+                            italic = true}
+                    }
                     //show data in textField
                     textEditorActivityContext.runOnUiThread {
                         setText(editedData.Content)
-                        //TODO load graphic options
+                        //load graphic options
+                        setItalicText(italic)
+                        setBoldText(bold)
+                        binding.editedText.textSize = fontSize.toFloat()
+                        binding.editedText.setTextColor(NoteColorConverter().enumToColor(fontColor,resources))
                     }
                 }}
         }
@@ -99,19 +111,21 @@ class TextEditorNewActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         binding.textColorButton.setOnClickListener {
             ChooseColorFragment().show(supportFragmentManager,"tag")
         }
-        supportFragmentManager.setFragmentResultListener("color",this) { key, bundle ->
+        supportFragmentManager.setFragmentResultListener("color",this) { _, bundle ->
             val result = bundle.getString("colorID")
             val colorID = result?.toInt()
             fontColor = NoteColorConverter().intToEnum(colorID)!!
             binding.editedText.setTextColor(NoteColorConverter().intToColor(colorID,resources))
         }
         //save button
-        //TODO save new stuff
         noteViewerActivityIntent = Intent(this, NoteViewerActivity::class.java)
         binding.saveButton.setOnClickListener {
             if (dataID != -1) {
                 //Update data
                 editedData.Content = binding.editedText.text.toString()
+                editedData.Info = getInto()
+                editedData.Color = fontColor
+                editedData.Size = fontSize
                 GlobalScope.launch {
                     db.dataDao().update(editedData)
                 }
@@ -119,27 +133,16 @@ class TextEditorNewActivity : AppCompatActivity(), NavigationView.OnNavigationIt
                 if (noteID != -1) {
                     //Add new data to database
                     GlobalScope.launch {
-                        val newDataID = db.dataDao().insertAll(
-                            Data(
-                                0, noteID,
-                                NoteType.Text, binding.editedText.text.toString(), null,10,NoteColor.White //TODO size color
-                            )
-                        )
-                        dataID = newDataID[0].toInt()
+                        val newDataID = db.dataDao().insertAll(Data(0, noteID, NoteType.Text, binding.editedText.text.toString(), getInto(),fontSize,fontColor))
                     }
                 } else {
                     GlobalScope.launch {
                         //add new note
                         val idNewNote =
-                            db.noteDao().insertAll(Note(0, "", null, null, false, null, null, null, NoteColor.White))//TODO color
+                            db.noteDao().insertAll(Note(0, "", null, null, false, null, null, null, NoteColor.White))
                         noteID = idNewNote[0].toInt()
                         //add new data
-                        val newDataID = db.dataDao().insertAll(
-                            Data(
-                                0, noteID,
-                                NoteType.Text, binding.editedText.text.toString(), null,10, NoteColor.Black  //TODO size
-                            )
-                        )
+                        val newDataID = db.dataDao().insertAll(Data(0, noteID, NoteType.Text, binding.editedText.text.toString(), getInto(),fontSize,fontColor))
                         dataID = newDataID[0].toInt()
                         val note = db.noteDao().getNoteById(noteID)
                         note.MainData = dataID
@@ -153,7 +156,16 @@ class TextEditorNewActivity : AppCompatActivity(), NavigationView.OnNavigationIt
             Toast.makeText(applicationContext, R.string.save_OK, Toast.LENGTH_SHORT).show()
             finish()
         }
+    }
 
+    private fun getInto(): String? {
+        if(bold && italic)
+            return "BI"
+        if(bold)
+            return "B"
+        if(italic)
+            return "I"
+        return null
     }
 
     private fun setItalicText(value: Boolean) {

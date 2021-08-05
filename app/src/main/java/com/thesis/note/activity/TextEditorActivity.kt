@@ -29,13 +29,12 @@ import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
 import com.thesis.note.databinding.ActivityTextEditorBinding
 
-
+@Deprecated("Use TextEditorNewActivity")
 class TextEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var drawer_layout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer
     private lateinit var binding: ActivityTextEditorBinding
 
-//todo do sth with exitstInDB booleans
     var dataExistInDB:Boolean = false
     var noteExistInDB:Boolean = false
     var dataID:Int = -1

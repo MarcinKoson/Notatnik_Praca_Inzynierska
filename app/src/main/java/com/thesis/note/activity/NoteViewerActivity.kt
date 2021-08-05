@@ -233,9 +233,10 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         when(viewAdapter.getItemViewType(position)){
             //NoteType.Text
             NoteType.Text.id  -> {
-                val textEditorActivityIntent = Intent(this, TextEditorActivity::class.java)
-                textEditorActivityIntent.putExtra("noteID",noteID)
-                textEditorActivityIntent.putExtra("dataID",dataList[position].IdData)
+                val textEditorActivityIntent = Intent(this, TextEditorNewActivity::class.java).apply{
+                    putExtra("noteID",noteID)
+                    putExtra("dataID",dataList[position].IdData)
+                }
                 this.startActivity(textEditorActivityIntent)
             }
             NoteType.Photo.id -> {

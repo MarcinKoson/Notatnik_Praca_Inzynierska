@@ -30,21 +30,24 @@ class NoteColorConverter{
     fun enumToInt(noteType: NoteColor?): Int? {
         return noteType?.id
     }
-    fun intToColor(value: Int?,resources: Resources): Int{
+    fun enumToColor(value: NoteColor?,resources: Resources): Int{
         return when(value){
-            0 -> resources.getColor(R.color.black,null)
-            1 -> resources.getColor(R.color.white,null)
-            2 -> resources.getColor(R.color.red_400,null)
-            3 -> resources.getColor(R.color.pink_400,null)
-            4 -> resources.getColor(R.color.purple_400,null)
-            5 -> resources.getColor(R.color.blue_400,null)
-            6 -> resources.getColor(R.color.cyan_400,null)
-            7 -> resources.getColor(R.color.teal_400,null)
-            8 -> resources.getColor(R.color.green_400,null)
-            9 -> resources.getColor(R.color.yellow_400,null)
-            10 -> resources.getColor(R.color.orange_400,null)
-            11 -> resources.getColor(R.color.gray_400,null)
+            NoteColor.Black -> resources.getColor(R.color.black,null)
+            NoteColor.White -> resources.getColor(R.color.white,null)
+            NoteColor.Red -> resources.getColor(R.color.red_400,null)
+            NoteColor.Pink -> resources.getColor(R.color.pink_400,null)
+            NoteColor.Purple -> resources.getColor(R.color.purple_400,null)
+            NoteColor.Blue -> resources.getColor(R.color.blue_400,null)
+            NoteColor.Cyan -> resources.getColor(R.color.cyan_400,null)
+            NoteColor.Teal -> resources.getColor(R.color.teal_400,null)
+            NoteColor.Green -> resources.getColor(R.color.green_400,null)
+            NoteColor.Yellow -> resources.getColor(R.color.yellow_400,null)
+            NoteColor.Orange -> resources.getColor(R.color.orange_400,null)
+            NoteColor.Gray -> resources.getColor(R.color.gray_400,null)
             else -> 0
         }
+    }
+    fun intToColor(value: Int?, resources: Resources): Int{
+        return enumToColor(intToEnum(value),resources)
     }
 }

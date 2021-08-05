@@ -39,7 +39,7 @@ class AddNoteActivity
         drawerToggle.syncState()
         //------------------------------------------------------------------------------------------
         binding.addTextNote.setOnClickListener{
-                startActivity(Intent(this,TextEditorActivity::class.java).apply{
+                startActivity(Intent(this,TextEditorNewActivity::class.java).apply{
                     putExtra("noteID", -1)
                     putExtra("dataID", -1)
                 })
