@@ -22,4 +22,11 @@
     <string name="add_note_image">Dodaj notatkę obrazkową</string>
     <string name="add_note_title">Dodaj nową notatkę</string>
     <string name="no_permissions">Brak uprawnień</string>
+    <string name="action_bar_drawer_toggle_open">Otwórz drawer</string>
+    <string name="action_bar_drawer_toggle_close">Zamknij drawer</string>
+
+
+    <string name="share">x</string>
+    <string name="x_template_empty_activity_template">TEMPLATE</string>
+
 </resources>

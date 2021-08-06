@@ -1,18 +1,11 @@
 <resources>
     <string name="app_name">Notes</string>
-    <string name="appwidget_textEx">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
-
-
-    <string name="groups_without_group">Brak grupy</string>
-
     <string name="abdt">ActionBarDrawerToggle</string>
     <string-array name="groups_array">
         <item>Bez grupy</item>
         <item>Grupa 1</item>
         <item>Grupa 2</item>
         <item>Grupa 3</item>
-
     </string-array>
 
     <string-array name="font_name">
@@ -34,7 +27,7 @@
     <string name="note_type_sound">Sound</string>
     <string name="note_type_photo">Photo</string>
     <string name="note_type_other">Other</string>
-    <string name="error_template">TEMPLATE</string>
+
     <string name="activity_image_note_gallery">Open Gallery</string>
     <string name="activity_image_note_camera">Open Camera</string>
     <string name="image">Image</string>
@@ -56,5 +49,10 @@
     <string name="add_note_image">Add image note</string>
     <string name="add_note_title">Add new note</string>
     <string name="no_permissions">No permissions</string>
+    <string name="action_bar_drawer_toggle_open">Open drawer</string>
+    <string name="action_bar_drawer_toggle_close">Close drawer</string>
+    <string name="groups_without_group">R.string.groups_without_group CHANGE</string>
+
+    <string name="x_template_empty_activity_template">TEMPLATE</string>
 
 </resources>

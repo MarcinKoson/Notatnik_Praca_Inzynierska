@@ -3,19 +3,8 @@ package com.thesis.note.test
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
-import androidx.room.Database
-import com.thesis.note.R
-import com.thesis.note.activity.NewMainActivity
-import com.thesis.note.activity.SoundEditorActivity
-import com.thesis.note.activity.TextEditorNewActivity
-import com.thesis.note.activity.XTemplateEmptyActivity
-import com.thesis.note.database.AppDatabase
-import com.thesis.note.database.entity.Data
-import com.thesis.note.databinding.ActivitySoundEditorBinding
+import com.thesis.note.activity.MainActivity
 import com.thesis.note.databinding.XActivityDebugBinding
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class DebugActivity : AppCompatActivity() {
 
@@ -32,7 +21,7 @@ class DebugActivity : AppCompatActivity() {
         }
 
         binding.testButton.setOnClickListener{
-            val test = Intent(this, NewMainActivity::class.java)
+            val test = Intent(this, MainActivity::class.java)
             startActivity(test)
 
         }
