@@ -7,35 +7,19 @@
     tools:context=".test.DebugActivity">
 
     <Button
-        android:id="@+id/deleteDBbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Clear DB"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
         android:id="@+id/templatebutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Template"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/deleteDBbutton" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/testbutton"
+        android:id="@+id/testButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="test"
+        android:text="TEST"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/templatebutton" />
-
-    <Button
-        android:id="@+id/button9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="SOUND EDITOR"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/testbutton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

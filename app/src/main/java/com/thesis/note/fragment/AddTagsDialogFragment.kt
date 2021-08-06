@@ -1,4 +1,4 @@
-package com.thesis.note
+package com.thesis.note.fragment
 
 import android.app.Dialog
 import android.content.DialogInterface
@@ -7,6 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexboxLayoutManager
+import com.thesis.note.R
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.entity.Tag
 import com.thesis.note.database.entity.TagOfNote

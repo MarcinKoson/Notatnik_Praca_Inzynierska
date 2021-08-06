@@ -1,5 +1,6 @@
 package com.thesis.note.recycler_view_adapters
 
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,16 +9,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.thesis.note.R
 import com.thesis.note.database.AppDatabase
+import com.thesis.note.database.NoteColorConverter
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
 import com.thesis.note.databinding.RecyclerViewNoteListPhotoBinding
 import com.thesis.note.databinding.RecyclerViewNoteListTextBinding
+import com.thesis.note.databinding.RecyclerViewNoteTextBinding
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class NoteListAdapter (private var noteList: List<Note>, private var dataList:List<Data>, private val onNoteClickListener: OnNoteClickListener)
-    :RecyclerView.Adapter<NoteListAdapter.NoteListViewHolder>() {
+class NoteTilesListAdapter (private var noteList: List<Note>, private var dataList:List<Data>, private val onNoteClickListener: OnNoteClickListener)
+    :RecyclerView.Adapter<NoteTilesListAdapter.NoteListViewHolder>() {
 
     interface  OnNoteClickListener {
         fun onNoteClick(position:Int)
@@ -44,7 +47,7 @@ class NoteListAdapter (private var noteList: List<Note>, private var dataList:Li
         when(viewType){
             NoteType.Text.id -> {
                 return NoteListViewHolder(
-                    LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_note_list_text, parent, false) as ConstraintLayout
+                    LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_note_text, parent, false) as ConstraintLayout
                     ,onNoteClickListener
                    )
             }
@@ -74,23 +77,12 @@ class NoteListAdapter (private var noteList: List<Note>, private var dataList:Li
         //get main data
         val mainData = dataList.firstOrNull{it.IdData == noteList[position].MainData}
 
-        //note type string
-        val noteTypeStr: String = when(mainData?.Type){
-            NoteType.Text -> holder.objectLayout.context.getString(R.string.note_type_text)
-            NoteType.List -> holder.objectLayout.context.getString(R.string.note_type_list)
-            NoteType.Video -> holder.objectLayout.context.getString(R.string.note_type_video)
-            NoteType.Sound -> holder.objectLayout.context.getString(R.string.note_type_sound)
-            NoteType.Photo -> holder.objectLayout.context.getString(R.string.note_type_photo)
-            else -> holder.objectLayout.context.getString(R.string.note_type_other)
-        }
-
         when(holder.itemViewType){
             NoteType.Text.id -> {
-                val binding = RecyclerViewNoteListTextBinding.bind(holder.objectLayout)
+                val binding = RecyclerViewNoteTextBinding.bind(holder.objectLayout)
                 //name, favorite, note type
                 binding.noteName.text = noteList[position].Name
                 binding.favoriteCheckBox.isChecked = noteList[position].Favorite
-                binding.noteType.text = noteTypeStr
                 //checking group
                 if(noteList[position].GroupID !=null)
                     GlobalScope.launch {
@@ -108,13 +100,24 @@ class NoteListAdapter (private var noteList: List<Note>, private var dataList:Li
                 )
                 //set content
                 binding.noteListContent.text = mainData?.Content
+                //set graphic
+                binding.noteListContent.setTextColor(
+                    holder.itemView.resources.getColor(
+                        NoteColorConverter().enumToColor(mainData?.Color),null))
+                binding.noteListContent.textSize = mainData?.Size?.toFloat()!!
+                when(mainData?.Info){
+                    "B" -> binding.noteListContent.typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
+                    "I" -> binding.noteListContent.typeface = Typeface.create(Typeface.DEFAULT, Typeface.ITALIC)
+                    "BI" -> binding.noteListContent.typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD_ITALIC)
+                }
+                //set background
+                binding.root.setBackgroundColor(holder.itemView.resources.getColor(NoteColorConverter().enumToColor(noteList[position].Color),null))
             }
             NoteType.Photo.id -> {
                 val binding = RecyclerViewNoteListPhotoBinding.bind(holder.objectLayout)
                 //name, favorite, note type
                 binding.noteName.text = noteList[position].Name
                 binding.favoriteCheckBox.isChecked = noteList[position].Favorite
-                binding.noteType.text = noteTypeStr
                 //checking group
                 if(noteList[position].GroupID !=null)
                     GlobalScope.launch {
@@ -142,7 +145,6 @@ class NoteListAdapter (private var noteList: List<Note>, private var dataList:Li
                 //name, favorite, note type
                 binding.noteName.text = noteList[position].Name
                 binding.favoriteCheckBox.isChecked = noteList[position].Favorite
-                binding.noteType.text = noteTypeStr
                 //checking group
                 if(noteList[position].GroupID !=null)
                     GlobalScope.launch {

@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 
@@ -29,9 +30,12 @@ import com.thesis.note.*
 
 
 import com.thesis.note.database.AppDatabase
+import com.thesis.note.database.NoteColorConverter
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.*
 import com.thesis.note.databinding.ActivityNoteViewerBinding
+import com.thesis.note.fragment.AddTagsDialogFragment
+import com.thesis.note.fragment.ChooseColorFragment
 
 import com.thesis.note.recycler_view_adapters.NoteViewerAdapter
 import com.thesis.note.recycler_view_adapters.TagListAdapter
@@ -129,7 +133,7 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                 tagListAdapterListener = object: TagListAdapter.OnTagClickListener {
                     override fun onNoteClick(position: Int) {
                         //create remove dialog
-                        val alertDialog: AlertDialog? = this?.let {
+                        val alertDialog: AlertDialog = this.let {
                             val builder = AlertDialog.Builder(noteViewerActivityContext)
                             builder.apply {
                                 setPositiveButton("Tak",
@@ -159,6 +163,8 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
                     layoutManager = tagsViewManager
                     adapter = tagsViewAdapter
                 }
+                //Background color
+                binding.root.background = ResourcesCompat.getDrawable(resources,NoteColorConverter().enumToColor(note.Color),null)
             }
         }
         //save Group after change
@@ -187,6 +193,13 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
             newFragment.arguments = bundle
             newFragment.show(supportFragmentManager, "add tags")
         }
+        binding.tagButton.setOnClickListener {
+            val newFragment = AddTagsDialogFragment()
+            val bundle = Bundle()
+            bundle.putInt("noteID",noteID)
+            newFragment.arguments = bundle
+            newFragment.show(supportFragmentManager, "add tags")
+        }
         //remove button
         binding.deleteButton.setOnClickListener {
             GlobalScope.launch {
@@ -197,7 +210,19 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         }
         //share button
         //TODO share button
-
+        //background color
+        binding.backgroundColorButton.setOnClickListener {
+            ChooseColorFragment().show(supportFragmentManager,"tag")
+        }
+        supportFragmentManager.setFragmentResultListener("color",this) { _, bundle ->
+            val result = bundle.getString("colorID")
+            val colorID = result?.toInt()
+            note.Color = NoteColorConverter().intToEnum(colorID)!!
+            binding.root.background = ResourcesCompat.getDrawable(resources,NoteColorConverter().enumToColor(note.Color),null)
+            GlobalScope.launch {
+                db.noteDao().update(note)
+            }
+        }
     }
 
     override fun onResume() {
@@ -232,22 +257,23 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         when(viewAdapter.getItemViewType(position)){
             //NoteType.Text
             NoteType.Text.id  -> {
-                val textEditorActivityIntent = Intent(this, TextEditorActivity::class.java)
-                textEditorActivityIntent.putExtra("noteID",noteID)
-                textEditorActivityIntent.putExtra("dataID",dataList[position].IdData)
+                val textEditorActivityIntent = Intent(this, TextEditorNewActivity::class.java).apply{
+                    putExtra("noteID",noteID)
+                    putExtra("dataID",dataList[position].IdData)
+                }
                 this.startActivity(textEditorActivityIntent)
             }
             NoteType.Photo.id -> {
-                val ImageNoteIntent = Intent(this, ImageNoteActivity::class.java)
-                ImageNoteIntent.putExtra("dataID", dataList[position].IdData)
-                ImageNoteIntent.putExtra("noteID", noteID)
-                startActivity(ImageNoteIntent)
+                val imageNoteIntent = Intent(this, ImageNoteActivity::class.java)
+                imageNoteIntent.putExtra("dataID", dataList[position].IdData)
+                imageNoteIntent.putExtra("noteID", noteID)
+                startActivity(imageNoteIntent)
             }
             NoteType.Sound.id -> {
-                val SoundNoteIntent = Intent(this, SoundEditorActivity::class.java)
-                SoundNoteIntent.putExtra("dataID", dataList[position].IdData)
-                SoundNoteIntent.putExtra("noteID", noteID)
-                startActivity(SoundNoteIntent)
+                val soundNoteIntent = Intent(this, SoundEditorActivity::class.java)
+                soundNoteIntent.putExtra("dataID", dataList[position].IdData)
+                soundNoteIntent.putExtra("noteID", noteID)
+                startActivity(soundNoteIntent)
             }
             else -> {
                 Toast.makeText(applicationContext,"ERROR:NoteViewerActivity - cannot open data", Toast.LENGTH_SHORT).show()

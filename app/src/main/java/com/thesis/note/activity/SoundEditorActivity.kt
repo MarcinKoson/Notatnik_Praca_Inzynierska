@@ -1,8 +1,6 @@
 package com.thesis.note.activity
 
-import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.os.Bundle
@@ -11,13 +9,13 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.thesis.note.NavigationDrawer
 import com.google.android.material.navigation.NavigationView
 import com.thesis.note.R
 import com.thesis.note.database.AppDatabase
+import com.thesis.note.database.NoteColor
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
@@ -55,16 +53,11 @@ class SoundEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         drawerLayout = binding.activitySoundEditorLayout
         navigationDrawer = NavigationDrawer(drawerLayout)
         binding.navigationView.setNavigationItemSelectedListener(this)
-        val drawerToggle =
-            ActionBarDrawerToggle(this, drawerLayout, binding.toolbar, R.string.abdt, R.string.abdt)
+        val drawerToggle = ActionBarDrawerToggle(this, drawerLayout, binding.toolbar, R.string.abdt, R.string.abdt)
         drawerLayout.addDrawerListener(drawerToggle)
         drawerToggle.isDrawerIndicatorEnabled = true
         drawerToggle.syncState()
         //------------------------------------------------------------------------------------------
-        //TODO move to add note
-
-
-        //------------
         db = AppDatabase.invoke(this)
         val parameters = intent.extras
         if (parameters != null) {
@@ -101,21 +94,23 @@ class SoundEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItem
            if(!isRecorded){
                Toast.makeText(applicationContext, R.string.sound_editor_no_recording, Toast.LENGTH_SHORT).show()
            }
-            else{
+            else if(isRecording) {
+               Toast.makeText(applicationContext, R.string.sound_editor_recording, Toast.LENGTH_SHORT).show()
+           }else{
                if (noteID == -1 && dataID == -1) {
                    //create intent for note viewer
                    val noteViewerActivityIntent = Intent(this, NoteViewerActivity::class.java)
                    //create new Note and Data
                    GlobalScope.launch {
                        val newNoteID =
-                           db.noteDao().insertAll(Note(0, "", null, null, false, null, null, null))
+                           db.noteDao().insertAll(Note(0, "", null, null, false, null, null, null,NoteColor.White))//TODO color size
                        val newDataID = db.dataDao().insertAll(
                            Data(
                                0,
                                newNoteID[0].toInt(),
                                NoteType.Sound,
                                filePath,
-                               null))
+                               null, null,null))
                        val newNote = db.noteDao().getNoteById(newNoteID[0].toInt())
                        newNote.MainData = newDataID[0].toInt()
                        db.noteDao().update(newNote)
@@ -125,7 +120,7 @@ class SoundEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                }else if (dataID == -1) {
                    //create new Data
                    GlobalScope.launch {
-                       db.dataDao().insertAll(Data(0, noteID, NoteType.Sound, filePath, null))
+                       db.dataDao().insertAll(Data(0, noteID, NoteType.Sound, filePath, null,null,null))
                    }
                }else {
                    //update Data
@@ -138,7 +133,6 @@ class SoundEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                Toast.makeText(applicationContext, R.string.save_OK, Toast.LENGTH_SHORT).show()
                finish()
             }
-
         }
     }
 
@@ -171,6 +165,7 @@ class SoundEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     private fun startRecording() {
         binding.soundEditorStatus.text = getString(R.string.sound_editor_recording)
+        binding.recordButton.text = getString(R.string.sound_editor_stop_recording)
         isRecording = true
         mediaRecorder = MediaRecorder().apply {
             setAudioSource(MediaRecorder.AudioSource.MIC)
@@ -188,7 +183,9 @@ class SoundEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     private fun stopRecording() {
         binding.soundEditorStatus.text = getString(R.string.sound_editor_recorded)
+        binding.recordButton.text = getString(R.string.sound_editor_start_recording)
         isRecorded = true
+        isRecording = false
         mediaRecorder?.apply {
             stop()
             release()

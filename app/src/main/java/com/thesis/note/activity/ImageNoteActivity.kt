@@ -1,8 +1,8 @@
 package com.thesis.note.activity
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -16,10 +16,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
 import com.thesis.note.NavigationDrawer
 import com.thesis.note.R
 import com.thesis.note.database.AppDatabase
+import com.thesis.note.database.NoteColor
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
@@ -29,8 +31,6 @@ import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.math.max
-import kotlin.math.min
 
 class ImageNoteActivity
     :AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -38,6 +38,7 @@ class ImageNoteActivity
     lateinit var navigationDrawer : NavigationDrawer
     private lateinit var binding: ActivityImageNoteBinding
     private lateinit var db: AppDatabase
+    private lateinit var activityContext: Context
 
     //note&data ID
     private var noteID = -1
@@ -59,6 +60,7 @@ class ImageNoteActivity
         drawerToggle.isDrawerIndicatorEnabled = true
         drawerToggle.syncState()
         //------------------------------------------------------------------------------------------
+        activityContext = this
         //open database
         db = AppDatabase.invoke(this)
         //get parameters
@@ -71,9 +73,8 @@ class ImageNoteActivity
                 //load image
                 GlobalScope.launch {
                     val data = db.dataDao().getDataById(noteID)
-                    //binding.imageView.setImageURI(Uri.parse(data.Content))
                     runOnUiThread{
-                        setImage(binding,data.Content)
+                        setImage(data.Content)
                     }
                 }
             }
@@ -117,14 +118,15 @@ class ImageNoteActivity
                     //create new Note and Data
                     GlobalScope.launch {
                         val newNoteID =
-                            db.noteDao().insertAll(Note(0, "", null, null, false, null, null, null))
+                            db.noteDao().insertAll(Note(0, "", null, null, false, null, null, null,NoteColor.White))
                         val newDataID = db.dataDao().insertAll(
                             Data(
                                 0,
                                 newNoteID[0].toInt(),
                                 NoteType.Photo,
                                 currentPhotoPath,
-                                null
+                                null,
+                                null,null
                             )
                         )
                         val newNote = db.noteDao().getNoteById(newNoteID[0].toInt())
@@ -137,18 +139,18 @@ class ImageNoteActivity
                 }else if (dataID == -1) {
                     //create new Data
                     GlobalScope.launch {
-                        db.dataDao().insertAll(Data(0, noteID, NoteType.Photo, currentPhotoPath, null))
+                        db.dataDao().insertAll(Data(0, noteID, NoteType.Photo, currentPhotoPath,null,null,null))
                     }
                 }else {
                     //update Data
                     GlobalScope.launch {
                         val dataUpdate = db.dataDao().getDataById(dataID)
                         dataUpdate.Content = currentPhotoPath
+                        dataUpdate.Info = null
                         db.dataDao().update(dataUpdate)
                     }
                 }
             }
-
             Toast.makeText(applicationContext, R.string.save_OK, Toast.LENGTH_SHORT).show()
             finish()
         }
@@ -168,9 +170,8 @@ class ImageNoteActivity
     }
 
     private fun saveImageFromGallery(){
-        val oldFilePath = currentPhotoPath.drop(6) //remove "/raw/" from path
-        val oldFile = File(oldFilePath)
-        oldFile.copyTo(createImageFile(),true)
+        val originalFile = File(currentPhotoPath)
+        originalFile.copyTo(createImageFile(),true)
     }
 
     private val galleryStartForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
@@ -180,11 +181,9 @@ class ImageNoteActivity
             //Handle loaded image from gallery
             val imageUri = result.data?.data
             currentPhotoPath = imageUri?.path!!
-            //TODO image scaling
-            // setImage(binding,currentPhotoPath)
-            binding.imageView.setImageURI(imageUri)
+            currentPhotoPath = currentPhotoPath.drop(6)  //remove "/raw/" from path
+            setImage(currentPhotoPath)
         }
-
     }
 
     private val cameraStartForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
@@ -192,7 +191,7 @@ class ImageNoteActivity
         if (result.resultCode == Activity.RESULT_OK) {
             imageState = ImageState.NewCameraImage
             //load image
-            setImage(binding,currentPhotoPath)
+            setImage(currentPhotoPath)
         }
     }
 
@@ -201,20 +200,18 @@ class ImageNoteActivity
         //Create an image file name
         val timeStamp: String = SimpleDateFormat("yyyy.MM.dd-HH:mm:ss", Locale.US).format(Date())
         val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile("image_${timeStamp}_",".jpg",storageDir).apply {
+        return File(storageDir, "image_${timeStamp}.jpg").apply {
             currentPhotoPath = absolutePath
+            createNewFile()
         }
     }
 
-    private fun setImage(binding : ActivityImageNoteBinding, path:String?) {
-        //TODO image scaling
-        val opts = BitmapFactory.Options().apply {
-            inJustDecodeBounds = true
-            BitmapFactory.decodeFile(path, this)
-            inJustDecodeBounds = false
-            inSampleSize = max(1, min(outWidth / 600, outHeight / 600))
-        }
-        binding.imageView.setImageBitmap(BitmapFactory.decodeFile(path, opts))
+    private fun setImage(path:String?){
+        Glide.with(activityContext)
+            .load(path)
+            .fitCenter()
+            .placeholder(R.drawable.ic_loading_24)
+            .into(binding.chosenImage)
     }
 
     enum class ImageState(val id:Int) {
