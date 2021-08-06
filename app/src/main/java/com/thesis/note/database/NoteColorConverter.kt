@@ -30,24 +30,24 @@ class NoteColorConverter{
     fun enumToInt(noteType: NoteColor?): Int? {
         return noteType?.id
     }
-    fun enumToColor(value: NoteColor?,resources: Resources): Int{
+    fun enumToColor(value: NoteColor?): Int {
         return when(value){
-            NoteColor.Black -> resources.getColor(R.color.black,null)
-            NoteColor.White -> resources.getColor(R.color.white,null)
-            NoteColor.Red -> resources.getColor(R.color.red_400,null)
-            NoteColor.Pink -> resources.getColor(R.color.pink_400,null)
-            NoteColor.Purple -> resources.getColor(R.color.purple_400,null)
-            NoteColor.Blue -> resources.getColor(R.color.blue_400,null)
-            NoteColor.Cyan -> resources.getColor(R.color.cyan_400,null)
-            NoteColor.Teal -> resources.getColor(R.color.teal_400,null)
-            NoteColor.Green -> resources.getColor(R.color.green_400,null)
-            NoteColor.Yellow -> resources.getColor(R.color.yellow_400,null)
-            NoteColor.Orange -> resources.getColor(R.color.orange_400,null)
-            NoteColor.Gray -> resources.getColor(R.color.gray_400,null)
-            else -> 0
+            NoteColor.Black -> R.color.black1
+            NoteColor.White -> R.color.white
+            NoteColor.Red -> R.color.red_400
+            NoteColor.Pink -> R.color.pink_400
+            NoteColor.Purple -> R.color.purple_400
+            NoteColor.Blue -> R.color.blue_400
+            NoteColor.Cyan -> R.color.cyan_400
+            NoteColor.Teal -> R.color.teal_400
+            NoteColor.Green -> R.color.green_400
+            NoteColor.Yellow -> R.color.yellow_400
+            NoteColor.Orange -> R.color.orange_400
+            NoteColor.Gray -> R.color.gray_400
+            else -> R.color.purple_700
         }
     }
-    fun intToColor(value: Int?, resources: Resources): Int{
-        return enumToColor(intToEnum(value),resources)
+    fun intToColor(value: Int?): Int{
+        return enumToColor(intToEnum(value))
     }
 }

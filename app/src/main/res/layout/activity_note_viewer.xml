@@ -55,7 +55,27 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:background="@drawable/ic_share_black_24dp"
-                android:visibility="invisible"
+                android:visibility="gone"
+                tools:layout_editor_absoluteX="331dp"
+                tools:layout_editor_absoluteY="8dp" />
+
+            <ImageButton
+                android:id="@+id/tagButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:background="@drawable/ic_baseline_bookmark_border_24"
+                android:visibility="visible"
+                tools:layout_editor_absoluteX="331dp"
+                tools:layout_editor_absoluteY="8dp" />
+
+            <ImageButton
+                android:id="@+id/backgroundColorButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:background="@drawable/ic_palette_24"
+                android:visibility="visible"
                 tools:layout_editor_absoluteX="331dp"
                 tools:layout_editor_absoluteY="8dp" />
 
@@ -90,65 +110,67 @@
                 android:background="@android:color/black"
                 app:layout_constraintBottom_toBottomOf="parent" />
 
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Grupa"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout3"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/noteName" />
+                app:layout_constraintTop_toBottomOf="@+id/noteName"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintWidth_percent="0.5">
 
-            <Spinner
-                android:id="@+id/groupSpinner"
+                <TextView
+                    android:id="@+id/noteDate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView5"
+                    app:layout_constraintTop_toBottomOf="@+id/groupSpinner" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Data"
+                    android:visibility="invisible"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/groupSpinner" />
+
+                <Spinner
+                    android:id="@+id/groupSpinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textView4"
-                app:layout_constraintTop_toBottomOf="@+id/noteName" />
+                app:layout_constraintStart_toEndOf="@+id/constraintLayout3"
+                app:layout_constraintTop_toBottomOf="@+id/noteName"
+                app:layout_constraintWidth_percent="0.5">
 
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Data"
-                android:visibility="invisible"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView4" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/tagRecyclerView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/addTagButton" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/tagRecyclerView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/addTagButton" />
-
-            <TextView
-                android:id="@+id/noteDate"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textView5"
-                app:layout_constraintTop_toBottomOf="@+id/groupSpinner" />
-
-            <TextView
-                android:id="@+id/tags"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tagi"
-                android:visibility="visible"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textView5" />
-
-            <Button
-                android:id="@+id/addTagButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Dodaj tag"
-                android:visibility="visible"
-                app:layout_constraintStart_toEndOf="@+id/tags"
-                app:layout_constraintTop_toBottomOf="@+id/noteDate" />
+                <Button
+                    android:id="@+id/addTagButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Dodaj tag"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

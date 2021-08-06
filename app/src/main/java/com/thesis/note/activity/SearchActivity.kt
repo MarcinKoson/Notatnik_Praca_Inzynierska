@@ -53,7 +53,11 @@ class SearchActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelec
 
                 SearchValuesS.name = "%"+binding.editText.text.toString()+"%"
                 SearchValuesS.favorite = binding.checkBox.isChecked
-                SearchValuesS.group = binding.groupSpinner2.selectedItemPosition
+
+                if(binding.groupSpinner2.selectedItemPosition!=0)
+                    SearchValuesS.group = groupsList[binding.groupSpinner2.selectedItemPosition-1].IdGroup
+                else
+                    SearchValuesS.group = null
 
                 finish()
             }

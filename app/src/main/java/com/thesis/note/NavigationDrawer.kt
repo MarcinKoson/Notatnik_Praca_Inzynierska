@@ -5,10 +5,7 @@ import android.content.Intent
 import android.view.MenuItem
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import com.thesis.note.activity.AddNoteActivity
-import com.thesis.note.activity.ListActivity
-import com.thesis.note.activity.SettingsActivity
-import com.thesis.note.activity.MainActivity
+import com.thesis.note.activity.*
 import com.thesis.note.test.DebugActivity
 
 
@@ -19,7 +16,7 @@ class NavigationDrawer(drawer_layout: DrawerLayout) {
 
         when (menuItem.itemId) {
             R.id.start ->{
-                val intent = Intent(context, MainActivity::class.java)
+                val intent = Intent(context, NewMainActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 context.startActivity(intent)
             }

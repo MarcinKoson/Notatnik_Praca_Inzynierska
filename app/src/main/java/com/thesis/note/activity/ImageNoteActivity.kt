@@ -118,7 +118,7 @@ class ImageNoteActivity
                     //create new Note and Data
                     GlobalScope.launch {
                         val newNoteID =
-                            db.noteDao().insertAll(Note(0, "", null, null, false, null, null, null,null))
+                            db.noteDao().insertAll(Note(0, "", null, null, false, null, null, null,NoteColor.White))
                         val newDataID = db.dataDao().insertAll(
                             Data(
                                 0,

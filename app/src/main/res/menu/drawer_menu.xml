@@ -6,20 +6,23 @@
     <group>
         <item
             android:id="@+id/start"
-            android:title="Start"/>
-        <item
-            android:id="@+id/drawer_list"
             android:title="Lista Notatek"/>
         <item
+            android:id="@+id/drawer_list"
+            android:title="Ulubione"
+            android:visible="false"
+             />
+        <item
             android:id="@+id/add_note"
-            android:title="Dodaj Notatke"/>
+            android:title="Dodaj Notatkę"/>
         <item
             android:id="@+id/drawer_settings"
             android:title="Ustawienia"/>
         <item
             android:id="@+id/drawer_debug"
             android:title="Debug"
-            android:visible="true" />
+            android:visible="false"
+             />
     </group>
 
     <item android:title="ABC"

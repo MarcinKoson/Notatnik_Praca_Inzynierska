@@ -35,6 +35,7 @@ class TextEditorNewActivity : AppCompatActivity(), NavigationView.OnNavigationIt
     private var dataID:Int = -1
     private var noteID:Int = -1
     private lateinit var editedData: Data
+    private lateinit var editedNote: Note
 
     private lateinit var noteViewerActivityIntent : Intent
 
@@ -81,9 +82,18 @@ class TextEditorNewActivity : AppCompatActivity(), NavigationView.OnNavigationIt
                         setItalicText(italic)
                         setBoldText(bold)
                         binding.editedText.textSize = fontSize.toFloat()
-                        binding.editedText.setTextColor(NoteColorConverter().enumToColor(fontColor,resources))
+                        binding.editedText.setTextColor(resources.getColor(NoteColorConverter().enumToColor(fontColor),null))
                     }
                 }}
+            //load note
+             if(noteID != -1){
+                GlobalScope.launch {
+                    editedNote = db.noteDao().getNoteById(noteID)
+                    runOnUiThread {
+                        binding.editedText.background = resources.getDrawable(NoteColorConverter().enumToColor(editedNote.Color),null)
+                    }
+                }
+            }
         }
         //bold text
         binding.boldTextButton.setOnClickListener {
@@ -115,7 +125,7 @@ class TextEditorNewActivity : AppCompatActivity(), NavigationView.OnNavigationIt
             val result = bundle.getString("colorID")
             val colorID = result?.toInt()
             fontColor = NoteColorConverter().intToEnum(colorID)!!
-            binding.editedText.setTextColor(NoteColorConverter().intToColor(colorID,resources))
+            binding.editedText.setTextColor(resources.getColor(NoteColorConverter().intToColor(colorID),null))
         }
         //save button
         noteViewerActivityIntent = Intent(this, NoteViewerActivity::class.java)

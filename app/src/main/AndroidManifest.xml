@@ -22,13 +22,17 @@
             android:noHistory="false"/>
         <activity android:name=".activity.ListActivity"
             />
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".activity.NewMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.MainActivity"
+            />
+
+
         <activity android:name=".activity.NoteViewerActivity"
             />
         <activity android:name=".activity.SearchActivity"

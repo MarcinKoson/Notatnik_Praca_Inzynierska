@@ -1,5 +1,6 @@
 package com.thesis.note.recycler_view_adapters
 
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.thesis.note.R
+import com.thesis.note.database.NoteColorConverter
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
 import com.thesis.note.databinding.RecyclerViewNoteViewerImageBinding
@@ -60,11 +62,21 @@ class NoteViewerAdapter (private var dataList:List<Data>, private var onDataClic
            NoteType.Text.id -> {
                val binding = RecyclerViewNoteViewerTextBinding.bind(holder.objectLayout)
                binding.noteViewerContent.text = dataList[position].Content
+               binding.noteViewerContent.setTextColor(
+                   holder.itemView.resources.getColor(
+                       NoteColorConverter().enumToColor(dataList[position].Color),null))
+               binding.noteViewerContent.textSize = dataList[position].Size?.toFloat()!!
+               when(dataList[position].Info){
+                   "B" -> binding.noteViewerContent.typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
+                   "I" -> binding.noteViewerContent.typeface = Typeface.create(Typeface.DEFAULT, Typeface.ITALIC)
+                   "BI" -> binding.noteViewerContent.typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD_ITALIC)
+               }
+
            }
            NoteType.Photo.id ->{
                val binding = RecyclerViewNoteViewerImageBinding.bind(holder.objectLayout)
                Glide.with(holder.itemView)
-                   .load(dataList[position]?.Content)
+                   .load(dataList[position].Content)
                    .fitCenter()
                    .placeholder(R.drawable.ic_loading_24)
                    .into(binding.noteViewerImage)
@@ -76,4 +88,7 @@ class NoteViewerAdapter (private var dataList:List<Data>, private var onDataClic
        }
     }
     override fun getItemCount() = dataList.size
+
+
+
 }

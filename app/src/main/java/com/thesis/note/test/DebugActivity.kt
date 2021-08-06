@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.room.Database
 import com.thesis.note.R
+import com.thesis.note.activity.NewMainActivity
 import com.thesis.note.activity.SoundEditorActivity
 import com.thesis.note.activity.TextEditorNewActivity
 import com.thesis.note.activity.XTemplateEmptyActivity
@@ -21,36 +22,22 @@ class DebugActivity : AppCompatActivity() {
     private lateinit var binding:XActivityDebugBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        //Toast.makeText(applicationContext, "debug", Toast.LENGTH_SHORT).show()
         super.onCreate(savedInstanceState)
         binding = XActivityDebugBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        //Toast.makeText(applicationContext, "debug", Toast.LENGTH_SHORT).show()
         binding.templatebutton.setOnClickListener{
             val template = Intent(this, XTemplateEmptyActivity::class.java)
             startActivity(template)
         }
 
-
-        var db = AppDatabase.invoke(this)
-        var list : List<Data> = listOf()
-        GlobalScope.launch {
-            list = db.dataDao().getAll()
-        }
-        binding.testbutton.setOnClickListener{
-            //val test = Intent(this, TestActivity::class.java)
-            //startActivity(test)
-
-          //  Toast.makeText(applicationContext, list[0].Info, Toast.LENGTH_SHORT).show()
-        }
-
-        binding.button9.setOnClickListener {
-            val test = Intent(this, TextEditorNewActivity::class.java).apply{
-                putExtra("noteID", -1)
-                putExtra("dataID", -1)
-            }
+        binding.testButton.setOnClickListener{
+            val test = Intent(this, NewMainActivity::class.java)
             startActivity(test)
 
         }
+
+
         /*
         //DB remove
         deleteDBbutton.setOnClickListener(object: OnClickListener{
@@ -61,12 +48,10 @@ class DebugActivity : AppCompatActivity() {
                 ).build()
                 GlobalScope.launch {
                 db.clearAllTables();
-
                     }
             }
         })
         */
-
     }
 }
 

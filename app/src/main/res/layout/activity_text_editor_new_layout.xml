@@ -63,7 +63,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:background="@drawable/ic_format_size_24"
-                />
+                android:visibility="gone"
+                tools:layout_editor_absoluteX="291dp"
+                tools:layout_editor_absoluteY="8dp" />
 
             <ImageButton
                 android:id="@+id/underlinedTextButton"
