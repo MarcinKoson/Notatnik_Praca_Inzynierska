@@ -8,7 +8,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
@@ -16,19 +15,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-
-
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import com.google.android.flexbox.FlexboxLayoutManager
-
-
 import com.google.android.material.navigation.NavigationView
 import com.thesis.note.*
-
-
-
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.NoteColorConverter
 import com.thesis.note.database.NoteType
@@ -36,13 +27,11 @@ import com.thesis.note.database.entity.*
 import com.thesis.note.databinding.ActivityNoteViewerBinding
 import com.thesis.note.fragment.AddTagsDialogFragment
 import com.thesis.note.fragment.ChooseColorFragment
-
 import com.thesis.note.recycler_view_adapters.NoteViewerAdapter
 import com.thesis.note.recycler_view_adapters.TagListAdapter
-
-
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+
 //TODO documentation
 class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     NoteViewerAdapter.OnDataClickListener, DialogInterface.OnDismissListener {
@@ -186,13 +175,7 @@ class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemS
         }
         binding.groupSpinner.onItemSelectedListener = groupOnItemClickListener
         //add tag button
-        binding.addTagButton.setOnClickListener {
-            val newFragment = AddTagsDialogFragment()
-            val bundle = Bundle()
-            bundle.putInt("noteID",noteID)
-            newFragment.arguments = bundle
-            newFragment.show(supportFragmentManager, "add tags")
-        }
+
         binding.tagButton.setOnClickListener {
             val newFragment = AddTagsDialogFragment()
             val bundle = Bundle()

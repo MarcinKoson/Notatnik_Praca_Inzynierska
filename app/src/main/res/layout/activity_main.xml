@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -21,23 +20,23 @@
 
             <ImageButton
                 android:id="@+id/sortButton"
+                android:background="@drawable/ic_baseline_sort"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:background="@drawable/ic_baseline_sort"
+                android:layout_margin="4dp"
                 android:contentDescription="@string/activity_main_sort_button_description"
-                tools:layout_editor_absoluteX="371dp"
-                tools:layout_editor_absoluteY="8dp" />
+                 />
 
             <ImageButton
                 android:id="@+id/searchButton"
+                android:background="@drawable/ic_baseline_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:background="@drawable/ic_baseline_search"
+                android:layout_margin="4dp"
                 android:contentDescription="@string/activity_main_search_button_description"
-                tools:layout_editor_absoluteX="331dp"
-                tools:layout_editor_absoluteY="8dp" />
+               />
         </androidx.appcompat.widget.Toolbar>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

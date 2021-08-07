@@ -31,8 +31,8 @@
     <string name="note_type_other">Other</string>
     <string name="activity_image_note_gallery">Open Gallery</string>
     <string name="activity_image_note_camera">Open Camera</string>
-    <string name="image">Image</string>
     <string name="delete">Delete</string>
+    <string name="image">Image</string>
     <string name="share">Share</string>
     <string name="save">Save</string>
     <string name="error_create_file">ERROR: CANNOT CREATE FILE</string>
@@ -56,8 +56,18 @@
 
     <!-- New -->
     <string name="x_template_empty_activity_template">TEMPLATE</string>
+
     <string name="activity_main_search_button_description">Search notes</string>
     <string name="activity_main_add_button_description">Add note</string>
     <string name="activity_main_sort_button_description">Sort notes</string>
+
+    <string name="activity_note_viewer_note_name_hint">here write name of note</string>
+    <string name="activity_note_viewer_note_date_label">Edit date: </string>
+    <string name="activity_note_viewer_delete_button_description">Delete</string>
+    <string name="activity_note_viewer_save_button_description">Save</string>
+    <string name="activity_note_viewer_share_button_description">Share</string>
+    <string name="activity_note_viewer_tag_button_description">Add tag</string>
+    <string name="activity_note_viewer_background_button_description">Background color</string>
+    <string name="activity_note_viewer_without_group">No group</string>
 
 </resources>
