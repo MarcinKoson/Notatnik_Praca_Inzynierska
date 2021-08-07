@@ -43,7 +43,7 @@ import com.thesis.note.recycler_view_adapters.TagListAdapter
 
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-
+//TODO documentation
 class NoteViewerActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     NoteViewerAdapter.OnDataClickListener, DialogInterface.OnDismissListener {
 

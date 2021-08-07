@@ -27,7 +27,7 @@ import java.io.FileInputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-
+//TODO documentation
 class SoundEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var drawerLayout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer

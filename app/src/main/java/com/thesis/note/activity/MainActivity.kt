@@ -13,7 +13,7 @@ import com.thesis.note.database.entity.Group
 import com.thesis.note.database.entity.Note
 import com.thesis.note.database.entity.Tag
 import com.thesis.note.databinding.ActivityMainBinding
-import com.thesis.note.recycler_view_adapters.NoteTilesListAdapter
+import com.thesis.note.recycler_view_adapters.NoteTilesAdapter
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -55,6 +55,7 @@ class MainActivity : DrawerActivity() {
             }
         }
         //TODO search note fragment
+        //TODO reset search
         //Search button listener
         binding.searchButton.setOnClickListener {
             Intent(it.context,SearchActivity::class.java).run{
@@ -78,7 +79,7 @@ class MainActivity : DrawerActivity() {
     }
 
     /** On note click listener for recycler view adapter */
-    private val onNoteClickListener = object : NoteTilesListAdapter.OnNoteClickListener {
+    private val onNoteClickListener = object : NoteTilesAdapter.OnNoteClickListener {
         override fun onNoteClick(position: Int) {
             Intent(thisActivity, NoteViewerActivity::class.java).run{
                 putExtra("noteID", listOfNotes[position].IdNote)
@@ -90,7 +91,7 @@ class MainActivity : DrawerActivity() {
     /** Recycler view initialization. It needs [listOfNotes] and [listOfData] loaded from database. Should be running on UI thread*/
     private fun initRecyclerView(){
         val viewManager = GridLayoutManager(thisActivity, 2)
-        val viewAdapter = NoteTilesListAdapter(listOfNotes, listOfData,onNoteClickListener)
+        val viewAdapter = NoteTilesAdapter(listOfNotes, listOfData,onNoteClickListener)
         binding.noteTilesRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
@@ -100,7 +101,7 @@ class MainActivity : DrawerActivity() {
 
     /** Updates recycler view to use current [listOfNotes] and [listOfData]. Should be running on UI thread */
     private fun updateRecyclerView(){
-        val viewAdapter = NoteTilesListAdapter(listOfNotes, listOfData,onNoteClickListener)
+        val viewAdapter = NoteTilesAdapter(listOfNotes, listOfData,onNoteClickListener)
         binding.noteTilesRecyclerView.adapter = viewAdapter
         viewAdapter.notifyDataSetChanged()
     }

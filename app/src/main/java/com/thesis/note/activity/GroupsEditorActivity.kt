@@ -23,7 +23,7 @@ import com.thesis.note.R
 import com.thesis.note.databinding.ActivityGroupsEditorBinding
 
 
-//TODO
+//TODO documentation
 class GroupsEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     GroupsEditorAdapter.OnNoteListener {
 

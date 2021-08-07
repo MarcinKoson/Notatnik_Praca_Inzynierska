@@ -14,7 +14,7 @@ import com.thesis.note.database.entity.TagOfNote
 import com.thesis.note.recycler_view_adapters.AddTagFragmentAdapter
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-
+//TODO documentation
 class AddTagsDialogFragment
     :DialogFragment(){
 

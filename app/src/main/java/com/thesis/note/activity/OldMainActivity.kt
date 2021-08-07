@@ -59,7 +59,7 @@ class OldMainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
         //------------------------------------------------------------------------------------------
         checkFirstStart()
         db = AppDatabase(this)
-        //TODO remove temp list
+
         //Database
         db = AppDatabase.invoke(this)
 

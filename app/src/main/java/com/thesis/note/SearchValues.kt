@@ -1,5 +1,5 @@
 package com.thesis.note
-
+//TODO documentation
 class SearchValues{
     @Volatile private var instance: SearchValues? = null
 

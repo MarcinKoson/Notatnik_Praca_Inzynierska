@@ -9,7 +9,7 @@ import com.thesis.note.R
 import com.thesis.note.database.entity.Tag
 import com.thesis.note.database.entity.TagOfNote
 import com.thesis.note.databinding.RecyclerViewTagListBinding
-
+//TODO documentation
 class TagListAdapter (private val tagOfNoteList: List<TagOfNote>, private val tagList:List<Tag>, private val onTagClickListener: OnTagClickListener)
     :RecyclerView.Adapter<TagListAdapter.TagHolder>() {
 
@@ -35,7 +35,7 @@ class TagListAdapter (private val tagOfNoteList: List<TagOfNote>, private val ta
 
     override fun onBindViewHolder(holder: TagHolder, position: Int) {
         val binding = RecyclerViewTagListBinding.bind(holder.objectLayout)
-        binding.tagName.text = tagList.firstOrNull { x -> x.IdTag == tagOfNoteList[position].TagID }?.Name
+        binding.groupName.text = tagList.firstOrNull { x -> x.IdTag == tagOfNoteList[position].TagID }?.Name
     }
 
     override fun getItemCount() = tagOfNoteList.size

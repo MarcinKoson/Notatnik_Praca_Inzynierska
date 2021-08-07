@@ -21,7 +21,7 @@ import com.thesis.note.database.entity.Tag
 import com.thesis.note.databinding.ActivityTagsEditorBinding
 
 
-//TODO
+//TODO documentation
 class TagEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     TagsEditorAdapter.OnNoteListener {
 

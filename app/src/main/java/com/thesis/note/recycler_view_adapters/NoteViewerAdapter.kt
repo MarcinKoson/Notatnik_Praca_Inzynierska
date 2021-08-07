@@ -13,7 +13,7 @@ import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
 import com.thesis.note.databinding.RecyclerViewNoteViewerImageBinding
 import com.thesis.note.databinding.RecyclerViewNoteViewerTextBinding
-
+//TODO documentation
 class NoteViewerAdapter (private var dataList:List<Data>, private var onDataClickListener: OnDataClickListener)
     :RecyclerView.Adapter<NoteViewerAdapter.DataHolder>() {
 

@@ -1,4 +1,7 @@
 <resources>
+    <!-- TODO -->
+
+    <!-- Old -->
     <string name="app_name">Notes</string>
     <string name="abdt">ActionBarDrawerToggle</string>
     <string-array name="groups_array">
@@ -7,7 +10,6 @@
         <item>Grupa 2</item>
         <item>Grupa 3</item>
     </string-array>
-
     <string-array name="font_name">
         <item>Nazwa czcionki</item>
     </string-array>
@@ -27,7 +29,6 @@
     <string name="note_type_sound">Sound</string>
     <string name="note_type_photo">Photo</string>
     <string name="note_type_other">Other</string>
-
     <string name="activity_image_note_gallery">Open Gallery</string>
     <string name="activity_image_note_camera">Open Camera</string>
     <string name="image">Image</string>
@@ -53,6 +54,10 @@
     <string name="action_bar_drawer_toggle_close">Close drawer</string>
     <string name="groups_without_group">R.string.groups_without_group CHANGE</string>
 
+    <!-- New -->
     <string name="x_template_empty_activity_template">TEMPLATE</string>
+    <string name="activity_main_search_button_description">Search notes</string>
+    <string name="activity_main_add_button_description">Add note</string>
+    <string name="activity_main_sort_button_description">Sort notes</string>
 
 </resources>

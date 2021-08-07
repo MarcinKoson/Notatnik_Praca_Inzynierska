@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.thesis.note.R
 import com.thesis.note.database.entity.Tag
 import com.thesis.note.databinding.RecyclerViewAddTagFragmentBinding
-
+//TODO documentation
 class AddTagFragmentAdapter (private val tagList:List<Tag>, private val onTagClickListener: OnTagClickListener)
     :RecyclerView.Adapter<AddTagFragmentAdapter.TagHolder>() {
 

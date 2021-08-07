@@ -15,7 +15,7 @@ import com.thesis.note.databinding.RecyclerViewNoteListPhotoBinding
 import com.thesis.note.databinding.RecyclerViewNoteListTextBinding
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-
+@Deprecated ("old list")
 class NoteListAdapter (private var noteList: List<Note>, private var dataList:List<Data>, private val onNoteClickListener: OnNoteClickListener)
     :RecyclerView.Adapter<NoteListAdapter.NoteListViewHolder>() {
 
@@ -35,12 +35,12 @@ class NoteListAdapter (private var noteList: List<Note>, private var dataList:Li
 
     override fun getItemViewType(position: Int): Int {
         val data = dataList.firstOrNull{ v -> v.IdData == noteList[position].MainData }
-        //TODO test when note don't have main data
+
         return data?.Type?.id ?: 0
     }
 
     override fun onCreateViewHolder(parent: ViewGroup,viewType: Int): NoteListViewHolder {
-        //TODO create new layouts
+
         when(viewType){
             NoteType.Text.id -> {
                 return NoteListViewHolder(
@@ -55,7 +55,7 @@ class NoteListAdapter (private var noteList: List<Note>, private var dataList:Li
                     )
             }
             NoteType.Sound.id -> {
-                //TODO layout for sound notes
+             
                 return NoteListViewHolder(
                     LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_note_list_text, parent, false) as ConstraintLayout
                     ,onNoteClickListener
@@ -95,7 +95,7 @@ class NoteListAdapter (private var noteList: List<Note>, private var dataList:Li
                 if(noteList[position].GroupID !=null)
                     GlobalScope.launch {
                         val groupName = AppDatabase(holder.objectLayout.context).groupDao().getId(noteList[position].GroupID!!).Name
-                        binding.tagName.text = groupName
+                        binding.groupName.text = groupName
                     }
                 //set listener for favorite button
                 binding.favoriteCheckBox.setOnClickListener (
@@ -107,7 +107,7 @@ class NoteListAdapter (private var noteList: List<Note>, private var dataList:Li
                     }
                 )
                 //set content
-                binding.noteListContent.text = mainData?.Content
+                binding.noteContent.text = mainData?.Content
             }
             NoteType.Photo.id -> {
                 val binding = RecyclerViewNoteListPhotoBinding.bind(holder.objectLayout)
@@ -119,7 +119,7 @@ class NoteListAdapter (private var noteList: List<Note>, private var dataList:Li
                 if(noteList[position].GroupID !=null)
                     GlobalScope.launch {
                         val groupName = AppDatabase(holder.objectLayout.context).groupDao().getId(noteList[position].GroupID!!).Name
-                        binding.tagName.text = groupName
+                        binding.groupName.text = groupName
                     }
                 //set listener for favorite button
                 binding.favoriteCheckBox.setOnClickListener (
@@ -147,7 +147,7 @@ class NoteListAdapter (private var noteList: List<Note>, private var dataList:Li
                 if(noteList[position].GroupID !=null)
                     GlobalScope.launch {
                         val groupName = AppDatabase(holder.objectLayout.context).groupDao().getId(noteList[position].GroupID!!).Name
-                        binding.tagName.text = groupName
+                        binding.groupName.text = groupName
                     }
                 //set listener for favorite button
                 binding.favoriteCheckBox.setOnClickListener (
@@ -159,7 +159,7 @@ class NoteListAdapter (private var noteList: List<Note>, private var dataList:Li
                     }
                 )
                 //set content
-                binding.noteListContent.text = "NAGRANIE \n\n"
+                binding.noteContent.text = "NAGRANIE \n\n"
             }
         }
     }

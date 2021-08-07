@@ -23,9 +23,7 @@ import com.thesis.note.databinding.ActivityListBinding
 import com.thesis.note.recycler_view_adapters.NoteListAdapter
 
 
-//TODO
-
-//TODO change layout manager to FlexboxLayoutManager
+@Deprecated("old list")
 class ListActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, NoteListAdapter.OnNoteClickListener {
     lateinit var drawerLayout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer

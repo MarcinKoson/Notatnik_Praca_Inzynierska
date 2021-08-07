@@ -23,7 +23,7 @@ import com.thesis.note.databinding.ActivityTextEditorNewLayoutBinding
 import com.thesis.note.fragment.ChooseColorFragment
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-
+//TODO documentation
 class TextEditorNewActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var drawerLayout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer

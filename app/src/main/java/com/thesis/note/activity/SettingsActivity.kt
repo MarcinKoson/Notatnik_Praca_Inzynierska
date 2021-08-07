@@ -14,7 +14,7 @@ import com.google.android.material.navigation.NavigationView
 import com.thesis.note.R
 import com.thesis.note.databinding.ActivitySettingsBinding
 
-
+//TODO documentation
 class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var drawerLayout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer

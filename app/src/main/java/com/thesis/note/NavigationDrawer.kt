@@ -8,7 +8,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.thesis.note.activity.*
 import com.thesis.note.test.DebugActivity
 
-
+//TODO documentation
 class NavigationDrawer(drawer_layout: DrawerLayout) {
     val drawer_layout = drawer_layout
 

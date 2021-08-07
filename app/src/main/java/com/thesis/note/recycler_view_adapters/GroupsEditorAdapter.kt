@@ -22,7 +22,7 @@ import com.thesis.note.R
 import com.thesis.note.databinding.PopupEditGroupBinding
 import com.thesis.note.databinding.RecyclerViewAddTagFragmentBinding
 import com.thesis.note.databinding.RecyclerViewGropusLayoutBinding
-
+//TODO documentation
 //TODO context??
 //TODO join with TagListAdapter??
 class GroupsEditorAdapter (private var myDataset: List<Group>, onNoteListener: OnNoteListener, var context:Context) :
@@ -65,7 +65,7 @@ class GroupsEditorAdapter (private var myDataset: List<Group>, onNoteListener: O
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
 
-        holder.binding.tagName.text = myDataset[position].Name
+        holder.binding.groupName.text = myDataset[position].Name
 
         holder.binding.deleteButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {

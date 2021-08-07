@@ -23,7 +23,7 @@ import com.thesis.note.databinding.ActivitySearchBinding
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-//TODO
+//TODO documentation
 class SearchActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var drawer_layout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer

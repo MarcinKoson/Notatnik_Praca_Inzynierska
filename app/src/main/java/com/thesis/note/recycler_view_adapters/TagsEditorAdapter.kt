@@ -20,7 +20,7 @@ import com.thesis.note.R
 import com.thesis.note.database.entity.Tag
 import com.thesis.note.databinding.PopupEditGroupBinding
 import com.thesis.note.databinding.RecyclerViewTagsEditorLayoutBinding
-
+//TODO documentation
 //TODO context??
 class TagsEditorAdapter (private var myDataset: List<Tag>, onNoteListener: OnNoteListener, var context:Context) :
     RecyclerView.Adapter<TagsEditorAdapter.MyViewHolder>() {
@@ -56,7 +56,7 @@ class TagsEditorAdapter (private var myDataset: List<Tag>, onNoteListener: OnNot
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val binding = RecyclerViewTagsEditorLayoutBinding.bind(holder.itemView)
-        binding.tagName.text = myDataset[position].Name
+        binding.groupName.text = myDataset[position].Name
 
         binding.deleteButton.setOnClickListener {
             GlobalScope.launch {

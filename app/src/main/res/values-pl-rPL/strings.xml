@@ -28,5 +28,8 @@
 
     <string name="share">x</string>
     <string name="x_template_empty_activity_template">TEMPLATE</string>
+    <string name="activity_main_search_button_description">Szukaj notatek</string>
+    <string name="activity_main_add_button_description">Dodaj notatkę</string>
+    <string name="activity_main_sort_button_description">Sortuj notatki</string>
 
 </resources>
