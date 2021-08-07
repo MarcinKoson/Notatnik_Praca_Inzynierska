@@ -9,6 +9,7 @@ import com.google.android.material.navigation.NavigationView
 
 /**
  * Class for activity with drawer. It provide logic for drawer.
+ * Inflate your layout, then run [setDrawerLayout]
  */
 abstract class DrawerActivity :
     AppCompatActivity()
@@ -19,20 +20,6 @@ abstract class DrawerActivity :
     /** [NavigationDrawer] of your activity */
     lateinit var navigationDrawer : NavigationDrawer
 
-    /** Listener for item selected in [NavigationView] */
-    val navigationItemSelectedListener = NavigationView.OnNavigationItemSelectedListener{
-        finish()
-        navigationDrawer.onNavigationItemSelected(it,this)
-    }
-
-    /** Logic for back button */
-    override fun onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
-    }
     /** Set content and drawer for activity */
     fun setDrawerLayout(drawerLayout: DrawerLayout, toolbar: Toolbar, navigationView: NavigationView){
         this.drawerLayout = drawerLayout
@@ -47,5 +34,20 @@ abstract class DrawerActivity :
             isDrawerIndicatorEnabled = true
             syncState()
         }
+    }
+
+    /** Logic for back button */
+    override fun onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
+    }
+
+    /** Listener for item selected in [NavigationView] */
+    private val navigationItemSelectedListener = NavigationView.OnNavigationItemSelectedListener{
+        finish()
+        navigationDrawer.onNavigationItemSelected(it,this)
     }
 }

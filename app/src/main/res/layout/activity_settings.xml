@@ -30,7 +30,7 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
         <TextView
-            android:id="@+id/template_textView"
+            android:id="@+id/template_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="SETTINGS"

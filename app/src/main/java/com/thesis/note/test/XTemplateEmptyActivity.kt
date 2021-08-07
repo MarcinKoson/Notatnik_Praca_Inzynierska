@@ -16,3 +16,4 @@ class XTemplateEmptyActivity : DrawerActivity() {
         setDrawerLayout(binding.root,binding.toolbar,binding.navigationView)
     }
 }
+

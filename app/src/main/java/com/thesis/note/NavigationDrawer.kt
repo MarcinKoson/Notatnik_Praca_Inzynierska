@@ -16,7 +16,7 @@ class NavigationDrawer(drawer_layout: DrawerLayout) {
 
         when (menuItem.itemId) {
             R.id.start ->{
-                val intent = Intent(context, NewMainActivity::class.java)
+                val intent = Intent(context, MainActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 context.startActivity(intent)
             }
