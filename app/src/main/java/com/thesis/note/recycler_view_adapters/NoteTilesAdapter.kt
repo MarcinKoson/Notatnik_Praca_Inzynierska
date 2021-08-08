@@ -4,6 +4,8 @@ import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
+import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -21,6 +23,8 @@ import kotlinx.coroutines.launch
 
 /**
  *  [RecyclerView] adapter for showing [Note]s in form of tiles
+ *
+ *  TODO function for setting default note content
  */
 class NoteTilesAdapter (
         private var noteList: List<Note>,
@@ -112,34 +116,47 @@ class NoteTilesAdapter (
     /**  */
     override fun getItemCount() = noteList.size
 
-    /** */
-    private fun setTextTile(holder: NoteTilesViewHolder, position: Int) {
-        val mainData = dataList.firstOrNull { it.IdData == noteList[position].MainData }
-        val binding = RecyclerViewNoteTileTextBinding.bind(holder.objectLayout)
-        //name, favorite
-        binding.noteName.text = noteList[position].Name
-        binding.favoriteCheckBox.isChecked = noteList[position].Favorite
-        //checking group
-        if (noteList[position].GroupID != null)
-            GlobalScope.launch {
-                val groupName = AppDatabase(holder.objectLayout.context).groupDao()
-                    .getId(noteList[position].GroupID!!).Name
-                binding.groupName.text = groupName
-            }
+    /**  */
+    private fun setNoteInfo(
+        holder: NoteTilesViewHolder,
+        position: Int,
+        root:ConstraintLayout,
+        noteName:TextView,
+        favoriteCheckBox:CheckBox,
+        groupName:TextView
+    ){
+        //name
+        noteName.text = noteList[position].Name
+        //favorite
+        favoriteCheckBox.isChecked = noteList[position].Favorite
         //set listener for favorite button
         //TODO favorite check box colors
-        binding.favoriteCheckBox.setOnClickListener {
-            noteList[position].Favorite = binding.favoriteCheckBox.isChecked
+        favoriteCheckBox.setOnClickListener {
+            noteList[position].Favorite = favoriteCheckBox.isChecked
             GlobalScope.launch {
                 AppDatabase(holder.objectLayout.context).noteDao().update(noteList[position])
             }
         }
+        //set background
+        root.setBackgroundColor(
+            holder.itemView.resources.getColor(NoteColorConverter.enumToColor(noteList[position].Color), null))
+        //checking group
+        if (noteList[position].GroupID != null)
+            GlobalScope.launch {
+                groupName.text = AppDatabase(holder.objectLayout.context).groupDao().getId(noteList[position].GroupID!!).Name
+            }
+    }
+    /**  */
+    private fun setTextTile(holder: NoteTilesViewHolder, position: Int) {
+        val binding = RecyclerViewNoteTileTextBinding.bind(holder.objectLayout)
+        setNoteInfo(holder,position,binding.root,binding.noteName,binding.favoriteCheckBox,binding.groupName)
+        val mainData = dataList.firstOrNull { it.IdData == noteList[position].MainData }
         //set content
         binding.noteContent.text = mainData?.Content
         //set graphic
         binding.noteContent.setTextColor(
             holder.itemView.resources.getColor(
-                NoteColorConverter().enumToColor(
+                NoteColorConverter.enumToColor(
                     mainData?.Color
                 ), null
             )
@@ -151,14 +168,12 @@ class NoteTilesAdapter (
             "BI" -> binding.noteContent.typeface =
                 Typeface.create(Typeface.DEFAULT, Typeface.BOLD_ITALIC)
         }
-        //set background
-        binding.root.setBackgroundColor(
-            holder.itemView.resources.getColor(NoteColorConverter().enumToColor(noteList[position].Color), null))
-
+        //note name size
+        binding.noteName.textSize = mainData?.Size?.toFloat()!!+5
     }
 
     //TODO set image tile
-    /** */
+    /**  */
     private fun setImageTile(holder: NoteTilesViewHolder, position: Int) {
         val mainData = dataList.firstOrNull { it.IdData == noteList[position].MainData }
         val binding = RecyclerViewNoteListPhotoBinding.bind(holder.objectLayout)
@@ -191,7 +206,7 @@ class NoteTilesAdapter (
     }
 
     //TODO set sound tile
-    /** */
+    /**  */
     private fun setSoundTile(holder: NoteTilesViewHolder, position: Int) {
         //get main data
         //val mainData = dataList.firstOrNull { it.IdData == noteList[position].MainData }

@@ -30,24 +30,30 @@ class NoteColorConverter{
     fun enumToInt(noteType: NoteColor?): Int? {
         return noteType?.id
     }
-    fun enumToColor(value: NoteColor?): Int {
-        return when(value){
-            NoteColor.Black -> R.color.black1
-            NoteColor.White -> R.color.white
-            NoteColor.Red -> R.color.red_400
-            NoteColor.Pink -> R.color.pink_400
-            NoteColor.Purple -> R.color.purple_400
-            NoteColor.Blue -> R.color.blue_400
-            NoteColor.Cyan -> R.color.cyan_400
-            NoteColor.Teal -> R.color.teal_400
-            NoteColor.Green -> R.color.green_400
-            NoteColor.Yellow -> R.color.yellow_400
-            NoteColor.Orange -> R.color.orange_400
-            NoteColor.Gray -> R.color.gray_400
-            else -> R.color.purple_700
+
+    companion object {
+        fun enumToColor(value: NoteColor?): Int {
+            return when(value){
+                NoteColor.Black -> R.color.black1
+                NoteColor.White -> R.color.white
+                NoteColor.Red -> R.color.red_400
+                NoteColor.Pink -> R.color.pink_400
+                NoteColor.Purple -> R.color.purple_400
+                NoteColor.Blue -> R.color.blue_400
+                NoteColor.Cyan -> R.color.cyan_400
+                NoteColor.Teal -> R.color.teal_400
+                NoteColor.Green -> R.color.green_400
+                NoteColor.Yellow -> R.color.yellow_400
+                NoteColor.Orange -> R.color.orange_400
+                NoteColor.Gray -> R.color.gray_400
+                else -> R.color.purple_700
+            }
         }
-    }
-    fun intToColor(value: Int?): Int{
-        return enumToColor(intToEnum(value))
+/*
+        fun intToColor(value: Int?): Int{
+            return enumToColor(intToEnum(value))
+        }
+
+ */
     }
 }

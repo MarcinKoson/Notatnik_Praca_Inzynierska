@@ -20,7 +20,7 @@ import android.view.inputmethod.InputMethodManager
 import android.view.*
 import com.thesis.note.R
 import com.thesis.note.databinding.PopupEditGroupBinding
-import com.thesis.note.databinding.RecyclerViewAddTagFragmentBinding
+
 import com.thesis.note.databinding.RecyclerViewGropusLayoutBinding
 //TODO documentation
 //TODO context??

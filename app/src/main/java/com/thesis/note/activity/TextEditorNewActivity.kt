@@ -13,14 +13,11 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import com.thesis.note.NavigationDrawer
 import com.thesis.note.R
-import com.thesis.note.database.AppDatabase
-import com.thesis.note.database.NoteColor
-import com.thesis.note.database.NoteColorConverter
-import com.thesis.note.database.NoteType
+import com.thesis.note.database.*
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
 import com.thesis.note.databinding.ActivityTextEditorNewLayoutBinding
-import com.thesis.note.fragment.ChooseColorFragment
+import com.thesis.note.fragment.ColorPickerFragment
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 //TODO documentation
@@ -82,7 +79,7 @@ class TextEditorNewActivity : AppCompatActivity(), NavigationView.OnNavigationIt
                         setItalicText(italic)
                         setBoldText(bold)
                         binding.editedText.textSize = fontSize.toFloat()
-                        binding.editedText.setTextColor(resources.getColor(NoteColorConverter().enumToColor(fontColor),null))
+                        binding.editedText.setTextColor(resources.getColor(NoteColorConverter.enumToColor(fontColor),null))
                     }
                 }}
             //load note
@@ -90,7 +87,7 @@ class TextEditorNewActivity : AppCompatActivity(), NavigationView.OnNavigationIt
                 GlobalScope.launch {
                     editedNote = db.noteDao().getNoteById(noteID)
                     runOnUiThread {
-                        binding.editedText.background = resources.getDrawable(NoteColorConverter().enumToColor(editedNote.Color),null)
+                        binding.editedText.background = resources.getDrawable(NoteColorConverter.enumToColor(editedNote.Color),null)
                     }
                 }
             }
@@ -119,13 +116,12 @@ class TextEditorNewActivity : AppCompatActivity(), NavigationView.OnNavigationIt
         }
         //text color
         binding.textColorButton.setOnClickListener {
-            ChooseColorFragment().show(supportFragmentManager,"tag")
+            ColorPickerFragment(ColorPalette.TEXT_COLOR_PALETTE).show(supportFragmentManager, "tag")
         }
         supportFragmentManager.setFragmentResultListener("color",this) { _, bundle ->
-            val result = bundle.getString("colorID")
-            val colorID = result?.toInt()
-            fontColor = NoteColorConverter().intToEnum(colorID)!!
-            binding.editedText.setTextColor(resources.getColor(NoteColorConverter().intToColor(colorID),null))
+            val result = bundle.getInt("colorID")
+            fontColor = NoteColorConverter().intToEnum(result)!!
+            binding.editedText.setTextColor(resources.getColor(NoteColorConverter.enumToColor(fontColor),null))
         }
         //save button
         noteViewerActivityIntent = Intent(this, NoteViewerActivity::class.java)

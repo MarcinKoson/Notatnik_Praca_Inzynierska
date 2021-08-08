@@ -11,12 +11,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.thesis.note.*
 import com.thesis.note.database.AppDatabase
+import com.thesis.note.database.ColorPalette
 import com.thesis.note.database.NoteColorConverter
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.*
 import com.thesis.note.databinding.ActivityNoteViewerBinding
 import com.thesis.note.fragment.AddTagsDialogFragment
-import com.thesis.note.fragment.ChooseColorFragment
+import com.thesis.note.fragment.ColorPickerFragment
 import com.thesis.note.recycler_view_adapters.NoteViewerAdapter
 import com.thesis.note.recycler_view_adapters.TagListAdapter
 import kotlinx.coroutines.GlobalScope
@@ -85,7 +86,9 @@ class NoteViewerActivity : DrawerActivity() {
                 //Update
                 db.noteDao().update(note)
                 //Close activity
-                Toast.makeText(applicationContext, R.string.activity_note_viewer_save_OK, Toast.LENGTH_SHORT).show()
+                runOnUiThread{
+                    Toast.makeText(thisActivity, R.string.activity_note_viewer_save_OK, Toast.LENGTH_SHORT).show()
+                }
                 thisActivity.finish()
             }
         }
@@ -124,19 +127,18 @@ class NoteViewerActivity : DrawerActivity() {
 
         //Color picker fragment listener
         supportFragmentManager.setFragmentResultListener("color", this) { _, bundle ->
-            val result = bundle.getString("colorID")
-            val colorID = result?.toInt()
-            note.Color = NoteColorConverter().intToEnum(colorID)!!
+            val result = bundle.getInt("colorID")
+            note.Color = NoteColorConverter().intToEnum(result)!!
             binding.root.background = ResourcesCompat.getDrawable(
                 resources,
-                NoteColorConverter().enumToColor(note.Color),
+                NoteColorConverter.enumToColor(note.Color),
                 null
             )
         }
 
         //Background color button listener
         binding.backgroundColorButton.setOnClickListener {
-            ChooseColorFragment().show(supportFragmentManager, "tag")
+            ColorPickerFragment(ColorPalette.NOTE_BACKGROUND_PALETTE).show(supportFragmentManager, "tag")
         }
     }
 
@@ -281,7 +283,7 @@ class NoteViewerActivity : DrawerActivity() {
         //Set background color
         binding.root.background = ResourcesCompat.getDrawable(
             resources,
-            NoteColorConverter().enumToColor(note.Color),
+            NoteColorConverter.enumToColor(note.Color),
             null
         )
     }

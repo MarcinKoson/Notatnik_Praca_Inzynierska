@@ -87,7 +87,7 @@ class NoteViewerAdapter (private var dataList:List<Data>, private var onDataClic
         binding.noteViewerTextContent.text = dataList[position].Content
         binding.noteViewerTextContent.setTextColor(
             holder.itemView.resources.getColor(
-                NoteColorConverter().enumToColor(dataList[position].Color),null
+                NoteColorConverter.enumToColor(dataList[position].Color),null
             )
         )
         binding.noteViewerTextContent.textSize = dataList[position].Size?.toFloat()!!
