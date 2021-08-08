@@ -1,58 +1,68 @@
 package com.thesis.note.fragment
 
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
-import androidx.recyclerview.widget.RecyclerView
+import androidx.fragment.app.setFragmentResult
 import com.google.android.flexbox.FlexboxLayoutManager
-import com.thesis.note.R
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.entity.Tag
 import com.thesis.note.database.entity.TagOfNote
+import com.thesis.note.databinding.DialogFragmentAddTagsBinding
 import com.thesis.note.recycler_view_adapters.AddTagFragmentAdapter
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-//TODO documentation
-class AddTagsDialogFragment
-    :DialogFragment(){
 
-    //Recycler View
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var viewAdapter: RecyclerView.Adapter<*>
-    private lateinit var viewManager: RecyclerView.LayoutManager
-    //Data
-    private var noteID : Int = -1
-    private lateinit var tagsList: List<Tag>
-    private lateinit var tagsOfNoteList: List<TagOfNote>
-    private lateinit var filteredTagsList: List<Tag>
-    //DB
+/**
+ *  Fragment for adding tag into note.
+ *  When created you must [setArguments] with int 'noteID'.
+ *  It shows tags that is not already in note.
+ *  If clicked on tag it add [TagOfNote] into database.
+ *  After adding it sets fragment result with resultKey 'addedTag'
+ *  and bundle with 'tagID'
+ *
+ */
+class AddTagsDialogFragment : DialogFragment(){
+    /** View binding */
+    private lateinit var binding: DialogFragmentAddTagsBinding
+
+    /** Database */
     lateinit var db: AppDatabase
 
+    /**  */
+    private var noteID : Int = -1
+    /**  */
+    private lateinit var filteredTagsList: List<Tag>
+
+    /** On create dialog callback */
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val view = requireActivity().layoutInflater.inflate(R.layout.dialog_add_note,null)
+        binding = DialogFragmentAddTagsBinding.inflate(requireActivity().layoutInflater)
+        db = AppDatabase(binding.root.context)
         //get note id
-        db = AppDatabase(view.context)
         noteID = requireArguments().getInt("noteID")
         GlobalScope.launch {
             //load data from db
-            tagsList = db.tagDao().getAll()
-            tagsOfNoteList = db.tagOfNoteDAO().getAllNoteTags(noteID)
+            val tagsList = db.tagDao().getAll()
+            val tagsOfNoteList = db.tagOfNoteDAO().getAllNoteTags(noteID)
             filteredTagsList = tagsList.filter { tag -> !(tagsOfNoteList.any { tagOfNote -> tagOfNote.TagID == tag.IdTag }) }
-            //recycler view setup
-            viewManager = FlexboxLayoutManager(view.context)
-            viewAdapter = AddTagFragmentAdapter(filteredTagsList,
+            //recycler view init
+            val viewManager = FlexboxLayoutManager(binding.root.context)
+            val viewAdapter = AddTagFragmentAdapter(
+                filteredTagsList,
                 //set listener - if tag is clicked add it to note
                 object:AddTagFragmentAdapter.OnTagClickListener{
                     override fun onTagClick(position: Int) {
                         GlobalScope.launch {
                             db.tagOfNoteDAO().insertAll(TagOfNote(0,filteredTagsList[position].IdTag,noteID))
+                            setFragmentResult("addedTag", bundleOf("tagID" to filteredTagsList[position].IdTag))
                         }
                         dismiss()
                     }
-                } )
-            recyclerView = view.findViewById<RecyclerView>(R.id.listOfAllTags).apply {
+                }
+            )
+            binding.listOfAllTags.apply{
                 setHasFixedSize(true)
                 layoutManager = viewManager
                 adapter = viewAdapter
@@ -60,17 +70,8 @@ class AddTagsDialogFragment
         }
         return activity?.let {
             val builder = AlertDialog.Builder(it)
-            builder.setView(view)
+            builder.setView(binding.root)
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
-    }
-
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
-
-        val activity = requireActivity()
-        if(activity is DialogInterface.OnDismissListener){
-            activity.onDismiss(dialog)
-        }
     }
 }

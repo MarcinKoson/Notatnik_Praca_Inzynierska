@@ -47,5 +47,12 @@
     <string name="activity_image_note_no_image">There is no image chosen</string>
     <string name="error_empty">ERROR_EMPTY</string>
     <string name="abdt">ActionBarDrawerToggle</string>
+    <string name="activity_note_viewer_error_id_note">ERROR: bad note ID</string>
+    <string name="not_implemented">Brak implementacji</string>
+    <string name="activity_note_viewer_save_OK">Zapisano</string>
+    <string name="activity_note_viewer_error_cannot_open">ERROR: cannot open data</string>
+    <string name="activity_note_viewer_dialog_remove_tag">Czy usunąć tag?</string>
+    <string name="activity_note_viewer_dialog_remove_tag_positive_button">Tak</string>
+    <string name="activity_note_viewer_dialog_remove_tag_negative_button">Nie</string>
 
 </resources>

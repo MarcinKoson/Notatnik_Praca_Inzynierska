@@ -11,6 +11,7 @@ class DebugActivity : AppCompatActivity() {
     private lateinit var binding:XActivityDebugBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        //Toast.makeText(applicationContext, R.string.not_implemented, Toast.LENGTH_SHORT).show()
         //Toast.makeText(applicationContext, "debug", Toast.LENGTH_SHORT).show()
         super.onCreate(savedInstanceState)
         binding = XActivityDebugBinding.inflate(layoutInflater)

@@ -54,6 +54,9 @@
     <string name="action_bar_drawer_toggle_close">Close drawer</string>
     <string name="groups_without_group">R.string.groups_without_group CHANGE</string>
 
+    <!-- Temp -->
+    <string name="not_implemented">Not implemented</string>
+
     <!-- New -->
     <string name="x_template_empty_activity_template">TEMPLATE</string>
 
@@ -69,5 +72,11 @@
     <string name="activity_note_viewer_tag_button_description">Add tag</string>
     <string name="activity_note_viewer_background_button_description">Background color</string>
     <string name="activity_note_viewer_without_group">No group</string>
+    <string name="activity_note_viewer_error_id_note">ERROR: bad note ID</string>
+    <string name="activity_note_viewer_error_cannot_open">ERROR: cannot open data</string>
+    <string name="activity_note_viewer_save_OK">Data saved</string>
+    <string name="activity_note_viewer_dialog_remove_tag">Delete tag?</string>
+    <string name="activity_note_viewer_dialog_remove_tag_positive_button">Yes</string>
+    <string name="activity_note_viewer_dialog_remove_tag_negative_button">No</string>
 
 </resources>

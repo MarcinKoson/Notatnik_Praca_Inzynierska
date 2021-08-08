@@ -72,6 +72,8 @@ class ChooseColorFragment:DialogFragment(){
     }
 
     override fun onDismiss(dialog: DialogInterface) {
+
+      //TODO is this needed???
         super.onDismiss(dialog)
 
         val activity = requireActivity()
