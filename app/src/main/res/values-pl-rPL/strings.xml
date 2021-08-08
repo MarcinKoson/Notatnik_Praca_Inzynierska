@@ -54,5 +54,6 @@
     <string name="activity_note_viewer_dialog_remove_tag">Czy usunąć tag?</string>
     <string name="activity_note_viewer_dialog_remove_tag_positive_button">Tak</string>
     <string name="activity_note_viewer_dialog_remove_tag_negative_button">Nie</string>
+    <string name="recycler_view_tag_list_error">ERROR: empty</string>
 
 </resources>

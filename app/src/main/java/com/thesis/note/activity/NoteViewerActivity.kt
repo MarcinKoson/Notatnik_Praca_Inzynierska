@@ -1,6 +1,5 @@
 package com.thesis.note.activity
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -193,7 +192,7 @@ class NoteViewerActivity : DrawerActivity() {
 
     /** Listener for click on tag. Opens remove dialog. */
     private val onTagClickListener = object : TagListAdapter.OnTagClickListener{
-        override fun onNoteClick(position: Int) {
+        override fun onTagClick(position: Int) {
             //create remove dialog
             AlertDialog.Builder(thisActivity).run{
                 setPositiveButton(R.string.activity_note_viewer_dialog_remove_tag_positive_button) { _, _ ->
@@ -213,7 +212,8 @@ class NoteViewerActivity : DrawerActivity() {
     private fun updateTagRecyclerView(){
         tagsOfNoteList = db.tagOfNoteDAO().getAllNoteTags(note.IdNote)
         runOnUiThread {
-            val viewAdapter = TagListAdapter(tagsOfNoteList, tagsList, onTagClickListener)
+            val filteredTags = tagsList.filter { tag -> (tagsOfNoteList.any { tagOfNote -> tagOfNote.TagID == tag.IdTag }) }
+            val viewAdapter = TagListAdapter(filteredTags,onTagClickListener)
             binding.tagRecyclerView.adapter = viewAdapter
             viewAdapter.notifyDataSetChanged()
         }
@@ -264,7 +264,8 @@ class NoteViewerActivity : DrawerActivity() {
         }
         //Init tag RecyclerView
         val tagsViewManager = FlexboxLayoutManager(thisActivity)
-        val tagsViewAdapter = TagListAdapter(tagsOfNoteList, tagsList, onTagClickListener)
+        val filteredTags = tagsList.filter { tag -> (tagsOfNoteList.any { tagOfNote -> tagOfNote.TagID == tag.IdTag }) }
+        val tagsViewAdapter = TagListAdapter(filteredTags,onTagClickListener)
         binding.tagRecyclerView.apply {
             layoutManager = tagsViewManager
             adapter = tagsViewAdapter

@@ -19,9 +19,8 @@ import com.thesis.note.databinding.RecyclerViewNoteTileTextBinding
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-//TODO documentation
 /**
- *
+ *  [RecyclerView] adapter for showing [Note]s in form of tiles
  */
 class NoteTilesAdapter (
         private var noteList: List<Note>,
@@ -58,9 +57,9 @@ class NoteTilesAdapter (
 
     /**  */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteTilesViewHolder {
-        when (viewType) {
+        return when (viewType) {
             NoteType.Text.id -> {
-                return NoteTilesViewHolder(
+                NoteTilesViewHolder(
                     LayoutInflater.from(parent.context).inflate(
                         R.layout.recycler_view_note_tile_text,
                         parent,
@@ -70,7 +69,7 @@ class NoteTilesAdapter (
             }
             NoteType.Photo.id -> {
                 //TODO layout for photos
-                return NoteTilesViewHolder(
+                NoteTilesViewHolder(
                     LayoutInflater.from(parent.context).inflate(
                         R.layout.recycler_view_note_list_photo,
                         parent,
@@ -80,7 +79,7 @@ class NoteTilesAdapter (
             }
             NoteType.Sound.id -> {
                 //TODO layout for sound notes
-                return NoteTilesViewHolder(
+                NoteTilesViewHolder(
                     LayoutInflater.from(parent.context).inflate(
                         R.layout.recycler_view_note_list_text,
                         parent,
@@ -89,7 +88,8 @@ class NoteTilesAdapter (
                 )
             }
             else -> {
-                return NoteTilesViewHolder(
+                //TODO error handling
+                NoteTilesViewHolder(
                     LayoutInflater.from(parent.context).inflate(
                         R.layout.recycler_view_note_list_text,
                         parent,

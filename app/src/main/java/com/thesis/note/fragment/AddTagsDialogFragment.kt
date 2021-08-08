@@ -11,7 +11,7 @@ import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.entity.Tag
 import com.thesis.note.database.entity.TagOfNote
 import com.thesis.note.databinding.DialogFragmentAddTagsBinding
-import com.thesis.note.recycler_view_adapters.AddTagFragmentAdapter
+import com.thesis.note.recycler_view_adapters.TagListAdapter
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -49,10 +49,10 @@ class AddTagsDialogFragment : DialogFragment(){
             filteredTagsList = tagsList.filter { tag -> !(tagsOfNoteList.any { tagOfNote -> tagOfNote.TagID == tag.IdTag }) }
             //recycler view init
             val viewManager = FlexboxLayoutManager(binding.root.context)
-            val viewAdapter = AddTagFragmentAdapter(
+            val viewAdapter = TagListAdapter(
                 filteredTagsList,
                 //set listener - if tag is clicked add it to note
-                object:AddTagFragmentAdapter.OnTagClickListener{
+                object:TagListAdapter.OnTagClickListener{
                     override fun onTagClick(position: Int) {
                         GlobalScope.launch {
                             db.tagOfNoteDAO().insertAll(TagOfNote(0,filteredTagsList[position].IdTag,noteID))
