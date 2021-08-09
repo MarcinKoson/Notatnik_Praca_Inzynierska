@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- TODO -->
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_text_editor_new_layout"
+    android:id="@+id/activity_text_editor_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -23,10 +21,22 @@
 
             <ImageButton
                 android:id="@+id/saveButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_margin="4dp"
+                android:background="@drawable/ic_baseline_save"
+                android:contentDescription="@string/activity_text_editor_save_button_description"
+                />
+
+            <ImageButton
+                android:id="@+id/deleteButton"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:layout_gravity="end"
-                android:background="@drawable/ic_save_black_24dp"
+                android:background="@drawable/ic_baseline_delete"
+                android:layout_margin="4dp"
+                android:contentDescription="@string/activity_text_editor_delete_button_description"
                 />
 
             <ImageButton
@@ -34,27 +44,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:background="@drawable/ic_share_black_24dp"
-                android:visibility="gone"
-                tools:layout_editor_absoluteX="331dp"
-                tools:layout_editor_absoluteY="8dp" />
-
-            <ImageButton
-                android:id="@+id/backgroundButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:background="@drawable/ic_baseline_format_paint_24"
-                android:visibility="gone"
-                tools:layout_editor_absoluteX="291dp"
-                tools:layout_editor_absoluteY="8dp" />
+                android:layout_margin="4dp"
+                android:background="@drawable/ic_baseline_share"
+                android:contentDescription="@string/activity_text_editor_share_button_description"
+                />
 
             <ImageButton
                 android:id="@+id/textColorButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:background="@drawable/ic_palette_24"
+                android:background="@drawable/ic_baseline_palette"
+                android:layout_margin="4dp"
+                android:contentDescription="@string/activity_text_editor_text_color_button_description"
                 />
 
             <ImageButton
@@ -62,27 +64,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:background="@drawable/ic_format_size_24"
-                android:visibility="gone"
-                tools:layout_editor_absoluteX="291dp"
-                tools:layout_editor_absoluteY="8dp" />
-
-            <ImageButton
-                android:id="@+id/underlinedTextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:background="@drawable/ic_baseline_format_underlined_24"
-                android:visibility="gone"
-                tools:layout_editor_absoluteX="251dp"
-                tools:layout_editor_absoluteY="8dp" />
+                android:background="@drawable/ic_baseline_format_size"
+                android:contentDescription="@string/activity_text_editor_save_button_description"
+                android:layout_margin="4dp" />
 
             <ImageButton
                 android:id="@+id/italicTextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:background="@drawable/ic_baseline_format_italic_24"
+                android:background="@drawable/ic_baseline_format_italic"
+                android:contentDescription="@string/activity_text_editor_italic_button_description"
+                android:layout_margin="4dp"
                 />
 
             <ImageButton
@@ -90,20 +83,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:background="@drawable/ic_format_bold_24"
+                android:background="@drawable/ic_baseline_format_bold"
+                android:contentDescription="@string/activity_text_editor_bold_button_description"
+                android:layout_margin="4dp"
                 />
 
         </androidx.appcompat.widget.Toolbar>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout2"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar">
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"
@@ -111,13 +96,13 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editedText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="top"/>
+                android:gravity="top" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

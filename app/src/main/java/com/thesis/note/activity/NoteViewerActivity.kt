@@ -26,6 +26,7 @@ import kotlinx.coroutines.launch
 /**
  *
  * Activity for viewing note.
+ *
  * When creating [Intent] of this activity, you should put extended data with
  * putExtra("noteID", yourNoteID)
  *
@@ -165,7 +166,7 @@ class NoteViewerActivity : DrawerActivity() {
         override fun onDataClick(position: Int) {
             when (binding.noteViewerRecyclerView.adapter?.getItemViewType(position)) {
                 NoteType.Text.id -> {
-                    Intent(thisActivity, TextEditorNewActivity::class.java).run {
+                    Intent(thisActivity, TextEditorActivity::class.java).run {
                         putExtra("noteID", noteID)
                         putExtra("dataID", dataList[position].IdData)
                         startActivity(this)

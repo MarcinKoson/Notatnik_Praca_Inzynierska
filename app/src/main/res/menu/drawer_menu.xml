@@ -1,40 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- TODO -->
-<menu xmlns:tools="http://schemas.android.com/tools"
+<menu
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group>
         <item
             android:id="@+id/start"
-            android:title="Lista Notatek"/>
+            android:title="@string/drawer_menu_all"/>
         <item
             android:id="@+id/drawer_list"
-            android:title="Ulubione"
+            android:title="@string/drawer_menu_favorites"
             android:visible="false"
              />
         <item
             android:id="@+id/add_note"
-            android:title="Dodaj Notatkę"/>
+            android:title="@string/drawer_menu_add"/>
         <item
             android:id="@+id/drawer_settings"
-            android:title="Ustawienia"/>
+            android:title="@string/drawer_menu_settings"/>
         <item
             android:id="@+id/drawer_debug"
-            android:title="Debug"
+            android:title="@string/drawer_menu_debug"
             android:visible="true"
              />
     </group>
-
-    <item android:title="ABC"
-        android:visible="false"
-        >
-        <menu>
-            <item
-                android:id="@+id/aaa"
-                android:title="aaa"/>
-            <item
-                android:id="@+id/bbb"
-                android:title="bbb"/>
-        </menu>
-    </item>
 </menu>

@@ -20,8 +20,7 @@
             />
         <activity android:name=".activity.ImageNoteActivity"
             android:noHistory="false"/>
-        <activity android:name=".activity.ListActivity"
-            />
+
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,8 +28,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.OldMainActivity"
-            />
 
 
         <activity android:name=".activity.NoteViewerActivity"
@@ -45,9 +42,8 @@
             />
         <activity android:name=".activity.TagEditorActivity"
             />
+
         <activity android:name=".activity.TextEditorActivity"
-            />
-        <activity android:name=".activity.TextEditorNewActivity"
             />
         <activity android:name=".activity.VoiceToTextActivity"
             />

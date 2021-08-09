@@ -39,13 +39,11 @@
     <string name="activity_note_viewer_tag_button_description">Dodaj tag</string>
     <string name="activity_note_viewer_background_button_description">Kolor tła</string>
     <string name="activity_note_viewer_without_group">Bez grupy</string>
-    <string name="groups_without_group">R.string.groups_without_group CHANGE</string>
     <string name="save">Save</string>
     <string name="delete">Delete</string>
     <string name="image">Image</string>
     <string name="error_create_file">ERROR: CANNOT CREATE FILE</string>
     <string name="activity_image_note_no_image">There is no image chosen</string>
-    <string name="error_empty">ERROR_EMPTY</string>
     <string name="abdt">ActionBarDrawerToggle</string>
     <string name="activity_note_viewer_error_id_note">ERROR: bad note ID</string>
     <string name="not_implemented">Brak implementacji</string>
@@ -55,5 +53,17 @@
     <string name="activity_note_viewer_dialog_remove_tag_positive_button">Tak</string>
     <string name="activity_note_viewer_dialog_remove_tag_negative_button">Nie</string>
     <string name="recycler_view_tag_list_error">ERROR: empty</string>
+    <string name="activity_text_editor_save_button_description">Zapisz</string>
+    <string name="activity_text_editor_delete_button_description">Usuń</string>
+    <string name="activity_text_editor_share_button_description">Share</string>
+    <string name="activity_text_editor_text_color_button_description">Kolor</string>
+    <string name="activity_text_editor_text_size_button_description">Wielkość</string>
+    <string name="activity_text_editor_italic_button_description">Kursywa</string>
+    <string name="activity_text_editor_bold_button_description">Pogrubienie</string>
+    <string name="activity_text_editor_save_OK">Zapisano</string>
+    <string name="drawer_menu_settings">Ustawienia</string>
+    <string name="drawer_menu_add">Dodaj notatkę</string>
+    <string name="drawer_menu_favorites">Ulubione</string>
+    <string name="drawer_menu_all">Wszystkie</string>
 
 </resources>
