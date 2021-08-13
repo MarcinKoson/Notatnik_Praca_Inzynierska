@@ -65,5 +65,12 @@
     <string name="drawer_menu_add">Dodaj notatkę</string>
     <string name="drawer_menu_favorites">Ulubione</string>
     <string name="drawer_menu_all">Wszystkie</string>
+    <string name="fragment_sort_notes_header">Sortuj notatki</string>
+    <string name="fragment_sort_notes_alphabetically">Alfabetycznie</string>
+    <string name="fragment_sort_notes_data">Data edycji</string>
+    <string name="fragment_sort_notes_groups">Grupy</string>
+    <string name="fragment_sort_notes_ascending">Rosnąco</string>
+    <string name="fragment_sort_notes_descending">Malejaco</string>
+    <string name="fragment_sort_notes_ok">OK</string>
 
 </resources>

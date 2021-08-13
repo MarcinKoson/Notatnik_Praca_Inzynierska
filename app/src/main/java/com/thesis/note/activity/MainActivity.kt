@@ -13,6 +13,8 @@ import com.thesis.note.database.entity.Group
 import com.thesis.note.database.entity.Note
 import com.thesis.note.database.entity.Tag
 import com.thesis.note.databinding.ActivityMainBinding
+import com.thesis.note.fragment.SortNotesFragment
+import com.thesis.note.fragment.SortNotesType
 import com.thesis.note.recycler_view_adapters.NoteTilesAdapter
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -37,6 +39,15 @@ class MainActivity : DrawerActivity() {
     /** List of data */
     private lateinit var listOfData: List<Data>
 
+    /** List of groups */
+    private lateinit var listOfGroups: List<Group>
+
+    /** Notes sort type */
+    private var sortType: SortNotesType = SortNotesType.Date
+
+    /** Is note sort ascending */
+    private var sortAsc: Boolean = true
+
     /** On create callback */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +56,9 @@ class MainActivity : DrawerActivity() {
         db = AppDatabase(this)
         GlobalScope.launch {
             checkFirstStart()
+            listOfGroups = db.groupDao().getAll()
             loadNotes()
+            sortListOfNotes(SortNotesType.Date,true)
             runOnUiThread{ initRecyclerView() }
         }
         //Add button listener
@@ -63,10 +76,19 @@ class MainActivity : DrawerActivity() {
                 startActivity(this)
             }
         }
-        //TODO add note fragment
         //Sort button listener
         binding.sortButton.setOnClickListener {
-
+            SortNotesFragment(sortType,sortAsc).run{
+                arguments = Bundle().apply {
+                    putInt("a",1)
+                }
+                show(supportFragmentManager,"sort")
+            }
+        }
+        //SortNotesFragment listener
+        supportFragmentManager.setFragmentResultListener("sort", this) { _, bundle ->
+            sortListOfNotes(SortNotesType.fromInt(bundle.getInt("sortType")),bundle.getBoolean("sortAsc"))
+            runOnUiThread { updateRecyclerView() }
         }
     }
 
@@ -75,6 +97,7 @@ class MainActivity : DrawerActivity() {
         super.onResume()
         GlobalScope.launch {
             loadNotes()
+            sortListOfNotes(sortType,sortAsc)
             runOnUiThread { updateRecyclerView() }
         }
     }
@@ -133,6 +156,41 @@ class MainActivity : DrawerActivity() {
         }
     }
 
+    /** Sorts [listOfNotes] in place */
+    private fun sortListOfNotes(sortType:SortNotesType, sortAsc:Boolean){
+        this.sortType = sortType
+        this.sortAsc = sortAsc
+        listOfNotes = when(sortType) {
+            SortNotesType.Alphabetically ->
+                if (sortAsc) listOfNotes.sortedWith { x, y -> x.Name.compareTo(y.Name) }
+                else listOfNotes.sortedWith { x, y -> y.Name.compareTo(x.Name) }
+            SortNotesType.Date ->
+                if (sortAsc) listOfNotes.sortedWith { x, y ->
+                    x.Date?.compareTo(y.Date).let { it ?: -1 }
+                }
+                else listOfNotes.sortedWith { x, y -> y.Date?.compareTo(x.Date).let { it ?: -1 } }
+            SortNotesType.Group ->
+                if (sortAsc) listOfNotes.sortedWith { x, y ->
+                    val xx = listOfGroups.firstOrNull { z -> z.IdGroup == x?.GroupID }
+                    val yy = listOfGroups.firstOrNull { z -> z.IdGroup == y?.GroupID }
+                    when {
+                        xx == null -> 1
+                        yy == null -> -1
+                        else -> xx.Name.compareTo(yy.Name)
+                    }
+                }
+                else listOfNotes.sortedWith { x, y ->
+                    val xx = listOfGroups.firstOrNull { z -> z.IdGroup == x?.GroupID }
+                    val yy = listOfGroups.firstOrNull { z -> z.IdGroup == y?.GroupID }
+                    when {
+                        xx == null -> 1
+                        yy == null -> -1
+                        else -> yy.Name.compareTo(xx.Name)
+                    }
+                }
+        }
+    }
+
     /** Check if application is run for first time.
      * If it is, then add example notes, tags and groups into database */
     private fun checkFirstStart() {
@@ -161,6 +219,7 @@ class MainActivity : DrawerActivity() {
                 db.noteDao().update(db.noteDao().getNoteById(note[0].toInt()).apply { this.MainData = data[0].toInt() })
 
                 loadNotes()
+                sortListOfNotes(SortNotesType.Date,true)
                 runOnUiThread {
                     updateRecyclerView()
                 }

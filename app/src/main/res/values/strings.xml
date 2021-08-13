@@ -81,4 +81,12 @@
     <string name="activity_text_editor_error_parameters" translatable="false">ERROR: bad note ID</string>
     <string name="activity_text_editor_save_OK">Data saved</string>
 
+    <string name="fragment_sort_notes_header">Sort notes</string>
+    <string name="fragment_sort_notes_alphabetically">Alphabetically</string>
+    <string name="fragment_sort_notes_data">Editon date</string>
+    <string name="fragment_sort_notes_groups">Groups</string>
+    <string name="fragment_sort_notes_ascending">Ascending</string>
+    <string name="fragment_sort_notes_descending">Descending</string>
+    <string name="fragment_sort_notes_ok">OK</string>
+
 </resources>
