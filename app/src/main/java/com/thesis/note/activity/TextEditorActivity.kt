@@ -15,6 +15,7 @@ import com.thesis.note.databinding.ActivityTextEditorLayoutBinding
 import com.thesis.note.fragment.ColorPickerFragment
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.util.*
 
 /**
  * Activity for text editing.
@@ -61,7 +62,9 @@ class TextEditorActivity : DrawerActivity() {
         loadParameters()
         GlobalScope.launch {
             loadData()
-            setData()
+            runOnUiThread {
+                setData()
+            }
         }
 
         //Save button listener
@@ -75,18 +78,20 @@ class TextEditorActivity : DrawerActivity() {
                         Color = fontColor
                         Size = fontSize
                     })
+                    db.noteDao().update(editedNote.apply { Date = Date()})
                 }
             } else {
                 if (noteID != -1) {
                     //Add new data to database
                     GlobalScope.launch {
                         db.dataDao().insertAll(Data(0, noteID, NoteType.Text, binding.editedText.text.toString(), getInfo(),fontSize,fontColor))
+                        db.noteDao().update(editedNote.apply { Date = Date()})
                     }
                 } else {
                     GlobalScope.launch {
                         //add new note
                         val idNewNote =
-                            db.noteDao().insertAll(Note(0, "", null, null, false, null, null, null, NoteColor.White))
+                            db.noteDao().insertAll(Note(0, "", null, null, false, null, Date(), null, NoteColor.White))
                         noteID = idNewNote[0].toInt()
                         //add new data
                         val newDataID = db.dataDao().insertAll(Data(0, noteID, NoteType.Text, binding.editedText.text.toString(), getInfo(),fontSize,fontColor))

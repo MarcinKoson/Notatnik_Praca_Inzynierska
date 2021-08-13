@@ -1,6 +1,5 @@
 package com.thesis.note.database
 
-import android.content.res.Resources
 import androidx.room.TypeConverter
 import com.thesis.note.R
 

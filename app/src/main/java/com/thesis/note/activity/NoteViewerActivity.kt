@@ -10,10 +10,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.thesis.note.*
-import com.thesis.note.database.AppDatabase
-import com.thesis.note.database.ColorPalette
-import com.thesis.note.database.NoteColorConverter
-import com.thesis.note.database.NoteType
+import com.thesis.note.database.*
 import com.thesis.note.database.entity.*
 import com.thesis.note.databinding.ActivityNoteViewerBinding
 import com.thesis.note.fragment.AddTagsDialogFragment
@@ -250,7 +247,7 @@ class NoteViewerActivity : DrawerActivity() {
         //Set note name
         binding.noteName.text = Editable.Factory.getInstance().newEditable(note.Name)
         //Set date
-        //TODO set date
+        binding.noteDate.text = DateConverter().dateToString(note.Date)
         //Set spinner of groups
         binding.groupSpinner.adapter = ArrayAdapter(
             thisActivity,

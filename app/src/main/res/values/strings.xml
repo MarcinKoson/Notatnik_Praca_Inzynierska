@@ -55,7 +55,7 @@
     <string name="activity_main_sort_button_description">Sort notes</string>
 
     <string name="activity_note_viewer_note_name_hint">here write name of note</string>
-    <string name="activity_note_viewer_note_date_label">Edit date: </string>
+    <string name="activity_note_viewer_note_date_label">"Edit date : "</string>
     <string name="activity_note_viewer_delete_button_description">Delete</string>
     <string name="activity_note_viewer_save_button_description">Save</string>
     <string name="activity_note_viewer_share_button_description">Share</string>

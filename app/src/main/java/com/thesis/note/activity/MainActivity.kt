@@ -16,6 +16,7 @@ import com.thesis.note.databinding.ActivityMainBinding
 import com.thesis.note.recycler_view_adapters.NoteTilesAdapter
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.util.*
 
 /**
  *  Main activity of application. It opens on application start.
@@ -147,17 +148,22 @@ class MainActivity : DrawerActivity() {
                 db.tagDao().insertAll(Tag(0,"Tag 2"))
                 db.tagDao().insertAll(Tag(0,"Tag 3"))
 
-                var note = db.noteDao().insertAll(Note(0,"Note",null,null,false,null,null,null,NoteColor.Cyan))
+                var note = db.noteDao().insertAll(Note(0,"Note",null,null,false,null, Date(),null,NoteColor.Cyan))
                 var data = db.dataDao().insertAll(Data(0,note[0].toInt(),NoteType.Text,"example",null,16,NoteColor.Black))
                 db.noteDao().update(db.noteDao().getNoteById(note[0].toInt()).apply { this.MainData = data[0].toInt() })
 
-                note = db.noteDao().insertAll(Note(0,"Bold",null,null,false,null,null,null,NoteColor.Teal))
+                note = db.noteDao().insertAll(Note(0,"Bold",null,null,false,null, Date(),null,NoteColor.Teal))
                 data = db.dataDao().insertAll(Data(0,note[0].toInt(),NoteType.Text,"example","B",16,NoteColor.Purple))
                 db.noteDao().update(db.noteDao().getNoteById(note[0].toInt()).apply { this.MainData = data[0].toInt() })
 
-                note = db.noteDao().insertAll(Note(0,"Italic",null,null,false,null,null,null,NoteColor.Yellow))
+                note = db.noteDao().insertAll(Note(0,"Italic",null,null,false,null, Date(),null,NoteColor.Yellow))
                 data = db.dataDao().insertAll(Data(0,note[0].toInt(),NoteType.Text,"example","I",16,NoteColor.Black))
                 db.noteDao().update(db.noteDao().getNoteById(note[0].toInt()).apply { this.MainData = data[0].toInt() })
+
+                loadNotes()
+                runOnUiThread {
+                    updateRecyclerView()
+                }
             }
             sharedPrefs.edit().putBoolean("notFirstStart", true).apply()
         }
