@@ -72,5 +72,8 @@
     <string name="fragment_sort_notes_ascending">Rosnąco</string>
     <string name="fragment_sort_notes_descending">Malejaco</string>
     <string name="fragment_sort_notes_ok">OK</string>
+    <string name="activity_note_viewer_dialog_remove_note">Usunąć notatkę?</string>
+    <string name="activity_note_viewer_dialog_remove_note_positive_button">Usuń</string>
+    <string name="activity_note_viewer_dialog_remove_note_negative_button">Anuluj</string>
 
 </resources>

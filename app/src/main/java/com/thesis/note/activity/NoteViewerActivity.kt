@@ -92,13 +92,19 @@ class NoteViewerActivity : DrawerActivity() {
         }
 
         //Remove button listener
-        //TODO delete dialog confirm
         binding.deleteButton.setOnClickListener {
-            GlobalScope.launch {
-                val db = AppDatabase(applicationContext)
-                db.noteDao().delete(note)
-                thisActivity.finish()
-            }
+            AlertDialog.Builder(thisActivity).run{
+                setPositiveButton(R.string.activity_note_viewer_dialog_remove_note_positive_button) { _, _ ->
+                    GlobalScope.launch {
+                        val db = AppDatabase(applicationContext)
+                        db.noteDao().delete(note)
+                        thisActivity.finish()
+                    }
+                }
+                setNegativeButton(R.string.activity_note_viewer_dialog_remove_note_negative_button) { _, _ -> }
+                setTitle(R.string.activity_note_viewer_dialog_remove_note)
+                create()
+            }.show()
         }
 
         //TODO Share button listener

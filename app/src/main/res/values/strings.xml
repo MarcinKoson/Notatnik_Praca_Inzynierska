@@ -68,6 +68,9 @@
     <string name="activity_note_viewer_dialog_remove_tag">Delete tag?</string>
     <string name="activity_note_viewer_dialog_remove_tag_positive_button">Yes</string>
     <string name="activity_note_viewer_dialog_remove_tag_negative_button">No</string>
+    <string name="activity_note_viewer_dialog_remove_note">Delete the note?</string>
+    <string name="activity_note_viewer_dialog_remove_note_positive_button">Delete</string>
+    <string name="activity_note_viewer_dialog_remove_note_negative_button">Cancel</string>
 
     <string name="recycler_view_tag_list_error">ERROR: empty</string>
 
