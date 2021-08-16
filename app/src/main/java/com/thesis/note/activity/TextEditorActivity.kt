@@ -198,7 +198,13 @@ class TextEditorActivity : DrawerActivity() {
         setText(editedData.Content)
         //load graphic options
         setItalicText(italic)
+        if(italic){
+            binding.italicTextButton.isChecked = true
+        }
         setBoldText(bold)
+        if(bold){
+            binding.boldTextButton.isChecked = true
+        }
         binding.editedText.textSize = fontSize.toFloat()
         binding.editedText.setTextColor(resources.getColor(NoteColorConverter.enumToColor(fontColor),null))
         //set background

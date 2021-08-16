@@ -14,7 +14,7 @@ import com.thesis.note.database.entity.Note
 import com.thesis.note.database.entity.Tag
 import com.thesis.note.databinding.ActivityMainBinding
 import com.thesis.note.fragment.SortNotesFragment
-import com.thesis.note.fragment.SortNotesType
+import com.thesis.note.SortNotesType
 import com.thesis.note.recycler_view_adapters.NoteTilesAdapter
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -157,7 +157,7 @@ class MainActivity : DrawerActivity() {
     }
 
     /** Sorts [listOfNotes] in place */
-    private fun sortListOfNotes(sortType:SortNotesType, sortAsc:Boolean){
+    private fun sortListOfNotes(sortType: SortNotesType, sortAsc:Boolean){
         this.sortType = sortType
         this.sortAsc = sortAsc
         listOfNotes = when(sortType) {

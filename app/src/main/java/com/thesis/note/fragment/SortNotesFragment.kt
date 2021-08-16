@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
+import com.thesis.note.SortNotesType
 import com.thesis.note.databinding.DialogFragmentSortNotesBinding
 
 /**
@@ -14,7 +15,7 @@ import com.thesis.note.databinding.DialogFragmentSortNotesBinding
  *  if is ascending as Boolean 'sortAsc'
  *
  */
-class SortNotesFragment(private val sortType:SortNotesType, private val sortAsc:Boolean):DialogFragment(){
+class SortNotesFragment(private val sortType: SortNotesType, private val sortAsc:Boolean):DialogFragment(){
 
     /** View binding */
     private lateinit var binding: DialogFragmentSortNotesBinding
@@ -41,9 +42,9 @@ class SortNotesFragment(private val sortType:SortNotesType, private val sortAsc:
                 bundle.putBoolean("sortAsc", false)
             }
             when(binding.radioGroupSort.checkedRadioButtonId){
-                binding.sortAlphabetically.id -> bundle.putInt("sortType",SortNotesType.Alphabetically.id)
-                binding.sortDate.id -> bundle.putInt("sortType",SortNotesType.Date.id)
-                binding.sortGroup.id -> bundle.putInt("sortType",SortNotesType.Group.id)
+                binding.sortAlphabetically.id -> bundle.putInt("sortType", SortNotesType.Alphabetically.id)
+                binding.sortDate.id -> bundle.putInt("sortType", SortNotesType.Date.id)
+                binding.sortGroup.id -> bundle.putInt("sortType", SortNotesType.Group.id)
             }
             setFragmentResult("sort", bundle)
             dismiss()

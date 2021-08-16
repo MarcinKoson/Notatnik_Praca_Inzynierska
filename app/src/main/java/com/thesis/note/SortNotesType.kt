@@ -1,4 +1,4 @@
-package com.thesis.note.fragment
+package com.thesis.note
 
 enum class SortNotesType(val id:Int) {
     Alphabetically(1),
