@@ -75,5 +75,11 @@
     <string name="activity_note_viewer_dialog_remove_note">Usunąć notatkę?</string>
     <string name="activity_note_viewer_dialog_remove_note_positive_button">Usuń</string>
     <string name="activity_note_viewer_dialog_remove_note_negative_button">Anuluj</string>
+    <string name="activity_text_editor_discard_changes">Czy porzucić zmiany?</string>
+    <string name="activity_text_editor_discard_changes_positive">Porzuć</string>
+    <string name="activity_text_editor_discard_changes_negative">Anuluj</string>
+    <string name="activity_note_viewer_discard_changes">Czy porzucić zmiany?</string>
+    <string name="activity_note_viewer_discard_changes_positive">Porzuć</string>
+    <string name="activity_note_viewer_discard_changes_negative">Anuluj</string>
 
 </resources>

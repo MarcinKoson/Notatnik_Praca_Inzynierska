@@ -7,6 +7,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.thesis.note.*
@@ -290,5 +291,25 @@ class NoteViewerActivity : DrawerActivity() {
             NoteColorConverter.enumToColor(note.Color),
             null
         )
+    }
+
+    /** Logic for back button */
+    override fun onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            AlertDialog.Builder(thisActivity).run{
+                setPositiveButton(R.string.activity_note_viewer_discard_changes_positive) { _, _ ->
+                    GlobalScope.launch {
+                        runOnUiThread {
+                            super.onBackPressed()
+                        }
+                    }
+                }
+                setNegativeButton(R.string.activity_note_viewer_discard_changes_negative) { _, _ -> }
+                setTitle(R.string.activity_note_viewer_discard_changes)
+                create()
+            }.show()
+        }
     }
 }

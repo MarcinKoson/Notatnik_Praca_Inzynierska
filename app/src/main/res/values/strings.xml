@@ -71,6 +71,9 @@
     <string name="activity_note_viewer_dialog_remove_note">Delete the note?</string>
     <string name="activity_note_viewer_dialog_remove_note_positive_button">Delete</string>
     <string name="activity_note_viewer_dialog_remove_note_negative_button">Cancel</string>
+    <string name="activity_note_viewer_discard_changes">Do you want discard changes?</string>
+    <string name="activity_note_viewer_discard_changes_positive">Discard</string>
+    <string name="activity_note_viewer_discard_changes_negative">Cancel</string>
 
     <string name="recycler_view_tag_list_error">ERROR: empty</string>
 
@@ -83,10 +86,13 @@
     <string name="activity_text_editor_bold_button_description">Bold</string>
     <string name="activity_text_editor_error_parameters" translatable="false">ERROR: bad note ID</string>
     <string name="activity_text_editor_save_OK">Data saved</string>
+    <string name="activity_text_editor_discard_changes">Do you want discard changes?</string>
+    <string name="activity_text_editor_discard_changes_positive">Discard</string>
+    <string name="activity_text_editor_discard_changes_negative">Cancel</string>
 
     <string name="fragment_sort_notes_header">Sort notes</string>
     <string name="fragment_sort_notes_alphabetically">Alphabetically</string>
-    <string name="fragment_sort_notes_data">Editon date</string>
+    <string name="fragment_sort_notes_data">Edition date</string>
     <string name="fragment_sort_notes_groups">Groups</string>
     <string name="fragment_sort_notes_ascending">Ascending</string>
     <string name="fragment_sort_notes_descending">Descending</string>
