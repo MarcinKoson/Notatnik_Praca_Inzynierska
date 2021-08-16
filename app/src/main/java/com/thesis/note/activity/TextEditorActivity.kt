@@ -194,21 +194,33 @@ class TextEditorActivity : DrawerActivity() {
 
     /** Set loaded [Data] into layout */
     private fun setData(){
-        //show data in textField
-        setText(editedData.Content)
-        //load graphic options
-        setItalicText(italic)
-        if(italic){
-            binding.italicTextButton.isChecked = true
+        if(dataID != -1) {
+            //show data in textField
+            setText(editedData.Content)
+            //load graphic options
+            setItalicText(italic)
+            if (italic) {
+                binding.italicTextButton.isChecked = true
+            }
+            setBoldText(bold)
+            if (bold) {
+                binding.boldTextButton.isChecked = true
+            }
+            binding.editedText.textSize = fontSize.toFloat()
+            binding.editedText.setTextColor(
+                resources.getColor(
+                    NoteColorConverter.enumToColor(
+                        fontColor
+                    ), null
+                )
+            )
+            //set background
+            binding.editedText.background = ResourcesCompat.getDrawable(
+                resources,
+                NoteColorConverter.enumToColor(editedNote.Color),
+                null
+            )
         }
-        setBoldText(bold)
-        if(bold){
-            binding.boldTextButton.isChecked = true
-        }
-        binding.editedText.textSize = fontSize.toFloat()
-        binding.editedText.setTextColor(resources.getColor(NoteColorConverter.enumToColor(fontColor),null))
-        //set background
-        binding.editedText.background = ResourcesCompat.getDrawable(resources, NoteColorConverter.enumToColor(editedNote.Color),null)
     }
 
     /** Get info about italic and bold */
