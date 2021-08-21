@@ -22,7 +22,7 @@ class DebugActivity : AppCompatActivity() {
         }
 
         binding.testButton.setOnClickListener{
-            val test = Intent(this, MainActivity::class.java)
+            val test = Intent(this, TestActivity::class.java)
             startActivity(test)
 
         }

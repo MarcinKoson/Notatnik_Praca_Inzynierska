@@ -81,5 +81,20 @@
     <string name="activity_note_viewer_discard_changes">Czy porzucić zmiany?</string>
     <string name="activity_note_viewer_discard_changes_positive">Porzuć</string>
     <string name="activity_note_viewer_discard_changes_negative">Anuluj</string>
+    <string name="fragment_search_header">Wyszukaj</string>
+    <string name="fragment_search_ok">OK</string>
+    <string name="fragment_search_name">Nazwa</string>
+    <string name="fragment_search_content">Zawartość</string>
+    <string name="fragment_search_type_of_note">Rodzaj notatki</string>
+    <string name="fragment_search_date">Data</string>
+    <string name="fragment_search_favorite">Ulubione</string>
+    <string name="fragment_search_groups">Grupa</string>
+    <string name="fragment_search_tags">Tagi</string>
+    <string name="fragment_search_without_group">Dowolna</string>
+    <string name="fragment_search_without_type_of_data">Dowolna</string>
+    <string name="fragment_search_type_text">Tekstowa</string>
+    <string name="fragment_search_type_image">Obrazkowa</string>
+    <string name="fragment_search_type_recording">Nagranie</string>
+    <string name="activity_main_search_off_button_description">Anuluj wyszukiwanie</string>
 
 </resources>

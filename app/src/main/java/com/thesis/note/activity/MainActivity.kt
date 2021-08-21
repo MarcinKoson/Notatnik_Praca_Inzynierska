@@ -2,9 +2,9 @@ package com.thesis.note.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.thesis.note.DrawerActivity
-import com.thesis.note.SearchValuesS
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.NoteColor
 import com.thesis.note.database.NoteType
@@ -15,6 +15,7 @@ import com.thesis.note.database.entity.Tag
 import com.thesis.note.databinding.ActivityMainBinding
 import com.thesis.note.fragment.SortNotesFragment
 import com.thesis.note.SortNotesType
+import com.thesis.note.fragment.SearchFragment
 import com.thesis.note.recycler_view_adapters.NoteTilesAdapter
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -23,30 +24,30 @@ import java.util.*
 /**
  *  Main activity of application. It opens on application start.
  */
-class MainActivity : DrawerActivity() {
+class MainActivity : DrawerActivity(), SearchFragment.SearchInterface
+{
     /** This activity */
     private val thisActivity = this
-
     /** View binding */
     lateinit var binding: ActivityMainBinding
 
     /** Database */
     lateinit var db: AppDatabase
-
     /** List of notes */
     private lateinit var listOfNotes: List<Note>
-
+    /** Filtered list of notes */
+    private lateinit var filteredListOfNotes: List<Note>
     /** List of data */
     private lateinit var listOfData: List<Data>
-
     /** List of groups */
     private lateinit var listOfGroups: List<Group>
 
     /** Notes sort type */
     private var sortType: SortNotesType = SortNotesType.Date
-
     /** Is note sort ascending */
     private var sortAsc: Boolean = true
+    /** Current search values */
+    private var currentSearchValues: SearchFragment.SearchValues? = null
 
     /** On create callback */
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,7 +59,7 @@ class MainActivity : DrawerActivity() {
             checkFirstStart()
             listOfGroups = db.groupDao().getAll()
             loadNotes()
-            sortListOfNotes(SortNotesType.Date,true)
+            sortListOfNotes(sortType,sortAsc)
             runOnUiThread{ initRecyclerView() }
         }
         //Add button listener
@@ -68,27 +69,33 @@ class MainActivity : DrawerActivity() {
                 startActivity(this)
             }
         }
-        //TODO search note fragment
-        //TODO reset search
         //Search button listener
         binding.searchButton.setOnClickListener {
-            Intent(it.context,SearchActivity::class.java).run{
-                startActivity(this)
+            SearchFragment(this, listOfGroups,currentSearchValues).show(supportFragmentManager,"search")
+        }
+        //Search off button
+        binding.searchOffButton.setOnClickListener {
+            runOnUiThread {
+                updateRecyclerView(listOfNotes)
+                binding.searchOffButton.visibility = View.INVISIBLE
+                currentSearchValues = null
             }
         }
         //Sort button listener
         binding.sortButton.setOnClickListener {
-            SortNotesFragment(sortType,sortAsc).run{
-                arguments = Bundle().apply {
-                    putInt("a",1)
-                }
-                show(supportFragmentManager,"sort")
-            }
+            SortNotesFragment(sortType,sortAsc).show(supportFragmentManager,"sort")
         }
         //SortNotesFragment listener
         supportFragmentManager.setFragmentResultListener("sort", this) { _, bundle ->
             sortListOfNotes(SortNotesType.fromInt(bundle.getInt("sortType")),bundle.getBoolean("sortAsc"))
-            runOnUiThread { updateRecyclerView() }
+            if(currentSearchValues != null){
+                filterNotes(currentSearchValues!!)
+                runOnUiThread { updateRecyclerView(filteredListOfNotes) }
+            }
+            else
+            {
+                runOnUiThread { updateRecyclerView(listOfNotes) }
+            }
         }
     }
 
@@ -98,7 +105,7 @@ class MainActivity : DrawerActivity() {
         GlobalScope.launch {
             loadNotes()
             sortListOfNotes(sortType,sortAsc)
-            runOnUiThread { updateRecyclerView() }
+            runOnUiThread { updateRecyclerView(listOfNotes) }
         }
     }
 
@@ -112,6 +119,14 @@ class MainActivity : DrawerActivity() {
         }
     }
 
+    /** Load [Data] and [Note] from database into [listOfData] and [listOfNotes].
+     * It is accessing database
+     */
+    private fun loadNotes(){
+        listOfData = db.dataDao().getAll()
+        listOfNotes = db.noteDao().getAll()
+    }
+
     /** Recycler view initialization. It needs [listOfNotes] and [listOfData] loaded from database. Should be running on UI thread*/
     private fun initRecyclerView(){
         val viewManager = GridLayoutManager(thisActivity, 2)
@@ -123,37 +138,44 @@ class MainActivity : DrawerActivity() {
         }
     }
 
-    /** Updates recycler view to use current [listOfNotes] and [listOfData]. Should be running on UI thread */
-    private fun updateRecyclerView(){
-        val viewAdapter = NoteTilesAdapter(listOfNotes, listOfData,onNoteClickListener)
+    /** Updates recycler view to use passed [newListOfNotes] and current [listOfData]. Should be running on UI thread */
+    private fun updateRecyclerView(newListOfNotes:List<Note>){
+        val viewAdapter = NoteTilesAdapter(newListOfNotes, listOfData,onNoteClickListener)
         binding.noteTilesRecyclerView.adapter = viewAdapter
         viewAdapter.notifyDataSetChanged()
     }
 
-    /** Load [Data] and [Note] from database into [listOfData] and [listOfNotes].
-     * It load only that [Note]s that meets conditions form [SearchValuesS] and all [Data] from database.
-     * It is accessing database
-     */
-    private fun loadNotes(){
-        //Load data
-        listOfData = db.dataDao().getAll()
-        //Search values
-        val favorite: MutableList<Boolean> = if(SearchValuesS.favorite)
-            mutableListOf(true)
-        else
-            mutableListOf(true,false)
-        //Name
-        var nameReg = SearchValuesS.name
-        if(nameReg==null || nameReg==""){
-            nameReg = "%"
+    /** Search fragment callback */
+    override fun onSearchClick(searchValues: SearchFragment.SearchValues) {
+        currentSearchValues = searchValues
+        filterNotes(searchValues)
+        updateRecyclerView(filteredListOfNotes)
+        binding.searchOffButton.visibility = View.VISIBLE
+    }
+
+    /** Filter [listOfNotes] with [searchValues] and save it to [filteredListOfNotes] */
+    private fun filterNotes(searchValues: SearchFragment.SearchValues){
+        var notes = listOfNotes
+
+        if(searchValues.content != null) {
+            val idNotes = listOfData
+                    .filter { it.Type == NoteType.Text && it.Content.matches(Regex(".*" + searchValues.content!! + ".*")) }
+                    .map { it.NoteId }
+            notes = notes.filter { x -> idNotes.find { x.IdNote == it } != null }
         }
-        //Groups
-        listOfNotes = if (SearchValuesS.group == null) {
-            db.noteDao().getFiltered(favorite, nameReg.toString())
-        } else {
-            val groups: MutableList<Int?> = mutableListOf(SearchValuesS.group)
-            db.noteDao().getFilteredGroup(groups, favorite, nameReg.toString())
-        }
+
+        if(searchValues.favorite)
+            notes = notes.filter { it.Favorite }
+
+        if(searchValues.group != null)
+            notes = notes.filter { it.GroupID == searchValues.group}
+
+        if(searchValues.name != null){
+            notes = notes.filter { it.Name.matches(Regex(".*" + searchValues.name!! + ".*")) }}
+
+        //TODO filter date
+
+        filteredListOfNotes = notes
     }
 
     /** Sorts [listOfNotes] in place */
@@ -221,10 +243,11 @@ class MainActivity : DrawerActivity() {
                 loadNotes()
                 sortListOfNotes(SortNotesType.Date,true)
                 runOnUiThread {
-                    updateRecyclerView()
+                    updateRecyclerView(listOfNotes)
                 }
             }
             sharedPrefs.edit().putBoolean("notFirstStart", true).apply()
         }
     }
+
 }

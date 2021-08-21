@@ -28,7 +28,6 @@ import kotlinx.coroutines.launch
  * When creating [Intent] of this activity, you should put extended data with
  * putExtra("noteID", yourNoteID)
  *
- * TODO on back pressed dialog (discard changes)
  * TODO tags saving
  */
 class NoteViewerActivity : DrawerActivity() {

@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/dialog_fragment_search_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/searchFragmentHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/fragment_search_header"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchFragmentHeader" />
+
+    <Button
+        android:id="@+id/dialogSearchButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/fragment_search_ok"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tagsLabel" />
+
+    <EditText
+        android:id="@+id/editTextName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/nameLabel"
+        app:layout_constraintTop_toBottomOf="@+id/line"
+        android:importantForAutofill="no"
+        android:labelFor="@id/nameLabel" />
+
+    <EditText
+        android:id="@+id/editTextContent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/contentLabel"
+        app:layout_constraintTop_toBottomOf="@+id/editTextName"
+        android:importantForAutofill="no"
+        android:labelFor="@id/contentLabel" />
+
+    <Spinner
+        android:id="@+id/typeOfNoteSpinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/typeOfNoteLabel"
+        app:layout_constraintTop_toBottomOf="@+id/favoriteSearchCheckBox" />
+
+    <TextView
+        android:id="@+id/groupLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/fragment_search_groups"
+        app:layout_constraintBottom_toBottomOf="@+id/group_Spinner"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/group_Spinner" />
+
+    <CheckBox
+        android:id="@+id/favoriteSearchCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/fragment_search_favorite"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextContent" />
+
+    <TextView
+        android:id="@+id/tagsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/fragment_search_tags"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/groupLabel" />
+
+    <TextView
+        android:id="@+id/typeOfNoteLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/fragment_search_type_of_note"
+        app:layout_constraintBottom_toBottomOf="@+id/typeOfNoteSpinner"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/typeOfNoteSpinner" />
+
+    <TextView
+        android:id="@+id/nameLabel"
+        android:labelFor="@+id/editTextName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/fragment_search_name"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/editTextName" />
+
+    <TextView
+        android:id="@+id/contentLabel"
+        android:labelFor="@+id/editTextContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/fragment_search_content"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextContent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/editTextContent" />
+
+    <TextView
+        android:id="@+id/dateLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/fragment_search_date"
+        app:layout_constraintBottom_toBottomOf="@+id/dateMinButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/dateMinButton" />
+
+    <Spinner
+        android:id="@+id/group_Spinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/groupLabel"
+        app:layout_constraintTop_toBottomOf="@+id/dateMaxButton" />
+
+    <Button
+        android:id="@+id/dateMaxButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/dateHelpLabel"
+        app:layout_constraintTop_toBottomOf="@+id/typeOfNoteSpinner" />
+
+    <Button
+        android:id="@+id/dateMinButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/dateMaxButton"
+        app:layout_constraintEnd_toStartOf="@+id/dateHelpLabel"
+        app:layout_constraintStart_toEndOf="@+id/dateLabel"
+        app:layout_constraintTop_toTopOf="@+id/dateMaxButton" />
+
+    <TextView
+        android:id="@+id/dateHelpLabel"
+        android:layout_width="4dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/fragment_search_date_help_label"
+        app:layout_constraintBottom_toBottomOf="@+id/dateMaxButton"
+        app:layout_constraintEnd_toStartOf="@+id/dateMaxButton"
+        app:layout_constraintStart_toEndOf="@+id/dateMinButton"
+        app:layout_constraintTop_toTopOf="@+id/dateMaxButton" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

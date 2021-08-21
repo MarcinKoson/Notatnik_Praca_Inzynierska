@@ -53,6 +53,7 @@
     <string name="activity_main_search_button_description">Search notes</string>
     <string name="activity_main_add_button_description">Add note</string>
     <string name="activity_main_sort_button_description">Sort notes</string>
+    <string name="activity_main_search_off_button_description">Cancel search</string>
 
     <string name="activity_note_viewer_note_name_hint">here write name of note</string>
     <string name="activity_note_viewer_note_date_label">"Edit date : "</string>
@@ -97,5 +98,21 @@
     <string name="fragment_sort_notes_ascending">Ascending</string>
     <string name="fragment_sort_notes_descending">Descending</string>
     <string name="fragment_sort_notes_ok">OK</string>
+
+    <string name="fragment_search_header">Search notes</string>
+    <string name="fragment_search_ok">OK</string>
+    <string name="fragment_search_name">Name</string>
+    <string name="fragment_search_content">Content</string>
+    <string name="fragment_search_type_of_note">Type of note</string>
+    <string name="fragment_search_date">Date</string>
+    <string name="fragment_search_favorite">Favorite</string>
+    <string name="fragment_search_groups">Group</string>
+    <string name="fragment_search_tags">Tags</string>
+    <string name="fragment_search_without_group">Any</string>
+    <string name="fragment_search_without_type_of_data">Any</string>
+    <string name="fragment_search_type_text">Text</string>
+    <string name="fragment_search_type_image">Image</string>
+    <string name="fragment_search_type_recording">Recording</string>
+    <string name="fragment_search_date_help_label" translatable="false">-</string>
 
 </resources>

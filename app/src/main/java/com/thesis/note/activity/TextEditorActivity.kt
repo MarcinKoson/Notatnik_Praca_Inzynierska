@@ -25,7 +25,6 @@ import java.util.*
  * When creating [Intent] of this activity, you should put extended data with
  * putExtra("noteID", yourNoteID) and putExtra("dataID", yourDataID)
  *
- * TODO on back pressed dialog (discard changes)
  */
 class TextEditorActivity : DrawerActivity() {
     /** This activity */
