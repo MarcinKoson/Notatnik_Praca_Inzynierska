@@ -134,7 +134,7 @@ class NoteListAdapter (private var noteList: List<Note>, private var dataList:Li
                 Glide.with(holder.itemView)
                     .load(mainData?.Content)
                     .fitCenter()
-                    .placeholder(R.drawable.ic_loading_24)
+                    .placeholder(R.drawable.ic_loading)
                     .into(binding.noteContentImage)
             }
             NoteType.Sound.id -> {

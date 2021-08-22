@@ -104,7 +104,7 @@ class NoteViewerAdapter (private var dataList:List<Data>, private var onDataClic
         Glide.with(holder.itemView)
             .load(dataList[position].Content)
             .fitCenter()
-            .placeholder(R.drawable.ic_loading_24)
+            .placeholder(R.drawable.ic_loading)
             .into(binding.noteViewerImage)
     }
 

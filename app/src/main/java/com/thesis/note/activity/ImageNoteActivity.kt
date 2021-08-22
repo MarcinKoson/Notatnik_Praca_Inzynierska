@@ -210,7 +210,7 @@ class ImageNoteActivity
         Glide.with(activityContext)
             .load(path)
             .fitCenter()
-            .placeholder(R.drawable.ic_loading_24)
+            .placeholder(R.drawable.ic_loading)
             .into(binding.chosenImage)
     }
 
