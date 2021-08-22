@@ -19,6 +19,7 @@ import com.thesis.note.fragment.SearchFragment
 import com.thesis.note.recycler_view_adapters.NoteTilesAdapter
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -168,12 +169,18 @@ class MainActivity : DrawerActivity(), SearchFragment.SearchInterface
             notes = notes.filter { it.Favorite }
 
         if(searchValues.group != null)
-            notes = notes.filter { it.GroupID == searchValues.group}
+            notes = notes.filter { it.GroupID == searchValues.group }
 
-        if(searchValues.name != null){
-            notes = notes.filter { it.Name.matches(Regex(".*" + searchValues.name!! + ".*")) }}
+        if(searchValues.dateMin != null && searchValues.dateMax != null)
+        {
+            val dateMin = SimpleDateFormat("dd.MM.yyyy", Locale.US).parse(searchValues.dateMin!!)
+            val endOfDay = "-24:00"
+            val dateMax = SimpleDateFormat("dd.MM.yyyy-HH:mm", Locale.US).parse(searchValues.dateMax!!+endOfDay)
+            notes = notes.filter { if(it.Date!=null) it.Date!! > dateMin && it.Date!! < dateMax else false }
+        }
 
-        //TODO filter date
+        if(searchValues.name != null)
+            notes = notes.filter { it.Name.matches(Regex(".*" + searchValues.name!! + ".*")) }
 
         filteredListOfNotes = notes
     }

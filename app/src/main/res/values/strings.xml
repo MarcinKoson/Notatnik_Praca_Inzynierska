@@ -104,7 +104,7 @@
     <string name="fragment_search_name">Name</string>
     <string name="fragment_search_content">Content</string>
     <string name="fragment_search_type_of_note">Type of note</string>
-    <string name="fragment_search_date">Date</string>
+    <string name="fragment_search_date_label">Date</string>
     <string name="fragment_search_favorite">Favorite</string>
     <string name="fragment_search_groups">Group</string>
     <string name="fragment_search_tags">Tags</string>
@@ -114,5 +114,6 @@
     <string name="fragment_search_type_image">Image</string>
     <string name="fragment_search_type_recording">Recording</string>
     <string name="fragment_search_date_help_label" translatable="false">-</string>
+    <string name="fragment_search_date" translatable="false">%1$d.%2$d.%3$d</string>
 
 </resources>
