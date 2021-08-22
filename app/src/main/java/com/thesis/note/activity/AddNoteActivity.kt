@@ -16,7 +16,7 @@ import com.google.android.material.navigation.NavigationView
 import com.thesis.note.R
 import com.thesis.note.database.NoteType
 import com.thesis.note.databinding.ActivityAddNoteBinding
-
+//TODO documentation
 class AddNoteActivity
     : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, ActivityCompat.OnRequestPermissionsResultCallback{
     lateinit var drawerLayout: DrawerLayout
@@ -39,7 +39,7 @@ class AddNoteActivity
         drawerToggle.syncState()
         //------------------------------------------------------------------------------------------
         binding.addTextNote.setOnClickListener{
-                startActivity(Intent(this,TextEditorNewActivity::class.java).apply{
+                startActivity(Intent(this,TextEditorActivity::class.java).apply{
                     putExtra("noteID", -1)
                     putExtra("dataID", -1)
                 })

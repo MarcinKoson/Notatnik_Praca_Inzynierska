@@ -20,23 +20,19 @@
             />
         <activity android:name=".activity.ImageNoteActivity"
             android:noHistory="false"/>
-        <activity android:name=".activity.ListActivity"
-            />
-        <activity android:name=".activity.NewMainActivity">
+
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity"
-            />
 
 
         <activity android:name=".activity.NoteViewerActivity"
             />
-        <activity android:name=".activity.SearchActivity"
-            />
+
         <activity android:name=".activity.SettingsActivity"
             android:noHistory="false"/>
         <activity android:name=".activity.SoundEditorActivity"
@@ -45,14 +41,13 @@
             />
         <activity android:name=".activity.TagEditorActivity"
             />
+
         <activity android:name=".activity.TextEditorActivity"
-            />
-        <activity android:name=".activity.TextEditorNewActivity"
             />
         <activity android:name=".activity.VoiceToTextActivity"
             />
 
-        <activity android:name=".activity.XTemplateEmptyActivity"
+        <activity android:name=".test.XTemplateEmptyActivity"
             />
 
         <activity android:name=".test.DebugActivity"

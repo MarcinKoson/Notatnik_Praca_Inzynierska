@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- TODO id names/remove hardcoded strings -->
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_note_viewer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -32,53 +30,50 @@
             app:layout_constraintTop_toTopOf="parent"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-            <ImageButton android:background="@drawable/ic_delete_black_24dp"
+            <ImageButton
+                android:id="@+id/saveButton"
+                android:background="@drawable/ic_baseline_save"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:layout_gravity="end"
-                android:id="@+id/deleteButton"
+                android:layout_margin="4dp"
                 />
 
             <ImageButton
-                android:id="@+id/saveButton"
-                android:layout_width="wrap_content"
+                android:id="@+id/deleteButton"
+                android:background="@drawable/ic_baseline_delete"
                 android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
                 android:layout_gravity="end"
-                android:background="@drawable/ic_save_black_24dp"
-                android:visibility="gone"
-                tools:layout_editor_absoluteX="331dp"
-                tools:layout_editor_absoluteY="8dp" />
+                android:layout_margin="4dp"
+                />
 
             <ImageButton
                 android:id="@+id/shareButton"
-                android:layout_width="wrap_content"
+                android:background="@drawable/ic_baseline_share"
                 android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
                 android:layout_gravity="end"
-                android:background="@drawable/ic_share_black_24dp"
-                android:visibility="gone"
-                tools:layout_editor_absoluteX="331dp"
-                tools:layout_editor_absoluteY="8dp" />
+                android:layout_margin="4dp"
+                />
 
             <ImageButton
                 android:id="@+id/tagButton"
-                android:layout_width="wrap_content"
+                android:background="@drawable/ic_baseline_bookmark_border"
                 android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
                 android:layout_gravity="end"
-                android:background="@drawable/ic_baseline_bookmark_border_24"
-                android:visibility="visible"
-                tools:layout_editor_absoluteX="331dp"
-                tools:layout_editor_absoluteY="8dp" />
+                android:layout_margin="4dp"
+                />
 
             <ImageButton
                 android:id="@+id/backgroundColorButton"
-                android:layout_width="wrap_content"
+                android:background="@drawable/ic_baseline_format_paint"
                 android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
                 android:layout_gravity="end"
-                android:background="@drawable/ic_palette_24"
-                android:visibility="visible"
-                tools:layout_editor_absoluteX="331dp"
-                tools:layout_editor_absoluteY="8dp" />
-
+                android:layout_margin="4dp"
+                />
 
          </androidx.appcompat.widget.Toolbar>
 
@@ -90,19 +85,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-
             <EditText
                 android:id="@+id/noteName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="tutaj wpisz nazwę notatki"
-
+                android:hint="@string/activity_note_viewer_note_name_hint"
                 android:inputType="textPersonName"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:importantForAutofill="no" />
 
             <View
                 android:layout_width="match_parent"
@@ -111,29 +104,32 @@
                 app:layout_constraintBottom_toBottomOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout3"
+                android:id="@+id/noteInfoLayout"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/noteName"
-                app:layout_constraintVertical_bias="0.0"
                 app:layout_constraintWidth_percent="0.5">
 
                 <TextView
                     android:id="@+id/noteDate"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/textView5"
+                    app:layout_constraintStart_toEndOf="@+id/noteDateLabel"
                     app:layout_constraintTop_toBottomOf="@+id/groupSpinner" />
 
                 <TextView
-                    android:id="@+id/textView5"
+                    android:id="@+id/noteDateLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Data"
-                    android:visibility="invisible"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:text="@string/activity_note_viewer_note_date_label"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/groupSpinner" />
 
@@ -150,7 +146,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/constraintLayout3"
+                app:layout_constraintStart_toEndOf="@+id/noteInfoLayout"
                 app:layout_constraintTop_toBottomOf="@+id/noteName"
                 app:layout_constraintWidth_percent="0.5">
 
@@ -159,17 +155,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/addTagButton" />
-
-                <Button
-                    android:id="@+id/addTagButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="Dodaj tag"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

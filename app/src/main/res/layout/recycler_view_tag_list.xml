@@ -9,11 +9,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="2dp"
-
         android:background="@drawable/frame_transparent"
         android:padding="2dp"
-        android:text="@string/error_empty"
-
+        android:text="@string/recycler_view_tag_list_error"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

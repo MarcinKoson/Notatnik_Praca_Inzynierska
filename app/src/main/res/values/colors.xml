@@ -11,7 +11,7 @@
     <color name="teal_200">#80DEEA</color>
     <color name="teal_700">#0097A7</color>
 
-
+    <color name="colorControlNormal">#89000000</color>
 
     <!--- new colors-->
     <color name="black">#000000</color>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- TODO id names/remove hardcoded strings -->
+<!-- TODO -->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -28,7 +28,7 @@
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <TextView
-        android:id="@+id/note_list_content"
+        android:id="@+id/noteContent"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="Content"
@@ -51,18 +51,18 @@
         android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:text="Typ"
-        app:layout_constraintBottom_toTopOf="@+id/tagName"
+        app:layout_constraintBottom_toTopOf="@+id/groupName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/favoriteCheckBox" />
 
     <TextView
-        android:id="@+id/tagName"
+        android:id="@+id/groupName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Bez grupy"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/note_list_content"
+        app:layout_constraintStart_toEndOf="@+id/noteContent"
         app:layout_constraintTop_toBottomOf="@+id/noteType" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
