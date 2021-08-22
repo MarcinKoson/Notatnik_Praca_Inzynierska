@@ -76,12 +76,12 @@ class NoteListAdapter (private var noteList: List<Note>, private var dataList:Li
 
         //note type string
         val noteTypeStr: String = when(mainData?.Type){
-            NoteType.Text -> holder.objectLayout.context.getString(R.string.note_type_text)
-            NoteType.List -> holder.objectLayout.context.getString(R.string.note_type_list)
-            NoteType.Video -> holder.objectLayout.context.getString(R.string.note_type_video)
-            NoteType.Sound -> holder.objectLayout.context.getString(R.string.note_type_sound)
-            NoteType.Photo -> holder.objectLayout.context.getString(R.string.note_type_photo)
-            else -> holder.objectLayout.context.getString(R.string.note_type_other)
+            NoteType.Text -> "Text"
+            NoteType.List -> "List"
+            NoteType.Video -> "Video"
+            NoteType.Sound -> "Sound"
+            NoteType.Photo -> "Photo"
+            else -> "Other"
         }
 
         when(holder.itemViewType){

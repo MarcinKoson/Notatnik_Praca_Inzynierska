@@ -1,24 +1,17 @@
 package com.thesis.note.activity
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
-import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import com.bumptech.glide.Glide
-import com.google.android.material.navigation.NavigationView
-import com.thesis.note.NavigationDrawer
+import com.thesis.note.DrawerActivity
 import com.thesis.note.R
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.NoteColor
@@ -31,38 +24,28 @@ import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+
 //TODO documentation
-class ImageNoteActivity
-    :AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-    lateinit var drawerLayout: DrawerLayout
-    lateinit var navigationDrawer : NavigationDrawer
+/**
+ *
+ */
+class ImageNoteActivity : DrawerActivity()
+{
+    /** This activity */
+    private val thisActivity = this
+    /** View binding */
     private lateinit var binding: ActivityImageNoteBinding
+
+    /** Database */
     private lateinit var db: AppDatabase
-    private lateinit var activityContext: Context
 
-    //note&data ID
-    private var noteID = -1
-    private var dataID = -1
-
-    //image
-    private lateinit var currentPhotoPath: String
-    private var imageState = ImageState.NoImage
-
+    /** On create callback */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityImageNoteBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        drawerLayout = binding.activityImageNoteLayout
-        navigationDrawer = NavigationDrawer(drawerLayout,supportFragmentManager)
-        binding.navigationView.setNavigationItemSelectedListener(this)
-        val drawerToggle = ActionBarDrawerToggle(this, drawerLayout, binding.toolbar, R.string.abdt, R.string.abdt)
-        drawerLayout.addDrawerListener(drawerToggle)
-        drawerToggle.isDrawerIndicatorEnabled = true
-        drawerToggle.syncState()
-        //------------------------------------------------------------------------------------------
-        activityContext = this
+        setDrawerLayout(binding.root,binding.toolbar,binding.navigationView)
         //open database
-        db = AppDatabase.invoke(this)
+        db = AppDatabase(this)
         //get parameters
         val parameters = intent.extras
         if(parameters != null){
@@ -156,18 +139,16 @@ class ImageNoteActivity
         }
     }
 
-    override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
-        finish()
-        return navigationDrawer.onNavigationItemSelected(menuItem,this)
-    }
 
-    override fun onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
-    }
+
+//TODO
+    //note&data ID
+    private var noteID = -1
+    private var dataID = -1
+
+    //image
+    private lateinit var currentPhotoPath: String
+    private var imageState = ImageState.NoImage
 
     private fun saveImageFromGallery(){
         val originalFile = File(currentPhotoPath)
@@ -207,7 +188,7 @@ class ImageNoteActivity
     }
 
     private fun setImage(path:String?){
-        Glide.with(activityContext)
+        Glide.with(thisActivity)
             .load(path)
             .fitCenter()
             .placeholder(R.drawable.ic_loading)
