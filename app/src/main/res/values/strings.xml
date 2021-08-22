@@ -26,10 +26,7 @@
     <string name="sound_editor_start_recording">Start recording</string>
     <string name="sound_editor_stop_recording">Stop recording</string>
     <string name="sound_editor_play">Play</string>
-    <string name="add_note_text">Add text note</string>
-    <string name="add_note_sound">Add sound note</string>
-    <string name="add_note_image">Add image note</string>
-    <string name="add_note_title">Add new note</string>
+
     <string name="no_permissions">No permissions</string>
 
 
@@ -116,4 +113,9 @@
     <string name="fragment_search_date_help_label" translatable="false">-</string>
     <string name="fragment_search_date" translatable="false">%1$d.%2$d.%3$d</string>
 
+    <string name="fragment_add_note_header">Add note</string>
+    <string name="fragment_add_note_text">Add text note</string>
+    <string name="fragment_add_note_sound">Add sound note</string>
+    <string name="fragment_add_note_image">Add image note</string>
+    <string name="fragment_add_note_no_permissions">No permissions</string>
 </resources>

@@ -14,8 +14,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Note">
 
-        <activity android:name=".activity.AddNoteActivity"
-            />
         <activity android:name=".activity.GroupsEditorActivity"
             />
         <activity android:name=".activity.ImageNoteActivity"

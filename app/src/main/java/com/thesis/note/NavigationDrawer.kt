@@ -5,15 +5,17 @@ import android.content.Intent
 import android.view.MenuItem
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.FragmentManager
 import com.google.android.material.navigation.NavigationView
 import com.thesis.note.activity.*
+import com.thesis.note.fragment.AddNoteFragment
 import com.thesis.note.test.DebugActivity
 
 /**
  * [NavigationView] drawer logic
  *
  */
-class NavigationDrawer(val drawerLayout: DrawerLayout) {
+class NavigationDrawer(val drawerLayout: DrawerLayout, private val supportFragmentManager: FragmentManager) {
     /** On navigation item selected */
     fun onNavigationItemSelected(menuItem: MenuItem,context: Context): Boolean {
         when (menuItem.itemId) {
@@ -27,8 +29,10 @@ class NavigationDrawer(val drawerLayout: DrawerLayout) {
                 context.startActivity(listActivityIntent)
             }
             R.id.add_note ->{
-                val addNoteActivityIntent = Intent(context,AddNoteActivity::class.java)
-                context.startActivity(addNoteActivityIntent)
+                context.run {
+                    AddNoteFragment().show(supportFragmentManager,"add_note")
+                }
+
             }
             R.id.drawer_settings ->
             {

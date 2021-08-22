@@ -28,8 +28,8 @@ import kotlinx.coroutines.launch
  * When creating [Intent] of this activity, you should put extended data with
  * putExtra("noteID", yourNoteID)
  *
- * TODO tags saving
  */
+//TODO tags saving
 class NoteViewerActivity : DrawerActivity() {
     /** This activity */
     private val thisActivity = this

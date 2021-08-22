@@ -17,10 +17,6 @@
     <string name="sound_editor_play">Odtwarzaj</string>
     <string name="sound_editor_stop_recording">Koniec nagrywania</string>
     <string name="sound_editor_start_recording">Rozpoczęcie nagrywanie</string>
-    <string name="add_note_text">Dodaj notatkę tekstową</string>
-    <string name="add_note_sound">Dodaj notetke dzwiękową</string>
-    <string name="add_note_image">Dodaj notatkę obrazkową</string>
-    <string name="add_note_title">Dodaj nową notatkę</string>
     <string name="no_permissions">Brak uprawnień</string>
     <string name="action_bar_drawer_toggle_open">Otwórz drawer</string>
     <string name="action_bar_drawer_toggle_close">Zamknij drawer</string>
@@ -96,5 +92,10 @@
     <string name="fragment_search_type_image">Obrazkowa</string>
     <string name="fragment_search_type_recording">Nagranie</string>
     <string name="activity_main_search_off_button_description">Anuluj wyszukiwanie</string>
+    <string name="fragment_add_note_text">Dodaj notatkę tekstową</string>
+    <string name="fragment_add_note_image">Dodaj notatkę obrazkową</string>
+    <string name="fragment_add_note_sound">Dodaj notetke dzwiękową</string>
+    <string name="fragment_add_note_header">Dodaj nową notatkę</string>
+    <string name="fragment_add_note_no_permissions">Brak uprawnień</string>
 
 </resources>

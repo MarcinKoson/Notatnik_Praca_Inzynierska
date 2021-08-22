@@ -15,6 +15,7 @@ import com.thesis.note.database.entity.Tag
 import com.thesis.note.databinding.ActivityMainBinding
 import com.thesis.note.fragment.SortNotesFragment
 import com.thesis.note.SortNotesType
+import com.thesis.note.fragment.AddNoteFragment
 import com.thesis.note.fragment.SearchFragment
 import com.thesis.note.recycler_view_adapters.NoteTilesAdapter
 import kotlinx.coroutines.GlobalScope
@@ -66,9 +67,10 @@ class MainActivity : DrawerActivity(), SearchFragment.SearchInterface
         //Add button listener
         //TODO add note fragment
         binding.floatingActionButton.setOnClickListener {
-            Intent(it.context,AddNoteActivity::class.java).run{
-                startActivity(this)
-            }
+           // Intent(it.context,AddNoteActivity::class.java).run{
+            //    startActivity(this)
+           // }
+            AddNoteFragment().show(supportFragmentManager,"add_note")
         }
         //Search button listener
         binding.searchButton.setOnClickListener {

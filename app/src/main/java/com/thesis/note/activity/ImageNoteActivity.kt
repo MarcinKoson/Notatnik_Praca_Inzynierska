@@ -53,7 +53,7 @@ class ImageNoteActivity
         binding = ActivityImageNoteBinding.inflate(layoutInflater)
         setContentView(binding.root)
         drawerLayout = binding.activityImageNoteLayout
-        navigationDrawer = NavigationDrawer(drawerLayout)
+        navigationDrawer = NavigationDrawer(drawerLayout,supportFragmentManager)
         binding.navigationView.setNavigationItemSelectedListener(this)
         val drawerToggle = ActionBarDrawerToggle(this, drawerLayout, binding.toolbar, R.string.abdt, R.string.abdt)
         drawerLayout.addDrawerListener(drawerToggle)

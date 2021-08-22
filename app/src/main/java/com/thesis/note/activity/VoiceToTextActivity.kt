@@ -44,7 +44,7 @@ class VoiceToTextActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         binding = ActivityVoiceToTextBinding.inflate(layoutInflater) //LAYOUT BINDING CLASS
         setContentView(binding.root)
         drawer_layout = binding.activityVoiceToTextLayout               //NAZWA DRAWER LAYOUTU
-        navigationDrawer = NavigationDrawer(drawer_layout)
+        navigationDrawer = NavigationDrawer(drawer_layout,supportFragmentManager)
         binding.navigationView.setNavigationItemSelectedListener(this);
 
         val drawerToggle= ActionBarDrawerToggle(this,drawer_layout,binding.toolbar,R.string.abdt,R.string.abdt)

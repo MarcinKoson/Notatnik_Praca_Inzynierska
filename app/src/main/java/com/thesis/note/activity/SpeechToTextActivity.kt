@@ -30,7 +30,7 @@ class SpeechToTextActivity : AppCompatActivity(), NavigationView.OnNavigationIte
         binding = ActivitySpeechToTextBinding.inflate(layoutInflater)
         setContentView(binding.root)
         drawerLayout = binding.activitySpeechToTextLayout
-        navigationDrawer = NavigationDrawer(drawerLayout)
+        navigationDrawer = NavigationDrawer(drawerLayout,supportFragmentManager)
         binding.navigationView.setNavigationItemSelectedListener(this)
         val drawerToggle = ActionBarDrawerToggle(this,drawerLayout,binding.toolbar,R.string.abdt,R.string.abdt)
         drawerLayout.addDrawerListener(drawerToggle)
