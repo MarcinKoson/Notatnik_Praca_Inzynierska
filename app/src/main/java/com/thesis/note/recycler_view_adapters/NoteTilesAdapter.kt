@@ -71,7 +71,7 @@ class NoteTilesAdapter (
                     ) as ConstraintLayout, onNoteClickListener
                 )
             }
-            NoteType.Photo.id -> {
+            NoteType.Image.id -> {
                 NoteTilesViewHolder(
                     LayoutInflater.from(parent.context).inflate(
                         R.layout.recycler_view_note_tile_image,
@@ -80,7 +80,7 @@ class NoteTilesAdapter (
                     ) as ConstraintLayout, onNoteClickListener
                 )
             }
-            NoteType.Sound.id -> {
+            NoteType.Recording.id -> {
                 //TODO layout for sound notes
                 NoteTilesViewHolder(
                     LayoutInflater.from(parent.context).inflate(
@@ -107,8 +107,8 @@ class NoteTilesAdapter (
     override fun onBindViewHolder(holder: NoteTilesViewHolder, position: Int) {
         when (holder.itemViewType) {
             NoteType.Text.id -> setTextTile(holder, position)
-            NoteType.Photo.id -> setImageTile(holder, position)
-            NoteType.Sound.id -> setSoundTile(holder, position)
+            NoteType.Image.id -> setImageTile(holder, position)
+            NoteType.Recording.id -> setSoundTile(holder, position)
         }
     }
 

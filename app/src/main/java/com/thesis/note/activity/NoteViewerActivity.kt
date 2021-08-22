@@ -175,14 +175,14 @@ class NoteViewerActivity : DrawerActivity() {
                         startActivity(this)
                     }
                 }
-                NoteType.Photo.id -> {
+                NoteType.Image.id -> {
                     Intent(thisActivity, ImageNoteActivity::class.java).run{
                         putExtra("noteID", noteID)
                         putExtra("dataID", dataList[position].IdData)
                         startActivity(this)
                     }
                 }
-                NoteType.Sound.id -> {
+                NoteType.Recording.id -> {
                     Intent(thisActivity, SoundEditorActivity::class.java).run{
                         putExtra("noteID", noteID)
                         putExtra("dataID", dataList[position].IdData)

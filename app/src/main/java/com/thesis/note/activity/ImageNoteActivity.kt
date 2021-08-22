@@ -106,7 +106,7 @@ class ImageNoteActivity : DrawerActivity()
                             Data(
                                 0,
                                 newNoteID[0].toInt(),
-                                NoteType.Photo,
+                                NoteType.Image,
                                 currentPhotoPath,
                                 null,
                                 null,null
@@ -122,7 +122,7 @@ class ImageNoteActivity : DrawerActivity()
                 }else if (dataID == -1) {
                     //create new Data
                     GlobalScope.launch {
-                        db.dataDao().insertAll(Data(0, noteID, NoteType.Photo, currentPhotoPath,null,null,null))
+                        db.dataDao().insertAll(Data(0, noteID, NoteType.Image, currentPhotoPath,null,null,null))
                     }
                 }else {
                     //update Data

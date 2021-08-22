@@ -130,8 +130,8 @@ class SearchFragment(
                     when(it){
                         0 -> null
                         1 -> NoteType.Text
-                        2 -> NoteType.Photo
-                        3 -> NoteType.Sound
+                        2 -> NoteType.Image
+                        3 -> NoteType.Recording
                         else -> null
                     }
                 }
@@ -157,8 +157,8 @@ class SearchFragment(
         binding.typeOfNoteSpinner.setSelection(
             when(lastSearchValues?.noteType){
                 NoteType.Text -> 1
-                NoteType.Photo -> 2
-                NoteType.Sound -> 3
+                NoteType.Image -> 2
+                NoteType.Recording -> 3
                 else -> 0
             }
         )

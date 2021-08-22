@@ -54,12 +54,12 @@ class NoteViewerAdapter (private var dataList:List<Data>, private var onDataClic
                     LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_note_viewer_text, parent, false) as ConstraintLayout
                     ,onDataClickListener)
             }
-            NoteType.Photo.id -> {
+            NoteType.Image.id -> {
                  DataHolder(
                     LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_note_viewer_image, parent, false) as ConstraintLayout
                     ,onDataClickListener)
             }
-            NoteType.Sound.id -> {
+            NoteType.Recording.id -> {
                 //TODO layout for sound notes
                  DataHolder(
                     LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_note_viewer_text, parent, false) as ConstraintLayout
@@ -76,8 +76,8 @@ class NoteViewerAdapter (private var dataList:List<Data>, private var onDataClic
     override fun onBindViewHolder(holder: DataHolder, position: Int) {
        when(holder.itemViewType){
            NoteType.Text.id -> setTextData(holder, position)
-           NoteType.Photo.id -> setImageData(holder,position)
-           NoteType.Sound.id -> setSoundData(holder, position)
+           NoteType.Image.id -> setImageData(holder,position)
+           NoteType.Recording.id -> setSoundData(holder, position)
        }
     }
 
