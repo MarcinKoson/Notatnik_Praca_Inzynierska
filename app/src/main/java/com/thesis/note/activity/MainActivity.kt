@@ -170,6 +170,9 @@ class MainActivity : DrawerActivity(), SearchFragment.SearchInterface
         if(searchValues.favorite)
             notes = notes.filter { it.Favorite }
 
+        if(searchValues.noteType != null)
+            notes = notes.filter { x -> listOfData.firstOrNull{ it.IdData == x.MainData }?.Type == searchValues.noteType ?: false }
+
         if(searchValues.group != null)
             notes = notes.filter { it.GroupID == searchValues.group }
 
