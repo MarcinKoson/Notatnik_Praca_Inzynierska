@@ -31,7 +31,6 @@
     <string name="save">Save</string>
     <string name="delete">Delete</string>
     <string name="image">Image</string>
-    <string name="error_create_file">ERROR: CANNOT CREATE FILE</string>
     <string name="activity_image_note_no_image">There is no image chosen</string>
     <string name="abdt">ActionBarDrawerToggle</string>
     <string name="activity_note_viewer_error_id_note">ERROR: bad note ID</string>
@@ -93,5 +92,6 @@
     <string name="activity_image_note_save">Zapisz</string>
     <string name="activity_image_note_share">Share</string>
     <string name="activity_image_note_delete">Usuń</string>
+    <string name="activity_image_save_OK">Zapisano</string>
 
 </resources>
