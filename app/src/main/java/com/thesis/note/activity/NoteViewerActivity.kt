@@ -20,6 +20,7 @@ import com.thesis.note.recycler_view_adapters.NoteViewerAdapter
 import com.thesis.note.recycler_view_adapters.TagListAdapter
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.util.*
 
 /**
  *
@@ -80,6 +81,8 @@ class NoteViewerActivity : DrawerActivity() {
                     //on first position in spinner is no group
                     note.GroupID = groupsList[spinnerPosition - 1].IdGroup
                 }
+                //update date
+                note.Date = Date()
                 //color saved in color change fragment listener
                 //Update
                 db.noteDao().update(note)

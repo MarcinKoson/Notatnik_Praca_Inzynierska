@@ -88,7 +88,7 @@ class ImageNoteActivity : DrawerActivity()
                     //create new Note and Data
                     GlobalScope.launch {
                         val newNoteID =
-                            db.noteDao().insertAll(Note(0, "", null, null, false, null, null, null,NoteColor.White))
+                            db.noteDao().insertAll(Note(0, "", null, null, false, null, Date(), null,NoteColor.White))
                         val newDataID = db.dataDao().insertAll(
                             Data(
                                 0,
@@ -110,6 +110,7 @@ class ImageNoteActivity : DrawerActivity()
                     //create new Data
                     GlobalScope.launch {
                         db.dataDao().insertAll(Data(0, noteID, NoteType.Image, currentImagePath,null,null,null))
+                        db.noteDao().update(db.noteDao().getNoteById(noteID).also { it.Date = Date()})
                     }
                 }else {
                     //update Data
@@ -118,6 +119,7 @@ class ImageNoteActivity : DrawerActivity()
                         dataUpdate.Content = currentImagePath
                         dataUpdate.Info = null
                         db.dataDao().update(dataUpdate)
+                        db.noteDao().update(db.noteDao().getNoteById(noteID).also { it.Date = Date()})
                     }
                 }
             }
@@ -189,6 +191,7 @@ class ImageNoteActivity : DrawerActivity()
             //Handle loaded image from gallery
             val imageUri = result.data?.data
             currentImagePath = imageUri?.path!!
+            //TODO remove drop
             currentImagePath = currentImagePath.drop(6)  //remove "/raw/" from path
             setImage(currentImagePath)
         }
