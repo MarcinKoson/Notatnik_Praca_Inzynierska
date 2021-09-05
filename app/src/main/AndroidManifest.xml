@@ -19,6 +19,8 @@
         <activity android:name=".activity.ImageNoteActivity"
             android:noHistory="false"/>
 
+        <activity android:name=".activity.ListEditorActivity"/>
+
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

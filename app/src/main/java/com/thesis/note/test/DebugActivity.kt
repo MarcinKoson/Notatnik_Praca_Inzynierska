@@ -3,6 +3,7 @@ package com.thesis.note.test
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.thesis.note.activity.ListEditorActivity
 import com.thesis.note.activity.MainActivity
 import com.thesis.note.databinding.XActivityDebugBinding
 
@@ -22,7 +23,7 @@ class DebugActivity : AppCompatActivity() {
         }
 
         binding.testButton.setOnClickListener{
-            val test = Intent(this, TestActivity::class.java)
+            val test = Intent(this, ListEditorActivity::class.java)
             startActivity(test)
 
         }

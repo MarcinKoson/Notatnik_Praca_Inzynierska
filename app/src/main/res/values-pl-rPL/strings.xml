@@ -93,5 +93,12 @@
     <string name="activity_image_note_share">Share</string>
     <string name="activity_image_note_delete">Usuń</string>
     <string name="activity_image_save_OK">Zapisano</string>
+    <string name="activity_list_editor_save">Zapisz</string>
+    <string name="activity_list_editor_share">Share</string>
+    <string name="activity_list_editor_delete">Usuń</string>
+    <string name="activity_list_editor_add_list_item">Dodaj element</string>
+    <string name="fragment_add_note_list">Dodaj listę</string>
+    <string name="activity_list_editor_text_hint">Wprowadź tekst</string>
+    <string name="activity_list_editor_save_OK">Zapisano</string>
 
 </resources>

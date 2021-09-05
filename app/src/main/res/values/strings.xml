@@ -106,6 +106,7 @@
     <string name="fragment_add_note_header">Add note</string>
     <string name="fragment_add_note_text">Add text note</string>
     <string name="fragment_add_note_sound">Add sound note</string>
+    <string name="fragment_add_note_list">Add list note</string>
     <string name="fragment_add_note_image">Add image note</string>
     <string name="fragment_add_note_no_permissions">No permissions</string>
 
@@ -118,5 +119,11 @@
     <string name="activity_image_note_error_create_file" translatable="false">ERROR: CANNOT CREATE FILE</string>
     <string name="activity_image_save_OK">Data saved</string>
 
+    <string name="activity_list_editor_save">Save</string>
+    <string name="activity_list_editor_share">Share</string>
+    <string name="activity_list_editor_delete">Delete</string>
+    <string name="activity_list_editor_add_list_item">Add next item</string>
+    <string name="activity_list_editor_text_hint">Enter your text</string>
+    <string name="activity_list_editor_save_OK">Data saved</string>
 
 </resources>

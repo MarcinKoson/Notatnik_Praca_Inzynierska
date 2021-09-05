@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import com.thesis.note.R
 import com.thesis.note.activity.ImageNoteActivity
+import com.thesis.note.activity.ListEditorActivity
 import com.thesis.note.activity.SoundEditorActivity
 import com.thesis.note.activity.TextEditorActivity
 import com.thesis.note.databinding.DialogFragmentAddNoteBinding
@@ -31,7 +32,7 @@ class AddNoteFragment:DialogFragment(), ActivityCompat.OnRequestPermissionsResul
     /** On create dialog callback */
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = DialogFragmentAddNoteBinding.inflate(requireActivity().layoutInflater)
-
+        //Add text note button listener
         binding.addTextNote.setOnClickListener{
             startActivity(Intent(requireContext(), TextEditorActivity::class.java).apply{
                 putExtra("noteID", -1)
@@ -39,9 +40,19 @@ class AddNoteFragment:DialogFragment(), ActivityCompat.OnRequestPermissionsResul
             })
             dismiss()
         }
+        //Add list note button listener
+        binding.addListNote.setOnClickListener{
+            startActivity(Intent(requireContext(), ListEditorActivity::class.java).apply{
+                putExtra("noteID", -1)
+                putExtra("dataID", -1)
+            })
+            dismiss()
+        }
+        //Add image note button listener
         binding.addImageNote.setOnClickListener {
             checkPermissionsAndLaunchImageNote()
         }
+        //Add sound note button listener
         binding.addSoundNote.setOnClickListener {
             checkPermissionsAndLaunchSoundNote()
         }
