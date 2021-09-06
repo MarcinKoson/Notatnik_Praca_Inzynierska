@@ -10,24 +10,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.thesis.note.R
 import com.thesis.note.database.ListData
 import com.thesis.note.databinding.RecyclerViewListItemBinding
+import com.thesis.note.databinding.RecyclerViewNoteViewerListItemBinding
 
 /**
- * [RecyclerView] adapter for lists
+ * [RecyclerView] adapter for lists in note viewer
  */
-class ListEditorAdapter(
+class ListNoteViewerAdapter(
     private val listData: ListData,
     private val onListItemClickListener: OnListItemListener,
-    private val onTextChangedListener: OnTextChangedListener
-    ) :RecyclerView.Adapter<ListEditorAdapter.ListItemHolder>() {
+    ) :RecyclerView.Adapter<ListNoteViewerAdapter.ListItemHolder>() {
 
     /**  */
     interface  OnListItemListener {
         fun onListItemClick(position:Int)
-    }
-
-    /**  */
-    interface  OnTextChangedListener {
-        fun onTextChanged(position:Int, newText:String)
     }
 
     /**  */
@@ -48,17 +43,16 @@ class ListEditorAdapter(
     /**  */
     override fun onCreateViewHolder(parent: ViewGroup,viewType: Int): ListItemHolder {
         return ListItemHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_list_item, parent, false) as ConstraintLayout
+            LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_note_viewer_list_item, parent, false) as ConstraintLayout
             ,onListItemClickListener
         )
     }
 
     /**  */
     override fun onBindViewHolder(holder: ListItemHolder, position: Int) {
-        val binding = RecyclerViewListItemBinding.bind(holder.objectLayout)
-        binding.editTextListItem.text = Editable.Factory().newEditable(listData.itemsList[position].text)
+        val binding = RecyclerViewNoteViewerListItemBinding.bind(holder.objectLayout)
+        binding.listItemText.text = listData.itemsList[position].text
         binding.listItemCheckBox.isChecked = listData.itemsList[position].checked
-        binding.editTextListItem.addTextChangedListener { onTextChangedListener.onTextChanged(position,it.toString()) }
     }
 
     /**  */

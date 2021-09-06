@@ -57,9 +57,11 @@ class ListEditorActivity : DrawerActivity() {
         db = AppDatabase.invoke(this)
         loadParameters()
         listData.itemsList.add(ListData.ListItem())
-        if(dataID != -1)
-            loadData()
-        initRecyclerView()
+        GlobalScope.launch {
+            if(dataID != -1)
+                loadData()
+            runOnUiThread { initRecyclerView() }
+        }
 
         //Save button listener
         binding.saveButton.setOnClickListener {
@@ -74,7 +76,7 @@ class ListEditorActivity : DrawerActivity() {
                 noteID != -1 -> {
                     //add new data to db
                     GlobalScope.launch {
-                        db.dataDao().insertAll(listData.getData())
+                        db.dataDao().insertAll(listData.run{ listData.idData=0 ; getData() })
                         db.noteDao().update(db.noteDao().getNoteById(listData.noteID).apply { Date = Date() })
                     }
                 }
@@ -85,7 +87,7 @@ class ListEditorActivity : DrawerActivity() {
                             noteID = it[0].toInt()
                             listData.noteID = noteID
                         }
-                        db.dataDao().insertAll(listData.getData()).also{
+                        db.dataDao().insertAll(listData.run{ listData.idData=0 ; getData() }).also{
                             dataID = it[0].toInt()
                             db.noteDao().update(db.noteDao().getNoteById(noteID).apply{ MainData = dataID })
                         }
@@ -139,6 +141,12 @@ class ListEditorActivity : DrawerActivity() {
 
                 }
             }
+        ,
+            object : ListEditorAdapter.OnTextChangedListener{
+                override fun onTextChanged(position: Int, newText: String) {
+                    listData.itemsList[position].text = newText
+                }
+            }
         )
         binding.listRecyclerView.apply {
             layoutManager = viewManager
@@ -149,12 +157,10 @@ class ListEditorActivity : DrawerActivity() {
         }
     }
 
-    /** Load [Data] with id [dataID]  */
+    /** Load [Data] with id [dataID] from database  */
     private fun loadData(){
-        GlobalScope.launch {
-            listData = ListData().apply {
-                loadData(db.dataDao().getDataById(noteID))
-            }
+        listData = ListData().apply {
+            loadData(db.dataDao().getDataById(dataID))
         }
     }
 

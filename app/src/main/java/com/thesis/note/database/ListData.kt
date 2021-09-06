@@ -33,7 +33,7 @@ class ListData {
 
         itemsList = mutableListOf()
         val splittedContent = data.Content.split("/n")
-        for (i in 0..splittedContent.size)
+        for (i in 0..splittedContent.size-2)
         {
             itemsList.add(ListItem().apply {
                 text = splittedContent[i]

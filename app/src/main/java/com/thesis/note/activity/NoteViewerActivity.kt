@@ -178,6 +178,13 @@ class NoteViewerActivity : DrawerActivity() {
                         startActivity(this)
                     }
                 }
+                NoteType.List.id -> {
+                    Intent(thisActivity, ListEditorActivity::class.java).run {
+                        putExtra("noteID", noteID)
+                        putExtra("dataID", dataList[position].IdData)
+                        startActivity(this)
+                    }
+                }
                 NoteType.Image.id -> {
                     Intent(thisActivity, ImageNoteActivity::class.java).run{
                         putExtra("noteID", noteID)
