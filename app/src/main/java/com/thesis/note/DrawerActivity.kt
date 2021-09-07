@@ -7,6 +7,8 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 
+//TODO navigation drawer behavior
+
 /**
  * Class for activity with drawer. It provide logic for drawer.
  * Inflate your layout, then run [setDrawerLayout]
@@ -24,7 +26,7 @@ abstract class DrawerActivity :
     fun setDrawerLayout(drawerLayout: DrawerLayout, toolbar: Toolbar, navigationView: NavigationView){
         this.drawerLayout = drawerLayout
         setContentView(drawerLayout)
-        navigationDrawer = NavigationDrawer(drawerLayout)
+        navigationDrawer = NavigationDrawer(drawerLayout,supportFragmentManager)
         navigationView.setNavigationItemSelectedListener(navigationItemSelectedListener)
         ActionBarDrawerToggle(
             this,drawerLayout,toolbar,
@@ -47,7 +49,6 @@ abstract class DrawerActivity :
 
     /** Listener for item selected in [NavigationView] */
     private val navigationItemSelectedListener = NavigationView.OnNavigationItemSelectedListener{
-        finish()
         navigationDrawer.onNavigationItemSelected(it,this)
     }
 }

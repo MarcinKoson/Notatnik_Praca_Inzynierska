@@ -5,15 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.thesis.note.R
+import com.thesis.note.database.ListData
 import com.thesis.note.database.NoteColorConverter
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
 import com.thesis.note.databinding.RecyclerViewNoteViewerImageBinding
+import com.thesis.note.databinding.RecyclerViewNoteViewerListBinding
 import com.thesis.note.databinding.RecyclerViewNoteViewerTextBinding
+
 
 /**
  * [RecyclerView] adapter for showing [Data] of [Note]
@@ -54,12 +58,17 @@ class NoteViewerAdapter (private var dataList:List<Data>, private var onDataClic
                     LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_note_viewer_text, parent, false) as ConstraintLayout
                     ,onDataClickListener)
             }
-            NoteType.Photo.id -> {
+            NoteType.List.id -> {
+                DataHolder(
+                    LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_note_viewer_list, parent, false) as ConstraintLayout
+                    ,onDataClickListener)
+            }
+            NoteType.Image.id -> {
                  DataHolder(
                     LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_note_viewer_image, parent, false) as ConstraintLayout
                     ,onDataClickListener)
             }
-            NoteType.Sound.id -> {
+            NoteType.Recording.id -> {
                 //TODO layout for sound notes
                  DataHolder(
                     LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_note_viewer_text, parent, false) as ConstraintLayout
@@ -76,8 +85,9 @@ class NoteViewerAdapter (private var dataList:List<Data>, private var onDataClic
     override fun onBindViewHolder(holder: DataHolder, position: Int) {
        when(holder.itemViewType){
            NoteType.Text.id -> setTextData(holder, position)
-           NoteType.Photo.id -> setImageData(holder,position)
-           NoteType.Sound.id -> setSoundData(holder, position)
+           NoteType.List.id -> setListData(holder, position)
+           NoteType.Image.id -> setImageData(holder,position)
+           NoteType.Recording.id -> setSoundData(holder, position)
        }
     }
 
@@ -99,12 +109,29 @@ class NoteViewerAdapter (private var dataList:List<Data>, private var onDataClic
     }
 
     /**  */
+    private fun setListData(holder: DataHolder, position: Int){
+        val binding = RecyclerViewNoteViewerListBinding.bind(holder.objectLayout)
+        //Init RecyclerView
+        val viewManager = LinearLayoutManager(binding.root.context)
+        val viewAdapter = ListViewerAdapter(ListData().apply { loadData(dataList[position])}).apply {
+            attachItemTouchHelperToRecyclerView(binding.listItemsRecyclerView)
+        }
+        binding.listItemsRecyclerView.apply {
+            setHasFixedSize(true)
+            layoutManager = viewManager
+            adapter = viewAdapter
+        }
+        listRecyclerViews[position] = binding.listItemsRecyclerView
+        binding.editButton.setOnClickListener { onDataClickListener.onDataClick(position) }
+    }
+
+    /**  */
     private fun setImageData(holder: DataHolder, position: Int){
         val binding = RecyclerViewNoteViewerImageBinding.bind(holder.objectLayout)
         Glide.with(holder.itemView)
             .load(dataList[position].Content)
             .fitCenter()
-            .placeholder(R.drawable.ic_loading_24)
+            .placeholder(R.drawable.ic_loading)
             .into(binding.noteViewerImage)
     }
 
@@ -116,5 +143,13 @@ class NoteViewerAdapter (private var dataList:List<Data>, private var onDataClic
 
     /**  */
     override fun getItemCount() = dataList.size
+
+    /** */
+    private var listRecyclerViews:MutableMap<Int,RecyclerView> = mutableMapOf()
+
+    /** */
+    fun getRecyclerView(position:Int): RecyclerView? {
+        return listRecyclerViews[position]
+    }
 
 }

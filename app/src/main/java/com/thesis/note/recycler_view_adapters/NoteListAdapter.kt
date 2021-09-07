@@ -48,13 +48,13 @@ class NoteListAdapter (private var noteList: List<Note>, private var dataList:Li
                     ,onNoteClickListener
                    )
             }
-            NoteType.Photo.id -> {
+            NoteType.Image.id -> {
                 return NoteListViewHolder(
                     LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_note_list_photo, parent, false) as ConstraintLayout
                     ,onNoteClickListener
                     )
             }
-            NoteType.Sound.id -> {
+            NoteType.Recording.id -> {
              
                 return NoteListViewHolder(
                     LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_note_list_text, parent, false) as ConstraintLayout
@@ -76,12 +76,12 @@ class NoteListAdapter (private var noteList: List<Note>, private var dataList:Li
 
         //note type string
         val noteTypeStr: String = when(mainData?.Type){
-            NoteType.Text -> holder.objectLayout.context.getString(R.string.note_type_text)
-            NoteType.List -> holder.objectLayout.context.getString(R.string.note_type_list)
-            NoteType.Video -> holder.objectLayout.context.getString(R.string.note_type_video)
-            NoteType.Sound -> holder.objectLayout.context.getString(R.string.note_type_sound)
-            NoteType.Photo -> holder.objectLayout.context.getString(R.string.note_type_photo)
-            else -> holder.objectLayout.context.getString(R.string.note_type_other)
+            NoteType.Text -> "Text"
+            NoteType.List -> "List"
+            NoteType.Other -> "Video"
+            NoteType.Recording -> "Sound"
+            NoteType.Image -> "Photo"
+            else -> "Other"
         }
 
         when(holder.itemViewType){
@@ -109,7 +109,7 @@ class NoteListAdapter (private var noteList: List<Note>, private var dataList:Li
                 //set content
                 binding.noteContent.text = mainData?.Content
             }
-            NoteType.Photo.id -> {
+            NoteType.Image.id -> {
                 val binding = RecyclerViewNoteListPhotoBinding.bind(holder.objectLayout)
                 //name, favorite, note type
                 binding.noteName.text = noteList[position].Name
@@ -134,10 +134,10 @@ class NoteListAdapter (private var noteList: List<Note>, private var dataList:Li
                 Glide.with(holder.itemView)
                     .load(mainData?.Content)
                     .fitCenter()
-                    .placeholder(R.drawable.ic_loading_24)
+                    .placeholder(R.drawable.ic_loading)
                     .into(binding.noteContentImage)
             }
-            NoteType.Sound.id -> {
+            NoteType.Recording.id -> {
                 val binding = RecyclerViewNoteListTextBinding.bind(holder.objectLayout)
                 //name, favorite, note type
                 binding.noteName.text = noteList[position].Name

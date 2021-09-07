@@ -2,31 +2,18 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_image_note_layout"
+    android:id="@+id/activity_text_editor_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/chosenImage"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constrainedHeight="true"
-            app:layout_constrainedWidth="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar"
-            app:srcCompat="@drawable/frame_transparent"
-            tools:ignore="ContentDescription" />
-
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
+            app:title=""
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
@@ -40,16 +27,17 @@
                 android:layout_gravity="end"
                 android:layout_margin="4dp"
                 android:background="@drawable/ic_baseline_save"
-                android:contentDescription="@string/activity_image_note_save" />
+                android:contentDescription="@string/activity_list_editor_save" />
 
             <ImageButton
                 android:id="@+id/deleteButton"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
                 android:layout_gravity="end"
-                android:layout_margin="4dp"
                 android:background="@drawable/ic_baseline_delete"
-                android:contentDescription="@string/activity_image_note_delete" />
+                android:layout_margin="4dp"
+                android:contentDescription="@string/activity_list_editor_delete"
+                />
 
             <ImageButton
                 android:id="@+id/shareButton"
@@ -58,26 +46,42 @@
                 android:layout_gravity="end"
                 android:layout_margin="4dp"
                 android:background="@drawable/ic_baseline_share"
-                android:contentDescription="@string/activity_image_note_share" />
+                android:contentDescription="@string/activity_list_editor_share"
+                />
 
-            <ImageButton
-                android:id="@+id/openCameraButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_margin="4dp"
-                android:background="@drawable/ic_baseline_photo_camera"
-                android:contentDescription="@string/activity_image_note_camera" />
+        </androidx.appcompat.widget.Toolbar>
 
-            <ImageButton
-                android:id="@+id/openGalleryButton"
-                android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/addListItemButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_baseline_add"
+            android:text="@string/activity_list_editor_add_list_item"
+            android:textAlignment="textStart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewLayout"
+            tools:ignore="RtlHardcoded" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/recyclerViewLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:maxHeight="400dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listRecyclerView"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_margin="4dp"
-                android:background="@drawable/ic_baseline_photo"
-                android:contentDescription="@string/activity_image_note_gallery" />
-            </androidx.appcompat.widget.Toolbar>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -89,5 +93,4 @@
         app:headerLayout="@layout/drawer_header"
         app:menu="@menu/drawer_menu" >
     </com.google.android.material.navigation.NavigationView>
-
 </androidx.drawerlayout.widget.DrawerLayout>

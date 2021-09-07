@@ -43,7 +43,7 @@ class TagEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         binding = ActivityTagsEditorBinding.inflate(layoutInflater) //LAYOUT BINDING CLASS
         setContentView(binding.root)
         drawerLayout = binding.activityTagsEditorLayout
-        navigationDrawer = NavigationDrawer(drawerLayout)
+        navigationDrawer = NavigationDrawer(drawerLayout,supportFragmentManager)
         binding.navigationView.setNavigationItemSelectedListener(this)
 
         val drawerToggle= ActionBarDrawerToggle(this,drawerLayout,binding.toolbar,R.string.abdt,R.string.abdt)

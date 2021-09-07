@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Notatnik</string>
-    <string name="note_type_text">Tekstowa</string>
-    <string name="note_type_list">Lista</string>
-    <string name="note_type_video">Wideo</string>
-    <string name="note_type_sound">Dzwiękowa</string>
-    <string name="note_type_photo">Zdjęcie</string>
-    <string name="note_type_other">Inna</string>
     <string name="activity_image_note_gallery">Otwórz Galerie</string>
     <string name="activity_image_note_camera">Otwórz Aparat</string>
     <string name="save_OK">Zapisano</string>
@@ -17,11 +11,6 @@
     <string name="sound_editor_play">Odtwarzaj</string>
     <string name="sound_editor_stop_recording">Koniec nagrywania</string>
     <string name="sound_editor_start_recording">Rozpoczęcie nagrywanie</string>
-    <string name="add_note_text">Dodaj notatkę tekstową</string>
-    <string name="add_note_sound">Dodaj notetke dzwiękową</string>
-    <string name="add_note_image">Dodaj notatkę obrazkową</string>
-    <string name="add_note_title">Dodaj nową notatkę</string>
-    <string name="no_permissions">Brak uprawnień</string>
     <string name="action_bar_drawer_toggle_open">Otwórz drawer</string>
     <string name="action_bar_drawer_toggle_close">Zamknij drawer</string>
 
@@ -42,7 +31,6 @@
     <string name="save">Save</string>
     <string name="delete">Delete</string>
     <string name="image">Image</string>
-    <string name="error_create_file">ERROR: CANNOT CREATE FILE</string>
     <string name="activity_image_note_no_image">There is no image chosen</string>
     <string name="abdt">ActionBarDrawerToggle</string>
     <string name="activity_note_viewer_error_id_note">ERROR: bad note ID</string>
@@ -96,5 +84,21 @@
     <string name="fragment_search_type_image">Obrazkowa</string>
     <string name="fragment_search_type_recording">Nagranie</string>
     <string name="activity_main_search_off_button_description">Anuluj wyszukiwanie</string>
+    <string name="fragment_add_note_text">Dodaj notatkę tekstową</string>
+    <string name="fragment_add_note_image">Dodaj notatkę obrazkową</string>
+    <string name="fragment_add_note_sound">Dodaj notetke dzwiękową</string>
+    <string name="fragment_add_note_header">Dodaj nową notatkę</string>
+    <string name="fragment_add_note_no_permissions">Brak uprawnień</string>
+    <string name="activity_image_note_save">Zapisz</string>
+    <string name="activity_image_note_share">Share</string>
+    <string name="activity_image_note_delete">Usuń</string>
+    <string name="activity_image_save_OK">Zapisano</string>
+    <string name="activity_list_editor_save">Zapisz</string>
+    <string name="activity_list_editor_share">Share</string>
+    <string name="activity_list_editor_delete">Usuń</string>
+    <string name="activity_list_editor_add_list_item">Dodaj element</string>
+    <string name="fragment_add_note_list">Dodaj listę</string>
+    <string name="activity_list_editor_text_hint">Wprowadź tekst</string>
+    <string name="activity_list_editor_save_OK">Zapisano</string>
 
 </resources>

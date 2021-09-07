@@ -4,21 +4,13 @@
     <!-- Old -->
 
     <string name="abdt">ActionBarDrawerToggle</string>
-    <string name="note_type_text">Text</string>
-    <string name="note_type_list">List</string>
-    <string name="note_type_video">Video</string>
-    <string name="note_type_sound">Sound</string>
-    <string name="note_type_photo">Photo</string>
-    <string name="note_type_other">Other</string>
-    <string name="activity_image_note_gallery">Open Gallery</string>
-    <string name="activity_image_note_camera">Open Camera</string>
+
     <string name="delete">Delete</string>
     <string name="image">Image</string>
     <string name="share">Share</string>
     <string name="save">Save</string>
-    <string name="error_create_file">ERROR: CANNOT CREATE FILE</string>
     <string name="save_OK">Data saved</string>
-    <string name="activity_image_note_no_image">There is no image chosen</string>
+
     <string name="sound_editor_no_recording">No recording</string>
     <string name="sound_editor_recording">Recording</string>
     <string name="sound_editor_recorded">Recorded</string>
@@ -26,11 +18,6 @@
     <string name="sound_editor_start_recording">Start recording</string>
     <string name="sound_editor_stop_recording">Stop recording</string>
     <string name="sound_editor_play">Play</string>
-    <string name="add_note_text">Add text note</string>
-    <string name="add_note_sound">Add sound note</string>
-    <string name="add_note_image">Add image note</string>
-    <string name="add_note_title">Add new note</string>
-    <string name="no_permissions">No permissions</string>
 
 
     <!-- Temp -->
@@ -115,5 +102,28 @@
     <string name="fragment_search_type_recording">Recording</string>
     <string name="fragment_search_date_help_label" translatable="false">-</string>
     <string name="fragment_search_date" translatable="false">%1$d.%2$d.%3$d</string>
+
+    <string name="fragment_add_note_header">Add note</string>
+    <string name="fragment_add_note_text">Add text note</string>
+    <string name="fragment_add_note_sound">Add sound note</string>
+    <string name="fragment_add_note_list">Add list note</string>
+    <string name="fragment_add_note_image">Add image note</string>
+    <string name="fragment_add_note_no_permissions">No permissions</string>
+
+    <string name="activity_image_note_gallery">Open Gallery</string>
+    <string name="activity_image_note_camera">Open Camera</string>
+    <string name="activity_image_note_save">Save</string>
+    <string name="activity_image_note_share">Share</string>
+    <string name="activity_image_note_delete">Delete</string>
+    <string name="activity_image_note_no_image">There is no image chosen</string>
+    <string name="activity_image_note_error_create_file" translatable="false">ERROR: CANNOT CREATE FILE</string>
+    <string name="activity_image_save_OK">Data saved</string>
+
+    <string name="activity_list_editor_save">Save</string>
+    <string name="activity_list_editor_share">Share</string>
+    <string name="activity_list_editor_delete">Delete</string>
+    <string name="activity_list_editor_add_list_item">Add next item</string>
+    <string name="activity_list_editor_text_hint">Enter your text</string>
+    <string name="activity_list_editor_save_OK">Data saved</string>
 
 </resources>

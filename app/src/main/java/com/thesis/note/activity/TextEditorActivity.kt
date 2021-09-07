@@ -23,8 +23,9 @@ import java.util.*
  * Activity for text editing.
  *
  * When creating [Intent] of this activity, you should put extended data with
- * putExtra("noteID", yourNoteID) and putExtra("dataID", yourDataID)
- *
+ * putExtra("noteID", yourNoteID) and putExtra("dataID", yourDataID).
+ * If passed id equals "-1" activity interprets this as new data or new note.
+ * Default value for [noteID] and [dataID] is "-1".
  */
 class TextEditorActivity : DrawerActivity() {
     /** This activity */

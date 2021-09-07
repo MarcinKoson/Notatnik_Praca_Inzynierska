@@ -28,6 +28,7 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 //TODO documentation
+//TODO rename to recording
 class SoundEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var drawerLayout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer
@@ -51,7 +52,7 @@ class SoundEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItem
         binding = ActivitySoundEditorBinding.inflate(layoutInflater)
         setContentView(binding.root)
         drawerLayout = binding.activitySoundEditorLayout
-        navigationDrawer = NavigationDrawer(drawerLayout)
+        navigationDrawer = NavigationDrawer(drawerLayout,supportFragmentManager)
         binding.navigationView.setNavigationItemSelectedListener(this)
         val drawerToggle = ActionBarDrawerToggle(this, drawerLayout, binding.toolbar, R.string.abdt, R.string.abdt)
         drawerLayout.addDrawerListener(drawerToggle)
@@ -108,7 +109,7 @@ class SoundEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                            Data(
                                0,
                                newNoteID[0].toInt(),
-                               NoteType.Sound,
+                               NoteType.Recording,
                                filePath,
                                null, null,null))
                        val newNote = db.noteDao().getNoteById(newNoteID[0].toInt())
@@ -120,7 +121,7 @@ class SoundEditorActivity : AppCompatActivity(), NavigationView.OnNavigationItem
                }else if (dataID == -1) {
                    //create new Data
                    GlobalScope.launch {
-                       db.dataDao().insertAll(Data(0, noteID, NoteType.Sound, filePath, null,null,null))
+                       db.dataDao().insertAll(Data(0, noteID, NoteType.Recording, filePath, null,null,null))
                    }
                }else {
                    //update Data
