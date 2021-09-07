@@ -3,10 +3,6 @@ package com.thesis.note.activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.ItemTouchHelper.DOWN
-import androidx.recyclerview.widget.ItemTouchHelper.UP
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.thesis.note.DrawerActivity
 import com.thesis.note.R
@@ -17,7 +13,6 @@ import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
 import com.thesis.note.databinding.ActivityListEditorLayoutBinding
 import com.thesis.note.recycler_view_adapters.ListEditorAdapter
-import com.thesis.note.recycler_view_adapters.ListEditorAdapter.OnListItemListener
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
@@ -135,25 +130,15 @@ class ListEditorActivity : DrawerActivity() {
             binding.recyclerViewLayout.maxHeight = heightPixels - (130 * density).toInt()
         }
         val viewManager = FlexboxLayoutManager(thisActivity)
-        val viewAdapter = ListEditorAdapter(listData,
-            object : OnListItemListener {
-                override fun onListItemClick(position: Int) {
-
-                }
-            }
-        ,
-            object : ListEditorAdapter.OnTextChangedListener{
-                override fun onTextChanged(position: Int, newText: String) {
-                    listData.itemsList[position].text = newText
-                }
-            }
-        )
+        val viewAdapter = ListEditorAdapter(listData).apply {
+            onTextChangedListener = thisActivity.onTextChangedListener
+            onCheckBoxChangedListener = thisActivity.onCheckBoxChangedListener
+            onDeleteButtonClickListener = thisActivity.onDeleteButtonClickListener
+            attachItemTouchHelperToRecyclerView(binding.listRecyclerView)
+        }
         binding.listRecyclerView.apply {
             layoutManager = viewManager
             adapter = viewAdapter
-        }
-        ItemTouchHelper(itemTouchHelperCallback).apply{
-            attachToRecyclerView(binding.listRecyclerView)
         }
     }
 
@@ -164,34 +149,25 @@ class ListEditorActivity : DrawerActivity() {
         }
     }
 
-    /**  */
-    private val itemTouchHelperCallback = object: ItemTouchHelper.Callback() {
-        override fun getMovementFlags(
-            recyclerView: RecyclerView,
-            viewHolder: RecyclerView.ViewHolder
-        ): Int {
-            // Specify the directions of movement
-            return makeMovementFlags(UP or DOWN, 0)
+    /** [ListEditorAdapter.OnTextChangedListener] for recycler view adapter */
+    private val onTextChangedListener = object : ListEditorAdapter.OnTextChangedListener{
+        override fun onTextChanged(position: Int, newText: String) {
+            listData.itemsList[position].text = newText
         }
+    }
 
-        override fun onMove(
-            recyclerView: RecyclerView,
-            viewHolder: RecyclerView.ViewHolder,
-            target: RecyclerView.ViewHolder
-        ): Boolean {
-            // Notify your adapter that an item is moved from x position to y position
-            binding.listRecyclerView.adapter?.notifyItemMoved(viewHolder.adapterPosition, target.adapterPosition)
-            return true
+    /** [ListEditorAdapter.OnCheckBoxChangedListener] for recycler view adapter */
+    private val onCheckBoxChangedListener = object : ListEditorAdapter.OnCheckBoxChangedListener{
+        override fun onCheckBoxChanged(position: Int, isChecked: Boolean) {
+            listData.itemsList[position].checked = isChecked
         }
+    }
 
-        override fun isLongPressDragEnabled(): Boolean {
-            // true: if you want to start dragging on long press
-            // false: if you want to handle it yourself
-            return true
-        }
-
-        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-
+    /** [ListEditorAdapter.OnCheckBoxChangedListener] for recycler view adapter */
+    private val onDeleteButtonClickListener = object : ListEditorAdapter.OnDeleteButtonClickListener{
+        override fun onDeleteButtonClick(position: Int) {
+            listData.itemsList.removeAt(position)
+            binding.listRecyclerView.adapter?.notifyItemRemoved(position)
         }
 
     }

@@ -53,4 +53,11 @@ class ListData {
         }
         return Data(idData,noteID, NoteType.List,content,info, size, color)
     }
+
+    /** */
+    fun moveListItem(formPosition:Int, toPosition: Int){
+        val itemToMove = itemsList[formPosition]
+        itemsList.removeAt(formPosition)
+        itemsList.add(toPosition,itemToMove)
+    }
 }
