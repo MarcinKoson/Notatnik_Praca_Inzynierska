@@ -7,17 +7,20 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.thesis.note.Constants
 import com.thesis.note.R
 import com.thesis.note.database.AppDatabase
+import com.thesis.note.database.ListData
 import com.thesis.note.database.NoteColorConverter
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
 import com.thesis.note.databinding.RecyclerViewNoteListTextBinding
 import com.thesis.note.databinding.RecyclerViewNoteTileImageBinding
+import com.thesis.note.databinding.RecyclerViewNoteTileListBinding
 import com.thesis.note.databinding.RecyclerViewNoteTileTextBinding
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -71,6 +74,15 @@ class NoteTilesAdapter (
                     ) as ConstraintLayout, onNoteClickListener
                 )
             }
+            NoteType.List.id -> {
+                NoteTilesViewHolder(
+                    LayoutInflater.from(parent.context).inflate(
+                        R.layout.recycler_view_note_tile_list,
+                        parent,
+                        false
+                    ) as ConstraintLayout, onNoteClickListener
+                )
+            }
             NoteType.Image.id -> {
                 NoteTilesViewHolder(
                     LayoutInflater.from(parent.context).inflate(
@@ -107,6 +119,7 @@ class NoteTilesAdapter (
     override fun onBindViewHolder(holder: NoteTilesViewHolder, position: Int) {
         when (holder.itemViewType) {
             NoteType.Text.id -> setTextTile(holder, position)
+            NoteType.List.id -> setListTile(holder, position)
             NoteType.Image.id -> setImageTile(holder, position)
             NoteType.Recording.id -> setSoundTile(holder, position)
         }
@@ -126,6 +139,8 @@ class NoteTilesAdapter (
     ){
         //name
         noteName.text = noteList[position].Name
+        noteName.textSize = Constants.TEXT_SIZE_BIG
+        noteName.setTextColor(ContextCompat.getColor(holder.objectLayout.context, R.color.black))
         //favorite
         favoriteCheckBox.isChecked = noteList[position].Favorite
         //set listener for favorite button
@@ -172,6 +187,20 @@ class NoteTilesAdapter (
     }
 
     /**  */
+    private fun setListTile(holder: NoteTilesViewHolder, position: Int){
+        val binding = RecyclerViewNoteTileListBinding.bind(holder.objectLayout)
+        setNoteInfo(holder,position,binding.root,binding.noteName,binding.favoriteCheckBox,binding.groupName)
+        val mainData = ListData().apply { dataList.firstOrNull { it.IdData == noteList[position].MainData }?.let { loadData(it) } }
+        var noteContent = ""
+        mainData.itemsList.forEach {
+            if(!it.checked){
+                noteContent += "•" + it.text + "\r\n"
+            }
+        }
+        binding.noteContent.text = noteContent
+    }
+
+    /**  */
     private fun setImageTile(holder: NoteTilesViewHolder, position: Int) {
         val binding = RecyclerViewNoteTileImageBinding.bind(holder.objectLayout)
         setNoteInfo(holder,position,binding.root,binding.noteName,binding.favoriteCheckBox,binding.groupName)
@@ -182,8 +211,6 @@ class NoteTilesAdapter (
             .fitCenter()
             .placeholder(R.drawable.ic_loading)
             .into(binding.noteContentImage)
-        //note name size
-        binding.noteName.textSize = Constants.TEXT_SIZE_BIG
     }
 
     //TODO set sound tile
