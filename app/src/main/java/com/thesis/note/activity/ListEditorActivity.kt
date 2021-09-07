@@ -131,9 +131,9 @@ class ListEditorActivity : DrawerActivity() {
         }
         val viewManager = FlexboxLayoutManager(thisActivity)
         val viewAdapter = ListEditorAdapter(listData).apply {
-            onTextChangedListener = thisActivity.onTextChangedListener
-            onCheckBoxChangedListener = thisActivity.onCheckBoxChangedListener
-            onDeleteButtonClickListener = thisActivity.onDeleteButtonClickListener
+            //onTextChangedListener = thisActivity.onTextChangedListener
+            //onCheckBoxChangedListener = thisActivity.onCheckBoxChangedListener
+            //onDeleteButtonClickListener = thisActivity.onDeleteButtonClickListener
             attachItemTouchHelperToRecyclerView(binding.listRecyclerView)
         }
         binding.listRecyclerView.apply {
@@ -148,29 +148,4 @@ class ListEditorActivity : DrawerActivity() {
             loadData(db.dataDao().getDataById(dataID))
         }
     }
-
-    /** [ListEditorAdapter.OnTextChangedListener] for recycler view adapter */
-    private val onTextChangedListener = object : ListEditorAdapter.OnTextChangedListener{
-        override fun onTextChanged(position: Int, newText: String) {
-            listData.itemsList[position].text = newText
-        }
-    }
-
-    /** [ListEditorAdapter.OnCheckBoxChangedListener] for recycler view adapter */
-    private val onCheckBoxChangedListener = object : ListEditorAdapter.OnCheckBoxChangedListener{
-        override fun onCheckBoxChanged(position: Int, isChecked: Boolean) {
-            listData.itemsList[position].checked = isChecked
-        }
-    }
-
-    /** [ListEditorAdapter.OnCheckBoxChangedListener] for recycler view adapter */
-    private val onDeleteButtonClickListener = object : ListEditorAdapter.OnDeleteButtonClickListener{
-        override fun onDeleteButtonClick(position: Int) {
-            listData.itemsList.removeAt(position)
-            binding.listRecyclerView.adapter?.notifyItemRemoved(position)
-        }
-
-    }
-
 }
-

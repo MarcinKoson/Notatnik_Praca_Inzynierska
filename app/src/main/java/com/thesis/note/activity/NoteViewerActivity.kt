@@ -1,5 +1,6 @@
 package com.thesis.note.activity
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -16,6 +17,7 @@ import com.thesis.note.database.entity.*
 import com.thesis.note.databinding.ActivityNoteViewerBinding
 import com.thesis.note.fragment.AddTagsDialogFragment
 import com.thesis.note.fragment.ColorPickerFragment
+import com.thesis.note.recycler_view_adapters.ListViewerAdapter
 import com.thesis.note.recycler_view_adapters.NoteViewerAdapter
 import com.thesis.note.recycler_view_adapters.TagListAdapter
 import kotlinx.coroutines.GlobalScope
@@ -71,6 +73,8 @@ class NoteViewerActivity : DrawerActivity() {
         //Save button listener
         binding.saveButton.setOnClickListener {
             GlobalScope.launch {
+                //Update list notes
+                updateListNotes()
                 //Save note name
                 note.Name = binding.noteName.text.toString()
                 //Save group
@@ -150,6 +154,7 @@ class NoteViewerActivity : DrawerActivity() {
     }
 
     /** On resume callback */
+    @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
         super.onResume()
         //Update data
@@ -225,6 +230,7 @@ class NoteViewerActivity : DrawerActivity() {
     }
 
     /** Update tag recycler view. It load new list of [TagOfNote] from database and show it in recycler view */
+    @SuppressLint("NotifyDataSetChanged")
     private fun updateTagRecyclerView(){
         tagsOfNoteList = db.tagOfNoteDAO().getAllNoteTags(note.IdNote)
         runOnUiThread {
@@ -259,7 +265,7 @@ class NoteViewerActivity : DrawerActivity() {
     }
 
     /** Set loaded note into layout */
-    private  fun setNote(){
+    private fun setNote(){
         //Set note name
         binding.noteName.text = Editable.Factory.getInstance().newEditable(note.Name)
         //Set date
@@ -319,6 +325,21 @@ class NoteViewerActivity : DrawerActivity() {
                 setTitle(R.string.activity_note_viewer_discard_changes)
                 create()
             }.show()
+        }
+    }
+
+    /** Update list notes in database*/
+    private fun updateListNotes(){
+        dataList.forEachIndexed { index, data ->
+            if(data.Type == NoteType.List){
+                db.dataDao().update(
+                    ((binding.noteViewerRecyclerView.adapter as NoteViewerAdapter)
+                    .getRecyclerView(index)
+                    ?.adapter as ListViewerAdapter)
+                    .getListData()
+                    .getData()
+                )
+            }
         }
     }
 }

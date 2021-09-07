@@ -113,17 +113,15 @@ class NoteViewerAdapter (private var dataList:List<Data>, private var onDataClic
         val binding = RecyclerViewNoteViewerListBinding.bind(holder.objectLayout)
         //Init RecyclerView
         val viewManager = LinearLayoutManager(binding.root.context)
-        val viewAdapter = ListNoteViewerAdapter(ListData().apply { loadData(dataList[position]) }
-            , object: ListNoteViewerAdapter.OnListItemListener {
-            override fun onListItemClick(position: Int) {}
+        val viewAdapter = ListViewerAdapter(ListData().apply { loadData(dataList[position])}).apply {
+            attachItemTouchHelperToRecyclerView(binding.listItemsRecyclerView)
         }
-            )
         binding.listItemsRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = viewAdapter
         }
-        binding.root.setOnClickListener {  }
+        listRecyclerViews[position] = binding.listItemsRecyclerView
         binding.editButton.setOnClickListener { onDataClickListener.onDataClick(position) }
     }
 
@@ -145,5 +143,13 @@ class NoteViewerAdapter (private var dataList:List<Data>, private var onDataClic
 
     /**  */
     override fun getItemCount() = dataList.size
+
+    /** */
+    private var listRecyclerViews:MutableMap<Int,RecyclerView> = mutableMapOf()
+
+    /** */
+    fun getRecyclerView(position:Int): RecyclerView? {
+        return listRecyclerViews[position]
+    }
 
 }
