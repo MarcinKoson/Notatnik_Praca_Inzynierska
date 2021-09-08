@@ -198,7 +198,7 @@ class NoteViewerActivity : DrawerActivity() {
                     }
                 }
                 NoteType.Recording.id -> {
-                    Intent(thisActivity, SoundEditorActivity::class.java).run{
+                    Intent(thisActivity, RecordingEditorActivity::class.java).run{
                         putExtra("noteID", noteID)
                         putExtra("dataID", dataList[position].IdData)
                         startActivity(this)

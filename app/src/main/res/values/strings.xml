@@ -11,13 +11,7 @@
     <string name="save">Save</string>
     <string name="save_OK">Data saved</string>
 
-    <string name="sound_editor_no_recording">No recording</string>
-    <string name="sound_editor_recording">Recording</string>
-    <string name="sound_editor_recorded">Recorded</string>
-    <string name="sound_editor_playing">Playing</string>
-    <string name="sound_editor_start_recording">Start recording</string>
-    <string name="sound_editor_stop_recording">Stop recording</string>
-    <string name="sound_editor_play">Play</string>
+
 
 
     <!-- Temp -->
@@ -125,5 +119,33 @@
     <string name="activity_list_editor_add_list_item">Add next item</string>
     <string name="activity_list_editor_text_hint">Enter your text</string>
     <string name="activity_list_editor_save_OK">Data saved</string>
+
+    <string name="fragment_sound_player_time_zero" translatable="false">0:00</string>
+    <string name="fragment_sound_player_play">Play</string>
+    <string name="fragment_sound_player_pause">Pause</string>
+    <string name="fragment_sound_player_stop">Stop</string>
+    <string name="fragment_sound_player_hyphen" translatable="false">-</string>
+
+    <string name="fragment_sound_recorder_time_zero" translatable="false">0:00</string>
+    <string name="fragment_sound_recorder_record">Record</string>
+    <string name="fragment_sound_recorder_pause">Pause</string>
+    <string name="fragment_sound_recorder_cancel">Cancel</string>
+
+    <string name="activity_recording_editor_save">Save</string>
+    <string name="activity_recording_editor_share">Share</string>
+    <string name="activity_recording_editor_delete">Delete</string>
+    <string name="activity_recording_editor_save_OK">Data saved</string>
+    <string name="activity_recording_editor_play_label">Current recording</string>
+    <string name="activity_recording_editor_record_label">Record new</string>
+
+
+
+    <string name="sound_editor_no_recording">No recording</string>
+    <string name="sound_editor_recording">Recording</string>
+    <string name="sound_editor_recorded">Recorded</string>
+    <string name="sound_editor_playing">Playing</string>
+    <string name="sound_editor_start_recording">Start recording</string>
+    <string name="sound_editor_stop_recording">Stop recording</string>
+    <string name="sound_editor_play">Play</string>
 
 </resources>

@@ -3,14 +3,27 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.25833333333333336" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_add_black_24dp.xml" value="0.25833333333333336" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_delete.xml" value="0.25833333333333336" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_drag_indicator.xml" value="0.25833333333333336" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_format_bold.xml" value="0.25833333333333336" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_pause.xml" value="0.25833333333333336" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_play_arrow.xml" value="0.25833333333333336" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_stop.xml" value="0.25833333333333336" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_stop_24.xml" value="0.25833333333333336" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_delete_black_24dp.xml" value="0.25833333333333336" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_launcher_background.xml" value="0.25833333333333336" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/activity_image_note.xml" value="0.1947463768115942" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/activity_list_editor_layout.xml" value="0.176" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/activity_main.xml" value="0.1947463768115942" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/activity_note_viewer.xml" value="0.1634963768115942" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/activity_recording_editor.xml" value="0.176" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/activity_settings.xml" value="0.2421875" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/dialog_fragment_add_note.xml" value="0.1" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/fragment_sound_player.xml" value="0.176" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/fragment_sound_recorder.xml" value="0.2421875" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/recycler_view_gropus_layout.xml" value="0.2421875" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/recycler_view_list_item.xml" value="0.264" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/recycler_view_list_item_layout.xml" value="0.4" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/recycler_view_note_list_text.xml" value="0.15942028985507245" />

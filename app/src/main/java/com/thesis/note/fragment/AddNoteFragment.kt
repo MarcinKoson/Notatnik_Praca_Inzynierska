@@ -15,7 +15,7 @@ import androidx.fragment.app.DialogFragment
 import com.thesis.note.R
 import com.thesis.note.activity.ImageNoteActivity
 import com.thesis.note.activity.ListEditorActivity
-import com.thesis.note.activity.SoundEditorActivity
+import com.thesis.note.activity.RecordingEditorActivity
 import com.thesis.note.activity.TextEditorActivity
 import com.thesis.note.databinding.DialogFragmentAddNoteBinding
 
@@ -118,9 +118,9 @@ class AddNoteFragment:DialogFragment(), ActivityCompat.OnRequestPermissionsResul
         }
     }
 
-    /** Launch empty [SoundEditorActivity] and close current [AddNoteFragment] */
+    /** Launch empty [RecordingEditorActivity] and close current [AddNoteFragment] */
     private fun launchSoundNote(){
-        startActivity(Intent(this.context, SoundEditorActivity::class.java).apply{
+        startActivity(Intent(this.context, RecordingEditorActivity::class.java).apply{
             putExtra("noteID", -1)
             putExtra("dataID", -1)
         })

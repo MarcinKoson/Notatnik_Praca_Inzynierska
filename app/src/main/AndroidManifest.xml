@@ -35,7 +35,7 @@
 
         <activity android:name=".activity.SettingsActivity"
             android:noHistory="false"/>
-        <activity android:name=".activity.SoundEditorActivity"
+        <activity android:name=".activity.RecordingEditorActivity"
             />
         <activity android:name=".activity.SpeechToTextActivity"
             />
