@@ -47,7 +47,7 @@ class MainActivity : DrawerActivity(), SearchFragment.SearchInterface
     /** Notes sort type */
     private var sortType: SortNotesType = SortNotesType.Date
     /** Is note sort ascending */
-    private var sortAsc: Boolean = true
+    private var sortAsc: Boolean = false
     /** Current search values */
     private var currentSearchValues: SearchFragment.SearchValues? = null
 

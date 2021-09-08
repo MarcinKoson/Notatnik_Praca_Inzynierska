@@ -26,7 +26,6 @@ import java.util.*
  * Default value for [noteID] and [dataID] is "-1".
  *
  */
-//TODO documentation
 class ListEditorActivity : DrawerActivity() {
     /** This activity */
     private val thisActivity = this
@@ -39,9 +38,11 @@ class ListEditorActivity : DrawerActivity() {
 
     /** Edited [Data] id */
     private var dataID:Int = -1
+
     /** Edited [ListData] */
     private var listData = ListData()
-    /** Edited [Note]  id */
+
+    /** Edited [Note] id */
     private var noteID:Int = -1
 
     /** On create callback */
@@ -50,8 +51,8 @@ class ListEditorActivity : DrawerActivity() {
         binding = ActivityListEditorLayoutBinding.inflate(layoutInflater)
         setDrawerLayout(binding.root,binding.toolbar,binding.navigationView)
         db = AppDatabase.invoke(this)
-        loadParameters()
         listData.itemsList.add(ListData.ListItem())
+        loadParameters()
         GlobalScope.launch {
             if(dataID != -1)
                 loadData()
@@ -129,20 +130,15 @@ class ListEditorActivity : DrawerActivity() {
         with(thisActivity.resources.displayMetrics){
             binding.recyclerViewLayout.maxHeight = heightPixels - (130 * density).toInt()
         }
-        val viewManager = FlexboxLayoutManager(thisActivity)
-        val viewAdapter = ListEditorAdapter(listData).apply {
-            //onTextChangedListener = thisActivity.onTextChangedListener
-            //onCheckBoxChangedListener = thisActivity.onCheckBoxChangedListener
-            //onDeleteButtonClickListener = thisActivity.onDeleteButtonClickListener
-            attachItemTouchHelperToRecyclerView(binding.listRecyclerView)
-        }
         binding.listRecyclerView.apply {
-            layoutManager = viewManager
-            adapter = viewAdapter
+            layoutManager = FlexboxLayoutManager(thisActivity)
+            adapter = ListEditorAdapter(listData).apply {
+                attachItemTouchHelperToRecyclerView(binding.listRecyclerView)
+            }
         }
     }
 
-    /** Load [Data] with id [dataID] from database  */
+    /** Load [Data] with id [dataID] from database */
     private fun loadData(){
         listData = ListData().apply {
             loadData(db.dataDao().getDataById(dataID))
