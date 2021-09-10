@@ -4,13 +4,8 @@
     <string name="activity_image_note_gallery">Otwórz Galerie</string>
     <string name="activity_image_note_camera">Otwórz Aparat</string>
     <string name="save_OK">Zapisano</string>
-    <string name="sound_editor_no_recording">Brak nagrania</string>
-    <string name="sound_editor_recording">Trwa nagrywanie</string>
-    <string name="sound_editor_recorded">Nagrane</string>
-    <string name="sound_editor_playing">Odtwarzenie</string>
-    <string name="sound_editor_play">Odtwarzaj</string>
-    <string name="sound_editor_stop_recording">Koniec nagrywania</string>
-    <string name="sound_editor_start_recording">Rozpoczęcie nagrywanie</string>
+    <string name="activity_recording_editor_no_recording">Brak nagrania</string>
+    <string name="activity_recording_editor_recording">Trwa nagrywanie</string>
     <string name="action_bar_drawer_toggle_open">Otwórz drawer</string>
     <string name="action_bar_drawer_toggle_close">Zamknij drawer</string>
 

@@ -1,37 +1,23 @@
 package com.thesis.note.activity
 
 import android.content.Intent
-import android.media.MediaPlayer
-import android.media.MediaRecorder
 import android.os.Bundle
 import android.os.Environment
-import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
-import com.thesis.note.NavigationDrawer
-import com.google.android.material.navigation.NavigationView
 import com.thesis.note.DrawerActivity
 import com.thesis.note.R
 import com.thesis.note.database.AppDatabase
-import com.thesis.note.database.ListData
 import com.thesis.note.database.NoteColor
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
-import com.thesis.note.databinding.ActivityListEditorLayoutBinding
 import com.thesis.note.databinding.ActivityRecordingEditorBinding
-import com.thesis.note.databinding.ActivitySoundEditorBinding
 import com.thesis.note.fragment.SoundPlayer
 import com.thesis.note.fragment.SoundRecorder
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.File
-import java.io.FileInputStream
-import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -50,6 +36,12 @@ class RecordingEditorActivity : DrawerActivity() {
 
     /** View binding */
     lateinit var binding: ActivityRecordingEditorBinding
+
+    /** View model for [SoundPlayer] */
+    private val soundPlayerViewModel: SoundPlayer.SoundPlayerViewModel by viewModels()
+
+    /** View model for [SoundRecorder] */
+    private val soundRecorderViewModel: SoundRecorder.SoundRecorderViewModel by viewModels()
 
     /** Database */
     lateinit var db: AppDatabase
@@ -70,67 +62,97 @@ class RecordingEditorActivity : DrawerActivity() {
         setDrawerLayout(binding.root,binding.toolbar,binding.navigationView)
         db = AppDatabase(this)
         loadParameters()
-        if(dataID != 1)
-        {
-            GlobalScope.launch {
-                data = db.dataDao().getDataById(dataID)
-                runOnUiThread { viewModel.setItem(data?.Content?:"") }
+        GlobalScope.launch {
+            loadData()
+            if(data == null) {
+                runOnUiThread { soundPlayerViewModel.setIsEnabled(false) }
             }
-
+            else{
+                runOnUiThread {
+                    soundPlayerViewModel.setIsEnabled(true)
+                    soundPlayerViewModel.setFilePath(data?.Content?:"")
+                }
+            }
         }
-        binding.fragmentPlayer.isEnabled = true
-        binding.fragmentRecorder.isEnabled = true
-       // binding.fragmentRecorder.
+        soundPlayerViewModel.isWorking.observe(this, { soundRecorderViewModel.setIsEnabled(!it)})
 
-        viewModelRecorder.listener.value = { v -> viewModel.setItem(v) }
-                /*
+        with(soundRecorderViewModel){
+            setOutputFile(createFile())
+            isWorking.observe(thisActivity, { soundPlayerViewModel.setIsEnabled(!it)})
+            setOnRecordingEndListener { filePath ->
+                soundPlayerViewModel.setFilePath(filePath)
+            }
+            setOnRecordingCancelListener {
+                if(data != null)
+                    soundPlayerViewModel.setFilePath(data!!.Content)
+                else
+                    soundPlayerViewModel.setIsEnabled(false)
+            }
+            setIsEnabled(true)
+        }
 
+        //Save button listener
         binding.saveButton.setOnClickListener {
-           if(!isRecorded){
-               Toast.makeText(applicationContext, R.string.sound_editor_no_recording, Toast.LENGTH_SHORT).show()
-           }
-            else if(isRecording) {
-               Toast.makeText(applicationContext, R.string.sound_editor_recording, Toast.LENGTH_SHORT).show()
-           }else{
-               if (noteID == -1 && dataID == -1) {
+           when{
+               soundRecorderViewModel.isWorking.value == true -> {
+                   Toast.makeText(applicationContext, R.string.activity_recording_editor_recording, Toast.LENGTH_SHORT).show()
+               }
+               soundPlayerViewModel.isEnabled.value == false -> {
+                   Toast.makeText(applicationContext, R.string.activity_recording_editor_no_recording, Toast.LENGTH_SHORT).show()
+               }
+               soundPlayerViewModel.filePath.value == "" -> {
+                   Toast.makeText(applicationContext, R.string.activity_recording_editor_no_recording, Toast.LENGTH_SHORT).show()
+               }
+               dataID != -1 -> {
+                   //update
+                   GlobalScope.launch {
+                       db.dataDao().update(db.dataDao().getDataById(dataID).apply {
+                           Content = soundPlayerViewModel.filePath.value?:""
+                           db.noteDao().update(db.noteDao().getNoteById(NoteId).apply { Date = Date() })
+                       })
+                   }
+                   Toast.makeText(applicationContext, R.string.activity_recording_editor_save_OK, Toast.LENGTH_SHORT).show()
+                   finish()
+               }
+               noteID != -1 -> {
+                   //add new data to db
+                   GlobalScope.launch {
+                       db.dataDao().insertAll(Data(0, noteID, NoteType.Recording, soundPlayerViewModel.filePath.value?:"", null,null,null))
+                       db.noteDao().update(db.noteDao().getNoteById(noteID).apply { Date = Date() })
+                   }
+                   Toast.makeText(applicationContext, R.string.activity_recording_editor_save_OK, Toast.LENGTH_SHORT).show()
+                   finish()
+               }
+               else -> {
                    //create intent for note viewer
                    val noteViewerActivityIntent = Intent(this, NoteViewerActivity::class.java)
                    //create new Note and Data
                    GlobalScope.launch {
-                       val newNoteID =
-                           db.noteDao().insertAll(Note(0, "", null, null, false, null, null, null,NoteColor.White))//TODO color size
-                       val newDataID = db.dataDao().insertAll(
-                           Data(
-                               0,
-                               newNoteID[0].toInt(),
-                               NoteType.Recording,
-                               filePath,
-                               null, null,null))
-                       val newNote = db.noteDao().getNoteById(newNoteID[0].toInt())
-                       newNote.MainData = newDataID[0].toInt()
-                       db.noteDao().update(newNote)
-                       noteViewerActivityIntent.putExtra("noteID", newNote.IdNote)
-                       startActivity(noteViewerActivityIntent)
+                       val newNote = db
+                           .noteDao()
+                           .insertAll(Note(0, "", null, null, false, null, Date(), null, NoteColor.White))
+                           .let{ db.noteDao().getNoteById(it[0].toInt()) }
+                       val newDataID = db
+                           .dataDao()
+                           .insertAll(Data(0, newNote.IdNote, NoteType.Recording, soundPlayerViewModel.filePath.value?:"", null, null,null))
+                       db.noteDao().update(newNote.apply { MainData = newDataID[0].toInt() })
+                       startActivity(noteViewerActivityIntent.apply { putExtra("noteID", newNote.IdNote) })
                    }
-               }else if (dataID == -1) {
-                   //create new Data
-                   GlobalScope.launch {
-                       db.dataDao().insertAll(Data(0, noteID, NoteType.Recording, filePath, null,null,null))
-                   }
-               }else {
-                   //update Data
-                   GlobalScope.launch {
-                       val dataUpdate = db.dataDao().getDataById(dataID)
-                       dataUpdate.Content = filePath
-                       db.dataDao().update(dataUpdate)
-                   }
+                   Toast.makeText(thisActivity, R.string.activity_recording_editor_save_OK, Toast.LENGTH_SHORT).show()
+                   finish()
                }
-               Toast.makeText(applicationContext, R.string.save_OK, Toast.LENGTH_SHORT).show()
-               finish()
-            }
+           }
         }
 
-         */
+        //TODO Delete button listener
+        binding.deleteButton.setOnClickListener {
+            Toast.makeText(thisActivity, R.string.not_implemented, Toast.LENGTH_SHORT).show()
+        }
+
+        //TODO Share button listener
+        binding.shareButton.setOnClickListener {
+            Toast.makeText(thisActivity, R.string.not_implemented, Toast.LENGTH_SHORT).show()
+        }
     }
 
     /** Load parameters passed from another activity */
@@ -141,38 +163,20 @@ class RecordingEditorActivity : DrawerActivity() {
             noteID = parameters.getInt("noteID")
         }
     }
-    private val viewModel: SoundPlayer.SoundPlayerViewModel by viewModels()
-    private val viewModelRecorder: SoundRecorder.SoundRecorderViewModel by viewModels()
 
-
-
-
-
-
-    private var isRecording = false
-    private var isRecorded = false
-    private var filePath= ""
-
-
-
-    override fun onPause() {
-        super.onPause()
-/*
-        mediaRecorder?.apply {
-            stop()
-            release()
+    /** Load data with id [dataID]. It is accessing database */
+    private fun loadData() {
+        if(dataID != -1)
+        {
+            data = db.dataDao().getDataById(dataID)
         }
-        mediaPlayer?.apply {
-            stop()
-            release()
-        }
-        */
-
     }
 
-    /*
-
-
-*/
+    /** Create new file */
+    private fun createFile():File {
+        val timeStamp: String = SimpleDateFormat("yyyy.MM.dd-HH:mm:ss", Locale.US).format(Date())
+        val storageDir: File? = thisActivity.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile("audio_${timeStamp}_", ".amr", storageDir).apply { createNewFile() }
+    }
 
 }
