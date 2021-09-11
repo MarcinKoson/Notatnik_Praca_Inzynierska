@@ -46,6 +46,7 @@
     <string name="activity_note_viewer_error_id_note">ERROR: bad note ID</string>
     <string name="activity_note_viewer_error_cannot_open">ERROR: cannot open data</string>
     <string name="activity_note_viewer_save_OK">Data saved</string>
+    <string name="activity_note_viewer_edit">Edit data</string>
     <string name="activity_note_viewer_dialog_remove_tag">Delete tag?</string>
     <string name="activity_note_viewer_dialog_remove_tag_positive_button">Yes</string>
     <string name="activity_note_viewer_dialog_remove_tag_negative_button">No</string>

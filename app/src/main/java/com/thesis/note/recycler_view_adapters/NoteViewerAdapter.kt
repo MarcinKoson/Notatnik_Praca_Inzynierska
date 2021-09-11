@@ -16,13 +16,15 @@ import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
 import com.thesis.note.databinding.RecyclerViewNoteViewerImageBinding
 import com.thesis.note.databinding.RecyclerViewNoteViewerListBinding
+import com.thesis.note.databinding.RecyclerViewNoteViewerRecordingBinding
 import com.thesis.note.databinding.RecyclerViewNoteViewerTextBinding
-
 
 /**
  * [RecyclerView] adapter for showing [Data] of [Note]
  */
-class NoteViewerAdapter (private var dataList:List<Data>, private var onDataClickListener: OnDataClickListener)
+class NoteViewerAdapter (
+    private var dataList:List<Data>,
+    private var onDataClickListener: OnDataClickListener)
     :RecyclerView.Adapter<NoteViewerAdapter.DataHolder>() {
 
     /**  */
@@ -69,9 +71,8 @@ class NoteViewerAdapter (private var dataList:List<Data>, private var onDataClic
                     ,onDataClickListener)
             }
             NoteType.Recording.id -> {
-                //TODO layout for sound notes
                  DataHolder(
-                    LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_note_viewer_text, parent, false) as ConstraintLayout
+                    LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_note_viewer_recording, parent, false) as ConstraintLayout
                     ,onDataClickListener)
             }
             else -> {
@@ -87,7 +88,7 @@ class NoteViewerAdapter (private var dataList:List<Data>, private var onDataClic
            NoteType.Text.id -> setTextData(holder, position)
            NoteType.List.id -> setListData(holder, position)
            NoteType.Image.id -> setImageData(holder,position)
-           NoteType.Recording.id -> setSoundData(holder, position)
+           NoteType.Recording.id -> setRecordingData(holder, position)
        }
     }
 
@@ -135,10 +136,10 @@ class NoteViewerAdapter (private var dataList:List<Data>, private var onDataClic
             .into(binding.noteViewerImage)
     }
 
-    /** TODO sound data */
-    private fun setSoundData(holder: DataHolder, position: Int){
-        val binding = RecyclerViewNoteViewerTextBinding.bind(holder.objectLayout)
-        binding.noteViewerTextContent.text = "NAGRANIE"
+    /** TODO recording player */
+    private fun setRecordingData(holder: DataHolder, position: Int){
+        val binding = RecyclerViewNoteViewerRecordingBinding.bind(holder.objectLayout)
+        binding.editButton.setOnClickListener { onDataClickListener.onDataClick(position) }
     }
 
     /**  */

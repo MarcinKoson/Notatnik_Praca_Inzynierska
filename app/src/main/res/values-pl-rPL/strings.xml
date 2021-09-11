@@ -107,5 +107,6 @@
     <string name="activity_recording_editor_save_OK">Zapisano</string>
     <string name="activity_recording_editor_play_label">Obecne nagranie</string>
     <string name="activity_recording_editor_record_label">Nagraj nowe</string>
+    <string name="activity_note_viewer_edit">Edytuj</string>
 
 </resources>
