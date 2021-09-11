@@ -65,11 +65,7 @@ class MainActivity : DrawerActivity(), SearchFragment.SearchInterface
             runOnUiThread{ initRecyclerView() }
         }
         //Add button listener
-        //TODO add note fragment
         binding.floatingActionButton.setOnClickListener {
-           // Intent(it.context,AddNoteActivity::class.java).run{
-            //    startActivity(this)
-           // }
             AddNoteFragment().show(supportFragmentManager,"add_note")
         }
         //Search button listener

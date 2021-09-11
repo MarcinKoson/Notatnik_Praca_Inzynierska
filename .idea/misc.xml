@@ -9,6 +9,7 @@
         <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_delete.xml" value="0.25833333333333336" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_drag_indicator.xml" value="0.25833333333333336" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_format_bold.xml" value="0.25833333333333336" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_music_note.xml" value="0.25833333333333336" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_pause.xml" value="0.25833333333333336" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_play_arrow.xml" value="0.25833333333333336" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_stop.xml" value="0.25833333333333336" />
@@ -28,7 +29,9 @@
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/recycler_view_list_item.xml" value="0.264" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/recycler_view_list_item_layout.xml" value="0.4" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/recycler_view_note_list_text.xml" value="0.15942028985507245" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/recycler_view_note_tile_image.xml" value="0.2115036231884058" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/recycler_view_note_tile_list.xml" value="0.2421875" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/recycler_view_note_tile_recording.xml" value="0.2115036231884058" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/recycler_view_note_viewer_list.xml" value="0.1634963768115942" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/recycler_view_note_viewer_list_item.xml" value="0.264" />
       </map>
