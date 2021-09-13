@@ -42,7 +42,30 @@ class SearchFragment(
         var dateMax: String? = SimpleDateFormat("dd.MM.yyyy",Locale.US).format(Date())
         var favorite:Boolean = false
         var group:Int? = null
-        var tags: List<Int>? = null
+        var tag:Int? = null
+
+        override fun toString():String{
+            return "${name.let { it ?: "" }}/n" +
+                    "${content.let { it ?: "" }}/n" +
+                    "${noteType?.name ?: ""}/n" +
+                    "${dateMin.let { it ?: "" }}/n" +
+                    "${dateMax.let { it ?: "" }}/n" +
+                    "$favorite/n" +
+                    "${dateMax.let { it ?: "" }}/n" +
+                    "${dateMax.let { it ?: "" }}/n"
+        }
+
+        fun fromString(string: String){
+            val splitted = string.split("/n")
+            name = if(splitted[0]=="") null else splitted[0]
+            content = if(splitted[1]=="") null else splitted[1]
+            noteType = if(splitted[2]=="") null else NoteType.valueOf(splitted[2])
+            dateMin = if(splitted[3]=="") null else splitted[3]
+            dateMax = if(splitted[4]=="") null else splitted[4]
+            favorite = splitted[5].toBoolean()
+            group = splitted[6].toIntOrNull()
+            tag = splitted[7].toIntOrNull()
+        }
     }
 
     /** Interface definition for a callback to be invoked when when the user entered a search. */

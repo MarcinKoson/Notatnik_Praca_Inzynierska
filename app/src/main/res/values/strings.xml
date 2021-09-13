@@ -82,6 +82,8 @@
     <string name="drawer_menu_all">All notes</string>
     <string name="drawer_menu_favorites">Favorites</string>
     <string name="drawer_menu_add">Add note</string>
+    <string name="drawer_menu_tags">Tags</string>
+    <string name="drawer_menu_groups">Groups</string>
     <string name="drawer_menu_settings">Settings</string>
     <string name="drawer_menu_debug" translatable="false">Debug</string>
 

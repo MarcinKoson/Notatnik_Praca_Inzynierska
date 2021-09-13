@@ -108,5 +108,7 @@
     <string name="activity_recording_editor_play_label">Obecne nagranie</string>
     <string name="activity_recording_editor_record_label">Nagraj nowe</string>
     <string name="activity_note_viewer_edit">Edytuj</string>
+    <string name="drawer_menu_tags">Tagi</string>
+    <string name="drawer_menu_groups">Grupy</string>
 
 </resources>
