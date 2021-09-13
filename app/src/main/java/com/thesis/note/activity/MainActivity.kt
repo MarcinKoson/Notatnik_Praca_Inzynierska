@@ -190,6 +190,8 @@ class MainActivity : DrawerActivity(), SearchFragment.SearchInterface
         if(searchValues.group != null)
             notes = notes.filter { it.GroupID == searchValues.group }
 
+        //TODO tag filtering
+
         if(searchValues.dateMin != null && searchValues.dateMax != null)
         {
             val dateMin = SimpleDateFormat("dd.MM.yyyy", Locale.US).parse(searchValues.dateMin!!)

@@ -10,9 +10,9 @@ import com.google.android.material.navigation.NavigationView
 import com.thesis.note.activity.GroupsEditorActivity
 import com.thesis.note.activity.MainActivity
 import com.thesis.note.activity.SettingsActivity
+import com.thesis.note.activity.TagEditorActivity
 import com.thesis.note.fragment.AddNoteFragment
 import com.thesis.note.fragment.SearchFragment
-import com.thesis.note.recycler_view_adapters.TagsEditorAdapter
 import com.thesis.note.test.DebugActivity
 
 /**
@@ -46,7 +46,7 @@ class NavigationDrawer(val drawerLayout: DrawerLayout, private val supportFragme
                 }
             }
             R.id.tags -> {
-                Intent(context,TagsEditorAdapter::class.java).run{
+                Intent(context, TagEditorActivity::class.java).run{
                     context.startActivity(this)
                 }
             }

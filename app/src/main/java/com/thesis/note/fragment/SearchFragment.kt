@@ -51,8 +51,8 @@ class SearchFragment(
                     "${dateMin.let { it ?: "" }}/n" +
                     "${dateMax.let { it ?: "" }}/n" +
                     "$favorite/n" +
-                    "${dateMax.let { it ?: "" }}/n" +
-                    "${dateMax.let { it ?: "" }}/n"
+                    "${group.let { it ?: "" }}/n" +
+                    "${tag.let { it ?: "" }}/n"
         }
 
         fun fromString(string: String){

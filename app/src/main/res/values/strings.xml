@@ -134,4 +134,12 @@
 
     <string name="x_template_empty_activity_template">TEMPLATE</string>
 
+    <string name="activity_label_dialog_remove_tag_positive_button">Yes</string>
+    <string name="activity_label_dialog_remove_tag_negative_button">No</string>
+    <string name="activity_label_dialog_remove_note">Do you want to delete?</string>
+    <string name="activity_label_add_button_description">Add new</string>
+    <string name="activity_label_save">Save</string>
+    <string name="activity_label_edit">Edit</string>
+    <string name="activity_label_delete">Delete</string>
+
 </resources>

@@ -110,5 +110,12 @@
     <string name="activity_note_viewer_edit">Edytuj</string>
     <string name="drawer_menu_tags">Tagi</string>
     <string name="drawer_menu_groups">Grupy</string>
+    <string name="activity_label_dialog_remove_tag_positive_button">Tak</string>
+    <string name="activity_label_dialog_remove_tag_negative_button">Nie</string>
+    <string name="activity_label_dialog_remove_note">Czy chcesz usunąć?</string>
+    <string name="activity_label_add_button_description">Dodaj nowy</string>
+    <string name="activity_label_save">Zapisz</string>
+    <string name="activity_label_edit">Edytuj</string>
+    <string name="activity_label_delete">Usuń</string>
 
 </resources>

@@ -12,7 +12,7 @@ interface GroupDAO {
     fun getId(groupId:Int): Group
 
     @Insert
-    fun insertAll(vararg insert: Group)
+    fun insertAll(vararg insert: Group): List<Long>
 
     @Delete
     fun delete(delete: Group)
