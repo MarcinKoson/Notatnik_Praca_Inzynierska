@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--- TODO colors -->
-    <!--- old colors-->
+    <!--- other colors-->
     <color name="purple_700">#7B1FA2</color>
-    <color name="colorControlNormal">#89000000</color>
 
     <!--- colors-->
     <color name="black">#000000</color>

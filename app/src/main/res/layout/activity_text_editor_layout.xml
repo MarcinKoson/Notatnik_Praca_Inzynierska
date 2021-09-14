@@ -74,7 +74,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="end"
-                android:background="@drawable/italic_text_checkbox"
+                android:background="@drawable/text_editor_italic_checkbox"
                 android:button="@null"
                 android:contentDescription="@string/activity_text_editor_italic_button_description"
                 android:layout_margin="4dp"
@@ -86,7 +86,7 @@
                 android:layout_height="30dp"
                 android:layout_gravity="end"
                 android:layout_margin="4dp"
-                android:background="@drawable/bold_text_checkbox"
+                android:background="@drawable/text_editor_bold_checkbox"
                 android:button="@null"
                 android:contentDescription="@string/activity_text_editor_bold_button_description"
                 />
