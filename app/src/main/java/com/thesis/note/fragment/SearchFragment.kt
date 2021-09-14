@@ -9,11 +9,11 @@ import androidx.fragment.app.DialogFragment
 import com.thesis.note.R
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Group
+import com.thesis.note.database.entity.Tag
 import com.thesis.note.databinding.DialogFragmentSearchBinding
 import java.text.SimpleDateFormat
 import java.util.*
 
-//TODO tag search
 /**
  *  Fragment for searching notes.
  *  When the user entered a search it invokes callback [searchListener].
@@ -21,6 +21,7 @@ import java.util.*
 class SearchFragment(
     private val searchListener: SearchInterface,
     private val groupsList: List<Group>,
+    private val tagsList: List<Tag>,
     private val lastSearchValues: SearchValues?,
     private val dateMin: String? = SearchConst.DATE_MIN
     ) : DialogFragment(){
@@ -90,6 +91,7 @@ class SearchFragment(
             listOf(
                 getString(R.string.fragment_search_without_type_of_data),
                 getString(R.string.fragment_search_type_text),
+                getString(R.string.fragment_search_type_list),
                 getString(R.string.fragment_search_type_image),
                 getString(R.string.fragment_search_type_recording)
             )
@@ -102,6 +104,16 @@ class SearchFragment(
             this.requireContext(),
             android.R.layout.simple_spinner_item,
             groupsList.map { x -> x.Name }
+        ).apply {
+            setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            insert(getString(R.string.fragment_search_without_group), 0)
+        }
+
+        //Tags spinner
+        binding.tagSpinner.adapter = ArrayAdapter(
+            this.requireContext(),
+            android.R.layout.simple_spinner_item,
+            tagsList.map { x -> x.Name }
         ).apply {
             setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             insert(getString(R.string.fragment_search_without_group), 0)
@@ -149,12 +161,16 @@ class SearchFragment(
                 group = binding.groupSpinner.selectedItemId.toInt().let {
                     if(it == 0) null else groupsList[it-1].IdGroup
                 }
+                tag = binding.tagSpinner.selectedItemId.toInt().let {
+                    if(it == 0) null else tagsList[it-1].IdTag
+                }
                 noteType = binding.typeOfNoteSpinner.selectedItemId.toInt().let {
                     when(it){
                         0 -> null
                         1 -> NoteType.Text
-                        2 -> NoteType.Image
-                        3 -> NoteType.Recording
+                        2 -> NoteType.List
+                        3 -> NoteType.Image
+                        4 -> NoteType.Recording
                         else -> null
                     }
                 }
@@ -180,8 +196,9 @@ class SearchFragment(
         binding.typeOfNoteSpinner.setSelection(
             when(lastSearchValues?.noteType){
                 NoteType.Text -> 1
-                NoteType.Image -> 2
-                NoteType.Recording -> 3
+                NoteType.List -> 2
+                NoteType.Image -> 3
+                NoteType.Recording -> 4
                 else -> 0
             }
         )
@@ -189,5 +206,7 @@ class SearchFragment(
         binding.dateMaxButton.text = lastSearchValues?.dateMax
         if(lastSearchValues?.group != null)
             binding.groupSpinner.setSelection(1+groupsList.indexOf(groupsList.first { it.IdGroup == lastSearchValues.group }))
+        if(lastSearchValues?.tag != null)
+            binding.tagSpinner.setSelection(1+tagsList.indexOf(tagsList.first { it.IdTag == lastSearchValues.tag }))
     }
 }

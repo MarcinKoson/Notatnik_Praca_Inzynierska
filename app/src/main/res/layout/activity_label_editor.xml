@@ -29,7 +29,7 @@
             android:focusable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_add_black_24dp"
+            app:srcCompat="@drawable/ic_baseline_add"
             android:contentDescription="@string/activity_label_add_button_description" />
 
         <androidx.recyclerview.widget.RecyclerView

@@ -15,27 +15,20 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.thesis.note.NavigationDrawer
 import com.google.android.material.navigation.NavigationView
+import com.thesis.note.DrawerActivity
 import com.thesis.note.R
 import com.thesis.note.databinding.ActivitySpeechToTextBinding
 import java.util.*
 
 @Deprecated("add to text notes")
-class SpeechToTextActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-    lateinit var drawerLayout: DrawerLayout
-    lateinit var navigationDrawer : NavigationDrawer
+class SpeechToTextActivity : DrawerActivity() {
+
     private lateinit var binding: ActivitySpeechToTextBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySpeechToTextBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        drawerLayout = binding.activitySpeechToTextLayout
-        navigationDrawer = NavigationDrawer(drawerLayout,supportFragmentManager)
-        binding.navigationView.setNavigationItemSelectedListener(this)
-        val drawerToggle = ActionBarDrawerToggle(this,drawerLayout,binding.toolbar,R.string.abdt,R.string.abdt)
-        drawerLayout.addDrawerListener(drawerToggle)
-        drawerToggle.isDrawerIndicatorEnabled = true
-        drawerToggle.syncState()
+        setDrawerLayout(binding.root,binding.toolbar,binding.navigationView)
         //------------------------------------------------------------------------------------------
         binding.button.setOnClickListener {
             val speachToText = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
@@ -50,18 +43,7 @@ class SpeechToTextActivity : AppCompatActivity(), NavigationView.OnNavigationIte
         }
     }
 
-    override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
-        finish()
-        return navigationDrawer.onNavigationItemSelected(menuItem,this)
-    }
 
-    override fun onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
-    }
     private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
     { result: ActivityResult ->
         if (result.resultCode == Activity.RESULT_OK) {

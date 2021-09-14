@@ -1,7 +1,4 @@
 <resources>
-    <!-- TODO Old -->
-    <string name="abdt">ActionBarDrawerToggle</string>
-    <!-- Temp -->
     <string name="not_implemented">Not implemented</string>
 
     <string name="app_name">Notes</string>
@@ -120,6 +117,7 @@
     <string name="fragment_search_without_group">Any</string>
     <string name="fragment_search_without_type_of_data">Any</string>
     <string name="fragment_search_type_text">Text</string>
+    <string name="fragment_search_type_list">List</string>
     <string name="fragment_search_type_image">Image</string>
     <string name="fragment_search_type_recording">Recording</string>
     <string name="fragment_search_date_help_label" translatable="false">-</string>

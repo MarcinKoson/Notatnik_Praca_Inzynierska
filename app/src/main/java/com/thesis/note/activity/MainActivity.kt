@@ -48,6 +48,8 @@ class MainActivity : DrawerActivity(), SearchFragment.SearchInterface
     private lateinit var listOfData: List<Data>
     /** List of groups */
     private lateinit var listOfGroups: List<Group>
+    /** List of groups */
+    private lateinit var listOfTags: List<Tag>
 
     /** Notes sort type */
     private var sortType: SortNotesType = SortNotesType.Date
@@ -75,7 +77,7 @@ class MainActivity : DrawerActivity(), SearchFragment.SearchInterface
         }
         //Search button listener
         binding.searchButton.setOnClickListener {
-            SearchFragment(this, listOfGroups,currentSearchValues).show(supportFragmentManager,"search")
+            SearchFragment(this, listOfGroups,listOfTags, currentSearchValues).show(supportFragmentManager,"search")
         }
         //Search off button
         binding.searchOffButton.setOnClickListener {
@@ -107,6 +109,7 @@ class MainActivity : DrawerActivity(), SearchFragment.SearchInterface
         super.onResume()
         GlobalScope.launch {
             listOfGroups = db.groupDao().getAll()
+            listOfTags = db.tagDao().getAll()
             loadNotes()
             sortListOfNotes(sortType,sortAsc)
             if(currentSearchValues == null){

@@ -26,13 +26,14 @@ import android.util.Log
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.thesis.note.DrawerActivity
 import com.thesis.note.databinding.ActivityVoiceToTextBinding
 
 
 @Deprecated("old")
-class VoiceToTextActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,View.OnClickListener {
+class VoiceToTextActivity : DrawerActivity(), View.OnClickListener {
     lateinit var drawer_layout: DrawerLayout
-    lateinit var navigationDrawer : NavigationDrawer
+
     private lateinit var binding: ActivityVoiceToTextBinding
 
     lateinit var voiceRecognitor : SpeechRecognizer
@@ -42,15 +43,7 @@ class VoiceToTextActivity : AppCompatActivity(), NavigationView.OnNavigationItem
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityVoiceToTextBinding.inflate(layoutInflater) //LAYOUT BINDING CLASS
-        setContentView(binding.root)
-        drawer_layout = binding.activityVoiceToTextLayout               //NAZWA DRAWER LAYOUTU
-        navigationDrawer = NavigationDrawer(drawer_layout,supportFragmentManager)
-        binding.navigationView.setNavigationItemSelectedListener(this);
-
-        val drawerToggle= ActionBarDrawerToggle(this,drawer_layout,binding.toolbar,R.string.abdt,R.string.abdt)
-        drawer_layout.addDrawerListener(drawerToggle)
-        drawerToggle.isDrawerIndicatorEnabled = true
-        drawerToggle.syncState()
+        setDrawerLayout(binding.root,binding.toolbar,binding.navigationView)
         //------------------------------------------------------------------------------------------
 
         //textViewA = binding.template_textView
@@ -70,18 +63,7 @@ class VoiceToTextActivity : AppCompatActivity(), NavigationView.OnNavigationItem
 
     }
 
-    override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
-        finish()
-        return navigationDrawer.onNavigationItemSelected(menuItem,this)
-    }
 
-    override fun onBackPressed() {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-            drawer_layout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
-    }
     override fun onClick(v: View) {
             requestRecordAudioPermission()
             val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)

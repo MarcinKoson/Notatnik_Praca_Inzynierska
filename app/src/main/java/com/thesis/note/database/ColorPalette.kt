@@ -7,7 +7,7 @@ object ColorPalette {
     /**
      * Palette with available background colours
      */
-    val NOTE_BACKGROUND_PALETTE = listOf<NoteColor>(
+    val NOTE_BACKGROUND_PALETTE = listOf(
         NoteColor.White,
         NoteColor.Red,
         NoteColor.Pink,
@@ -24,7 +24,7 @@ object ColorPalette {
     /**
      * Palette with available text colours
      */
-    val TEXT_COLOR_PALETTE = listOf<NoteColor>(
+    val TEXT_COLOR_PALETTE = listOf(
         NoteColor.Black,
         NoteColor.White,
         NoteColor.RedDark,

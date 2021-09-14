@@ -22,7 +22,6 @@
     <string name="activity_note_viewer_background_button_description">Kolor tła</string>
     <string name="activity_note_viewer_without_group">Bez grupy</string>
     <string name="activity_image_note_no_image">There is no image chosen</string>
-    <string name="abdt">ActionBarDrawerToggle</string>
     <string name="activity_note_viewer_error_id_note">ERROR: bad note ID</string>
     <string name="not_implemented">Brak implementacji</string>
     <string name="activity_note_viewer_save_OK">Zapisano</string>
@@ -113,5 +112,6 @@
     <string name="activity_label_edit">Edytuj</string>
     <string name="activity_label_delete">Usuń</string>
     <string name="activity_label_add_label_hint">wpisz nazwę</string>
+    <string name="fragment_search_type_list">Lista</string>
 
 </resources>

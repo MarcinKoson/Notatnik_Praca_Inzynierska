@@ -101,7 +101,7 @@ class NoteTilesAdapter (
                 //TODO error handling
                 NoteTilesViewHolder(
                     LayoutInflater.from(parent.context).inflate(
-                        R.layout.recycler_view_note_list_text,
+                        R.layout.recycler_view_note_tile_text,
                         parent,
                         false
                     ) as ConstraintLayout, onNoteClickListener

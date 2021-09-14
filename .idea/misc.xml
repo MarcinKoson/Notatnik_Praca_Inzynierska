@@ -4,7 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.25833333333333336" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/bold_text_checkbox.xml" value="0.25833333333333336" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/frame_transparent.xml" value="0.25833333333333336" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_add_black_24dp.xml" value="0.25833333333333336" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_add.xml" value="0.25833333333333336" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_check.xml" value="0.25833333333333336" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_delete.xml" value="0.25833333333333336" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_drag_indicator.xml" value="0.25833333333333336" />
@@ -16,11 +19,16 @@
         <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_stop_24.xml" value="0.25833333333333336" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_delete_black_24dp.xml" value="0.25833333333333336" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_launcher_background.xml" value="0.25833333333333336" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_loading.xml" value="0.18796296296296297" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_save_black_24dp.xml" value="0.18796296296296297" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_share_black_24dp.xml" value="0.18796296296296297" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/italic_text_checkbox.xml" value="0.18796296296296297" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/rounded_rectangle_shade.xml" value="0.18796296296296297" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/activity_groups_editor.xml" value="0.2421875" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/activity_image_note.xml" value="0.1947463768115942" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/activity_label_editor.xml" value="0.2677083333333333" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/activity_list_editor_layout.xml" value="0.176" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/activity_main.xml" value="0.1947463768115942" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/activity_main.xml" value="0.4374412041392286" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/activity_note_viewer.xml" value="0.1634963768115942" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/activity_recording_editor.xml" value="0.176" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/activity_settings.xml" value="0.2421875" />
@@ -28,7 +36,7 @@
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/dialog_fragment_add_note.xml" value="0.1" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/dialog_fragment_add_tags.xml" value="0.2421875" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/dialog_fragment_color_picker.xml" value="0.2421875" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/dialog_fragment_search.xml" value="0.2421875" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/dialog_fragment_search.xml" value="0.536" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/dialog_fragment_sort_notes.xml" value="0.2421875" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/drawer_header.xml" value="0.20606884057971014" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/fragment_sound_player.xml" value="0.176" />
@@ -38,6 +46,7 @@
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/recycler_view_label.xml" value="0.2421875" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/recycler_view_list_item.xml" value="0.264" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/recycler_view_list_item_layout.xml" value="0.4" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/recycler_view_note_list_photo.xml" value="0.24048913043478262" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/recycler_view_note_list_text.xml" value="0.15942028985507245" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/recycler_view_note_tile_image.xml" value="0.2115036231884058" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/recycler_view_note_tile_list.xml" value="0.2421875" />
@@ -46,6 +55,8 @@
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/recycler_view_note_viewer_list_item.xml" value="0.264" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/recycler_view_note_viewer_recording.xml" value="0.2115036231884058" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/menu/drawer_menu.xml" value="0.2421875" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.15833333333333333" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.15833333333333333" />
       </map>
     </option>
   </component>
