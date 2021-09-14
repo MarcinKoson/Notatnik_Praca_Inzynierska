@@ -3,14 +3,12 @@
     <string name="app_name">Notatnik</string>
     <string name="activity_image_note_gallery">Otwórz Galerie</string>
     <string name="activity_image_note_camera">Otwórz Aparat</string>
-    <string name="save_OK">Zapisano</string>
     <string name="activity_recording_editor_no_recording">Brak nagrania</string>
     <string name="activity_recording_editor_recording">Trwa nagrywanie</string>
     <string name="action_bar_drawer_toggle_open">Otwórz drawer</string>
     <string name="action_bar_drawer_toggle_close">Zamknij drawer</string>
 
 
-    <string name="share">Share</string>
     <string name="x_template_empty_activity_template">TEMPLATE</string>
     <string name="activity_main_search_button_description">Szukaj notatek</string>
     <string name="activity_main_add_button_description">Dodaj notatkę</string>
@@ -23,9 +21,6 @@
     <string name="activity_note_viewer_tag_button_description">Dodaj tag</string>
     <string name="activity_note_viewer_background_button_description">Kolor tła</string>
     <string name="activity_note_viewer_without_group">Bez grupy</string>
-    <string name="save">Save</string>
-    <string name="delete">Delete</string>
-    <string name="image">Image</string>
     <string name="activity_image_note_no_image">There is no image chosen</string>
     <string name="abdt">ActionBarDrawerToggle</string>
     <string name="activity_note_viewer_error_id_note">ERROR: bad note ID</string>
@@ -117,5 +112,6 @@
     <string name="activity_label_save">Zapisz</string>
     <string name="activity_label_edit">Edytuj</string>
     <string name="activity_label_delete">Usuń</string>
+    <string name="activity_label_add_label_hint">wpisz nazwę</string>
 
 </resources>

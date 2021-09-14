@@ -3,12 +3,14 @@ package com.thesis.note.activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.thesis.note.DrawerActivity
 import com.thesis.note.R
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.ListData
 import com.thesis.note.database.NoteColor
+import com.thesis.note.database.NoteColorConverter
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
 import com.thesis.note.databinding.ActivityListEditorLayoutBinding
@@ -44,6 +46,9 @@ class ListEditorActivity : DrawerActivity() {
 
     /** Edited [Note] id */
     private var noteID:Int = -1
+
+    /** Edited [Note] */
+    private lateinit var editedNote:Note
 
     /** On create callback */
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -142,6 +147,15 @@ class ListEditorActivity : DrawerActivity() {
     private fun loadData(){
         listData = ListData().apply {
             loadData(db.dataDao().getDataById(dataID))
+        }
+        editedNote = db.noteDao().getNoteById(dataID)
+        runOnUiThread{
+            //Set background color
+            binding.root.background = ResourcesCompat.getDrawable(
+                resources,
+                NoteColorConverter.enumToColor(editedNote.Color),
+                null
+            )
         }
     }
 }

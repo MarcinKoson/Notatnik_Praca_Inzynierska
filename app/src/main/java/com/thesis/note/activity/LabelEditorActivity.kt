@@ -10,6 +10,7 @@ import com.thesis.note.recycler_view_adapters.LabelAdapter
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+//TODO colors
 /**
  *  Abstract class for editing labels
  */

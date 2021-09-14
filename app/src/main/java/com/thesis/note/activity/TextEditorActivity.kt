@@ -19,6 +19,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 
+//TODO speech to text
 /**
  * Activity for text editing.
  *

@@ -27,15 +27,15 @@ object ColorPalette {
     val TEXT_COLOR_PALETTE = listOf<NoteColor>(
         NoteColor.Black,
         NoteColor.White,
-        NoteColor.Red,
-        NoteColor.Pink,
-        NoteColor.Purple,
-        NoteColor.Blue,
-        NoteColor.Cyan,
-        NoteColor.Teal,
-        NoteColor.Green,
-        NoteColor.Yellow,
-        NoteColor.Orange,
-        NoteColor.Gray
+        NoteColor.RedDark,
+        NoteColor.PinkDark,
+        NoteColor.PurpleDark,
+        NoteColor.BlueDark,
+        NoteColor.CyanDark,
+        NoteColor.TealDark,
+        NoteColor.GreenDark,
+        NoteColor.YellowDark,
+        NoteColor.OrangeDark,
+        NoteColor.GrayDark
     )
 }

@@ -33,7 +33,7 @@ import java.util.*
  * putExtra("noteID", yourNoteID)
  *
  */
-//TODO tags saving
+//TODO tags saving from save button, not from AddTagsDialogFragment
 class NoteViewerActivity : DrawerActivity() {
     /** This activity */
     private val thisActivity = this

@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.os.Environment
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.content.res.ResourcesCompat
 import com.thesis.note.DrawerActivity
 import com.thesis.note.R
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.NoteColor
+import com.thesis.note.database.NoteColorConverter
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
@@ -20,7 +22,6 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
-
 /**
  *  Activity for editing recording notes.
  *
@@ -54,6 +55,9 @@ class RecordingEditorActivity : DrawerActivity() {
 
     /** Edited [Note] id */
     private var noteID:Int = -1
+
+    /** Edited [Note] */
+    private lateinit var editedNote: Note
 
     /** On create callback */
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -169,6 +173,15 @@ class RecordingEditorActivity : DrawerActivity() {
         if(dataID != -1)
         {
             data = db.dataDao().getDataById(dataID)
+            editedNote = db.noteDao().getNoteById(dataID)
+            runOnUiThread{
+                //Set background color
+                binding.root.background = ResourcesCompat.getDrawable(
+                    resources,
+                    NoteColorConverter.enumToColor(editedNote.Color),
+                    null
+                )
+            }
         }
     }
 

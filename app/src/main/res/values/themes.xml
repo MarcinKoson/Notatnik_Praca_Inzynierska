@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- TODO compare with styles -->
+    <!-- TODO theme -->
     <!-- Base application theme. -->
     <style name="Theme.Note" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
 

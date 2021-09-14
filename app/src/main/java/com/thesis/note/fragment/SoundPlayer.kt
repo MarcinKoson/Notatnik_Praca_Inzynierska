@@ -18,6 +18,7 @@ import com.thesis.note.fragment.SoundPlayer.SoundPlayerViewModel
 import java.io.FileInputStream
 import java.io.IOException
 
+//TODO multiple instances working
 /**
  * [Fragment] for playing music.
  * You can communicate with it by [SoundPlayerViewModel].

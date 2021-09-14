@@ -1,11 +1,6 @@
 <resources>
     <!-- TODO Old -->
     <string name="abdt">ActionBarDrawerToggle</string>
-    <string name="delete">Delete</string>
-    <string name="image">Image</string>
-    <string name="share">Share</string>
-    <string name="save">Save</string>
-    <string name="save_OK">Data saved</string>
     <!-- Temp -->
     <string name="not_implemented">Not implemented</string>
 
@@ -141,5 +136,6 @@
     <string name="activity_label_save">Save</string>
     <string name="activity_label_edit">Edit</string>
     <string name="activity_label_delete">Delete</string>
+    <string name="activity_label_add_label_hint">enter name</string>
 
 </resources>

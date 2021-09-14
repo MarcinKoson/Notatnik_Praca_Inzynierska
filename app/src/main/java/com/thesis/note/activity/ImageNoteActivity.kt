@@ -10,11 +10,13 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
+import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide
 import com.thesis.note.DrawerActivity
 import com.thesis.note.R
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.NoteColor
+import com.thesis.note.database.NoteColorConverter
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
@@ -52,6 +54,9 @@ class ImageNoteActivity : DrawerActivity()
 
     /** Edited [Data] */
     private lateinit var editedData: Data
+
+    /** Edited [Note] */
+    private lateinit var editedNote: Note
 
     /** Current path of image */
     private lateinit var currentImagePath: String
@@ -176,9 +181,16 @@ class ImageNoteActivity : DrawerActivity()
     private fun loadData(){
         GlobalScope.launch {
             editedData = db.dataDao().getDataById(noteID)
+            editedNote = db.noteDao().getNoteById(dataID)
             runOnUiThread{
                 setImage(editedData.Content)
                 imageState = ImageState.OldImage
+                //Set background color
+                binding.root.background = ResourcesCompat.getDrawable(
+                    resources,
+                    NoteColorConverter.enumToColor(editedNote.Color),
+                    null
+                )
             }
         }
     }

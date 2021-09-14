@@ -19,7 +19,7 @@ import com.thesis.note.R
 import com.thesis.note.databinding.ActivitySpeechToTextBinding
 import java.util.*
 
-//TODO documentation
+@Deprecated("add to text notes")
 class SpeechToTextActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var drawerLayout: DrawerLayout
     lateinit var navigationDrawer : NavigationDrawer

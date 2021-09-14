@@ -147,7 +147,7 @@ open class ListViewerAdapter(private val listData: ListData)
                 viewHolder.adapterPosition,
                 target.adapterPosition
             )
-            //TODO move to clearView
+            //TODO optimization - move to clearView
             listData.moveListItem(viewHolder.adapterPosition, target.adapterPosition)
             return true
         }

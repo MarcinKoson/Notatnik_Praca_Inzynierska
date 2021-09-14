@@ -24,6 +24,6 @@
         <item
             android:id="@+id/drawer_debug"
             android:title="@string/drawer_menu_debug"
-            android:visible="true" />
+            android:visible="false" />
     </group>
 </menu>
