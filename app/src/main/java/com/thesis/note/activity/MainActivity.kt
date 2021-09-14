@@ -10,13 +10,10 @@ import com.thesis.note.DrawerActivity
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.NoteColor
 import com.thesis.note.database.NoteType
-import com.thesis.note.database.entity.Data
-import com.thesis.note.database.entity.Group
-import com.thesis.note.database.entity.Note
-import com.thesis.note.database.entity.Tag
 import com.thesis.note.databinding.ActivityMainBinding
 import com.thesis.note.fragment.SortNotesFragment
 import com.thesis.note.SortNotesType
+import com.thesis.note.database.entity.*
 import com.thesis.note.fragment.AddNoteFragment
 import com.thesis.note.fragment.SearchFragment
 import com.thesis.note.recycler_view_adapters.NoteTilesAdapter
@@ -48,8 +45,10 @@ class MainActivity : DrawerActivity(), SearchFragment.SearchInterface
     private lateinit var listOfData: List<Data>
     /** List of groups */
     private lateinit var listOfGroups: List<Group>
-    /** List of groups */
+    /** List of tags */
     private lateinit var listOfTags: List<Tag>
+    /** List of tags of note */
+    private lateinit var listOfTagsOfNote: List<TagOfNote>
 
     /** Notes sort type */
     private var sortType: SortNotesType = SortNotesType.Date
@@ -110,6 +109,7 @@ class MainActivity : DrawerActivity(), SearchFragment.SearchInterface
         GlobalScope.launch {
             listOfGroups = db.groupDao().getAll()
             listOfTags = db.tagDao().getAll()
+            listOfTagsOfNote = db.tagOfNoteDAO().getAll()
             loadNotes()
             sortListOfNotes(sortType,sortAsc)
             if(currentSearchValues == null){
@@ -193,7 +193,11 @@ class MainActivity : DrawerActivity(), SearchFragment.SearchInterface
         if(searchValues.group != null)
             notes = notes.filter { it.GroupID == searchValues.group }
 
-        //TODO tag filtering
+        if(searchValues.tag != null)
+        {
+            val notesWithTag = listOfTagsOfNote.filter { it.TagID == searchValues.tag }
+            notes = notes.filter { x -> notesWithTag.find { it.NoteID == x.IdNote } != null }
+        }
 
         if(searchValues.dateMin != null && searchValues.dateMax != null)
         {
