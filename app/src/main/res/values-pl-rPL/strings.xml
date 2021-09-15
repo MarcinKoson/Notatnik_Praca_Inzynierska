@@ -117,5 +117,7 @@
     <string name="activity_list_editor_share_button">Share</string>
     <string name="activity_recording_editor_share_button">Share</string>
     <string name="activity_text_editor_share">Share</string>
+    <string name="activity_image_save_ERROR">Bład podczas zapisywania</string>
+    <string name="activity_image_note_share_error">Nie można udostępnić nie zapisanych obrazków</string>
 
 </resources>

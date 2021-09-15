@@ -11,10 +11,12 @@
     <string name="activity_image_note_save">Save</string>
     <string name="activity_image_note_share_button">Share</string>
     <string name="activity_image_note_share">Share</string>
+    <string name="activity_image_note_share_error">Cannot share not saved images</string>
     <string name="activity_image_note_delete">Delete</string>
     <string name="activity_image_note_no_image">There is no image chosen</string>
     <string name="activity_image_note_error_create_file" translatable="false">ERROR: CANNOT CREATE FILE</string>
     <string name="activity_image_save_OK">Data saved</string>
+    <string name="activity_image_save_ERROR">Save error</string>
 
     <string name="activity_list_editor_save">Save</string>
     <string name="activity_list_editor_share_button">Share</string>
