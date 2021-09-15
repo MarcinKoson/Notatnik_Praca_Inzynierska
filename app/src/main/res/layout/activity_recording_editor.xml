@@ -26,7 +26,7 @@
                 android:layout_gravity="end"
                 android:layout_margin="4dp"
                 android:background="@drawable/ic_baseline_save"
-                android:contentDescription="@string/activity_image_note_save" />
+                android:contentDescription="@string/activity_recording_editor_save" />
 
             <ImageButton
                 android:id="@+id/deleteButton"
@@ -35,7 +35,7 @@
                 android:layout_gravity="end"
                 android:layout_margin="4dp"
                 android:background="@drawable/ic_baseline_delete"
-                android:contentDescription="@string/activity_image_note_delete" />
+                android:contentDescription="@string/activity_recording_editor_delete" />
 
             <ImageButton
                 android:id="@+id/shareButton"
@@ -44,7 +44,7 @@
                 android:layout_gravity="end"
                 android:layout_margin="4dp"
                 android:background="@drawable/ic_baseline_share"
-                android:contentDescription="@string/activity_image_note_share" />
+                android:contentDescription="@string/activity_recording_editor_share_button" />
 
         </androidx.appcompat.widget.Toolbar>
 

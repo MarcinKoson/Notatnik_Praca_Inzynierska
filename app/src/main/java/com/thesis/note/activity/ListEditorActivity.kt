@@ -108,9 +108,19 @@ class ListEditorActivity : DrawerActivity() {
             Toast.makeText(applicationContext, R.string.not_implemented, Toast.LENGTH_SHORT).show()
         }
 
-        //TODO Share button listener
         binding.shareButton.setOnClickListener {
-            Toast.makeText(applicationContext, R.string.not_implemented, Toast.LENGTH_SHORT).show()
+            var noteContent = ""
+            listData.itemsList.forEach {
+                if(!it.checked){
+                    noteContent += "•" + it.text + "\r\n"
+                }
+            }
+            Intent(Intent.ACTION_SEND).apply{
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, noteContent)
+                startActivity(Intent.createChooser(this, getString(R.string.activity_text_editor_share)))
+                //startActivity(this)
+            }
         }
 
         //Add list item button listener

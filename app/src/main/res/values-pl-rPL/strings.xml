@@ -113,5 +113,9 @@
     <string name="activity_label_delete">Usuń</string>
     <string name="activity_label_add_label_hint">wpisz nazwę</string>
     <string name="fragment_search_type_list">Lista</string>
+    <string name="activity_image_note_share_button">Share</string>
+    <string name="activity_list_editor_share_button">Share</string>
+    <string name="activity_recording_editor_share_button">Share</string>
+    <string name="activity_text_editor_share">Share</string>
 
 </resources>

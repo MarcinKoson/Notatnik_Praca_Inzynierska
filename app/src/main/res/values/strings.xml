@@ -9,6 +9,7 @@
     <string name="activity_image_note_gallery">Open Gallery</string>
     <string name="activity_image_note_camera">Open Camera</string>
     <string name="activity_image_note_save">Save</string>
+    <string name="activity_image_note_share_button">Share</string>
     <string name="activity_image_note_share">Share</string>
     <string name="activity_image_note_delete">Delete</string>
     <string name="activity_image_note_no_image">There is no image chosen</string>
@@ -16,6 +17,7 @@
     <string name="activity_image_save_OK">Data saved</string>
 
     <string name="activity_list_editor_save">Save</string>
+    <string name="activity_list_editor_share_button">Share</string>
     <string name="activity_list_editor_share">Share</string>
     <string name="activity_list_editor_delete">Delete</string>
     <string name="activity_list_editor_add_list_item">Add next item</string>
@@ -50,6 +52,7 @@
     <string name="activity_note_viewer_discard_changes_negative">Cancel</string>
 
     <string name="activity_recording_editor_save">Save</string>
+    <string name="activity_recording_editor_share_button">Share</string>
     <string name="activity_recording_editor_share">Share</string>
     <string name="activity_recording_editor_delete">Delete</string>
     <string name="activity_recording_editor_save_OK">Data saved</string>
@@ -61,6 +64,7 @@
     <string name="activity_text_editor_save_button_description">Save</string>
     <string name="activity_text_editor_delete_button_description">Delete</string>
     <string name="activity_text_editor_share_button_description">Share</string>
+    <string name="activity_text_editor_share">Share</string>
     <string name="activity_text_editor_text_color_button_description">Color</string>
     <string name="activity_text_editor_text_size_button_description">Size</string>
     <string name="activity_text_editor_italic_button_description">Italic</string>

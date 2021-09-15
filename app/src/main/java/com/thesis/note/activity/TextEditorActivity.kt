@@ -117,9 +117,13 @@ class TextEditorActivity : DrawerActivity() {
             Toast.makeText(applicationContext, R.string.not_implemented, Toast.LENGTH_SHORT).show()
         }
 
-        //TODO Share button listener
         binding.shareButton.setOnClickListener {
-            Toast.makeText(applicationContext, R.string.not_implemented, Toast.LENGTH_SHORT).show()
+            Intent(Intent.ACTION_SEND).apply{
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, editedData.Content)
+                startActivity(Intent.createChooser(this, getString(R.string.activity_text_editor_share)))
+                //startActivity(this)
+            }
         }
 
         //Text color button listener

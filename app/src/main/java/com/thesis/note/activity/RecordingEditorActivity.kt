@@ -1,6 +1,7 @@
 package com.thesis.note.activity
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.widget.Toast
@@ -31,6 +32,7 @@ import java.util.*
  * Default value for [noteID] and [dataID] is "-1".
  *
  */
+//TODO check - sometime crash
 class RecordingEditorActivity : DrawerActivity() {
     /** This activity */
     private val thisActivity = this
@@ -51,7 +53,7 @@ class RecordingEditorActivity : DrawerActivity() {
     private var dataID:Int = -1
 
     /** Edited [Data] */
-    private var data : Data? = null
+    private var editedData : Data? = null
 
     /** Edited [Note] id */
     private var noteID:Int = -1
@@ -68,13 +70,13 @@ class RecordingEditorActivity : DrawerActivity() {
         loadParameters()
         GlobalScope.launch {
             loadData()
-            if(data == null) {
+            if(editedData == null) {
                 runOnUiThread { soundPlayerViewModel.setIsEnabled(false) }
             }
             else{
                 runOnUiThread {
                     soundPlayerViewModel.setIsEnabled(true)
-                    soundPlayerViewModel.setFilePath(data?.Content?:"")
+                    soundPlayerViewModel.setFilePath(editedData?.Content?:"")
                 }
             }
         }
@@ -87,8 +89,8 @@ class RecordingEditorActivity : DrawerActivity() {
                 soundPlayerViewModel.setFilePath(filePath)
             }
             setOnRecordingCancelListener {
-                if(data != null)
-                    soundPlayerViewModel.setFilePath(data!!.Content)
+                if(editedData != null)
+                    soundPlayerViewModel.setFilePath(editedData!!.Content)
                 else
                     soundPlayerViewModel.setIsEnabled(false)
             }
@@ -153,9 +155,18 @@ class RecordingEditorActivity : DrawerActivity() {
             Toast.makeText(thisActivity, R.string.not_implemented, Toast.LENGTH_SHORT).show()
         }
 
-        //TODO Share button listener
+        //TODO Share button listener - use file provider
         binding.shareButton.setOnClickListener {
-            Toast.makeText(thisActivity, R.string.not_implemented, Toast.LENGTH_SHORT).show()
+            if(soundPlayerViewModel.isEnabled.value != false && soundPlayerViewModel.filePath.value != "" )
+                Intent(Intent.ACTION_SEND).apply{
+                    type = "applicati on/octet-stream"
+                    putExtra(Intent.EXTRA_STREAM, Uri.parse(soundPlayerViewModel.filePath.value))
+                    startActivity(Intent.createChooser(this, getString(R.string.activity_recording_editor_share)))
+                    //startActivity(this)
+                }
+            else{
+                Toast.makeText(applicationContext, R.string.activity_recording_editor_no_recording, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -172,7 +183,7 @@ class RecordingEditorActivity : DrawerActivity() {
     private fun loadData() {
         if(dataID != -1)
         {
-            data = db.dataDao().getDataById(dataID)
+            editedData = db.dataDao().getDataById(dataID)
             editedNote = db.noteDao().getNoteById(dataID)
             runOnUiThread{
                 //Set background color

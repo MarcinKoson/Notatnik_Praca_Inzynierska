@@ -275,7 +275,7 @@ class MainActivity : DrawerActivity(), SearchFragment.SearchInterface
             db.noteDao().update(db.noteDao().getNoteById(note[0].toInt()).apply { this.MainData = data[0].toInt() })
 
             loadNotes()
-            displayedListOfNotes.value = listOfNotes
+            runOnUiThread { displayedListOfNotes.value = listOfNotes }
 
             sharedPrefs.edit().putBoolean("notFirstStart", true).apply()
         }

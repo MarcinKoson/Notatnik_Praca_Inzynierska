@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
+import androidx.core.content.FileProvider.getUriForFile
 import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide
 import com.thesis.note.DrawerActivity
@@ -24,6 +25,7 @@ import com.thesis.note.databinding.ActivityImageNoteBinding
 import kotlinx.coroutines.*
 import java.io.File
 import java.io.IOException
+import java.security.AccessController.getContext
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -35,6 +37,8 @@ import java.util.*
  *  If passed id equals "-1" activity interprets this as new data or new note.
  *  Default value for [noteID] and [dataID] is "-1".
  */
+//TODO gallery not working
+//TODO camera not working
 class ImageNoteActivity : DrawerActivity()
 {
     /** This activity */
@@ -137,9 +141,23 @@ class ImageNoteActivity : DrawerActivity()
             Toast.makeText(applicationContext, R.string.not_implemented, Toast.LENGTH_SHORT).show()
         }
 
-        //TODO Share button listener
         binding.shareButton.setOnClickListener {
-            Toast.makeText(applicationContext, R.string.not_implemented, Toast.LENGTH_SHORT).show()
+            if(imageState == ImageState.NoImage){
+                Toast.makeText(applicationContext, R.string.activity_image_note_no_image, Toast.LENGTH_SHORT).show()
+            }
+            else{
+                Intent(Intent.ACTION_SEND).apply{
+                    type = "image/jpg"
+                    if(imageState == ImageState.NewGalleryImage)
+                        //TODO share from gallery
+                        //putExtra(Intent.EXTRA_STREAM, File(currentImagePath).absolutePath )
+                    else
+                        putExtra(Intent.EXTRA_STREAM, getUriForFile(thisActivity, "com.thesis.note.fileprovider", File (currentImagePath)) )
+
+                    startActivity(Intent.createChooser(this, getString(R.string.activity_image_note_share)))
+                    //startActivity(this)
+                }
+            }
         }
 
         //Open gallery button listener
@@ -239,6 +257,9 @@ class ImageNoteActivity : DrawerActivity()
 
     /** Set image from given [path]. */
     private fun setImage(path:String?){
+        if (path != null) {
+            currentImagePath = path
+        }
         Glide.with(thisActivity)
             .load(path)
             .fitCenter()
