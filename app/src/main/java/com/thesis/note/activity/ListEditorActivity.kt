@@ -164,12 +164,9 @@ class ListEditorActivity : DrawerActivity() {
 
     /** Recycler view initialization. Should be running on UI thread*/
     private fun initRecyclerView(){
-        //TODO look for better solution for maxHeight
-        with(thisActivity.resources.displayMetrics){
-            binding.recyclerViewLayout.maxHeight = heightPixels - (130 * density).toInt()
-        }
         binding.listRecyclerView.apply {
             layoutManager = FlexboxLayoutManager(thisActivity)
+            setItemViewCacheSize(256)
             adapter = ListEditorAdapter(listData).apply {
                 attachItemTouchHelperToRecyclerView(binding.listRecyclerView)
             }

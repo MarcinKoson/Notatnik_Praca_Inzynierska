@@ -17,8 +17,8 @@ import com.thesis.note.databinding.RecyclerViewListItemBinding
 /**
  * [RecyclerView] adapter for lists
  */
-class ListEditorAdapter(private val listData2: ListData)
-    :ListViewerAdapter(listData2)
+class ListEditorAdapter(listDataClass: ListData)
+    :ListViewerAdapter(listDataClass)
 {
 
     /**  */
@@ -35,14 +35,14 @@ class ListEditorAdapter(private val listData2: ListData)
         val binding = RecyclerViewListItemBinding.bind(holder.objectLayout)
         //set edit text
         with(binding.editTextListItem){
-            text = Editable.Factory().newEditable(listData2.itemsList[position].text)
-            addTextChangedListener { listData2.itemsList[position].text = it.toString() }
+            text = Editable.Factory().newEditable(listDataClass.itemsList[position].text)
+            addTextChangedListener { listDataClass.itemsList[position].text = it.toString() }
         }
         //set checkbox
         with(binding.listItemCheckBox){
-            isChecked = listData2.itemsList[position].checked
+            isChecked = listDataClass.itemsList[position].checked
             setOnCheckedChangeListener { _, isChecked ->
-                listData2.itemsList[position].checked = isChecked
+                listDataClass.itemsList[position].checked = isChecked
                 if(isChecked) {
                     binding.editTextListItem.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
                     binding.editTextListItem.setTextColor(getColor(holder.objectLayout.context,R.color.gray_400))
@@ -63,7 +63,7 @@ class ListEditorAdapter(private val listData2: ListData)
         }
         //set delete button
         binding.deleteButton.setOnClickListener {
-            listData2.itemsList.removeAt(position)
+            listDataClass.itemsList.removeAt(position)
             notifyItemRemoved(position)
         }
         //set drag indicator
