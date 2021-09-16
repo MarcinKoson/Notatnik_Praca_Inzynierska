@@ -29,31 +29,3 @@ data class Note (
     var Location: String?,
     var Color: NoteColor?
 )
-
-/*
-
-@Entity(
-    tableName = "note",
-    foreignKeys = arrayOf(
-        ForeignKey( entity = Group::class,
-                    parentColumns = arrayOf("IdGroup"),
-                    childColumns = arrayOf("GroupID"),
-                    onDelete = ForeignKey.SET_NULL)
-    )
-)
-data class Note (
-    @PrimaryKey(autoGenerate = true)
-    var IdNote: Int,
-    @ColumnInfo(name = "name")
-    var Name: String,
-    var Type: NoteType,
-    var Content: String,
-    @ColumnInfo(index = true)
-    var GroupID: Int?,
-    var Favorite: Boolean,
-    var Importance: Int?,
-    var Date: String?,
-    var Location: String?
-)
-
- */

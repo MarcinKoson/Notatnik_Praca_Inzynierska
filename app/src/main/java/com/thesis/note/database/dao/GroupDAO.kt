@@ -1,6 +1,7 @@
 package com.thesis.note.database.dao
 
 import androidx.room.*
+import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Group
 
 @Dao
@@ -13,6 +14,9 @@ interface GroupDAO {
 
     @Insert
     fun insertAll(vararg insert: Group): List<Long>
+
+    @Insert
+    fun insert(insert: Data): Long
 
     @Delete
     fun delete(delete: Group)

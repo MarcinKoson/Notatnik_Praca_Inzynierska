@@ -4,7 +4,10 @@ import android.os.Bundle
 import com.thesis.note.DrawerActivity
 import com.thesis.note.databinding.ActivitySettingsBinding
 
-//TODO SettingsActivity
+//TODO language changing
+//TODO Theme changing
+//TODO GUI settings
+
 /**
  *
  */
