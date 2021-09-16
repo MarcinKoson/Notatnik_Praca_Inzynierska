@@ -77,6 +77,8 @@
     <string name="activity_text_editor_delete_button_description">Delete</string>
     <string name="activity_text_editor_share_button_description">Share</string>
     <string name="activity_text_editor_share">Share</string>
+    <string name="activity_text_editor_mic">Speech to text</string>
+    <string name="activity_text_editor_stt_error">Cannot start speech to text</string>
     <string name="activity_text_editor_text_color_button_description">Color</string>
     <string name="activity_text_editor_text_size_button_description">Size</string>
     <string name="activity_text_editor_italic_button_description">Italic</string>

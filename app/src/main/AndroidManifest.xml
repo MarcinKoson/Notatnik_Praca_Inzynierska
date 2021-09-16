@@ -54,14 +54,11 @@
             android:noHistory="false"/>
         <activity android:name=".activity.RecordingEditorActivity"
             />
-        <activity android:name=".activity.SpeechToTextActivity"
-            />
+
         <activity android:name=".activity.TagEditorActivity"
             />
 
         <activity android:name=".activity.TextEditorActivity"
-            />
-        <activity android:name=".activity.VoiceToTextActivity"
             />
 
         <activity android:name=".test.XTemplateEmptyActivity"

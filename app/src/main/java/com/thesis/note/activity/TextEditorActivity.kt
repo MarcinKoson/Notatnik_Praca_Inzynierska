@@ -1,10 +1,15 @@
 package com.thesis.note.activity
 
+import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
+import android.speech.RecognizerIntent
 import android.text.Editable
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
@@ -19,7 +24,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 
-//TODO speech to text
 /**
  * Activity for text editing.
  *
@@ -139,12 +143,26 @@ class TextEditorActivity : DrawerActivity() {
             }.show()
         }
 
+        //Share button listener
         binding.shareButton.setOnClickListener {
             Intent(Intent.ACTION_SEND).apply{
                 type = "text/plain"
                 putExtra(Intent.EXTRA_TEXT, editedData.Content)
                 startActivity(Intent.createChooser(this, getString(R.string.activity_text_editor_share)))
                 //startActivity(this)
+            }
+        }
+
+        //Speech to text button listener
+        binding.micButton.setOnClickListener {
+            Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+                putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+                putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+                try {
+                    startForResultSpeechToText.launch(this)
+                } catch (e: ActivityNotFoundException) {
+                    Toast.makeText(thisActivity, R.string.activity_text_editor_stt_error, Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
@@ -309,6 +327,16 @@ class TextEditorActivity : DrawerActivity() {
     /** Set content into text edit */
     private fun setText(content: String?){
         binding.editedText.text = Editable.Factory.getInstance().newEditable(content)
+    }
+
+    /** Callback from speech to text */
+    private val startForResultSpeechToText = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+    { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val resultArray = result.data!!.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+            val recognizedText = resultArray?.get(0)
+            binding.editedText.text = binding.editedText.text?.append(" $recognizedText")
+        }
     }
 
     /** Logic for back button */

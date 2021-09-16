@@ -133,5 +133,7 @@
     <string name="activity_recording_editor_dialog_remove_note">Usunąć nagranie?</string>
     <string name="activity_recording_editor_dialog_remove_note_positive_button">Usuń</string>
     <string name="activity_recording_editor_dialog_remove_note_negative_button">Anuluj</string>
+    <string name="activity_text_editor_mic">Mowa do tekstu</string>
+    <string name="activity_text_editor_stt_error">Błąd podczas uruchamiania mowy do tekstu</string>
 
 </resources>
