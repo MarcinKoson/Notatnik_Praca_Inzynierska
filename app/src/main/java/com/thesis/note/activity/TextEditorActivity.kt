@@ -7,6 +7,8 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.text.Editable
+import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -23,6 +25,12 @@ import com.thesis.note.fragment.ColorPickerFragment
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
+import android.widget.AdapterView
+
+import android.widget.AdapterView.OnItemSelectedListener
+
+
+
 
 /**
  * Activity for text editing.
@@ -59,6 +67,9 @@ class TextEditorActivity : DrawerActivity() {
     private var fontSize = 16
     /** */
     private var fontColor = NoteColor.Black
+
+    /** List of size of font */
+    val fontSizeList = listOf(8,12,16,21,25,27,30)
 
     /** On create callback */
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -178,9 +189,19 @@ class TextEditorActivity : DrawerActivity() {
             binding.editedText.setTextColor(resources.getColor(NoteColorConverter.enumToColor(fontColor),null))
         }
 
-        //TODO Text size button listener
-        binding.textSizeButton.setOnClickListener {
-            Toast.makeText(applicationContext, R.string.not_implemented, Toast.LENGTH_SHORT).show()
+        //Text size spinner setup
+        binding.textSizeSpinner.apply {
+            adapter = ArrayAdapter(thisActivity, android.R.layout.simple_spinner_item, fontSizeList).apply {
+                setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            }
+            fontSizeList.indexOf(fontSize).let { if(it!=-1) setSelection(it) }
+            onItemSelectedListener = object : OnItemSelectedListener {
+                override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
+                    fontSize = fontSizeList[position]
+                    binding.editedText.textSize = fontSizeList[position].toFloat()
+                }
+                override fun onNothingSelected(parentView: AdapterView<*>?) {}
+            }
         }
 
         //Italic button listener
@@ -253,7 +274,10 @@ class TextEditorActivity : DrawerActivity() {
             if (bold) {
                 binding.boldTextButton.isChecked = true
             }
+
             binding.editedText.textSize = fontSize.toFloat()
+            fontSizeList.indexOf(fontSize).let { if(it!=-1 && binding.textSizeSpinner.adapter != null) binding.textSizeSpinner.setSelection(it) }
+
             binding.editedText.setTextColor(
                 resources.getColor(
                     NoteColorConverter.enumToColor(

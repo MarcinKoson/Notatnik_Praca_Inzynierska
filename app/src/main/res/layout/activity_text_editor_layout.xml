@@ -69,12 +69,12 @@
                 android:contentDescription="@string/activity_text_editor_text_color_button_description"
                 />
 
-            <ImageButton
-                android:id="@+id/textSizeButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <Spinner
+                android:id="@+id/textSizeSpinner"
                 android:layout_gravity="end"
-                android:background="@drawable/ic_baseline_format_size"
+                android:background="@drawable/frame_transparent"
+                android:layout_width="35dp"
+                android:layout_height="30dp"
                 android:contentDescription="@string/activity_text_editor_save_button_description"
                 android:layout_margin="4dp" />
 

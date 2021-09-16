@@ -4,6 +4,8 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.15648148148148147" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/frame_transparent.xml" value="0.14722222222222223" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_cancel.xml" value="0.14722222222222223" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_mic.xml" value="0.14722222222222223" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_pause.xml" value="0.14722222222222223" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_launcher_background.xml" value="0.25833333333333336" />
