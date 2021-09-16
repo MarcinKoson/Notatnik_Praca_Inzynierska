@@ -17,6 +17,9 @@
     <string name="activity_image_note_error_create_file" translatable="false">ERROR: CANNOT CREATE FILE</string>
     <string name="activity_image_save_OK">Data saved</string>
     <string name="activity_image_save_ERROR">Save error</string>
+    <string name="activity_image_note_dialog_remove_note">Delete the image?</string>
+    <string name="activity_image_note_dialog_remove_note_positive_button">Delete</string>
+    <string name="activity_image_note_dialog_remove_note_negative_button">Cancel</string>
 
     <string name="activity_list_editor_save">Save</string>
     <string name="activity_list_editor_share_button">Share</string>
@@ -25,6 +28,9 @@
     <string name="activity_list_editor_add_list_item">Add next item</string>
     <string name="activity_list_editor_text_hint">Enter your text</string>
     <string name="activity_list_editor_save_OK">Data saved</string>
+    <string name="activity_list_editor_dialog_remove_note">Delete list?</string>
+    <string name="activity_list_editor_dialog_remove_note_positive_button">Delete</string>
+    <string name="activity_list_editor_dialog_remove_note_negative_button">Cancel</string>
 
     <string name="activity_main_search_button_description">Search notes</string>
     <string name="activity_main_add_button_description">Add note</string>
@@ -36,6 +42,7 @@
     <string name="activity_note_viewer_delete_button_description">Delete</string>
     <string name="activity_note_viewer_save_button_description">Save</string>
     <string name="activity_note_viewer_share_button_description">Share</string>
+    <string name="activity_note_viewer_add_data">Add data to note</string>
     <string name="activity_note_viewer_tag_button_description">Add tag</string>
     <string name="activity_note_viewer_background_button_description">Background color</string>
     <string name="activity_note_viewer_without_group">No group</string>
@@ -62,6 +69,9 @@
     <string name="activity_recording_editor_record_label">Record new</string>
     <string name="activity_recording_editor_no_recording">No recording</string>
     <string name="activity_recording_editor_recording">Recording</string>
+    <string name="activity_recording_editor_dialog_remove_note">Delete recording?</string>
+    <string name="activity_recording_editor_dialog_remove_note_positive_button">Delete</string>
+    <string name="activity_recording_editor_dialog_remove_note_negative_button">Cancel</string>
 
     <string name="activity_text_editor_save_button_description">Save</string>
     <string name="activity_text_editor_delete_button_description">Delete</string>
@@ -76,6 +86,9 @@
     <string name="activity_text_editor_discard_changes">Do you want discard changes?</string>
     <string name="activity_text_editor_discard_changes_positive">Discard</string>
     <string name="activity_text_editor_discard_changes_negative">Cancel</string>
+    <string name="activity_text_editor_dialog_remove_note">Delete the text?</string>
+    <string name="activity_text_editor_dialog_remove_note_positive_button">Delete</string>
+    <string name="activity_text_editor_dialog_remove_note_negative_button">Cancel</string>
 
     <string name="drawer_menu_all">All notes</string>
     <string name="drawer_menu_favorites">Favorites</string>
@@ -86,6 +99,7 @@
     <string name="drawer_menu_debug" translatable="false">Debug</string>
 
     <string name="fragment_add_note_header">Add note</string>
+    <string name="fragment_add_data_to_note_header">Add data to note</string>
     <string name="fragment_add_note_text">Add text note</string>
     <string name="fragment_add_note_sound">Add sound note</string>
     <string name="fragment_add_note_list">Add list note</string>

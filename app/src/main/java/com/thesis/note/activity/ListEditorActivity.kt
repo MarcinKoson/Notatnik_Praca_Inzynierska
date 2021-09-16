@@ -3,6 +3,7 @@ package com.thesis.note.activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.thesis.note.DrawerActivity
@@ -59,7 +60,7 @@ class ListEditorActivity : DrawerActivity() {
         listData.itemsList.add(ListData.ListItem())
         loadParameters()
         GlobalScope.launch {
-            if(dataID != -1)
+            if(noteID != -1)
                 loadData()
             runOnUiThread { initRecyclerView() }
         }
@@ -71,14 +72,14 @@ class ListEditorActivity : DrawerActivity() {
                     //update
                     GlobalScope.launch {
                         db.dataDao().update(listData.getData())
-                        db.noteDao().update(db.noteDao().getNoteById(listData.noteID).apply { Date = Date() })
+                        db.noteDao().update(editedNote.apply { Date = Date() })
                     }
                 }
                 noteID != -1 -> {
                     //add new data to db
                     GlobalScope.launch {
-                        db.dataDao().insertAll(listData.run{ listData.idData=0 ; getData() })
-                        db.noteDao().update(db.noteDao().getNoteById(listData.noteID).apply { Date = Date() })
+                        val addedData = db.dataDao().insertAll(listData.run { this.idData = 0; this.noteID = thisActivity.noteID; getData() })
+                        db.noteDao().update(editedNote.apply { Date = Date(); if(MainData==null) MainData=addedData[0].toInt()})
                     }
                 }
                 else -> {
@@ -88,7 +89,7 @@ class ListEditorActivity : DrawerActivity() {
                             noteID = it[0].toInt()
                             listData.noteID = noteID
                         }
-                        db.dataDao().insertAll(listData.run{ listData.idData=0 ; getData() }).also{
+                        db.dataDao().insertAll(listData.run{  listData.idData=0 ; getData() }).also{
                             dataID = it[0].toInt()
                             db.noteDao().update(db.noteDao().getNoteById(noteID).apply{ MainData = dataID })
                         }
@@ -103,9 +104,31 @@ class ListEditorActivity : DrawerActivity() {
             finish()
         }
 
-        //TODO Delete button listener
+        //Delete button listener
         binding.deleteButton.setOnClickListener {
-            Toast.makeText(applicationContext, R.string.not_implemented, Toast.LENGTH_SHORT).show()
+            AlertDialog.Builder(thisActivity).run{
+                setPositiveButton(R.string.activity_list_editor_dialog_remove_note_positive_button) { _, _ ->
+                    if (dataID != -1){
+                        GlobalScope.launch {
+                            if (editedNote.MainData == dataID){
+                                with(db.dataDao().getDataFromNote(noteID).map { it.IdData }.toMutableList()){
+                                    remove(dataID)
+                                    if(size == 0)
+                                        editedNote.MainData = null
+                                    else
+                                        editedNote.MainData = this[0]
+                                    db.noteDao().update(editedNote)
+                                }
+                            }
+                            db.dataDao().delete(listData.getData())
+                        }
+                    }
+                    finish()
+                }
+                setNegativeButton(R.string.activity_list_editor_dialog_remove_note_negative_button) { _, _ -> }
+                setTitle(R.string.activity_list_editor_dialog_remove_note)
+                create()
+            }.show()
         }
 
         binding.shareButton.setOnClickListener {
@@ -155,17 +178,22 @@ class ListEditorActivity : DrawerActivity() {
 
     /** Load [Data] with id [dataID] from database */
     private fun loadData(){
-        listData = ListData().apply {
-            loadData(db.dataDao().getDataById(dataID))
-        }
-        editedNote = db.noteDao().getNoteById(dataID)
-        runOnUiThread{
+        editedNote = db.noteDao().getNoteById(noteID)
+        runOnUiThread {
             //Set background color
             binding.root.background = ResourcesCompat.getDrawable(
                 resources,
                 NoteColorConverter.enumToColor(editedNote.Color),
                 null
             )
+        }
+        if(dataID != -1) {
+            listData = ListData().apply {
+                loadData(db.dataDao().getDataById(dataID))
+            }
+        }
+        else{
+            listData.noteID = noteID
         }
     }
 }

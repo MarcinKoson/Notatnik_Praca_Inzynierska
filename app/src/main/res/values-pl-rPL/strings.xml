@@ -119,5 +119,19 @@
     <string name="activity_text_editor_share">Share</string>
     <string name="activity_image_save_ERROR">Bład podczas zapisywania</string>
     <string name="activity_image_note_share_error">Nie można udostępnić nie zapisanych obrazków</string>
+    <string name="fragment_add_data_to_note_header">Dodaj dane do notatki</string>
+    <string name="activity_note_viewer_add_data">Dodaj dane do notatki</string>
+    <string name="activity_image_note_dialog_remove_note">Usunąć obrazek?</string>
+    <string name="activity_image_note_dialog_remove_note_positive_button">Usuń</string>
+    <string name="activity_image_note_dialog_remove_note_negative_button">Anuluj</string>
+    <string name="activity_list_editor_dialog_remove_note">Usunąć listę?</string>
+    <string name="activity_list_editor_dialog_remove_note_positive_button">Usuń</string>
+    <string name="activity_list_editor_dialog_remove_note_negative_button">Anuluj</string>
+    <string name="activity_text_editor_dialog_remove_note">Usunąć tekst?</string>
+    <string name="activity_text_editor_dialog_remove_note_positive_button">Usuń</string>
+    <string name="activity_text_editor_dialog_remove_note_negative_button">Anuluj</string>
+    <string name="activity_recording_editor_dialog_remove_note">Usunąć nagranie?</string>
+    <string name="activity_recording_editor_dialog_remove_note_positive_button">Usuń</string>
+    <string name="activity_recording_editor_dialog_remove_note_negative_button">Anuluj</string>
 
 </resources>

@@ -1,7 +1,6 @@
 package com.thesis.note.recycler_view_adapters
 
 import android.graphics.Typeface
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,9 +52,8 @@ class NoteTilesAdapter (
 
     /**  */
     override fun getItemViewType(position: Int): Int {
-        //TODO test when note don't have main data
         val data = dataList.firstOrNull { v -> v.IdData == noteList[position].MainData }
-        return data?.Type?.id ?: 0
+        return data?.Type?.id ?: -1
     }
 
     /**  */
@@ -98,7 +96,6 @@ class NoteTilesAdapter (
                 )
             }
             else -> {
-                //TODO error handling
                 NoteTilesViewHolder(
                     LayoutInflater.from(parent.context).inflate(
                         R.layout.recycler_view_note_tile_text,
@@ -117,6 +114,10 @@ class NoteTilesAdapter (
             NoteType.List.id -> setListTile(holder, position)
             NoteType.Image.id -> setImageTile(holder, position)
             NoteType.Recording.id -> setRecordingTile(holder, position)
+            else -> {
+                val binding = RecyclerViewNoteTileTextBinding.bind(holder.objectLayout)
+                setNoteInfo(holder,position,binding.root,binding.noteName,binding.favoriteCheckBox,binding.groupName)
+            }
         }
     }
 
@@ -174,8 +175,7 @@ class NoteTilesAdapter (
         when (mainData.Info) {
             "B" -> binding.noteContent.typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
             "I" -> binding.noteContent.typeface = Typeface.create(Typeface.DEFAULT, Typeface.ITALIC)
-            "BI" -> binding.noteContent.typeface =
-                Typeface.create(Typeface.DEFAULT, Typeface.BOLD_ITALIC)
+            "BI" -> binding.noteContent.typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD_ITALIC)
         }
         //note name size
         binding.noteName.textSize = mainData.Size?.toFloat()!!+5

@@ -87,8 +87,8 @@ class TextEditorActivity : DrawerActivity() {
                 if (noteID != -1) {
                     //Add new data to database
                     GlobalScope.launch {
-                        db.dataDao().insertAll(Data(0, noteID, NoteType.Text, binding.editedText.text.toString(), getInfo(),fontSize,fontColor))
-                        db.noteDao().update(editedNote.apply { Date = Date()})
+                        val addedData = db.dataDao().insertAll(Data(0, noteID, NoteType.Text, binding.editedText.text.toString(), getInfo(),fontSize,fontColor))
+                        db.noteDao().update(editedNote.apply { Date = Date(); if(MainData==null) MainData=addedData[0].toInt()})
                     }
                 } else {
                     GlobalScope.launch {
@@ -112,9 +112,31 @@ class TextEditorActivity : DrawerActivity() {
             finish()
         }
 
-        //TODO Delete button listener
+        //Delete button listener
         binding.deleteButton.setOnClickListener {
-            Toast.makeText(applicationContext, R.string.not_implemented, Toast.LENGTH_SHORT).show()
+            AlertDialog.Builder(thisActivity).run{
+                setPositiveButton(R.string.activity_text_editor_dialog_remove_note_positive_button) { _, _ ->
+                    if (dataID != -1){
+                        GlobalScope.launch {
+                            if (editedNote.MainData == editedData.IdData){
+                                with(db.dataDao().getDataFromNote(noteID).map { it.IdData }.toMutableList()){
+                                    remove(editedData.IdData)
+                                    if(size == 0)
+                                        editedNote.MainData = null
+                                    else
+                                        editedNote.MainData = this[0]
+                                    db.noteDao().update(editedNote)
+                                }
+                            }
+                            db.dataDao().delete(editedData)
+                        }
+                    }
+                    finish()
+                }
+                setNegativeButton(R.string.activity_text_editor_dialog_remove_note_negative_button) { _, _ -> }
+                setTitle(R.string.activity_text_editor_dialog_remove_note)
+                create()
+            }.show()
         }
 
         binding.shareButton.setOnClickListener {

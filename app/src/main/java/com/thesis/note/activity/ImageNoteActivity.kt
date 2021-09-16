@@ -12,7 +12,7 @@ import android.provider.MediaStore
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.FileProvider
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider.getUriForFile
 import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide
@@ -32,7 +32,6 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-
 
 /**
  *  Activity for image editing.
@@ -120,9 +119,31 @@ class ImageNoteActivity : DrawerActivity()
             }
         }
 
-        //TODO Delete button listener
+        //Delete button listener
         binding.deleteButton.setOnClickListener {
-            Toast.makeText(applicationContext, R.string.not_implemented, Toast.LENGTH_SHORT).show()
+            AlertDialog.Builder(thisActivity).run{
+                setPositiveButton(R.string.activity_image_note_dialog_remove_note_positive_button) { _, _ ->
+                    if (dataID != -1){
+                        GlobalScope.launch {
+                            if (editedNote.MainData == editedData.IdData){
+                                with(db.dataDao().getDataFromNote(noteID).map { it.IdData }.toMutableList()){
+                                    remove(editedData.IdData)
+                                    if(size == 0)
+                                        editedNote.MainData = null
+                                    else
+                                        editedNote.MainData = this[0]
+                                    db.noteDao().update(editedNote)
+                                }
+                            }
+                            db.dataDao().delete(editedData)
+                        }
+                    }
+                    finish()
+                }
+                setNegativeButton(R.string.activity_image_note_dialog_remove_note_negative_button) { _, _ -> }
+                setTitle(R.string.activity_image_note_dialog_remove_note)
+                create()
+            }.show()
         }
 
         //Share button listener
@@ -186,17 +207,19 @@ class ImageNoteActivity : DrawerActivity()
     /** Load [Data] with id [dataID]  */
     private fun loadData(){
         GlobalScope.launch {
-            editedData = db.dataDao().getDataById(noteID)
-            editedNote = db.noteDao().getNoteById(dataID)
-            runOnUiThread{
-                setImage(editedData.Content)
-                imageState = ImageState.OldImage
-                //Set background color
-                binding.root.background = ResourcesCompat.getDrawable(
-                    resources,
-                    NoteColorConverter.enumToColor(editedNote.Color),
-                    null
-                )
+            editedNote = db.noteDao().getNoteById(noteID)
+            if(dataID != -1){
+                editedData = db.dataDao().getDataById(dataID)
+                runOnUiThread{
+                    setImage(editedData.Content)
+                    imageState = ImageState.OldImage
+                    //Set background color
+                    binding.root.background = ResourcesCompat.getDrawable(
+                        resources,
+                        NoteColorConverter.enumToColor(editedNote.Color),
+                        null
+                    )
+                }
             }
         }
     }
@@ -245,14 +268,14 @@ class ImageNoteActivity : DrawerActivity()
                 //update
                 GlobalScope.launch {
                     db.dataDao().update(db.dataDao().getDataById(dataID).apply { Content = newImage.path; Info = null })
-                    db.noteDao().update(db.noteDao().getNoteById(noteID).apply { Date = Date()})
+                    db.noteDao().update(editedNote.apply { Date = Date()})
                 }
             }
             noteID != -1 -> {
                 //add new data to db
                 GlobalScope.launch {
-                    db.dataDao().insertAll(Data(0, noteID, NoteType.Image, newImage.path,null,null,null))
-                    db.noteDao().update(db.noteDao().getNoteById(noteID).apply { Date = Date()})
+                    val addedData = db.dataDao().insertAll(Data(0, noteID, NoteType.Image, newImage.path,null,null,null))
+                    db.noteDao().update(editedNote.apply { Date = Date(); if(MainData==null) MainData=addedData[0].toInt()})
                 }
             }
             else -> {

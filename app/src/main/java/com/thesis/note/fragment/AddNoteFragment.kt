@@ -24,7 +24,7 @@ import com.thesis.note.databinding.DialogFragmentAddNoteBinding
  *  It checks if all needed permissions are granted
  *  and if not it asks user for them
  */
-class AddNoteFragment:DialogFragment(), ActivityCompat.OnRequestPermissionsResultCallback{
+class AddNoteFragment(val noteID:Int = -1):DialogFragment(), ActivityCompat.OnRequestPermissionsResultCallback{
 
     /** View binding */
     private lateinit var binding: DialogFragmentAddNoteBinding
@@ -32,10 +32,14 @@ class AddNoteFragment:DialogFragment(), ActivityCompat.OnRequestPermissionsResul
     /** On create dialog callback */
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = DialogFragmentAddNoteBinding.inflate(requireActivity().layoutInflater)
+        if(noteID != -1){
+            binding.addNoteHeader.text = getString(R.string.fragment_add_data_to_note_header)
+        }
+
         //Add text note button listener
         binding.addTextNote.setOnClickListener{
             startActivity(Intent(requireContext(), TextEditorActivity::class.java).apply{
-                putExtra("noteID", -1)
+                putExtra("noteID", noteID)
                 putExtra("dataID", -1)
             })
             dismiss()
@@ -43,7 +47,7 @@ class AddNoteFragment:DialogFragment(), ActivityCompat.OnRequestPermissionsResul
         //Add list note button listener
         binding.addListNote.setOnClickListener{
             startActivity(Intent(requireContext(), ListEditorActivity::class.java).apply{
-                putExtra("noteID", -1)
+                putExtra("noteID", noteID)
                 putExtra("dataID", -1)
             })
             dismiss()
@@ -86,7 +90,7 @@ class AddNoteFragment:DialogFragment(), ActivityCompat.OnRequestPermissionsResul
     /** Launch empty [ImageNoteActivity] and close current [AddNoteFragment] */
     private fun launchImageNote(){
         startActivity(Intent(this.context, ImageNoteActivity::class.java).apply{
-            putExtra("noteID", -1)
+            putExtra("noteID", noteID)
             putExtra("dataID", -1)
         })
         dismiss()
@@ -121,7 +125,7 @@ class AddNoteFragment:DialogFragment(), ActivityCompat.OnRequestPermissionsResul
     /** Launch empty [RecordingEditorActivity] and close current [AddNoteFragment] */
     private fun launchSoundNote(){
         startActivity(Intent(this.context, RecordingEditorActivity::class.java).apply{
-            putExtra("noteID", -1)
+            putExtra("noteID", noteID)
             putExtra("dataID", -1)
         })
         dismiss()

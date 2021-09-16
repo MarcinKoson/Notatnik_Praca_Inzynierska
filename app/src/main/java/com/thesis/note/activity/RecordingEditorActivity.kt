@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
 import com.thesis.note.DrawerActivity
 import com.thesis.note.R
@@ -150,16 +151,38 @@ class RecordingEditorActivity : DrawerActivity() {
            }
         }
 
-        //TODO Delete button listener
+        //TODO Delete button listener - test
         binding.deleteButton.setOnClickListener {
-            Toast.makeText(thisActivity, R.string.not_implemented, Toast.LENGTH_SHORT).show()
+            AlertDialog.Builder(thisActivity).run{
+                setPositiveButton(R.string.activity_image_note_dialog_remove_note_positive_button) { _, _ ->
+                    if (dataID != -1){
+                        GlobalScope.launch {
+                            if (editedNote.MainData == dataID){
+                                with(db.dataDao().getDataFromNote(noteID).map { it.IdData }.toMutableList()){
+                                    remove(dataID)
+                                    if(size == 0)
+                                        editedNote.MainData = null
+                                    else
+                                        editedNote.MainData = this[0]
+                                }
+                                db.noteDao().update(editedNote)
+                            }
+                            editedData?.let { it1 -> db.dataDao().delete(it1) }
+                        }
+                    }
+                    finish()
+                }
+                setNegativeButton(R.string.activity_image_note_dialog_remove_note_negative_button) { _, _ -> }
+                setTitle(R.string.activity_image_note_dialog_remove_note)
+                create()
+            }.show()
         }
 
         //TODO Share button listener - use file provider
         binding.shareButton.setOnClickListener {
             if(soundPlayerViewModel.isEnabled.value != false && soundPlayerViewModel.filePath.value != "" )
                 Intent(Intent.ACTION_SEND).apply{
-                    type = "applicati on/octet-stream"
+                    type = "application/octet-stream"
                     putExtra(Intent.EXTRA_STREAM, Uri.parse(soundPlayerViewModel.filePath.value))
                     startActivity(Intent.createChooser(this, getString(R.string.activity_recording_editor_share)))
                     //startActivity(this)

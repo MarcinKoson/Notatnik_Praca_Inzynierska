@@ -16,6 +16,7 @@ import com.thesis.note.R
 import com.thesis.note.database.*
 import com.thesis.note.database.entity.*
 import com.thesis.note.databinding.ActivityNoteViewerBinding
+import com.thesis.note.fragment.AddNoteFragment
 import com.thesis.note.fragment.AddTagsDialogFragment
 import com.thesis.note.fragment.ColorPickerFragment
 import com.thesis.note.recycler_view_adapters.ListViewerAdapter
@@ -152,6 +153,11 @@ class NoteViewerActivity : DrawerActivity() {
         binding.backgroundColorButton.setOnClickListener {
             ColorPickerFragment(ColorPalette.NOTE_BACKGROUND_PALETTE).show(supportFragmentManager, "tag")
         }
+
+        //Add data button listener
+        binding.addButton.setOnClickListener {
+            AddNoteFragment(noteID).show(supportFragmentManager,"add_note")
+        }
     }
 
     /** On resume callback */
@@ -161,6 +167,7 @@ class NoteViewerActivity : DrawerActivity() {
         //Update data
         if(noteID != -1){
             GlobalScope.launch {
+                note = db.noteDao().getNoteById(noteID)
                 //load data form db
                 dataList = db.dataDao().getDataFromNote(noteID)
                 //set new data to recycler view

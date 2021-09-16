@@ -76,8 +76,9 @@ class NoteViewerAdapter (
                     ,onDataClickListener)
             }
             else -> {
-                //TODO error handling
-                 error("ERROR: NoteViewerAdapter - viewType not found")
+                DataHolder(
+                    LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_note_viewer_text, parent, false) as ConstraintLayout
+                    ,onDataClickListener)
             }
         }
     }
@@ -89,6 +90,10 @@ class NoteViewerAdapter (
            NoteType.List.id -> setListData(holder, position)
            NoteType.Image.id -> setImageData(holder,position)
            NoteType.Recording.id -> setRecordingData(holder, position)
+           else -> {
+               val binding = RecyclerViewNoteViewerTextBinding.bind(holder.objectLayout)
+               binding.noteViewerTextContent.text = holder.objectLayout.context.getString(R.string.activity_note_viewer_error_cannot_open)
+           }
        }
     }
 
