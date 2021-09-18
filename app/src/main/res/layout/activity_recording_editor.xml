@@ -50,25 +50,132 @@
 
         </androidx.appcompat.widget.Toolbar>
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragment_recorder"
-            android:name="com.thesis.note.fragment.SoundRecorder"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/recording_editor_sound_recorder_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recordLabel" />
+            app:layout_constraintTop_toBottomOf="@+id/recordLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragment_player"
-            android:name="com.thesis.note.fragment.SoundPlayer"
-            android:layout_width="0dp"
+            <ImageButton
+                android:id="@+id/soundRecorderRecordButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/ic_baseline_fiber_manual_record"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/activity_recording_editor_sound_recorder_record" />
+
+            <ImageButton
+                android:id="@+id/soundRecorderPauseButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/ic_baseline_pause"
+                android:contentDescription="@string/activity_recording_editor_sound_recorder_pause"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/soundRecorderRecordButton"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/soundRecorderCancelButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/ic_baseline_cancel"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/soundRecorderPauseButton"
+                app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/activity_recording_editor_sound_recorder_cancel" />
+
+            <TextView
+                android:id="@+id/soundRecorderTimeNow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/sound_player_time_zero"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/soundRecorderCancelButton"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/recording_editor_sound_player_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/playLabel" />
+            app:layout_constraintTop_toBottomOf="@+id/playLabel">
+
+            <ImageButton
+                android:id="@+id/soundPlayerPlayButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/ic_baseline_play_arrow"
+                android:contentDescription="@string/activity_recording_editor_sound_player_play"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/soundPlayerPauseButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/ic_baseline_pause"
+                android:contentDescription="@string/activity_recording_editor_sound_player_pause"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/soundPlayerPlayButton"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/soundPlayerStopButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/ic_baseline_stop"
+                android:contentDescription="@string/activity_recording_editor_sound_player_stop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/soundPlayerPauseButton"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/soundPlayerTimeNow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/sound_player_time_zero"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/soundPlayerStopButton"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/soundPlayerAllTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sound_player_time_zero"
+                app:layout_constraintBottom_toBottomOf="@+id/soundPlayerLabelSlash"
+                app:layout_constraintStart_toEndOf="@+id/soundPlayerLabelSlash"
+                app:layout_constraintTop_toTopOf="@+id/soundPlayerLabelSlash" />
+
+            <TextView
+                android:id="@+id/soundPlayerLabelSlash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/activity_recording_editor_sound_player_hyphen"
+                app:layout_constraintBottom_toBottomOf="@+id/soundPlayerTimeNow"
+                app:layout_constraintStart_toEndOf="@+id/soundPlayerTimeNow"
+                app:layout_constraintTop_toTopOf="@+id/soundPlayerTimeNow" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/playLabel"
@@ -96,7 +203,7 @@
             android:layout_height="2dp"
             android:layout_marginTop="8dp"
             android:background="@android:color/darker_gray"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_player"
+            app:layout_constraintTop_toBottomOf="@+id/recording_editor_sound_player_layout"
             tools:layout_editor_absoluteX="16dp" />
 
         <View
@@ -105,7 +212,7 @@
             android:layout_height="2dp"
             android:layout_marginTop="8dp"
             android:background="@android:color/darker_gray"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_recorder"
+            app:layout_constraintTop_toBottomOf="@+id/recording_editor_sound_recorder_layout"
             tools:layout_editor_absoluteX="16dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

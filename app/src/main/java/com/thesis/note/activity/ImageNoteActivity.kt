@@ -242,6 +242,7 @@ class ImageNoteActivity : DrawerActivity()
     }
 
     /** Register a request to start an activity for result for getting image from camera */
+    //TODO toast when error
     private val cameraStartForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
     { result: ActivityResult ->
         if (result.resultCode == Activity.RESULT_OK) {

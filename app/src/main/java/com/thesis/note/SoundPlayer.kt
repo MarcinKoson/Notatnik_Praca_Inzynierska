@@ -7,15 +7,28 @@ import android.widget.TextView
 import java.io.FileInputStream
 import java.io.IOException
 
+/**
+ *
+ */
 class SoundPlayer(val context: Context) {
 
     /** [MediaPlayer] */
     private var mediaPlayer: MediaPlayer? = null
 
+    /** */
+    fun isFileOpen():Boolean{
+        return mediaPlayer!= null
+    }
+
+    /** Path of open file */
+    var filePath : String? = null
+        private set
+
     /** Open file from [path]. Returns true if succeed */
     fun openFile(path:String): Boolean{
         //release current mediaPlayer
         mediaPlayer?.release()
+        mediaPlayer = null
         //start
         mediaPlayer = MediaPlayer().apply {
             try {
@@ -29,12 +42,22 @@ class SoundPlayer(val context: Context) {
                     currentPositionTextView?.text = toMinutesAndSeconds(mediaPlayer?.currentPosition)
                 }
                 durationTextView?.text = toMinutesAndSeconds(duration)
+                filePath = path
             } catch (e: IOException) {
                 release()
                 mediaPlayer = null
             }
         }
         return mediaPlayer != null
+    }
+
+    /** Close currently opened file */
+    fun closeFile(){
+        mediaPlayer?.release()
+        mediaPlayer = null
+        filePath = null
+        currentPositionTextView?.text = context.getString(R.string.sound_player_time_zero)
+        durationTextView?.text = context.getString(R.string.sound_player_time_zero)
     }
 
     /** Start playing */
