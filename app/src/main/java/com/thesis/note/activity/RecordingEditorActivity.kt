@@ -8,6 +8,8 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.add
+import androidx.fragment.app.commit
 import com.thesis.note.DrawerActivity
 import com.thesis.note.R
 import com.thesis.note.database.AppDatabase
@@ -70,22 +72,38 @@ class RecordingEditorActivity : DrawerActivity() {
         db = AppDatabase(this)
         loadParameters()
         GlobalScope.launch {
+            runOnUiThread {
+                //supportFragmentManager.commit {
+                //    setReorderingAllowed(true)
+                //    add<SoundPlayer>(R.id.fragment_player)
+               // }
+
+            }
             loadData()
             if(editedData == null) {
-                runOnUiThread { soundPlayerViewModel.setIsEnabled(false) }
+                //runOnUiThread { soundPlayerViewModel.setIsEnabled(false) }
             }
             else{
                 runOnUiThread {
                     soundPlayerViewModel.setIsEnabled(true)
                     soundPlayerViewModel.setFilePath(editedData?.Content?:"")
+
+                    //fragment.disable()
+
                 }
             }
         }
-        soundPlayerViewModel.isWorking.observe(this, { soundRecorderViewModel.setIsEnabled(!it)})
+        ///soundPlayerViewModel.isWorking.observe(this, { soundRecorderViewModel.setIsEnabled(!it)})
+        val fragment: SoundPlayer = supportFragmentManager.findFragmentById(R.id.fragment_player) as SoundPlayer
+        fragment.onStartPlayingListener = { soundRecorderViewModel.setIsEnabled(false) }
+        fragment.onEndPlayingListener = { soundRecorderViewModel.setIsEnabled(true) }
+        fragment.onPausePlayingListener = { soundRecorderViewModel.setIsEnabled(true) }
+       // fragment.setIsEnabled(true)
 
         with(soundRecorderViewModel){
             setOutputFile(createFile())
-            isWorking.observe(thisActivity, { soundPlayerViewModel.setIsEnabled(!it)})
+            isWorking.observe(thisActivity, { fragment.setIsEnabled(!it) })
+            //isWorking.observe(thisActivity, { fragment.view?.isEnabled = !it })
             setOnRecordingEndListener { filePath ->
                 soundPlayerViewModel.setFilePath(filePath)
             }
@@ -207,7 +225,7 @@ class RecordingEditorActivity : DrawerActivity() {
         if(dataID != -1)
         {
             editedData = db.dataDao().getDataById(dataID)
-            editedNote = db.noteDao().getNoteById(dataID)
+            editedNote = db.noteDao().getNoteById(noteID)
             runOnUiThread{
                 //Set background color
                 binding.root.background = ResourcesCompat.getDrawable(

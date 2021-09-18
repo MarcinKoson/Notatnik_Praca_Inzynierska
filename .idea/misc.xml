@@ -9,11 +9,15 @@
         <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_mic.xml" value="0.14722222222222223" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_pause.xml" value="0.14722222222222223" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_launcher_background.xml" value="0.25833333333333336" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/activity_image_note.xml" value="0.20018115942028986" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/activity_list_editor_layout.xml" value="0.23596014492753623" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/activity_note_viewer.xml" value="0.22146739130434784" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/activity_settings.xml" value="0.20018115942028986" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/activity_text_editor_layout.xml" value="0.2164855072463768" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/dialog_fragment_add_note.xml" value="0.22146739130434784" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/fragment_sound_player.xml" value="0.21105072463768115" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/recycler_view_list_item.xml" value="0.2164855072463768" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/recycler_view_note_viewer_recording.xml" value="0.21105072463768115" />
       </map>
     </option>
   </component>

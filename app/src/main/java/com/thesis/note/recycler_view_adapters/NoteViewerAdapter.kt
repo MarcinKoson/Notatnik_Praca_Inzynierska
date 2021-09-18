@@ -1,6 +1,8 @@
 package com.thesis.note.recycler_view_adapters
 
 import android.graphics.Typeface
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,18 +16,16 @@ import com.thesis.note.database.NoteColorConverter
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
-import com.thesis.note.databinding.RecyclerViewNoteViewerImageBinding
-import com.thesis.note.databinding.RecyclerViewNoteViewerListBinding
-import com.thesis.note.databinding.RecyclerViewNoteViewerRecordingBinding
-import com.thesis.note.databinding.RecyclerViewNoteViewerTextBinding
+import com.thesis.note.databinding.*
+import com.thesis.note.SoundPlayer
 
 /**
  * [RecyclerView] adapter for showing [Data] of [Note]
  */
 class NoteViewerAdapter (
     private var dataList:List<Data>,
-    private var onDataClickListener: OnDataClickListener)
-    :RecyclerView.Adapter<NoteViewerAdapter.DataHolder>() {
+    private var onDataClickListener: OnDataClickListener
+    ) :RecyclerView.Adapter<NoteViewerAdapter.DataHolder>() {
 
     /**  */
     interface  OnDataClickListener {
@@ -45,6 +45,9 @@ class NoteViewerAdapter (
         override fun onClick(v: View?) {
             listener.onDataClick(adapterPosition)
         }
+
+        var soundPlayer : SoundPlayer? = null
+
     }
 
     /**  */
@@ -141,10 +144,27 @@ class NoteViewerAdapter (
             .into(binding.noteViewerImage)
     }
 
-    /** TODO recording player */
+    /**  */
     private fun setRecordingData(holder: DataHolder, position: Int){
         val binding = RecyclerViewNoteViewerRecordingBinding.bind(holder.objectLayout)
         binding.editButton.setOnClickListener { onDataClickListener.onDataClick(position) }
+
+        holder.soundPlayer = SoundPlayer(holder.objectLayout.context).apply {
+            currentPositionTextView = binding.timeNow
+            durationTextView = binding.allTime
+            handler = Handler(Looper.getMainLooper())
+            openFile(dataList[position].Content)
+        }
+
+        binding.playButton.setOnClickListener { holder.soundPlayer?.play()}
+        binding.pauseButton.setOnClickListener { holder.soundPlayer?.pause() }
+        binding.stopButton.setOnClickListener { holder.soundPlayer?.stop() }
+    }
+
+    /** On view recycled callback */
+    override fun onViewRecycled(holder: DataHolder) {
+        super.onViewRecycled(holder)
+        holder.soundPlayer?.release()
     }
 
     /**  */

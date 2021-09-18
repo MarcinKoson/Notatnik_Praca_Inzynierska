@@ -164,7 +164,7 @@ class SoundRecorder : Fragment(R.layout.fragment_sound_recorder) {
         }
         mediaRecorder = null
         duration = 0
-        binding.timeNow.text = getString(R.string.fragment_sound_player_time_zero)
+        binding.timeNow.text = getString(R.string.sound_player_time_zero)
         binding.recordButton.setBackgroundResource(R.drawable.ic_baseline_fiber_manual_record)
         viewModel.setIsWorking(false)
         handler.removeCallbacks(timeCounter)
@@ -174,7 +174,7 @@ class SoundRecorder : Fragment(R.layout.fragment_sound_recorder) {
     /** Convert milliseconds to minutes and seconds*/
     private fun toTime(milliseconds: Int?) : String{
         return if(milliseconds == -1 || milliseconds == null)
-            getString(R.string.fragment_sound_player_time_zero)
+            getString(R.string.sound_player_time_zero)
         else
             (milliseconds/60000).toString()+":"+(milliseconds/1000%60).let{if(it<10) "0$it" else it.toString()}
     }

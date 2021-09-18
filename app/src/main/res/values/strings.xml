@@ -59,6 +59,11 @@
     <string name="activity_note_viewer_discard_changes">Do you want discard changes?</string>
     <string name="activity_note_viewer_discard_changes_positive">Discard</string>
     <string name="activity_note_viewer_discard_changes_negative">Cancel</string>
+    <string name="activity_note_viewer_sound_player_play">Play</string>
+    <string name="activity_note_viewer_sound_player_pause">Pause</string>
+    <string name="activity_note_viewer_sound_player_stop">Stop</string>
+    <string name="activity_note_viewer_sound_player_hyphen" translatable="false">-</string>
+
 
     <string name="activity_recording_editor_save">Save</string>
     <string name="activity_recording_editor_share_button">Share</string>
@@ -108,7 +113,7 @@
     <string name="fragment_add_note_image">Add image note</string>
     <string name="fragment_add_note_no_permissions">No permissions</string>
 
-    <string name="fragment_sound_player_time_zero" translatable="false">0:00</string>
+    <string name="sound_player_time_zero" translatable="false">0:00</string>
     <string name="fragment_sound_player_play">Play</string>
     <string name="fragment_sound_player_pause">Pause</string>
     <string name="fragment_sound_player_stop">Stop</string>

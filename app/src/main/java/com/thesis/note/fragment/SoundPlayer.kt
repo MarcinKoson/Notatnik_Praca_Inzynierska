@@ -23,6 +23,7 @@ import java.io.IOException
  * [Fragment] for playing music.
  * You can communicate with it by [SoundPlayerViewModel].
  */
+@Deprecated("deprecated")
 class SoundPlayer : Fragment(R.layout.fragment_sound_player) {
 
     /** [ViewModel] for this [Fragment]*/
@@ -119,7 +120,7 @@ class SoundPlayer : Fragment(R.layout.fragment_sound_player) {
                 release()
                 mediaPlayer = null
                 binding.playButton.isEnabled = false
-                binding.allTime.text = getString(R.string.fragment_sound_player_time_zero)
+                binding.allTime.text = getString(R.string.sound_player_time_zero)
             }
 
         }
@@ -134,6 +135,7 @@ class SoundPlayer : Fragment(R.layout.fragment_sound_player) {
     private fun play(){
         mediaPlayer?.also {
             it.start()
+            onStartPlayingListener.invoke()
             viewModel.setIsWorking(true)
             handler.post(timeCounter)
         }
@@ -143,6 +145,7 @@ class SoundPlayer : Fragment(R.layout.fragment_sound_player) {
     private fun pause(){
         mediaPlayer?.also{
             it.pause()
+            onPausePlayingListener.invoke()
             viewModel.setIsWorking(false)
             handler.removeCallbacks(timeCounter)
         }
@@ -153,22 +156,23 @@ class SoundPlayer : Fragment(R.layout.fragment_sound_player) {
         mediaPlayer?.also {
             it.stop()
             it.prepare()
+            onEndPlayingListener.invoke()
             viewModel.setIsWorking(false)
             handler.removeCallbacks(timeCounter)
-            binding.timeNow.text =  getString(R.string.fragment_sound_player_time_zero)
+            binding.timeNow.text =  getString(R.string.sound_player_time_zero)
         }
     }
 
     /** Convert milliseconds to minutes and seconds*/
     private fun toTime(milliseconds: Int?) : String{
         return if(milliseconds == -1 || milliseconds == null)
-            getString(R.string.fragment_sound_player_time_zero)
+            getString(R.string.sound_player_time_zero)
         else
             (milliseconds/60000).toString()+":"+(milliseconds/1000%60).let{if(it<10) "0$it" else it.toString()}
     }
 
     /** Enable or disable GUI of [SoundPlayer] */
-    private fun setIsEnabled(value:Boolean){
+    public fun setIsEnabled(value:Boolean){
         if(mediaPlayer == null)
             binding.playButton.isEnabled = false
         else
@@ -176,8 +180,8 @@ class SoundPlayer : Fragment(R.layout.fragment_sound_player) {
         binding.pauseButton.isEnabled = value
         binding.stopButton.isEnabled = value
         if (!value){
-            binding.timeNow.text = getString(R.string.fragment_sound_player_time_zero)
-            binding.allTime.text = getString(R.string.fragment_sound_player_time_zero)
+            binding.timeNow.text = getString(R.string.sound_player_time_zero)
+            binding.allTime.text = getString(R.string.sound_player_time_zero)
         }
         else{
             mediaPlayer?.let {
@@ -186,4 +190,15 @@ class SoundPlayer : Fragment(R.layout.fragment_sound_player) {
             }
         }
     }
+
+    public fun setNewFilePath(path: String){
+        viewModel.setFilePath(path)
+    }
+
+    public var onStartPlayingListener : () -> Unit = {}
+
+    public var onEndPlayingListener : () -> Unit = {}
+
+    public var onPausePlayingListener : () -> Unit = {}
+
 }

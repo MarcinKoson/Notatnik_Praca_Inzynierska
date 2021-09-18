@@ -13,14 +13,75 @@
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <ImageButton
+        android:id="@+id/playButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/ic_baseline_play_arrow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/activity_note_viewer_sound_player_play" />
+
+    <ImageButton
+        android:id="@+id/pauseButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/ic_baseline_pause"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/playButton"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/activity_note_viewer_sound_player_pause" />
+
+    <ImageButton
+        android:id="@+id/stopButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/ic_baseline_stop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/pauseButton"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/activity_note_viewer_sound_player_stop" />
+
+    <TextView
+        android:id="@+id/timeNow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/sound_player_time_zero"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/stopButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/allTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sound_player_time_zero"
+        app:layout_constraintBottom_toBottomOf="@+id/sound_player_label_slash"
+        app:layout_constraintStart_toEndOf="@+id/sound_player_label_slash"
+        app:layout_constraintTop_toTopOf="@+id/sound_player_label_slash" />
+
+    <TextView
+        android:id="@+id/sound_player_label_slash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/activity_note_viewer_sound_player_hyphen"
+        app:layout_constraintBottom_toBottomOf="@+id/timeNow"
+        app:layout_constraintStart_toEndOf="@+id/timeNow"
+        app:layout_constraintTop_toTopOf="@+id/timeNow" />
+
+    <ImageButton
         android:id="@+id/editButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_margin="4dp"
+        android:layout_margin="8dp"
         android:background="@drawable/ic_baseline_edit"
         android:contentDescription="@string/activity_note_viewer_edit"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
