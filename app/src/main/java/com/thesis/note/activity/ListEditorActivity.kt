@@ -131,6 +131,7 @@ class ListEditorActivity : DrawerActivity() {
             }.show()
         }
 
+        //Share button listener
         binding.shareButton.setOnClickListener {
             var noteContent = ""
             listData.itemsList.forEach {

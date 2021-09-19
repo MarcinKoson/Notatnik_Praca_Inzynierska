@@ -7,6 +7,7 @@ import android.text.Editable
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.FileProvider
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,16 +25,17 @@ import com.thesis.note.recycler_view_adapters.NoteViewerAdapter
 import com.thesis.note.recycler_view_adapters.TagListAdapter
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.io.File
 import java.util.*
 
 /**
- *
  * Activity for viewing note.
  *
  * When creating [Intent] of this activity, you should put extended data with
  * putExtra("noteID", yourNoteID)
  *
  */
+//TODO favorite note button
 class NoteViewerActivity : DrawerActivity() {
     /** This activity */
     private val thisActivity = this
@@ -117,7 +119,62 @@ class NoteViewerActivity : DrawerActivity() {
 
         //TODO Share button listener
         binding.shareButton.setOnClickListener {
-            Toast.makeText(applicationContext, R.string.not_implemented, Toast.LENGTH_SHORT).show()
+            val mainData = dataList.find { it.IdData == note.MainData }
+            when{
+                mainData == null -> {}
+                mainData.Type == NoteType.Text -> {
+                    Intent(Intent.ACTION_SEND).apply{
+                        type = "text/plain"
+                        putExtra(Intent.EXTRA_TEXT, mainData.Content)
+                        startActivity(Intent.createChooser(this, getString(R.string.activity_text_editor_share)))
+                        //startActivity(this)
+                    }
+                }
+                mainData.Type == NoteType.List -> {
+                    var noteContent = ""
+                    val listData = ListData().apply { loadData(mainData) }
+                    listData.itemsList.forEach {
+                        if(!it.checked){
+                            noteContent += "•" + it.text + "\r\n"
+                        }
+                    }
+                    Intent(Intent.ACTION_SEND).apply{
+                        type = "text/plain"
+                        putExtra(Intent.EXTRA_TEXT, noteContent)
+                        startActivity(Intent.createChooser(this, getString(R.string.activity_text_editor_share)))
+                        //startActivity(this)
+                    }
+                }
+                mainData.Type == NoteType.Image -> {
+                    Intent(Intent.ACTION_SEND).apply{
+                        type = "image/jpg"
+                        putExtra(Intent.EXTRA_STREAM,
+                            FileProvider.getUriForFile(
+                                thisActivity,
+                                "com.thesis.note.fileprovider",
+                                File(mainData.Content)
+                            )
+                        )
+                        startActivity(Intent.createChooser(this, getString(R.string.activity_image_note_share)))
+                        //startActivity(this)
+                    }
+                }
+                mainData.Type == NoteType.Recording -> {
+                    Intent(Intent.ACTION_SEND).apply{
+                        type = "*/*"
+                        putExtra(Intent.EXTRA_STREAM,
+                            FileProvider.getUriForFile(
+                                thisActivity,
+                                "com.thesis.note.fileprovider",
+                                File(mainData.Content)
+                            )
+                        )
+                        startActivity(Intent.createChooser(this, getString(R.string.activity_image_note_share)))
+                    //startActivity(this)
+                    }
+                }
+                else -> {}
+            }
         }
 
         //AddTagsDialogFragment result listener

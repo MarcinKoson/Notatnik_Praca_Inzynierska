@@ -41,7 +41,6 @@ import java.util.*
  *  If passed id equals "-1" activity interprets this as new data or new note.
  *  Default value for [noteID] and [dataID] is "-1".
  */
-
 class ImageNoteActivity : DrawerActivity()
 {
     /** This activity */

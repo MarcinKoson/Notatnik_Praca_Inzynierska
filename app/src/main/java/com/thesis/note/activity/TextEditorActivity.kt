@@ -29,9 +29,6 @@ import android.widget.AdapterView
 
 import android.widget.AdapterView.OnItemSelectedListener
 
-
-
-
 /**
  * Activity for text editing.
  *
