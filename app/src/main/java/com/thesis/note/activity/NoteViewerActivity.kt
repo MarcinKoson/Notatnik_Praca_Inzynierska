@@ -47,16 +47,24 @@ class NoteViewerActivity : DrawerActivity() {
 
     /** Viewed [Note] id */
     var noteID: Int = -1
+
     /** Viewed [Note] */
     private lateinit var note: Note
+
     /** List of [Data] in [Note] */
     private lateinit var dataList: List<Data>
+
     /** List of all [Group] */
     private lateinit var groupsList: List<Group>
+
     /** List of all [Tag] */
     private lateinit var tagsList: List<Tag>
+
     /** List of [TagOfNote] */
     private lateinit var tagsOfNoteList: List<TagOfNote>
+
+    /** Current background color */
+    private var backgroundColor: NoteColor? = null
 
     /** On create callback */
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,7 +97,8 @@ class NoteViewerActivity : DrawerActivity() {
                 }
                 //update date
                 note.Date = Date()
-                //color saved in color change fragment listener
+                //color
+                note.Color = backgroundColor
                 //favorite
                 note.Favorite = binding.favoriteCheckBox.isChecked
                 //Update
@@ -203,10 +212,10 @@ class NoteViewerActivity : DrawerActivity() {
         //Color picker fragment listener
         supportFragmentManager.setFragmentResultListener("color", this) { _, bundle ->
             val result = bundle.getInt("colorID")
-            note.Color = NoteColorConverter().intToEnum(result)!!
+            backgroundColor = NoteColorConverter().intToEnum(result)
             binding.root.background = ResourcesCompat.getDrawable(
                 resources,
-                NoteColorConverter.enumToColor(note.Color),
+                NoteColorConverter.enumToColor(backgroundColor),
                 null
             )
         }
@@ -379,6 +388,7 @@ class NoteViewerActivity : DrawerActivity() {
             adapter = viewAdapter
         }
         //Set background color
+        backgroundColor = note.Color
         binding.root.background = ResourcesCompat.getDrawable(
             resources,
             NoteColorConverter.enumToColor(note.Color),
