@@ -13,7 +13,8 @@ Download latest release from https://github.com/MarcinKoson/Notatnik_Praca_Inzyn
 ## Features
 
 * Creating text notes
-* Creating lists  
+  	* speech to text
+* Creating lists
 * Creating image notes
 	* from gallery
 	* with camera
