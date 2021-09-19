@@ -181,7 +181,10 @@ class RecordingEditorActivity : DrawerActivity() {
                                     editedNote?.let { it1 -> db.noteDao().update(it1) }
                                 }
                             }
-                            editedData?.let { it1 -> db.dataDao().delete(it1) }
+                            editedData?.let { it1 ->
+                                db.dataDao().delete(it1)
+                                try{ File(it1.Content).delete() }catch(ex:Exception){}
+                            }
                         }
                     }
                     finish()
@@ -227,6 +230,7 @@ class RecordingEditorActivity : DrawerActivity() {
         super.onPause()
         soundPlayer.release()
         soundRecorder.release()
+
     }
 
     /** Load parameters passed from another activity */

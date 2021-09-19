@@ -140,7 +140,6 @@ class NoteTilesAdapter (
         //favorite
         favoriteCheckBox.isChecked = noteList[position].Favorite
         //set listener for favorite button
-        //TODO favorite check box colors
         favoriteCheckBox.setOnClickListener {
             noteList[position].Favorite = favoriteCheckBox.isChecked
             GlobalScope.launch {

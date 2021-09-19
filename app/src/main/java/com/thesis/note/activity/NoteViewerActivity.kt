@@ -35,7 +35,6 @@ import java.util.*
  * putExtra("noteID", yourNoteID)
  *
  */
-//TODO favorite note button
 class NoteViewerActivity : DrawerActivity() {
     /** This activity */
     private val thisActivity = this
@@ -109,6 +108,11 @@ class NoteViewerActivity : DrawerActivity() {
                 setPositiveButton(R.string.activity_note_viewer_dialog_remove_note_positive_button) { _, _ ->
                     GlobalScope.launch {
                         val db = AppDatabase(applicationContext)
+                        dataList.forEach {
+                            if(it.Type == NoteType.Recording || it.Type==NoteType.Image){
+                                try{ File(it.Content).delete() }catch(ex:Exception){}
+                            }
+                        }
                         db.noteDao().delete(note)
                         thisActivity.finish()
                     }

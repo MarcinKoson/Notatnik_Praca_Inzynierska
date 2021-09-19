@@ -135,6 +135,7 @@ class ImageNoteActivity : DrawerActivity()
                                 }
                             }
                             db.dataDao().delete(editedData)
+                            try{ File(editedData.Content).delete() }catch(ex:Exception){}
                         }
                     }
                     finish()
