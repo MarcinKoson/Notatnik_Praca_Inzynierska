@@ -2,6 +2,7 @@
 <resources>
     <!--- other colors-->
     <color name="purple_700">#7B1FA2</color>
+    <color name="yellow_800">#F9A825</color>
 
     <!--- colors-->
     <color name="black">#000000</color>
@@ -31,5 +32,7 @@
     <color name="yellow_600">#FDD835</color>
     <color name="orange_600">#FB8C00</color>
     <color name="gray_600">#757575</color>
+
+
 
 </resources>

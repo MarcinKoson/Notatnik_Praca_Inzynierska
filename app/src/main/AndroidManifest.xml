@@ -2,9 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.thesis.note">
 
-    <!--
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
@@ -28,30 +25,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Note"
-        >
+    >
 
         <activity android:name=".activity.GroupsEditorActivity"
             />
+
         <activity android:name=".activity.ImageNoteActivity"
-            android:noHistory="false"/>
+            android:noHistory="false"
+            />
 
-        <activity android:name=".activity.ListEditorActivity"/>
+        <activity android:name=".activity.ListEditorActivity"
+            />
 
-        <activity android:name=".activity.MainActivity"
-           >
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
 
         <activity android:name=".activity.NoteViewerActivity"
             />
 
         <activity android:name=".activity.SettingsActivity"
             android:noHistory="false"/>
+
         <activity android:name=".activity.RecordingEditorActivity"
             />
 
@@ -65,7 +63,9 @@
             />
 
         <activity android:name=".test.DebugActivity"
-            android:noHistory="true"/>
+            android:noHistory="true"
+            />
+
         <activity android:name=".test.TestActivity"
             />
 
@@ -78,7 +78,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-
 
     </application>
 </manifest>

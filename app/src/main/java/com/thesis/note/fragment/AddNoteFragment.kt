@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.result.contract.ActivityResultContracts.RequestMultiplePermissions
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -72,14 +71,9 @@ class AddNoteFragment(val noteID:Int = -1):DialogFragment(), ActivityCompat.OnRe
      * and if not ask user for them.
      * If permissions are granted it launches new image note */
     private fun checkPermissionsAndLaunchImageNote() {
-        if (ContextCompat.checkSelfPermission(this.requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
-            ContextCompat.checkSelfPermission(this.requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+        if (ContextCompat.checkSelfPermission(this.requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
         {
-            val permissions = arrayOf(
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            )
-            requestPermissionsImageNote.launch(permissions)
+            requestPermissionsImageNote.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
         }
         else
         {
@@ -99,10 +93,7 @@ class AddNoteFragment(val noteID:Int = -1):DialogFragment(), ActivityCompat.OnRe
     /** Asks user for permissions needed for image note.
      * If user accept it launches new image note
      * and if not it show [Toast] with information */
-    private val requestPermissionsImageNote = registerForActivityResult(RequestMultiplePermissions()
-    ) { permissions ->
-        var isGranted = false
-        permissions.forEach { isGranted = it.value }
+    private val requestPermissionsImageNote = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
         if(isGranted)
             launchImageNote()
         else
@@ -134,8 +125,7 @@ class AddNoteFragment(val noteID:Int = -1):DialogFragment(), ActivityCompat.OnRe
     /** Asks user for permissions needed for sound note.
      * If user accept it launches new sound note
      * and if not it show [Toast] with information */
-    private val requestPermissionsSoundNote = registerForActivityResult(ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
+    private val requestPermissionsSoundNote = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
         if(isGranted)
             launchSoundNote()
         else

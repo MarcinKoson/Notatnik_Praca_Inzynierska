@@ -5,21 +5,19 @@ import android.media.MediaRecorder
 import android.os.Handler
 import android.widget.TextView
 import java.io.IOException
-//TODO documentation
 /**
- *
- *
+ * Class for creating recordings
  */
 class SoundRecorder(val context: Context) {
 
-    /** MediaRecorder */
+    /** */
     private var mediaRecorder: MediaRecorder? = null
 
-    /** */
+    /** Returns if class is recording. */
     var isWorking: Boolean = false
         private set
 
-    /** */
+    /** Path to file where recording is saved. */
     var filePath: String? = null
 
     /** */
@@ -74,7 +72,7 @@ class SoundRecorder(val context: Context) {
         mediaRecorder = null
     }
 
-    /** */
+    /** Safe delete [SoundRecorder] after work. */
     fun release(){
         mediaRecorder?.apply {
             stop()
@@ -84,10 +82,10 @@ class SoundRecorder(val context: Context) {
         handler?.removeCallbacks(timeCounter)
     }
 
-    /** Duration or recording */
+    /** Duration of recording. */
     private var duration = 0
 
-    /** Convert milliseconds to minutes and seconds.*/
+    /** Convert milliseconds to minutes and seconds. */
     private fun toMinutesAndSeconds(milliseconds: Int?) : String{
         return if(milliseconds == -1 || milliseconds == null)
             context.getString(R.string.sound_player_time_zero)
@@ -95,7 +93,7 @@ class SoundRecorder(val context: Context) {
             (milliseconds/60000).toString()+":"+(milliseconds/1000%60).let{if(it<10) "0$it" else it.toString()}
     }
 
-    /** [TextView] for displaying duration of the file. */
+    /** [TextView] for displaying duration of the recording. You must set [handler] for it to work. */
     var durationTextView : TextView? = null
         set(value){
             field = value
@@ -114,12 +112,12 @@ class SoundRecorder(val context: Context) {
         }
     }
 
-    /** Listener called when  */
+    /** Listener called when [SoundRecorder] starts recording. */
     var onStartRecordingListener : () -> Unit = {}
 
-    /** Listener called when  */
+    /** Listener called when [SoundRecorder] stop recording. */
     var onStopRecordingListener : (String?) -> Unit = {}
 
-    /** Listener called when  */
+    /** Listener called when recording is cancelled. */
     var onCancelRecordingListener : () -> Unit = {}
 }

@@ -8,14 +8,14 @@ import java.io.FileInputStream
 import java.io.IOException
 
 /**
- *
+ *  Class for playing music
  */
 class SoundPlayer(val context: Context) {
 
-    /** [MediaPlayer] */
+    /** */
     private var mediaPlayer: MediaPlayer? = null
 
-    /** */
+    /** Returns if there is file opened */
     fun isFileOpen():Boolean{
         return mediaPlayer!= null
     }
@@ -90,7 +90,7 @@ class SoundPlayer(val context: Context) {
         }
     }
 
-    /** Release [SoundPlayer] */
+    /** Safe delete [SoundPlayer] after work */
     fun release(){
         mediaPlayer?.release()
     }

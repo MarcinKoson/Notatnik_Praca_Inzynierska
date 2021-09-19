@@ -1,32 +1,25 @@
 package com.thesis.note.test
 
-import android.R.attr.minDate
-import android.R.attr.startYear
-import android.app.DatePickerDialog
-import android.content.Context
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import com.thesis.note.DrawerActivity
 import com.thesis.note.databinding.XActivityTestBinding
 
+class TestActivity : DrawerActivity()  {
+    /** This activity */
+    private val thisActivity = this
 
-class TestActivity : AppCompatActivity() {
-
+    /** View binding */
     private lateinit var binding: XActivityTestBinding
-    private lateinit var contextThis: Context
 
+    /** On create callback */
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = XActivityTestBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        binding.testAAA.setOnClickListener {
-
-        }
-
+        setDrawerLayout(binding.root,binding.toolbar,binding.navigationView)
+        //-----------------------------------------------------------------------
 
     }
-
 }
 
 

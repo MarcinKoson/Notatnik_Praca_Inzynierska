@@ -21,7 +21,7 @@
     <string name="activity_note_viewer_tag_button_description">Dodaj tag</string>
     <string name="activity_note_viewer_background_button_description">Kolor tła</string>
     <string name="activity_note_viewer_without_group">Bez grupy</string>
-    <string name="activity_image_note_no_image">There is no image chosen</string>
+    <string name="activity_image_note_no_image">Nie wybrano żadnego obrazka</string>
     <string name="activity_note_viewer_error_id_note">ERROR: bad note ID</string>
     <string name="not_implemented">Brak implementacji</string>
     <string name="activity_note_viewer_save_OK">Zapisano</string>
@@ -135,5 +135,8 @@
     <string name="activity_recording_editor_dialog_remove_note_negative_button">Anuluj</string>
     <string name="activity_text_editor_mic">Mowa do tekstu</string>
     <string name="activity_text_editor_stt_error">Błąd podczas uruchamiania mowy do tekstu</string>
+    <string name="activity_note_viewer_sound_player_play">Graj</string>
+    <string name="activity_note_viewer_sound_player_pause">Pauza</string>
+    <string name="activity_note_viewer_sound_player_stop">Stop</string>
 
 </resources>

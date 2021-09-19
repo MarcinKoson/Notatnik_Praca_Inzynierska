@@ -18,7 +18,7 @@ abstract class DrawerActivity :
     lateinit var drawerLayout: DrawerLayout
 
     /** [NavigationDrawer] of your activity */
-    lateinit var navigationDrawer : NavigationDrawer
+    private lateinit var navigationDrawer : NavigationDrawer
 
     /** Set content and drawer for activity */
     fun setDrawerLayout(drawerLayout: DrawerLayout, toolbar: Toolbar, navigationView: NavigationView){
