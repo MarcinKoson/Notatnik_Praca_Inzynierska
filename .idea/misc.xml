@@ -4,9 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.15648148148148147" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/app_icon.xml" value="0.4" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/favorite_note_check_box.xml" value="0.13333333333333333" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/frame_transparent.xml" value="0.14722222222222223" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_cancel.xml" value="0.14722222222222223" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_format_size.xml" value="0.2518518518518518" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_mic.xml" value="0.14722222222222223" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_pause.xml" value="0.14722222222222223" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_star.xml" value="0.13333333333333333" />
@@ -33,6 +35,8 @@
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/recycler_view_note_viewer_recording.xml" value="0.21105072463768115" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/x_activity_debug.xml" value="0.18840579710144928" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/x_activity_test.xml" value="0.2" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.13333333333333333" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.13333333333333333" />
       </map>
     </option>
   </component>
