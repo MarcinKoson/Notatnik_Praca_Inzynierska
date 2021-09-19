@@ -76,7 +76,7 @@ class NoteViewerActivity : DrawerActivity() {
         //Save button listener
         binding.saveButton.setOnClickListener {
             GlobalScope.launch {
-                //Update list notes
+                //Update NoteType.List
                 updateListNotes()
                 //Save note name
                 note.Name = binding.noteName.text.toString()
@@ -91,6 +91,8 @@ class NoteViewerActivity : DrawerActivity() {
                 //update date
                 note.Date = Date()
                 //color saved in color change fragment listener
+                //favorite
+                note.Favorite = binding.favoriteCheckBox.isChecked
                 //Update
                 db.noteDao().update(note)
                 //Close activity
@@ -117,7 +119,7 @@ class NoteViewerActivity : DrawerActivity() {
             }.show()
         }
 
-        //TODO Share button listener
+        //Share button listener
         binding.shareButton.setOnClickListener {
             val mainData = dataList.find { it.IdData == note.MainData }
             when{
@@ -214,6 +216,12 @@ class NoteViewerActivity : DrawerActivity() {
         binding.addButton.setOnClickListener {
             AddNoteFragment(noteID).show(supportFragmentManager,"add_note")
         }
+
+        //Favorite button listener
+        binding.favoriteCheckBox.setOnClickListener {
+                note.Favorite = binding.favoriteCheckBox.isChecked
+        }
+
     }
 
     /** On resume callback */
@@ -334,6 +342,8 @@ class NoteViewerActivity : DrawerActivity() {
         binding.noteName.text = Editable.Factory.getInstance().newEditable(note.Name)
         //Set date
         binding.noteDate.text = DateConverter().dateToString(note.Date)
+        //Set favorite
+        binding.favoriteCheckBox.isChecked = note.Favorite
         //Set spinner of groups
         binding.groupSpinner.adapter = ArrayAdapter(
             thisActivity,
