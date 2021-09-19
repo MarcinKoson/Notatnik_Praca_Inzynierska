@@ -3,12 +3,15 @@ package com.thesis.note.activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.res.ResourcesCompat
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.thesis.note.DrawerActivity
 import com.thesis.note.R
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.ListData
 import com.thesis.note.database.NoteColor
+import com.thesis.note.database.NoteColorConverter
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
 import com.thesis.note.databinding.ActivityListEditorLayoutBinding
@@ -26,7 +29,6 @@ import java.util.*
  * Default value for [noteID] and [dataID] is "-1".
  *
  */
-//TODO documentation
 class ListEditorActivity : DrawerActivity() {
     /** This activity */
     private val thisActivity = this
@@ -39,10 +41,15 @@ class ListEditorActivity : DrawerActivity() {
 
     /** Edited [Data] id */
     private var dataID:Int = -1
+
     /** Edited [ListData] */
     private var listData = ListData()
-    /** Edited [Note]  id */
+
+    /** Edited [Note] id */
     private var noteID:Int = -1
+
+    /** Edited [Note] */
+    private lateinit var editedNote:Note
 
     /** On create callback */
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,10 +57,10 @@ class ListEditorActivity : DrawerActivity() {
         binding = ActivityListEditorLayoutBinding.inflate(layoutInflater)
         setDrawerLayout(binding.root,binding.toolbar,binding.navigationView)
         db = AppDatabase.invoke(this)
-        loadParameters()
         listData.itemsList.add(ListData.ListItem())
+        loadParameters()
         GlobalScope.launch {
-            if(dataID != -1)
+            if(noteID != -1)
                 loadData()
             runOnUiThread { initRecyclerView() }
         }
@@ -65,14 +72,14 @@ class ListEditorActivity : DrawerActivity() {
                     //update
                     GlobalScope.launch {
                         db.dataDao().update(listData.getData())
-                        db.noteDao().update(db.noteDao().getNoteById(listData.noteID).apply { Date = Date() })
+                        db.noteDao().update(editedNote.apply { Date = Date() })
                     }
                 }
                 noteID != -1 -> {
                     //add new data to db
                     GlobalScope.launch {
-                        db.dataDao().insertAll(listData.run{ listData.idData=0 ; getData() })
-                        db.noteDao().update(db.noteDao().getNoteById(listData.noteID).apply { Date = Date() })
+                        val addedData = db.dataDao().insertAll(listData.run { this.idData = 0; this.noteID = thisActivity.noteID; getData() })
+                        db.noteDao().update(editedNote.apply { Date = Date(); if(MainData==null) MainData=addedData[0].toInt()})
                     }
                 }
                 else -> {
@@ -82,7 +89,7 @@ class ListEditorActivity : DrawerActivity() {
                             noteID = it[0].toInt()
                             listData.noteID = noteID
                         }
-                        db.dataDao().insertAll(listData.run{ listData.idData=0 ; getData() }).also{
+                        db.dataDao().insertAll(listData.run{  listData.idData=0 ; getData() }).also{
                             dataID = it[0].toInt()
                             db.noteDao().update(db.noteDao().getNoteById(noteID).apply{ MainData = dataID })
                         }
@@ -97,14 +104,47 @@ class ListEditorActivity : DrawerActivity() {
             finish()
         }
 
-        //TODO Delete button listener
+        //Delete button listener
         binding.deleteButton.setOnClickListener {
-            Toast.makeText(applicationContext, R.string.not_implemented, Toast.LENGTH_SHORT).show()
+            AlertDialog.Builder(thisActivity).run{
+                setPositiveButton(R.string.activity_list_editor_dialog_remove_note_positive_button) { _, _ ->
+                    if (dataID != -1){
+                        GlobalScope.launch {
+                            if (editedNote.MainData == dataID){
+                                with(db.dataDao().getDataFromNote(noteID).map { it.IdData }.toMutableList()){
+                                    remove(dataID)
+                                    if(size == 0)
+                                        editedNote.MainData = null
+                                    else
+                                        editedNote.MainData = this[0]
+                                    db.noteDao().update(editedNote)
+                                }
+                            }
+                            db.dataDao().delete(listData.getData())
+                        }
+                    }
+                    finish()
+                }
+                setNegativeButton(R.string.activity_list_editor_dialog_remove_note_negative_button) { _, _ -> }
+                setTitle(R.string.activity_list_editor_dialog_remove_note)
+                create()
+            }.show()
         }
 
-        //TODO Share button listener
+        //Share button listener
         binding.shareButton.setOnClickListener {
-            Toast.makeText(applicationContext, R.string.not_implemented, Toast.LENGTH_SHORT).show()
+            var noteContent = ""
+            listData.itemsList.forEach {
+                if(!it.checked){
+                    noteContent += "•" + it.text + "\r\n"
+                }
+            }
+            Intent(Intent.ACTION_SEND).apply{
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, noteContent)
+                startActivity(Intent.createChooser(this, getString(R.string.activity_text_editor_share)))
+                //startActivity(this)
+            }
         }
 
         //Add list item button listener
@@ -125,27 +165,33 @@ class ListEditorActivity : DrawerActivity() {
 
     /** Recycler view initialization. Should be running on UI thread*/
     private fun initRecyclerView(){
-        //TODO look for better solution for maxHeight
-        with(thisActivity.resources.displayMetrics){
-            binding.recyclerViewLayout.maxHeight = heightPixels - (130 * density).toInt()
-        }
-        val viewManager = FlexboxLayoutManager(thisActivity)
-        val viewAdapter = ListEditorAdapter(listData).apply {
-            //onTextChangedListener = thisActivity.onTextChangedListener
-            //onCheckBoxChangedListener = thisActivity.onCheckBoxChangedListener
-            //onDeleteButtonClickListener = thisActivity.onDeleteButtonClickListener
-            attachItemTouchHelperToRecyclerView(binding.listRecyclerView)
-        }
         binding.listRecyclerView.apply {
-            layoutManager = viewManager
-            adapter = viewAdapter
+            layoutManager = FlexboxLayoutManager(thisActivity)
+            setItemViewCacheSize(256)
+            adapter = ListEditorAdapter(listData).apply {
+                attachItemTouchHelperToRecyclerView(binding.listRecyclerView)
+            }
         }
     }
 
-    /** Load [Data] with id [dataID] from database  */
+    /** Load [Data] with id [dataID] from database */
     private fun loadData(){
-        listData = ListData().apply {
-            loadData(db.dataDao().getDataById(dataID))
+        editedNote = db.noteDao().getNoteById(noteID)
+        runOnUiThread {
+            //Set background color
+            binding.root.background = ResourcesCompat.getDrawable(
+                resources,
+                NoteColorConverter.enumToColor(editedNote.Color),
+                null
+            )
+        }
+        if(dataID != -1) {
+            listData = ListData().apply {
+                loadData(db.dataDao().getDataById(dataID))
+            }
+        }
+        else{
+            listData.noteID = noteID
         }
     }
 }

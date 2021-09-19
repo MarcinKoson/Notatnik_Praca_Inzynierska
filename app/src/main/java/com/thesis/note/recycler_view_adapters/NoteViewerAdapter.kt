@@ -1,6 +1,8 @@
 package com.thesis.note.recycler_view_adapters
 
 import android.graphics.Typeface
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,16 +16,16 @@ import com.thesis.note.database.NoteColorConverter
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
-import com.thesis.note.databinding.RecyclerViewNoteViewerImageBinding
-import com.thesis.note.databinding.RecyclerViewNoteViewerListBinding
-import com.thesis.note.databinding.RecyclerViewNoteViewerTextBinding
-
+import com.thesis.note.databinding.*
+import com.thesis.note.SoundPlayer
 
 /**
  * [RecyclerView] adapter for showing [Data] of [Note]
  */
-class NoteViewerAdapter (private var dataList:List<Data>, private var onDataClickListener: OnDataClickListener)
-    :RecyclerView.Adapter<NoteViewerAdapter.DataHolder>() {
+class NoteViewerAdapter (
+    private var dataList:List<Data>,
+    private var onDataClickListener: OnDataClickListener
+    ) :RecyclerView.Adapter<NoteViewerAdapter.DataHolder>() {
 
     /**  */
     interface  OnDataClickListener {
@@ -43,6 +45,9 @@ class NoteViewerAdapter (private var dataList:List<Data>, private var onDataClic
         override fun onClick(v: View?) {
             listener.onDataClick(adapterPosition)
         }
+
+        var soundPlayer : SoundPlayer? = null
+
     }
 
     /**  */
@@ -69,14 +74,14 @@ class NoteViewerAdapter (private var dataList:List<Data>, private var onDataClic
                     ,onDataClickListener)
             }
             NoteType.Recording.id -> {
-                //TODO layout for sound notes
                  DataHolder(
-                    LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_note_viewer_text, parent, false) as ConstraintLayout
+                    LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_note_viewer_recording, parent, false) as ConstraintLayout
                     ,onDataClickListener)
             }
             else -> {
-                //TODO error handling
-                 error("ERROR: NoteViewerAdapter - viewType not found")
+                DataHolder(
+                    LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_note_viewer_text, parent, false) as ConstraintLayout
+                    ,onDataClickListener)
             }
         }
     }
@@ -87,7 +92,11 @@ class NoteViewerAdapter (private var dataList:List<Data>, private var onDataClic
            NoteType.Text.id -> setTextData(holder, position)
            NoteType.List.id -> setListData(holder, position)
            NoteType.Image.id -> setImageData(holder,position)
-           NoteType.Recording.id -> setSoundData(holder, position)
+           NoteType.Recording.id -> setRecordingData(holder, position)
+           else -> {
+               val binding = RecyclerViewNoteViewerTextBinding.bind(holder.objectLayout)
+               binding.noteViewerTextContent.text = holder.objectLayout.context.getString(R.string.activity_note_viewer_error_cannot_open)
+           }
        }
     }
 
@@ -135,10 +144,27 @@ class NoteViewerAdapter (private var dataList:List<Data>, private var onDataClic
             .into(binding.noteViewerImage)
     }
 
-    /** TODO sound data */
-    private fun setSoundData(holder: DataHolder, position: Int){
-        val binding = RecyclerViewNoteViewerTextBinding.bind(holder.objectLayout)
-        binding.noteViewerTextContent.text = "NAGRANIE"
+    /**  */
+    private fun setRecordingData(holder: DataHolder, position: Int){
+        val binding = RecyclerViewNoteViewerRecordingBinding.bind(holder.objectLayout)
+        binding.editButton.setOnClickListener { onDataClickListener.onDataClick(position) }
+
+        holder.soundPlayer = SoundPlayer(holder.objectLayout.context).apply {
+            currentPositionTextView = binding.timeNow
+            durationTextView = binding.allTime
+            handler = Handler(Looper.getMainLooper())
+            openFile(dataList[position].Content)
+        }
+
+        binding.playButton.setOnClickListener { holder.soundPlayer?.play()}
+        binding.pauseButton.setOnClickListener { holder.soundPlayer?.pause() }
+        binding.stopButton.setOnClickListener { holder.soundPlayer?.stop() }
+    }
+
+    /** On view recycled callback */
+    override fun onViewRecycled(holder: DataHolder) {
+        super.onViewRecycled(holder)
+        holder.soundPlayer?.release()
     }
 
     /**  */

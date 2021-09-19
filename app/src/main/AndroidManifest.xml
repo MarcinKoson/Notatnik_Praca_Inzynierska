@@ -2,9 +2,21 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.thesis.note">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="http" />
+        </intent>
+        <intent>
+            <action android:name="android.media.action.IMAGE_CAPTURE" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.GET_CONTENT" />
+        </intent>
+    </queries>
 
     <application
         android:allowBackup="true"
@@ -12,46 +24,48 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Note">
+        android:theme="@style/Theme.Note"
+    >
 
         <activity android:name=".activity.GroupsEditorActivity"
             />
-        <activity android:name=".activity.ImageNoteActivity"
-            android:noHistory="false"/>
 
-        <activity android:name=".activity.ListEditorActivity"/>
+        <activity android:name=".activity.ImageNoteActivity"
+            android:noHistory="false"
+            />
+
+        <activity android:name=".activity.ListEditorActivity"
+            />
 
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
 
         <activity android:name=".activity.NoteViewerActivity"
             />
 
         <activity android:name=".activity.SettingsActivity"
             android:noHistory="false"/>
-        <activity android:name=".activity.SoundEditorActivity"
+
+        <activity android:name=".activity.RecordingEditorActivity"
             />
-        <activity android:name=".activity.SpeechToTextActivity"
-            />
+
         <activity android:name=".activity.TagEditorActivity"
             />
 
         <activity android:name=".activity.TextEditorActivity"
-            />
-        <activity android:name=".activity.VoiceToTextActivity"
             />
 
         <activity android:name=".test.XTemplateEmptyActivity"
             />
 
         <activity android:name=".test.DebugActivity"
-            android:noHistory="true"/>
+            android:noHistory="true"
+            />
+
         <activity android:name=".test.TestActivity"
             />
 
@@ -64,7 +78,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-
 
     </application>
 </manifest>

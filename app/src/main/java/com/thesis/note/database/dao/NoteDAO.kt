@@ -1,7 +1,7 @@
 package com.thesis.note.database.dao
 
 import androidx.room.*
-import com.thesis.note.database.NoteType
+import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
 
 @Dao
@@ -17,6 +17,9 @@ interface NoteDAO {
 
     @Insert
     fun insertAll(vararg insert: Note): List<Long>
+
+    @Insert
+    fun insert(insert: Data): Long
 
     @Delete
     fun delete(delete: Note)

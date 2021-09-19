@@ -7,20 +7,23 @@
             android:id="@+id/start"
             android:title="@string/drawer_menu_all"/>
         <item
-            android:id="@+id/drawer_list"
-            android:title="@string/drawer_menu_favorites"
-            android:visible="false"
-             />
+            android:id="@+id/favorites"
+            android:title="@string/drawer_menu_favorites"/>
         <item
             android:id="@+id/add_note"
             android:title="@string/drawer_menu_add"/>
+        <item
+            android:id="@+id/groups"
+            android:title="@string/drawer_menu_groups"/>
+        <item
+            android:id="@+id/tags"
+            android:title="@string/drawer_menu_tags"/>
         <item
             android:id="@+id/drawer_settings"
             android:title="@string/drawer_menu_settings"/>
         <item
             android:id="@+id/drawer_debug"
             android:title="@string/drawer_menu_debug"
-            android:visible="true"
-             />
+            android:visible="false" />
     </group>
 </menu>

@@ -7,14 +7,17 @@ import android.text.Editable
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.FileProvider
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.flexbox.FlexboxLayoutManager
-import com.thesis.note.*
+import com.thesis.note.DrawerActivity
+import com.thesis.note.R
 import com.thesis.note.database.*
 import com.thesis.note.database.entity.*
 import com.thesis.note.databinding.ActivityNoteViewerBinding
+import com.thesis.note.fragment.AddNoteFragment
 import com.thesis.note.fragment.AddTagsDialogFragment
 import com.thesis.note.fragment.ColorPickerFragment
 import com.thesis.note.recycler_view_adapters.ListViewerAdapter
@@ -22,17 +25,16 @@ import com.thesis.note.recycler_view_adapters.NoteViewerAdapter
 import com.thesis.note.recycler_view_adapters.TagListAdapter
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.io.File
 import java.util.*
 
 /**
- *
  * Activity for viewing note.
  *
  * When creating [Intent] of this activity, you should put extended data with
  * putExtra("noteID", yourNoteID)
  *
  */
-//TODO tags saving
 class NoteViewerActivity : DrawerActivity() {
     /** This activity */
     private val thisActivity = this
@@ -45,16 +47,24 @@ class NoteViewerActivity : DrawerActivity() {
 
     /** Viewed [Note] id */
     var noteID: Int = -1
+
     /** Viewed [Note] */
     private lateinit var note: Note
+
     /** List of [Data] in [Note] */
     private lateinit var dataList: List<Data>
+
     /** List of all [Group] */
     private lateinit var groupsList: List<Group>
+
     /** List of all [Tag] */
     private lateinit var tagsList: List<Tag>
+
     /** List of [TagOfNote] */
     private lateinit var tagsOfNoteList: List<TagOfNote>
+
+    /** Current background color */
+    private var backgroundColor: NoteColor? = null
 
     /** On create callback */
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,7 +83,7 @@ class NoteViewerActivity : DrawerActivity() {
         //Save button listener
         binding.saveButton.setOnClickListener {
             GlobalScope.launch {
-                //Update list notes
+                //Update NoteType.List
                 updateListNotes()
                 //Save note name
                 note.Name = binding.noteName.text.toString()
@@ -87,7 +97,10 @@ class NoteViewerActivity : DrawerActivity() {
                 }
                 //update date
                 note.Date = Date()
-                //color saved in color change fragment listener
+                //color
+                note.Color = backgroundColor
+                //favorite
+                note.Favorite = binding.favoriteCheckBox.isChecked
                 //Update
                 db.noteDao().update(note)
                 //Close activity
@@ -104,6 +117,11 @@ class NoteViewerActivity : DrawerActivity() {
                 setPositiveButton(R.string.activity_note_viewer_dialog_remove_note_positive_button) { _, _ ->
                     GlobalScope.launch {
                         val db = AppDatabase(applicationContext)
+                        dataList.forEach {
+                            if(it.Type == NoteType.Recording || it.Type==NoteType.Image){
+                                try{ File(it.Content).delete() }catch(ex:Exception){}
+                            }
+                        }
                         db.noteDao().delete(note)
                         thisActivity.finish()
                     }
@@ -114,9 +132,64 @@ class NoteViewerActivity : DrawerActivity() {
             }.show()
         }
 
-        //TODO Share button listener
+        //Share button listener
         binding.shareButton.setOnClickListener {
-            Toast.makeText(applicationContext, R.string.not_implemented, Toast.LENGTH_SHORT).show()
+            val mainData = dataList.find { it.IdData == note.MainData }
+            when{
+                mainData == null -> {}
+                mainData.Type == NoteType.Text -> {
+                    Intent(Intent.ACTION_SEND).apply{
+                        type = "text/plain"
+                        putExtra(Intent.EXTRA_TEXT, mainData.Content)
+                        startActivity(Intent.createChooser(this, getString(R.string.activity_text_editor_share)))
+                        //startActivity(this)
+                    }
+                }
+                mainData.Type == NoteType.List -> {
+                    var noteContent = ""
+                    val listData = ListData().apply { loadData(mainData) }
+                    listData.itemsList.forEach {
+                        if(!it.checked){
+                            noteContent += "•" + it.text + "\r\n"
+                        }
+                    }
+                    Intent(Intent.ACTION_SEND).apply{
+                        type = "text/plain"
+                        putExtra(Intent.EXTRA_TEXT, noteContent)
+                        startActivity(Intent.createChooser(this, getString(R.string.activity_text_editor_share)))
+                        //startActivity(this)
+                    }
+                }
+                mainData.Type == NoteType.Image -> {
+                    Intent(Intent.ACTION_SEND).apply{
+                        type = "image/jpg"
+                        putExtra(Intent.EXTRA_STREAM,
+                            FileProvider.getUriForFile(
+                                thisActivity,
+                                "com.thesis.note.fileprovider",
+                                File(mainData.Content)
+                            )
+                        )
+                        startActivity(Intent.createChooser(this, getString(R.string.activity_image_note_share)))
+                        //startActivity(this)
+                    }
+                }
+                mainData.Type == NoteType.Recording -> {
+                    Intent(Intent.ACTION_SEND).apply{
+                        type = "*/*"
+                        putExtra(Intent.EXTRA_STREAM,
+                            FileProvider.getUriForFile(
+                                thisActivity,
+                                "com.thesis.note.fileprovider",
+                                File(mainData.Content)
+                            )
+                        )
+                        startActivity(Intent.createChooser(this, getString(R.string.activity_image_note_share)))
+                    //startActivity(this)
+                    }
+                }
+                else -> {}
+            }
         }
 
         //AddTagsDialogFragment result listener
@@ -139,10 +212,10 @@ class NoteViewerActivity : DrawerActivity() {
         //Color picker fragment listener
         supportFragmentManager.setFragmentResultListener("color", this) { _, bundle ->
             val result = bundle.getInt("colorID")
-            note.Color = NoteColorConverter().intToEnum(result)!!
+            backgroundColor = NoteColorConverter().intToEnum(result)
             binding.root.background = ResourcesCompat.getDrawable(
                 resources,
-                NoteColorConverter.enumToColor(note.Color),
+                NoteColorConverter.enumToColor(backgroundColor),
                 null
             )
         }
@@ -151,6 +224,17 @@ class NoteViewerActivity : DrawerActivity() {
         binding.backgroundColorButton.setOnClickListener {
             ColorPickerFragment(ColorPalette.NOTE_BACKGROUND_PALETTE).show(supportFragmentManager, "tag")
         }
+
+        //Add data button listener
+        binding.addButton.setOnClickListener {
+            AddNoteFragment(noteID).show(supportFragmentManager,"add_note")
+        }
+
+        //Favorite button listener
+        binding.favoriteCheckBox.setOnClickListener {
+                note.Favorite = binding.favoriteCheckBox.isChecked
+        }
+
     }
 
     /** On resume callback */
@@ -160,6 +244,7 @@ class NoteViewerActivity : DrawerActivity() {
         //Update data
         if(noteID != -1){
             GlobalScope.launch {
+                note = db.noteDao().getNoteById(noteID)
                 //load data form db
                 dataList = db.dataDao().getDataFromNote(noteID)
                 //set new data to recycler view
@@ -198,7 +283,7 @@ class NoteViewerActivity : DrawerActivity() {
                     }
                 }
                 NoteType.Recording.id -> {
-                    Intent(thisActivity, SoundEditorActivity::class.java).run{
+                    Intent(thisActivity, RecordingEditorActivity::class.java).run{
                         putExtra("noteID", noteID)
                         putExtra("dataID", dataList[position].IdData)
                         startActivity(this)
@@ -270,6 +355,8 @@ class NoteViewerActivity : DrawerActivity() {
         binding.noteName.text = Editable.Factory.getInstance().newEditable(note.Name)
         //Set date
         binding.noteDate.text = DateConverter().dateToString(note.Date)
+        //Set favorite
+        binding.favoriteCheckBox.isChecked = note.Favorite
         //Set spinner of groups
         binding.groupSpinner.adapter = ArrayAdapter(
             thisActivity,
@@ -301,6 +388,7 @@ class NoteViewerActivity : DrawerActivity() {
             adapter = viewAdapter
         }
         //Set background color
+        backgroundColor = note.Color
         binding.root.background = ResourcesCompat.getDrawable(
             resources,
             NoteColorConverter.enumToColor(note.Color),

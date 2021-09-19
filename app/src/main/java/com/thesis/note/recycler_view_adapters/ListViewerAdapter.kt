@@ -17,7 +17,7 @@ import com.thesis.note.databinding.RecyclerViewNoteViewerListItemBinding
 /**
  * [RecyclerView] adapter for lists in note viewer
  */
-open class ListViewerAdapter(private val listData: ListData)
+open class ListViewerAdapter(protected val listDataClass: ListData)
     :RecyclerView.Adapter<ListViewerAdapter.ListItemHolder>() {
 
     /**  */
@@ -61,12 +61,12 @@ open class ListViewerAdapter(private val listData: ListData)
     override fun onBindViewHolder(holder: ListItemHolder, position: Int) {
         val binding = RecyclerViewNoteViewerListItemBinding.bind(holder.objectLayout)
         //set text
-        binding.listItemText.text = listData.itemsList[position].text
+        binding.listItemText.text = listDataClass.itemsList[position].text
         //set checkbox
         with(binding.listItemCheckBox) {
-            isChecked = listData.itemsList[position].checked
+            isChecked = listDataClass.itemsList[position].checked
             setOnCheckedChangeListener { _, isChecked ->
-                listData.itemsList[position].checked = isChecked
+                listDataClass.itemsList[position].checked = isChecked
                 if (isChecked) {
                     binding.listItemText.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
                     binding.listItemText.setTextColor(
@@ -113,7 +113,7 @@ open class ListViewerAdapter(private val listData: ListData)
     }
 
     /**  */
-    override fun getItemCount() = listData.itemsList.size
+    override fun getItemCount() = listDataClass.itemsList.size
 
     /**  */
     fun attachItemTouchHelperToRecyclerView(recyclerView: RecyclerView) {
@@ -147,8 +147,7 @@ open class ListViewerAdapter(private val listData: ListData)
                 viewHolder.adapterPosition,
                 target.adapterPosition
             )
-            //TODO move to clearView
-            listData.moveListItem(viewHolder.adapterPosition, target.adapterPosition)
+            listDataClass.moveListItem(viewHolder.adapterPosition, target.adapterPosition)
             return true
         }
 
@@ -167,6 +166,6 @@ open class ListViewerAdapter(private val listData: ListData)
 
     /**  */
     fun getListData(): ListData {
-        return listData
+        return listDataClass
     }
 }

@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_text_editor_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:screenOrientation="portrait"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/content_frame"
@@ -46,7 +48,7 @@
                 android:layout_gravity="end"
                 android:layout_margin="4dp"
                 android:background="@drawable/ic_baseline_share"
-                android:contentDescription="@string/activity_list_editor_share"
+                android:contentDescription="@string/activity_list_editor_share_button"
                 />
 
         </androidx.appcompat.widget.Toolbar>
@@ -59,30 +61,20 @@
             android:text="@string/activity_list_editor_add_list_item"
             android:textAlignment="textStart"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerViewLayout"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
             tools:ignore="RtlHardcoded" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/recyclerViewLayout"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listRecyclerView"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:maxHeight="400dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+            app:layout_constraintTop_toBottomOf="@+id/addListItemButton">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/listRecyclerView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
+        </androidx.recyclerview.widget.RecyclerView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView

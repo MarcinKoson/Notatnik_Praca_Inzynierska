@@ -44,5 +44,4 @@ class ColorPickerFragment(private val colorList:List<NoteColor>):DialogFragment(
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
     }
-
 }

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_text_editor_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:screenOrientation="portrait">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/content_frame"
@@ -51,6 +51,16 @@
                 />
 
             <ImageButton
+                android:id="@+id/micButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_margin="4dp"
+                android:background="@drawable/ic_baseline_mic"
+                android:contentDescription="@string/activity_text_editor_mic"
+                />
+
+            <ImageButton
                 android:id="@+id/textColorButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -60,12 +70,12 @@
                 android:contentDescription="@string/activity_text_editor_text_color_button_description"
                 />
 
-            <ImageButton
-                android:id="@+id/textSizeButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <Spinner
+                android:id="@+id/textSizeSpinner"
                 android:layout_gravity="end"
-                android:background="@drawable/ic_baseline_format_size"
+                android:background="@drawable/frame_transparent"
+                android:layout_width="35dp"
+                android:layout_height="30dp"
                 android:contentDescription="@string/activity_text_editor_save_button_description"
                 android:layout_margin="4dp" />
 
@@ -74,7 +84,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="end"
-                android:background="@drawable/italic_text_checkbox"
+                android:background="@drawable/text_editor_italic_checkbox"
                 android:button="@null"
                 android:contentDescription="@string/activity_text_editor_italic_button_description"
                 android:layout_margin="4dp"
@@ -86,7 +96,7 @@
                 android:layout_height="30dp"
                 android:layout_gravity="end"
                 android:layout_margin="4dp"
-                android:background="@drawable/bold_text_checkbox"
+                android:background="@drawable/text_editor_bold_checkbox"
                 android:button="@null"
                 android:contentDescription="@string/activity_text_editor_bold_button_description"
                 />

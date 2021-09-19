@@ -2,25 +2,33 @@ package com.thesis.note.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.FileProvider
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.FileProvider.getUriForFile
+import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide
 import com.thesis.note.DrawerActivity
 import com.thesis.note.R
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.NoteColor
+import com.thesis.note.database.NoteColorConverter
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
 import com.thesis.note.databinding.ActivityImageNoteBinding
-import kotlinx.coroutines.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -47,14 +55,20 @@ class ImageNoteActivity : DrawerActivity()
     /** Edited [Note] id */
     private var noteID = -1
 
+    /** Edited [Note] */
+    private lateinit var editedNote: Note
+
     /** Edited [Data] id */
     private var dataID = -1
 
     /** Edited [Data] */
     private lateinit var editedData: Data
 
-    /** Current path of image */
-    private lateinit var currentImagePath: String
+    /** Image from camera*/
+    private var cameraImage : File? = null
+
+    /** Image from gallery*/
+    private var galleryImage : Bitmap? = null
 
     /** State of current loaded image */
     private var imageState = ImageState.NoImage
@@ -73,73 +87,91 @@ class ImageNoteActivity : DrawerActivity()
 
         //Save button listener
         binding.saveButton.setOnClickListener {
-            if(imageState == ImageState.NoImage){
-                Toast.makeText(applicationContext, R.string.activity_image_note_no_image, Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-            if(imageState == ImageState.NewGalleryImage || imageState == ImageState.NewCameraImage) {
-                if(imageState == ImageState.NewGalleryImage){
-                    saveImageFromGallery()
+            when(imageState){
+                ImageState.NoImage -> {
+                    Toast.makeText(applicationContext, R.string.activity_image_note_no_image, Toast.LENGTH_SHORT).show()
                 }
-                //save to DB
-                if (noteID == -1 && dataID == -1) {
-                    //create intent for note viewer
-                    val noteViewerActivityIntent = Intent(this, NoteViewerActivity::class.java)
-                    //create new Note and Data
-                    GlobalScope.launch {
-                        val newNoteID =
-                            db.noteDao().insertAll(Note(0, "", null, null, false, null, Date(), null,NoteColor.White))
-                        val newDataID = db.dataDao().insertAll(
-                            Data(
-                                0,
-                                newNoteID[0].toInt(),
-                                NoteType.Image,
-                                currentImagePath,
-                                null,
-                                null,null
-                            )
-                        )
-                        val newNote = db.noteDao().getNoteById(newNoteID[0].toInt())
-                        newNote.MainData = newDataID[0].toInt()
-                        db.noteDao().update(newNote)
-                        //open note
-                        noteViewerActivityIntent.putExtra("noteID", newNote.IdNote)
-                        startActivity(noteViewerActivityIntent)
-                    }
-                }else if (dataID == -1) {
-                    //create new Data
-                    GlobalScope.launch {
-                        db.dataDao().insertAll(Data(0, noteID, NoteType.Image, currentImagePath,null,null,null))
-                        db.noteDao().update(db.noteDao().getNoteById(noteID).also { it.Date = Date()})
-                    }
-                }else {
-                    //update Data
-                    GlobalScope.launch {
-                        val dataUpdate = db.dataDao().getDataById(dataID)
-                        dataUpdate.Content = currentImagePath
-                        dataUpdate.Info = null
-                        db.dataDao().update(dataUpdate)
-                        db.noteDao().update(db.noteDao().getNoteById(noteID).also { it.Date = Date()})
+                ImageState.OldImage -> {
+                    Toast.makeText(applicationContext, R.string.activity_image_save_OK, Toast.LENGTH_SHORT).show()
+                    finish()
+                }
+                ImageState.NewGalleryImage -> {
+                    try {
+                        saveImageToDB(createImageFile().also {
+                            FileOutputStream(it).run {
+                                galleryImage?.compress(Bitmap.CompressFormat.JPEG, 85, this)
+                                flush()
+                                close()
+                            }
+                        })
+                        Toast.makeText(applicationContext, R.string.activity_image_save_OK, Toast.LENGTH_SHORT).show()
+                        finish()
+                    }catch (ex : IOException){
+                        Toast.makeText(applicationContext, R.string.activity_image_save_ERROR, Toast.LENGTH_SHORT).show()
                     }
                 }
+                ImageState.NewCameraImage -> {
+                    cameraImage?.let { image -> saveImageToDB(image) }
+                    Toast.makeText(applicationContext, R.string.activity_image_save_OK, Toast.LENGTH_SHORT).show()
+                    finish()
+                }
             }
-            Toast.makeText(applicationContext, R.string.activity_image_save_OK, Toast.LENGTH_SHORT).show()
-            finish()
         }
 
-        //TODO Delete button listener
+        //Delete button listener
         binding.deleteButton.setOnClickListener {
-            Toast.makeText(applicationContext, R.string.not_implemented, Toast.LENGTH_SHORT).show()
+            AlertDialog.Builder(thisActivity).run{
+                setPositiveButton(R.string.activity_image_note_dialog_remove_note_positive_button) { _, _ ->
+                    if (dataID != -1){
+                        GlobalScope.launch {
+                            if (editedNote.MainData == editedData.IdData){
+                                with(db.dataDao().getDataFromNote(noteID).map { it.IdData }.toMutableList()){
+                                    remove(editedData.IdData)
+                                    if(size == 0)
+                                        editedNote.MainData = null
+                                    else
+                                        editedNote.MainData = this[0]
+                                    db.noteDao().update(editedNote)
+                                }
+                            }
+                            db.dataDao().delete(editedData)
+                            try{ File(editedData.Content).delete() }catch(ex:Exception){}
+                        }
+                    }
+                    finish()
+                }
+                setNegativeButton(R.string.activity_image_note_dialog_remove_note_negative_button) { _, _ -> }
+                setTitle(R.string.activity_image_note_dialog_remove_note)
+                create()
+            }.show()
         }
 
-        //TODO Share button listener
+        //Share button listener
         binding.shareButton.setOnClickListener {
-            Toast.makeText(applicationContext, R.string.not_implemented, Toast.LENGTH_SHORT).show()
+            when(imageState){
+                ImageState.NoImage ->{
+                    Toast.makeText(applicationContext, R.string.activity_image_note_no_image, Toast.LENGTH_SHORT).show()
+                }
+                ImageState.NewCameraImage->{
+                    Toast.makeText(applicationContext, R.string.activity_image_note_share_error, Toast.LENGTH_SHORT).show()
+                }
+                ImageState.NewGalleryImage ->{
+                    Toast.makeText(applicationContext, R.string.activity_image_note_share_error, Toast.LENGTH_SHORT).show()
+                }
+                ImageState.OldImage -> {
+                    Intent(Intent.ACTION_SEND).apply{
+                        type = "image/jpg"
+                        putExtra(Intent.EXTRA_STREAM,getUriForFile(thisActivity,"com.thesis.note.fileprovider", File(editedData.Content)))
+                        startActivity(Intent.createChooser(this, getString(R.string.activity_image_note_share)))
+                        //startActivity(this)
+                    }
+                }
+            }
         }
 
         //Open gallery button listener
         binding.openGalleryButton.setOnClickListener {
-            galleryStartForResult.launch(Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI))
+            galleryStartForResult.launch(Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI))
         }
 
         //Open camera button listener
@@ -149,11 +181,12 @@ class ImageNoteActivity : DrawerActivity()
                     val photoFile: File? = try {
                         createImageFile()
                     }catch (ex: IOException) {
-                        Toast.makeText(applicationContext, R.string.activity_image_note_error_create_file, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(thisActivity, R.string.activity_image_note_error_create_file, Toast.LENGTH_SHORT).show()
                         null
                     }
                     photoFile?.also {
-                        val photoURI: Uri = FileProvider.getUriForFile(this, "com.thesis.note.fileprovider", it)
+                        cameraImage = photoFile
+                        val photoURI: Uri = getUriForFile(this, "com.thesis.note.fileprovider", it)
                         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                         cameraStartForResult.launch(takePictureIntent)
                     }
@@ -168,17 +201,25 @@ class ImageNoteActivity : DrawerActivity()
         if(parameters != null){
             dataID = parameters.getInt("dataID")
             noteID = parameters.getInt("noteID")
-
         }
     }
 
     /** Load [Data] with id [dataID]  */
     private fun loadData(){
         GlobalScope.launch {
-            editedData = db.dataDao().getDataById(noteID)
-            runOnUiThread{
-                setImage(editedData.Content)
-                imageState = ImageState.OldImage
+            editedNote = db.noteDao().getNoteById(noteID)
+            if(dataID != -1){
+                editedData = db.dataDao().getDataById(dataID)
+                runOnUiThread{
+                    setImage(editedData.Content)
+                    imageState = ImageState.OldImage
+                    //Set background color
+                    binding.root.background = ResourcesCompat.getDrawable(
+                        resources,
+                        NoteColorConverter.enumToColor(editedNote.Color),
+                        null
+                    )
+                }
             }
         }
     }
@@ -189,11 +230,14 @@ class ImageNoteActivity : DrawerActivity()
         if (result.resultCode == Activity.RESULT_OK) {
             imageState = ImageState.NewGalleryImage
             //Handle loaded image from gallery
-            val imageUri = result.data?.data
-            currentImagePath = imageUri?.path!!
-            //TODO remove drop
-            currentImagePath = currentImagePath.drop(6)  //remove "/raw/" from path
-            setImage(currentImagePath)
+            result.data?.data?.let {
+                galleryImage =
+                    if (Build.VERSION.SDK_INT < 28)
+                        MediaStore.Images.Media.getBitmap(this.contentResolver, it)
+                    else
+                        ImageDecoder.decodeBitmap(ImageDecoder.createSource(this.contentResolver, it)).copy(Bitmap.Config.ARGB_8888, true)
+            }
+            galleryImage?.let { setImage(it) }
         }
     }
 
@@ -202,15 +246,11 @@ class ImageNoteActivity : DrawerActivity()
     { result: ActivityResult ->
         if (result.resultCode == Activity.RESULT_OK) {
             imageState = ImageState.NewCameraImage
-            //load image
-            setImage(currentImagePath)
+            cameraImage?.path?.let{ setImage(it)}
         }
-    }
-
-    /** Save image from gallery to external storage of this application */
-    private fun saveImageFromGallery(){
-        val originalFile = File(currentImagePath)
-        originalFile.copyTo(createImageFile(),true)
+        else{
+            Toast.makeText(applicationContext, R.string.activity_image_note_no_image, Toast.LENGTH_SHORT).show()
+        }
     }
 
     /** Create [File] for image with name containing current time stamp */
@@ -220,15 +260,58 @@ class ImageNoteActivity : DrawerActivity()
         val timeStamp: String = SimpleDateFormat("yyyy.MM.dd-HH:mm:ss", Locale.US).format(Date())
         val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File(storageDir, "image_${timeStamp}.jpg").apply {
-            currentImagePath = absolutePath
             createNewFile()
         }
     }
 
+    /** Save image into db */
+    private fun saveImageToDB(newImage: File){
+        when{
+            dataID != -1 -> {
+                //update
+                GlobalScope.launch {
+                    db.dataDao().update(db.dataDao().getDataById(dataID).apply { Content = newImage.path; Info = null })
+                    db.noteDao().update(editedNote.apply { Date = Date()})
+                }
+            }
+            noteID != -1 -> {
+                //add new data to db
+                GlobalScope.launch {
+                    val addedData = db.dataDao().insertAll(Data(0, noteID, NoteType.Image, newImage.path,null,null,null))
+                    db.noteDao().update(editedNote.apply { Date = Date(); if(MainData==null) MainData=addedData[0].toInt()})
+                }
+            }
+            else -> {
+                //create intent for note viewer
+                val noteViewerActivityIntent = Intent(this, NoteViewerActivity::class.java)
+                //create new Note and Data
+                GlobalScope.launch {
+                    val newNoteID = db.noteDao().insertAll(Note(0, "", null, null, false, null, Date(), null, NoteColor.White))
+                    val newDataID = db.dataDao().insertAll(Data(0, newNoteID[0].toInt(), NoteType.Image,newImage.path,null,null,null))
+                    db.noteDao().update(db.noteDao().getNoteById(newNoteID[0].toInt()).apply { MainData = newDataID[0].toInt() })
+                    //open note
+                    noteViewerActivityIntent.run {
+                        putExtra("noteID", newNoteID[0].toInt())
+                        startActivity(this)
+                    }
+                }
+            }
+        }
+    }
+
     /** Set image from given [path]. */
-    private fun setImage(path:String?){
+    private fun setImage(path: String){
         Glide.with(thisActivity)
             .load(path)
+            .fitCenter()
+            .placeholder(R.drawable.ic_loading)
+            .into(binding.chosenImage)
+    }
+
+    /** Set image from given [Bitmap]. */
+    private fun setImage(bitmap: Bitmap){
+        Glide.with(thisActivity)
+            .load(bitmap)
             .fitCenter()
             .placeholder(R.drawable.ic_loading)
             .into(binding.chosenImage)

@@ -13,13 +13,13 @@ Download latest release from https://github.com/MarcinKoson/Notatnik_Praca_Inzyn
 ## Features
 
 * Creating text notes
+  	* speech to text
+* Creating lists
 * Creating image notes
-* Adding, editing, removing groups and tags
-* Searching for notes
-* Creating audio notes
+	* from gallery
+	* with camera
+* Creating recordings  
+* Groups and tags
+* Searching notes
+* Sorting notes
 
-### To Do:
-
-* Integrate with Google Assistant
-* Speech-to-text
-* Widgets

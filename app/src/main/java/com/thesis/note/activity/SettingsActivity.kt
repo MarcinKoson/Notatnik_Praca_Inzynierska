@@ -1,56 +1,36 @@
 package com.thesis.note.activity
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.MenuItem
-import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
-import com.thesis.note.NavigationDrawer
-import com.google.android.material.navigation.NavigationView
-
-
+import com.thesis.note.DrawerActivity
 import com.thesis.note.R
 import com.thesis.note.databinding.ActivitySettingsBinding
+import com.thesis.note.fragment.SettingsFragment
 
-//TODO documentation
-class SettingsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-    lateinit var drawerLayout: DrawerLayout
-    lateinit var navigationDrawer : NavigationDrawer
+//TODO language changing
+//TODO Theme changing
+//TODO GUI settings
+
+/**
+ *
+ */
+class SettingsActivity : DrawerActivity() {
+
+    /** View binding */
+
     private lateinit var binding: ActivitySettingsBinding
 
+    /** On create callback */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySettingsBinding.inflate(layoutInflater) //LAYOUT BINDING CLASS
-        setContentView(binding.root)
-        drawerLayout = binding.activitySettingsLayout
-        navigationDrawer = NavigationDrawer(drawerLayout,supportFragmentManager)
-        binding.navigationView.setNavigationItemSelectedListener(this)
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
+        setDrawerLayout(binding.root,binding.toolbar,binding.navigationView)
 
-        val drawerToggle= ActionBarDrawerToggle(this,drawerLayout,binding.toolbar,R.string.abdt,R.string.abdt)
-        drawerLayout.addDrawerListener(drawerToggle)
-        drawerToggle.isDrawerIndicatorEnabled = true
-        drawerToggle.syncState()
-        //------------------------------------------------------------------------------------------
-        val groupsEditorIntent = Intent(this, GroupsEditorActivity::class.java)
-        binding.groupsEditor.setOnClickListener { startActivity(groupsEditorIntent) }
+        /*
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.settingsFragmentContainerView, SettingsFragment())
+            .commit()
+*/
 
-        val tagsEditorIntent = Intent(this, TagEditorActivity::class.java)
-        binding.tagsEditor.setOnClickListener { startActivity(tagsEditorIntent) }
-
-    }
-
-    override fun onNavigationItemSelected(menuItem: MenuItem): Boolean {
-        finish()
-        return navigationDrawer.onNavigationItemSelected(menuItem,this)
-    }
-
-    override fun onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
     }
 }

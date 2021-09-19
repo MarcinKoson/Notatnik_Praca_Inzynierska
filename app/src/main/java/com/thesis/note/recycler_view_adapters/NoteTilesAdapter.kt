@@ -8,20 +8,15 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getDrawable
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.thesis.note.Constants
 import com.thesis.note.R
-import com.thesis.note.database.AppDatabase
-import com.thesis.note.database.ListData
-import com.thesis.note.database.NoteColorConverter
-import com.thesis.note.database.NoteType
+import com.thesis.note.database.*
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
-import com.thesis.note.databinding.RecyclerViewNoteListTextBinding
-import com.thesis.note.databinding.RecyclerViewNoteTileImageBinding
-import com.thesis.note.databinding.RecyclerViewNoteTileListBinding
-import com.thesis.note.databinding.RecyclerViewNoteTileTextBinding
+import com.thesis.note.databinding.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -57,9 +52,8 @@ class NoteTilesAdapter (
 
     /**  */
     override fun getItemViewType(position: Int): Int {
-        //TODO test when note don't have main data
         val data = dataList.firstOrNull { v -> v.IdData == noteList[position].MainData }
-        return data?.Type?.id ?: 0
+        return data?.Type?.id ?: -1
     }
 
     /**  */
@@ -93,20 +87,18 @@ class NoteTilesAdapter (
                 )
             }
             NoteType.Recording.id -> {
-                //TODO layout for sound notes
                 NoteTilesViewHolder(
                     LayoutInflater.from(parent.context).inflate(
-                        R.layout.recycler_view_note_list_text,
+                        R.layout.recycler_view_note_tile_recording,
                         parent,
                         false
                     ) as ConstraintLayout, onNoteClickListener
                 )
             }
             else -> {
-                //TODO error handling
                 NoteTilesViewHolder(
                     LayoutInflater.from(parent.context).inflate(
-                        R.layout.recycler_view_note_list_text,
+                        R.layout.recycler_view_note_tile_text,
                         parent,
                         false
                     ) as ConstraintLayout, onNoteClickListener
@@ -121,7 +113,11 @@ class NoteTilesAdapter (
             NoteType.Text.id -> setTextTile(holder, position)
             NoteType.List.id -> setListTile(holder, position)
             NoteType.Image.id -> setImageTile(holder, position)
-            NoteType.Recording.id -> setSoundTile(holder, position)
+            NoteType.Recording.id -> setRecordingTile(holder, position)
+            else -> {
+                val binding = RecyclerViewNoteTileTextBinding.bind(holder.objectLayout)
+                setNoteInfo(holder,position,binding.root,binding.noteName,binding.favoriteCheckBox,binding.groupName)
+            }
         }
     }
 
@@ -144,7 +140,6 @@ class NoteTilesAdapter (
         //favorite
         favoriteCheckBox.isChecked = noteList[position].Favorite
         //set listener for favorite button
-        //TODO favorite check box colors
         favoriteCheckBox.setOnClickListener {
             noteList[position].Favorite = favoriteCheckBox.isChecked
             GlobalScope.launch {
@@ -179,8 +174,7 @@ class NoteTilesAdapter (
         when (mainData.Info) {
             "B" -> binding.noteContent.typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
             "I" -> binding.noteContent.typeface = Typeface.create(Typeface.DEFAULT, Typeface.ITALIC)
-            "BI" -> binding.noteContent.typeface =
-                Typeface.create(Typeface.DEFAULT, Typeface.BOLD_ITALIC)
+            "BI" -> binding.noteContent.typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD_ITALIC)
         }
         //note name size
         binding.noteName.textSize = mainData.Size?.toFloat()!!+5
@@ -213,35 +207,13 @@ class NoteTilesAdapter (
             .into(binding.noteContentImage)
     }
 
-    //TODO set sound tile
     /**  */
-    private fun setSoundTile(holder: NoteTilesViewHolder, position: Int) {
-        //get main data
-        //val mainData = dataList.firstOrNull { it.IdData == noteList[position].MainData }
-        val binding = RecyclerViewNoteListTextBinding.bind(holder.objectLayout)
-        //name, favorite, note type
-        binding.noteName.text = noteList[position].Name
-        binding.favoriteCheckBox.isChecked = noteList[position].Favorite
-        //checking group
-        if (noteList[position].GroupID != null)
-            GlobalScope.launch {
-                val groupName = AppDatabase(holder.objectLayout.context).groupDao()
-                    .getId(noteList[position].GroupID!!).Name
-                binding.groupName.text = groupName
-            }
-        //set listener for favorite button
-        binding.favoriteCheckBox.setOnClickListener(
-            fun(_: View) {
-                noteList[position].Favorite = binding.favoriteCheckBox.isChecked
-                GlobalScope.launch {
-                    AppDatabase(holder.objectLayout.context).noteDao()
-                        .update(noteList[position])
-                }
-            }
-        )
-        //set content
-        binding.noteContent.text = "RECORDING"
+    private fun setRecordingTile(holder: NoteTilesViewHolder, position: Int) {
+        val binding = RecyclerViewNoteTileRecordingBinding.bind(holder.objectLayout)
+        setNoteInfo(holder,position,binding.root,binding.noteName,binding.favoriteCheckBox,binding.groupName)
+        Glide.with(holder.itemView)
+            .load(getDrawable(holder.objectLayout.context,R.drawable.ic_baseline_music_note))
+            .fitCenter()
+            .into(binding.noteRecordingImage)
     }
-
-
-    }
+}

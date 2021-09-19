@@ -7,8 +7,6 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 
-//TODO navigation drawer behavior
-
 /**
  * Class for activity with drawer. It provide logic for drawer.
  * Inflate your layout, then run [setDrawerLayout]
@@ -20,7 +18,7 @@ abstract class DrawerActivity :
     lateinit var drawerLayout: DrawerLayout
 
     /** [NavigationDrawer] of your activity */
-    lateinit var navigationDrawer : NavigationDrawer
+    private lateinit var navigationDrawer : NavigationDrawer
 
     /** Set content and drawer for activity */
     fun setDrawerLayout(drawerLayout: DrawerLayout, toolbar: Toolbar, navigationView: NavigationView){

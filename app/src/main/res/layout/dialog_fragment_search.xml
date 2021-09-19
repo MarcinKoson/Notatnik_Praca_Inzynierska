@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/dialog_fragment_search_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -101,11 +102,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:text="@string/fragment_search_tags"
-        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/tag_Spinner"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/groupLabel" />
+        app:layout_constraintTop_toTopOf="@+id/tag_Spinner" />
 
     <TextView
         android:id="@+id/typeOfNoteLabel"
@@ -190,5 +190,15 @@
         app:layout_constraintEnd_toStartOf="@+id/dateMaxButton"
         app:layout_constraintStart_toEndOf="@+id/dateMinButton"
         app:layout_constraintTop_toTopOf="@+id/dateMaxButton" />
+
+    <Spinner
+        android:id="@+id/tag_Spinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tagsLabel"
+        app:layout_constraintTop_toBottomOf="@+id/group_Spinner" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

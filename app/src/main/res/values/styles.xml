@@ -1,11 +1,8 @@
 <resources>
-    <!-- TODO compare with themes -->
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+
+    <style name="FavoriteCheckBox">
+        <item name="android:background">@drawable/favorite_note_check_box</item>
+        <item name="android:button">?android:attr/listChoiceIndicatorMultiple</item>
     </style>
 
 </resources>

@@ -1,10 +1,17 @@
 package com.thesis.note.activity
 
+import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
+import android.speech.RecognizerIntent
 import android.text.Editable
+import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
@@ -18,6 +25,9 @@ import com.thesis.note.fragment.ColorPickerFragment
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
+import android.widget.AdapterView
+
+import android.widget.AdapterView.OnItemSelectedListener
 
 /**
  * Activity for text editing.
@@ -55,6 +65,9 @@ class TextEditorActivity : DrawerActivity() {
     /** */
     private var fontColor = NoteColor.Black
 
+    /** List of size of font */
+    val fontSizeList = listOf(8,12,16,21,25,27,30)
+
     /** On create callback */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,8 +99,8 @@ class TextEditorActivity : DrawerActivity() {
                 if (noteID != -1) {
                     //Add new data to database
                     GlobalScope.launch {
-                        db.dataDao().insertAll(Data(0, noteID, NoteType.Text, binding.editedText.text.toString(), getInfo(),fontSize,fontColor))
-                        db.noteDao().update(editedNote.apply { Date = Date()})
+                        val addedData = db.dataDao().insertAll(Data(0, noteID, NoteType.Text, binding.editedText.text.toString(), getInfo(),fontSize,fontColor))
+                        db.noteDao().update(editedNote.apply { Date = Date(); if(MainData==null) MainData=addedData[0].toInt()})
                     }
                 } else {
                     GlobalScope.launch {
@@ -111,14 +124,54 @@ class TextEditorActivity : DrawerActivity() {
             finish()
         }
 
-        //TODO Delete button listener
+        //Delete button listener
         binding.deleteButton.setOnClickListener {
-            Toast.makeText(applicationContext, R.string.not_implemented, Toast.LENGTH_SHORT).show()
+            AlertDialog.Builder(thisActivity).run{
+                setPositiveButton(R.string.activity_text_editor_dialog_remove_note_positive_button) { _, _ ->
+                    if (dataID != -1){
+                        GlobalScope.launch {
+                            if (editedNote.MainData == editedData.IdData){
+                                with(db.dataDao().getDataFromNote(noteID).map { it.IdData }.toMutableList()){
+                                    remove(editedData.IdData)
+                                    if(size == 0)
+                                        editedNote.MainData = null
+                                    else
+                                        editedNote.MainData = this[0]
+                                    db.noteDao().update(editedNote)
+                                }
+                            }
+                            db.dataDao().delete(editedData)
+                        }
+                    }
+                    finish()
+                }
+                setNegativeButton(R.string.activity_text_editor_dialog_remove_note_negative_button) { _, _ -> }
+                setTitle(R.string.activity_text_editor_dialog_remove_note)
+                create()
+            }.show()
         }
 
-        //TODO Share button listener
+        //Share button listener
         binding.shareButton.setOnClickListener {
-            Toast.makeText(applicationContext, R.string.not_implemented, Toast.LENGTH_SHORT).show()
+            Intent(Intent.ACTION_SEND).apply{
+                type = "text/plain"
+                putExtra(Intent.EXTRA_TEXT, editedData.Content)
+                startActivity(Intent.createChooser(this, getString(R.string.activity_text_editor_share)))
+                //startActivity(this)
+            }
+        }
+
+        //Speech to text button listener
+        binding.micButton.setOnClickListener {
+            Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+                putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+                putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+                try {
+                    startForResultSpeechToText.launch(this)
+                } catch (e: ActivityNotFoundException) {
+                    Toast.makeText(thisActivity, R.string.activity_text_editor_stt_error, Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         //Text color button listener
@@ -133,9 +186,19 @@ class TextEditorActivity : DrawerActivity() {
             binding.editedText.setTextColor(resources.getColor(NoteColorConverter.enumToColor(fontColor),null))
         }
 
-        //TODO Text size button listener
-        binding.textSizeButton.setOnClickListener {
-            Toast.makeText(applicationContext, R.string.not_implemented, Toast.LENGTH_SHORT).show()
+        //Text size spinner setup
+        binding.textSizeSpinner.apply {
+            adapter = ArrayAdapter(thisActivity, android.R.layout.simple_spinner_item, fontSizeList).apply {
+                setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            }
+            fontSizeList.indexOf(fontSize).let { if(it!=-1) setSelection(it) }
+            onItemSelectedListener = object : OnItemSelectedListener {
+                override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
+                    fontSize = fontSizeList[position]
+                    binding.editedText.textSize = fontSizeList[position].toFloat()
+                }
+                override fun onNothingSelected(parentView: AdapterView<*>?) {}
+            }
         }
 
         //Italic button listener
@@ -208,7 +271,10 @@ class TextEditorActivity : DrawerActivity() {
             if (bold) {
                 binding.boldTextButton.isChecked = true
             }
+
             binding.editedText.textSize = fontSize.toFloat()
+            fontSizeList.indexOf(fontSize).let { if(it!=-1 && binding.textSizeSpinner.adapter != null) binding.textSizeSpinner.setSelection(it) }
+
             binding.editedText.setTextColor(
                 resources.getColor(
                     NoteColorConverter.enumToColor(
@@ -282,6 +348,16 @@ class TextEditorActivity : DrawerActivity() {
     /** Set content into text edit */
     private fun setText(content: String?){
         binding.editedText.text = Editable.Factory.getInstance().newEditable(content)
+    }
+
+    /** Callback from speech to text */
+    private val startForResultSpeechToText = registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+    { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val resultArray = result.data!!.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+            val recognizedText = resultArray?.get(0)
+            binding.editedText.text = binding.editedText.text?.append(" $recognizedText")
+        }
     }
 
     /** Logic for back button */
