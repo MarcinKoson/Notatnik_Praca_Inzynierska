@@ -1,14 +1,19 @@
 package com.thesis.note
 
+import android.content.res.Configuration
+import android.os.Bundle
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.preference.PreferenceManager
 import com.google.android.material.navigation.NavigationView
+import java.util.*
 
 /**
  * Class for activity with drawer. It provide logic for drawer.
+ * It is setting layout and locale from settings in [onCreate].
  * Inflate your layout, then run [setDrawerLayout]
  */
 abstract class DrawerActivity :
@@ -34,6 +39,36 @@ abstract class DrawerActivity :
             isDrawerIndicatorEnabled = true
             syncState()
         }
+    }
+
+    /** On create callback */
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        //set theme
+        when(sharedPreferences.getString("theme", "")){
+            null -> setTheme(R.style.Theme_Note_Blue)
+            "blue" ->setTheme(R.style.Theme_Note_Blue)
+            "green" ->setTheme(R.style.Theme_Note_Green)
+            "orange" ->setTheme(R.style.Theme_Note_Orange)
+            "red" ->setTheme(R.style.Theme_Note_Red)
+        }
+        //set locale
+        when(sharedPreferences.getString("language", "")){
+            null -> { }
+            "pl" ->setLocale("pl")
+            "en" ->setLocale("en")
+        }
+    }
+
+    /** Set passed locale */
+    private fun setLocale(languageCode: String) {
+        val locale = Locale(languageCode)
+        Locale.setDefault(locale)
+        val config: Configuration = resources.configuration.also{
+            it.setLocale(locale)
+        }
+        this.resources.updateConfiguration(config, this.resources.displayMetrics)
     }
 
     /** Logic for back button */

@@ -2,5 +2,22 @@
 <androidx.preference.PreferenceScreen
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <ListPreference
+        app:key="theme"
+        app:title="@string/activity_settings_theme"
+        app:summary="@string/activity_settings_theme_summary"
+        app:dialogTitle="@string/activity_settings_theme_dialog"
+        app:entries="@array/themes"
+        app:entryValues="@array/themes_values"
+        />
+
+    <ListPreference
+        app:key="language"
+        app:title="@string/activity_settings_language"
+        app:summary="@string/activity_settings_language_summary"
+        app:dialogTitle="@string/activity_settings_language_dialog"
+        app:entries="@array/languages"
+        app:entryValues="@array/languages_values"
+        />
 
 </androidx.preference.PreferenceScreen>

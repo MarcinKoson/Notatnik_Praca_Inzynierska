@@ -138,5 +138,17 @@
     <string name="activity_note_viewer_sound_player_play">Graj</string>
     <string name="activity_note_viewer_sound_player_pause">Pauza</string>
     <string name="activity_note_viewer_sound_player_stop">Stop</string>
+    <string name="activity_settings_theme">Motyw</string>
+    <string name="activity_settings_theme_dialog">Wybierz motyw</string>
+    <string name="activity_settings_theme_summary">Wybierz motyw</string>
+    <string name="activity_settings_language">Język</string>
+    <string name="activity_settings_language_dialog">Wybierz język</string>
+    <string name="activity_settings_language_summary">Wybierz język</string>
+    <string name="array_themes_blue">Niebieski</string>
+    <string name="array_themes_green">Zielony</string>
+    <string name="array_themes_orange">Pomarańczowy</string>
+    <string name="array_themes_red">Czerwony</string>
+    <string name="array_languages_polish">Polski</string>
+    <string name="array_languages_english">Angielski</string>
 
 </resources>

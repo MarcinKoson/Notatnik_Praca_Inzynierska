@@ -53,6 +53,9 @@ class NavigationDrawer(val drawerLayout: DrawerLayout, private val supportFragme
             R.id.drawer_settings ->
             {
                 Intent(context,SettingsActivity::class.java).run{
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     context.startActivity(this)
                 }
             }
