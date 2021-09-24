@@ -1,7 +1,10 @@
 package com.thesis.note
 
+import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -9,6 +12,13 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.preference.PreferenceManager
 import com.google.android.material.navigation.NavigationView
+import com.thesis.note.activity.GroupsEditorActivity
+import com.thesis.note.activity.MainActivity
+import com.thesis.note.activity.SettingsActivity
+import com.thesis.note.activity.TagEditorActivity
+import com.thesis.note.fragment.AddNoteFragment
+import com.thesis.note.fragment.SearchFragment
+import com.thesis.note.test.DebugActivity
 import java.util.*
 
 /**
@@ -22,14 +32,10 @@ abstract class DrawerActivity :
     /** [DrawerLayout] of your activity */
     lateinit var drawerLayout: DrawerLayout
 
-    /** [NavigationDrawer] of your activity */
-    private lateinit var navigationDrawer : NavigationDrawer
-
     /** Set content and drawer for activity */
     fun setDrawerLayout(drawerLayout: DrawerLayout, toolbar: Toolbar, navigationView: NavigationView){
         this.drawerLayout = drawerLayout
         setContentView(drawerLayout)
-        navigationDrawer = NavigationDrawer(drawerLayout,supportFragmentManager)
         navigationView.setNavigationItemSelectedListener(navigationItemSelectedListener)
         ActionBarDrawerToggle(
             this,drawerLayout,toolbar,
@@ -38,6 +44,33 @@ abstract class DrawerActivity :
             drawerLayout.addDrawerListener(this)
             isDrawerIndicatorEnabled = true
             syncState()
+        }
+        //load navigation drawer settings
+        with(PreferenceManager.getDefaultSharedPreferences(this)){
+            navigationView.menu.findItem(R.id.favorites).also { item ->
+                with(this.getBoolean("navigation_drawer_favorites", true)) {
+                    item.isEnabled = this
+                    item.isVisible = this
+                }
+            }
+            navigationView.menu.findItem(R.id.add_note).also { item ->
+                with(this.getBoolean("navigation_drawer_add", true)) {
+                    item.isEnabled = this
+                    item.isVisible = this
+                }
+            }
+            navigationView.menu.findItem(R.id.groups).also { item ->
+                with(this.getBoolean("navigation_drawer_groups", true)) {
+                    item.isEnabled = this
+                    item.isVisible = this
+                }
+            }
+            navigationView.menu.findItem(R.id.tags).also { item ->
+                with(this.getBoolean("navigation_drawer_tags", true)) {
+                    item.isEnabled = this
+                    item.isVisible = this
+                }
+            }
         }
     }
 
@@ -82,6 +115,57 @@ abstract class DrawerActivity :
 
     /** Listener for item selected in [NavigationView] */
     private val navigationItemSelectedListener = NavigationView.OnNavigationItemSelectedListener{
-        navigationDrawer.onNavigationItemSelected(it,this)
+        onNavigationItemSelected(it,this)
     }
+
+    /** On navigation item selected */
+    private fun onNavigationItemSelected(menuItem: MenuItem, context: Context): Boolean {
+        when (menuItem.itemId) {
+            R.id.start ->{
+                Intent(context, MainActivity::class.java).run {
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    context.startActivity(this)
+                }
+            }
+            R.id.favorites -> {
+                Intent(context, MainActivity::class.java).run {
+                    putExtra("search", SearchFragment.SearchValues().let { it.favorite = true; it.toString() })
+                    context.startActivity(this)
+                }
+            }
+            R.id.add_note ->{
+                context.run {
+                    AddNoteFragment().show(supportFragmentManager,"add_note")
+                }
+            }
+            R.id.groups -> {
+                Intent(context, GroupsEditorActivity::class.java).run{
+                    context.startActivity(this)
+                }
+            }
+            R.id.tags -> {
+                Intent(context, TagEditorActivity::class.java).run{
+                    context.startActivity(this)
+                }
+            }
+            R.id.drawer_settings ->
+            {
+                Intent(context, SettingsActivity::class.java).run{
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    context.startActivity(this)
+                }
+            }
+            R.id.drawer_debug ->
+            {
+                Intent(context, DebugActivity::class.java).run {
+                    context.startActivity(this)
+                }
+            }
+        }
+        drawerLayout.closeDrawer(GravityCompat.START)
+        return true
+    }
+
 }
