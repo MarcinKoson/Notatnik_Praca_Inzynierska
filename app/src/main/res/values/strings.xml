@@ -122,7 +122,6 @@
 
     <string name="sound_player_time_zero" translatable="false">0:00</string>
 
-
     <string name="fragment_sort_notes_header">Sort notes</string>
     <string name="fragment_sort_notes_alphabetically">Alphabetically</string>
     <string name="fragment_sort_notes_data">Edition date</string>
@@ -162,13 +161,22 @@
     <string name="activity_label_delete">Delete</string>
     <string name="activity_label_add_label_hint">enter name</string>
 
-
     <string name="activity_settings_theme">Theme</string>
     <string name="activity_settings_theme_dialog">Choose theme</string>
     <string name="activity_settings_theme_summary">Choose theme of application</string>
     <string name="activity_settings_language">Language</string>
     <string name="activity_settings_language_dialog">Choose language</string>
     <string name="activity_settings_language_summary">Change language</string>
+    <string name="activity_settings_gui">GUI modification</string>
+    <string name="activity_settings_gui_summary">Show or hide elements of the interface</string>
+    <string name="activity_settings_navigation_drawer">Navigation drawer</string>
+    <string name="activity_settings_list_of_notes">List of notes</string>
+    <string name="activity_settings_add_note">Add note</string>
+    <string name="activity_settings_note_viewer">Note viewer</string>
+    <string name="activity_settings_text_editor">Text editor</string>
+    <string name="activity_settings_list_editor">List editor</string>
+    <string name="activity_settings_image_note">Image editor</string>
+    <string name="activity_settings_recorder">Recording editor</string>
 
     <string name="array_themes_blue">Blue</string>
     <string name="array_themes_green">Green</string>

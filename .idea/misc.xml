@@ -37,7 +37,24 @@
         <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/x_activity_test.xml" value="0.2" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.13333333333333333" />
         <entry key="..\:/Studia/Notatnik/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.13333333333333333" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/settings.xml" value="0.182518115942029" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/1.xml" value="0.15625" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/as.xml" value="0.15625" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/asdf.xml" value="0.15625" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/asdfqwer.xml" value="0.15625" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/asdghv.xml" value="0.15625" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/awd.xml" value="0.15625" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/axcv.xml" value="0.15625" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/sdf.xml" value="0.15625" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/settings.xml" value="0.1" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/settings_add_notes.xml" value="0.15625" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/settings_gui.xml" value="0.15625" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/settings_image_note.xml" value="0.15625" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/settings_list_editor.xml" value="0.15625" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/settings_main_activity.xml" value="0.15625" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/settings_navigation_drawer.xml" value="0.15625" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/settings_note_viewer.xml" value="0.15625" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/settings_recording_editor.xml" value="0.15625" />
+        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/settings_text_editor.xml" value="0.15625" />
       </map>
     </option>
   </component>

@@ -20,4 +20,10 @@
         app:entryValues="@array/languages_values"
         />
 
+    <Preference
+        app:fragment="com.thesis.note.settings.SettingsGuiFragment"
+        app:title="@string/activity_settings_gui"
+        app:summary="@string/activity_settings_gui_summary"
+    />
+
 </androidx.preference.PreferenceScreen>

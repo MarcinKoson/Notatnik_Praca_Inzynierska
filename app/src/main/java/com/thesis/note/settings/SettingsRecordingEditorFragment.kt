@@ -1,11 +1,11 @@
-package com.thesis.note.fragment
+package com.thesis.note.settings
 
 import android.os.Bundle
 import androidx.preference.PreferenceFragmentCompat
 import com.thesis.note.R
 
-class SettingsFragment : PreferenceFragmentCompat() {
+class SettingsRecordingEditorFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.settings, rootKey)
+        setPreferencesFromResource(R.xml.settings_recording_editor, rootKey)
     }
 }

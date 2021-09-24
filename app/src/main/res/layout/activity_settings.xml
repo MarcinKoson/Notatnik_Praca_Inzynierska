@@ -24,7 +24,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/settingsFragmentContainerView"
-            android:name="com.thesis.note.fragment.SettingsFragment"
+            android:name="com.thesis.note.settings.SettingsFragment"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"

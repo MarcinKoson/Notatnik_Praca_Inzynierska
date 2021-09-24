@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <SwitchPreference
+        app:key="navigation_drawer_favorites"
+        app:title="@string/drawer_menu_favorites"
+        />
+
+    <SwitchPreference
+        app:key="navigation_drawer_add"
+        app:title="@string/drawer_menu_add"
+        />
+
+    <SwitchPreference
+        app:key="navigation_drawer_groups"
+        app:title="@string/drawer_menu_groups"
+        />
+
+    <SwitchPreference
+        app:key="navigation_drawer_tags"
+        app:title="@string/drawer_menu_tags"
+        />
+
+</androidx.preference.PreferenceScreen>
