@@ -28,10 +28,11 @@ import java.util.*
 /**
  *  Activity for editing recording notes.
  *
- * When creating [Intent] of this activity, you should put extended data with
+ * When creating [Intent] of this activity, you can put extended data with
  * putExtra("noteID", yourNoteID) and putExtra("dataID", yourDataID).
- * If passed id equals "-1" activity interprets this as new data or new note.
- * Default value for [noteID] and [dataID] is "-1".
+ * Activity will load [Note] and [Data] with passed id.
+ * If passed id equals "0" activity interprets this as new data or new note.
+ * Default value for [noteID] and [dataID] is "0".
  *
  */
 class RecordingEditorActivity : DrawerActivity() {
@@ -44,17 +45,17 @@ class RecordingEditorActivity : DrawerActivity() {
     /** Database */
     lateinit var db: AppDatabase
 
-    /** Edited [Data] id */
-    private var dataID:Int = -1
-
-    /** Edited [Data] */
-    private var editedData : Data? = null
-
     /** Edited [Note] id */
-    private var noteID:Int = -1
+    private var noteID:Int = 0
 
     /** Edited [Note] */
     private var editedNote: Note? = null
+
+    /** Edited [Data] id */
+    private var dataID:Int = 0
+
+    /** Edited [Data] */
+    private var editedData: Data? = null
 
     /** Current [SoundPlayer]*/
     private lateinit var soundPlayer : SoundPlayer
@@ -62,7 +63,7 @@ class RecordingEditorActivity : DrawerActivity() {
     /** Current [SoundRecorder] */
     private lateinit var soundRecorder: SoundRecorder
 
-    /** On create callback */
+    /**  Loading data, layout init and setting listeners. */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRecordingEditorBinding.inflate(layoutInflater)
@@ -71,43 +72,10 @@ class RecordingEditorActivity : DrawerActivity() {
         loadParameters()
         GlobalScope.launch {
             loadData()
-            setSoundPlayerIsEnabled(false)
-            soundPlayer = SoundPlayer(thisActivity).apply {
-                currentPositionTextView = binding.soundPlayerTimeNow
-                durationTextView = binding.soundPlayerAllTime
-                handler = Handler(Looper.getMainLooper())
-                editedData?.Content?.let { setSoundPlayerIsEnabled(openFile(it)) }
-                binding.soundPlayerPlayButton.setOnClickListener { play() }
-                binding.soundPlayerPauseButton.setOnClickListener { pause() }
-                binding.soundPlayerStopButton.setOnClickListener { stop() }
-                onStartPlayingListener = { setSoundRecorderIsEnabled(false) }
-                onEndPlayingListener = { setSoundRecorderIsEnabled(true) }
-                onPausePlayingListener = { setSoundRecorderIsEnabled(true) }
-            }
-            soundRecorder = SoundRecorder(thisActivity).apply {
-                filePath = createFile().absolutePath
-                durationTextView = binding.soundRecorderTimeNow
-                handler = Handler(Looper.getMainLooper())
-                binding.soundRecorderRecordButton.setOnClickListener { if(isWorking) stopRecording() else startRecording() }
-                binding.soundRecorderCancelButton.setOnClickListener { cancelRecording() }
-                onStartRecordingListener = {
-                    setSoundPlayerIsEnabled(false)
-                    binding.soundRecorderRecordButton.setBackgroundResource(R.drawable.ic_baseline_check)
-                }
-                onStopRecordingListener = { filePath ->
-                    filePath?.let{setSoundPlayerIsEnabled(soundPlayer.openFile(it))}
-                    binding.soundRecorderRecordButton.setBackgroundResource(R.drawable.ic_baseline_fiber_manual_record)
-                }
-                onCancelRecordingListener = {
-                    if(editedData==null){
-                        soundPlayer.closeFile()
-                        setSoundPlayerIsEnabled(false)
-                    }
-                    else{
-                        editedData?.Content?.let { setSoundPlayerIsEnabled(soundPlayer.openFile(it))}
-                    }
-                    binding.soundRecorderRecordButton.setBackgroundResource(R.drawable.ic_baseline_fiber_manual_record)
-                }
+            runOnUiThread {
+                setSoundPlayerIsEnabled(false)
+                initSoundPlayer()
+                initSoundRecorder()
             }
         }
 
@@ -123,7 +91,7 @@ class RecordingEditorActivity : DrawerActivity() {
                 soundPlayer.filePath == "" -> {
                     Toast.makeText(applicationContext, R.string.activity_recording_editor_no_recording, Toast.LENGTH_SHORT).show()
                 }
-                dataID != -1 -> {
+                dataID != 0 -> {
                     //update
                     GlobalScope.launch {
                         db.dataDao().update(db.dataDao().getDataById(dataID).apply {
@@ -134,7 +102,7 @@ class RecordingEditorActivity : DrawerActivity() {
                     Toast.makeText(applicationContext, R.string.activity_recording_editor_save_OK, Toast.LENGTH_SHORT).show()
                     finish()
                 }
-                noteID != -1 -> {
+                noteID != 0 -> {
                     //add new data to db
                     GlobalScope.launch {
                         db.dataDao().insertAll(Data(0, noteID, NoteType.Recording, soundPlayer.filePath ?:"", null,null,null))
@@ -168,7 +136,7 @@ class RecordingEditorActivity : DrawerActivity() {
         binding.deleteButton.setOnClickListener {
             AlertDialog.Builder(thisActivity).run{
                 setPositiveButton(R.string.activity_recording_editor_dialog_remove_note_positive_button) { _, _ ->
-                    if (dataID != -1){
+                    if (dataID != 0){
                         GlobalScope.launch {
                             if (editedNote?.MainData == editedData?.IdData){
                                 with(db.dataDao().getDataFromNote(noteID).map { it.IdData }.toMutableList()){
@@ -224,7 +192,7 @@ class RecordingEditorActivity : DrawerActivity() {
         }
     }
 
-    /** On pause callback */
+    /** On pause callback. Releasing [soundPlayer] and [soundRecorder] */
     override fun onPause() {
         super.onPause()
         soundPlayer.release()
@@ -249,7 +217,55 @@ class RecordingEditorActivity : DrawerActivity() {
             editedNote = db.noteDao().getNoteById(noteID)
             runOnUiThread{
                 //Set background color
-                binding.root.background = ResourcesCompat.getDrawable(resources, NoteColorConverter.enumToColor(editedNote?.Color), null)
+                editedNote?.Color?.let {
+                    binding.root.background =
+                        ResourcesCompat.getDrawable(resources, NoteColorConverter.enumToColor(it), null)
+                }
+            }
+        }
+    }
+
+    /** Create new [SoundPlayer] and bind it with gui */
+    private fun initSoundPlayer(){
+        soundPlayer = SoundPlayer(thisActivity).apply {
+            currentPositionTextView = binding.soundPlayerTimeNow
+            durationTextView = binding.soundPlayerAllTime
+            handler = Handler(Looper.getMainLooper())
+            editedData?.Content?.let { setSoundPlayerIsEnabled(openFile(it)) }
+            binding.soundPlayerPlayButton.setOnClickListener { play() }
+            binding.soundPlayerPauseButton.setOnClickListener { pause() }
+            binding.soundPlayerStopButton.setOnClickListener { stop() }
+            onStartPlayingListener = { setSoundRecorderIsEnabled(false) }
+            onEndPlayingListener = { setSoundRecorderIsEnabled(true) }
+            onPausePlayingListener = { setSoundRecorderIsEnabled(true) }
+        }
+    }
+
+    /** Create new [SoundRecorder] and bind it with gui */
+    private fun initSoundRecorder(){
+        soundRecorder = SoundRecorder(thisActivity).apply {
+            filePath = createFile().absolutePath
+            durationTextView = binding.soundRecorderTimeNow
+            handler = Handler(Looper.getMainLooper())
+            binding.soundRecorderRecordButton.setOnClickListener { if(isWorking) stopRecording() else startRecording() }
+            binding.soundRecorderCancelButton.setOnClickListener { cancelRecording() }
+            onStartRecordingListener = {
+                setSoundPlayerIsEnabled(false)
+                binding.soundRecorderRecordButton.setBackgroundResource(R.drawable.ic_baseline_check)
+            }
+            onStopRecordingListener = { filePath ->
+                filePath?.let{setSoundPlayerIsEnabled(soundPlayer.openFile(it))}
+                binding.soundRecorderRecordButton.setBackgroundResource(R.drawable.ic_baseline_fiber_manual_record)
+            }
+            onCancelRecordingListener = {
+                if(editedData==null){
+                    soundPlayer.closeFile()
+                    setSoundPlayerIsEnabled(false)
+                }
+                else{
+                    editedData?.Content?.let { setSoundPlayerIsEnabled(soundPlayer.openFile(it))}
+                }
+                binding.soundRecorderRecordButton.setBackgroundResource(R.drawable.ic_baseline_fiber_manual_record)
             }
         }
     }
@@ -261,14 +277,14 @@ class RecordingEditorActivity : DrawerActivity() {
         return File.createTempFile("audio_${timeStamp}_", ".amr", storageDir).apply { createNewFile() }
     }
 
-    /** Sound Player GUI */
+    /** Set if Sound Player GUI is enabled */
     private fun setSoundPlayerIsEnabled(value:Boolean){
         binding.soundPlayerPlayButton.isEnabled = value
         binding.soundPlayerPauseButton.isEnabled = value
         binding.soundPlayerStopButton.isEnabled = value
     }
 
-    /** Sound Recorder GUI */
+    /** Set if Sound Recorder GUI is enabled */
     private fun setSoundRecorderIsEnabled(value:Boolean){
         binding.soundRecorderRecordButton.isEnabled = value
         binding.soundRecorderCancelButton.isEnabled = value

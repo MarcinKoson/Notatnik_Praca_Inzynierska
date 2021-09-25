@@ -16,9 +16,6 @@ class SettingsActivity : DrawerActivity(),  PreferenceFragmentCompat.OnPreferenc
     /** View binding */
     private lateinit var binding: ActivitySettingsBinding
 
-    /** Shared preferences */
-    private lateinit var sharedPreferences: SharedPreferences
-
     /** On create callback */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.MutableLiveData
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import com.thesis.note.SortNotesType
 import com.thesis.note.database.AppDatabase
@@ -25,18 +24,20 @@ import java.util.*
 /**
  *  Main activity of application. It opens on application start.
  *
- *  You can pass extended data [SearchFragment.SearchValues]
+ *  You can pass extended data of [SearchFragment.SearchValues]
  *  with putExtra("search", yourSearchValues.toString())
  */
 class MainActivity : DrawerActivity(), SearchFragment.SearchInterface
 {
     /** This activity */
     private val thisActivity = this
+
     /** View binding */
     lateinit var binding: ActivityMainBinding
 
     /** Database */
     lateinit var db: AppDatabase
+
     /** List of all notes */
     private lateinit var listOfNotes: List<Note>
     /** List of displayed notes */
@@ -57,7 +58,7 @@ class MainActivity : DrawerActivity(), SearchFragment.SearchInterface
     /** Current search values */
     private var currentSearchValues: SearchFragment.SearchValues? = null
 
-    /** On create callback */
+    /** On create callback. Layout init and setting listeners. */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -104,7 +105,7 @@ class MainActivity : DrawerActivity(), SearchFragment.SearchInterface
         }
     }
 
-    /** On resume callback */
+    /** On resume callback. Loads data from database. */
     override fun onResume() {
         super.onResume()
         GlobalScope.launch {
@@ -284,25 +285,22 @@ class MainActivity : DrawerActivity(), SearchFragment.SearchInterface
 
     /** Load settings related to this activity */
     private fun loadSettings(){
-        //load settings
-        with(PreferenceManager.getDefaultSharedPreferences(thisActivity)){
-            binding.floatingActionButton.also { item ->
-                with(this.getBoolean("main_activity_add", true)) {
-                    item.isEnabled = this
-                    item.visibility = if(this) View.VISIBLE else View.GONE
-                }
+        binding.floatingActionButton.also { item ->
+            with(sharedPreferences.getBoolean("main_activity_add", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
             }
-            binding.searchButton.also { item ->
-                with(this.getBoolean("main_activity_search", true)) {
-                    item.isEnabled = this
-                    item.visibility = if(this) View.VISIBLE else View.GONE
-                }
+        }
+        binding.searchButton.also { item ->
+            with(sharedPreferences.getBoolean("main_activity_search", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
             }
-            binding.sortButton.also { item ->
-                with(this.getBoolean("main_activity_sort", true)) {
-                    item.isEnabled = this
-                    item.visibility = if(this) View.VISIBLE else View.GONE
-                }
+        }
+        binding.sortButton.also { item ->
+            with(sharedPreferences.getBoolean("main_activity_sort", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
             }
         }
     }

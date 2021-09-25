@@ -45,7 +45,7 @@ class NoteViewerActivity : DrawerActivity() {
     lateinit var db: AppDatabase
 
     /** Viewed [Note] id */
-    var noteID: Int = -1
+    var noteID: Int = 0
 
     /** Viewed [Note] */
     private lateinit var note: Note
@@ -65,7 +65,7 @@ class NoteViewerActivity : DrawerActivity() {
     /** Current background color */
     private var backgroundColor: NoteColor? = null
 
-    /** On create callback */
+    /** On create callback. Layout init and setting listeners */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNoteViewerBinding.inflate(layoutInflater)
@@ -73,7 +73,7 @@ class NoteViewerActivity : DrawerActivity() {
         //------------------------------------------------------------------------------------------
         db = AppDatabase(this)
         loadParameters()
-        if(noteID != -1) {
+        if(noteID != 0) {
             GlobalScope.launch {
                 loadNote()
                 setNote()
@@ -236,12 +236,12 @@ class NoteViewerActivity : DrawerActivity() {
 
     }
 
-    /** On resume callback */
+    /** On resume callback. Loads data from database. */
     @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
         super.onResume()
         //Update data
-        if(noteID != -1){
+        if(noteID != 0){
             GlobalScope.launch {
                 note = db.noteDao().getNoteById(noteID)
                 //load data form db
@@ -397,8 +397,8 @@ class NoteViewerActivity : DrawerActivity() {
 
     /** Logic for back button */
     override fun onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
+        if (binding.root.isDrawerOpen(GravityCompat.START)) {
+            binding.root.closeDrawer(GravityCompat.START)
         } else {
             AlertDialog.Builder(thisActivity).run{
                 setPositiveButton(R.string.activity_note_viewer_discard_changes_positive) { _, _ ->

@@ -25,7 +25,7 @@ import com.thesis.note.databinding.DialogFragmentAddNoteBinding
  *  It checks if all needed permissions are granted
  *  and if not it asks user for them
  */
-class AddNoteFragment(val noteID:Int = -1):DialogFragment(), ActivityCompat.OnRequestPermissionsResultCallback{
+class AddNoteFragment(val noteID:Int = 0):DialogFragment(), ActivityCompat.OnRequestPermissionsResultCallback{
 
     /** View binding */
     private lateinit var binding: DialogFragmentAddNoteBinding
@@ -69,7 +69,7 @@ class AddNoteFragment(val noteID:Int = -1):DialogFragment(), ActivityCompat.OnRe
         binding.addTextNote.setOnClickListener{
             startActivity(Intent(requireContext(), TextEditorActivity::class.java).apply{
                 putExtra("noteID", noteID)
-                putExtra("dataID", -1)
+                putExtra("dataID", 0)
             })
             dismiss()
         }
@@ -77,7 +77,7 @@ class AddNoteFragment(val noteID:Int = -1):DialogFragment(), ActivityCompat.OnRe
         binding.addListNote.setOnClickListener{
             startActivity(Intent(requireContext(), ListEditorActivity::class.java).apply{
                 putExtra("noteID", noteID)
-                putExtra("dataID", -1)
+                putExtra("dataID", 0)
             })
             dismiss()
         }
@@ -115,7 +115,7 @@ class AddNoteFragment(val noteID:Int = -1):DialogFragment(), ActivityCompat.OnRe
     private fun launchImageNote(){
         startActivity(Intent(this.context, ImageNoteActivity::class.java).apply{
             putExtra("noteID", noteID)
-            putExtra("dataID", -1)
+            putExtra("dataID", 0)
         })
         dismiss()
     }
@@ -147,7 +147,7 @@ class AddNoteFragment(val noteID:Int = -1):DialogFragment(), ActivityCompat.OnRe
     private fun launchSoundNote(){
         startActivity(Intent(this.context, RecordingEditorActivity::class.java).apply{
             putExtra("noteID", noteID)
-            putExtra("dataID", -1)
+            putExtra("dataID", 0)
         })
         dismiss()
     }

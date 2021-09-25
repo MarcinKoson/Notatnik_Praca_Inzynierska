@@ -25,16 +25,18 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 import android.widget.AdapterView
-
 import android.widget.AdapterView.OnItemSelectedListener
+import com.thesis.note.Constants
 
 /**
  * Activity for text editing.
  *
- * When creating [Intent] of this activity, you should put extended data with
+ * When creating [Intent] of this activity, you can put extended data with
  * putExtra("noteID", yourNoteID) and putExtra("dataID", yourDataID).
- * If passed id equals "-1" activity interprets this as new data or new note.
- * Default value for [noteID] and [dataID] is "-1".
+ * Activity will load [Note] and [Data] with passed id.
+ * If passed id equals "0" activity interprets this as new data or new note.
+ * Default value for [noteID] and [dataID] is "0".
+ *
  */
 class TextEditorActivity : DrawerActivity() {
     /** This activity */
@@ -46,28 +48,34 @@ class TextEditorActivity : DrawerActivity() {
     /** Database */
     lateinit var db: AppDatabase
 
-    /** Edited [Data] id */
-    private var dataID:Int = -1
-    /** Edited [Data] */
-    private lateinit var editedData: Data
-    /** Edited [Note]  id */
-    private var noteID:Int = -1
-    /** Edited [Note] */
-    private lateinit var editedNote: Note
+    /** Edited [Note] id */
+    private var noteID:Int = 0
 
-    /** */
+    /** Edited [Note] */
+    private var editedNote: Note? = null
+
+    /** Edited [Data] id */
+    private var dataID:Int = 0
+
+    /** Edited [Data] */
+    private var editedData: Data? = null
+
+    /** Is current text italic */
     private var italic = false
-    /** */
+
+    /** Is current text bold */
     private var bold = false
-    /** */
-    private var fontSize = 16
-    /** */
+
+    /** Current font size */
+    private var fontSize : Int = Constants.TEXT_SIZE_SMALL.toInt()
+
+    /** Current font color */
     private var fontColor = NoteColor.Black
 
     /** List of size of font */
     val fontSizeList = listOf(8,12,16,21,25,27,30)
 
-    /** On create callback */
+    /** On create callback. Loading data, layout init and setting listeners */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTextEditorLayoutBinding.inflate(layoutInflater)
@@ -75,43 +83,48 @@ class TextEditorActivity : DrawerActivity() {
         db = AppDatabase.invoke(this)
         loadParameters()
         GlobalScope.launch {
-            loadData()
+            loadFromDB()
             runOnUiThread {
-                setData()
+                setLayout()
             }
         }
 
         //Save button listener
         binding.saveButton.setOnClickListener {
-            if (dataID != -1) {
-                //Update data
-                GlobalScope.launch {
-                    db.dataDao().update(editedData.apply{
-                        Content = binding.editedText.text.toString()
-                        Info = getInfo()
-                        Color = fontColor
-                        Size = fontSize
-                    })
-                    db.noteDao().update(editedNote.apply { Date = Date()})
+            when {
+                dataID != 0 -> {
+                    //update
+                    GlobalScope.launch {
+                        editedData?.apply{
+                            Content = binding.editedText.text.toString()
+                            Info = getInfo()
+                            Color = fontColor
+                            Size = fontSize
+                        }?.let { it1 -> db.dataDao().update(it1) }
+                        editedNote?.apply { Date = Date()}?.let { it1 -> db.noteDao().update(it1) }
+                    }
                 }
-            } else {
-                if (noteID != -1) {
-                    //Add new data to database
+                noteID != 0 -> {
+                    //add new data to db
                     GlobalScope.launch {
                         val addedData = db.dataDao().insertAll(Data(0, noteID, NoteType.Text, binding.editedText.text.toString(), getInfo(),fontSize,fontColor))
-                        db.noteDao().update(editedNote.apply { Date = Date(); if(MainData==null) MainData=addedData[0].toInt()})
+                        editedNote?.apply { Date = Date(); if(MainData==null) MainData=addedData[0].toInt()}?.let { it1 ->
+                            db.noteDao().update(it1)
+                        }
                     }
-                } else {
+                }
+                else -> {
+                    //add new note
                     GlobalScope.launch {
                         //add new note
-                        val idNewNote =
-                            db.noteDao().insertAll(Note(0, "", null, null, false, null, Date(), null, NoteColor.White))
-                        noteID = idNewNote[0].toInt()
+                        db.noteDao().insertAll(Note(0, "", null, null, false, null, Date(), null, NoteColor.White)).also {
+                            noteID = it[0].toInt()
+                        }
                         //add new data
-                        val newDataID = db.dataDao().insertAll(Data(0, noteID, NoteType.Text, binding.editedText.text.toString(), getInfo(),fontSize,fontColor))
-                        dataID = newDataID[0].toInt()
-                        editedNote = db.noteDao().getNoteById(noteID)
-                        db.noteDao().update(editedNote.apply { MainData = dataID })
+                        db.dataDao().insertAll(Data(0, noteID, NoteType.Text, binding.editedText.text.toString(), getInfo(),fontSize,fontColor)).also {
+                            dataID = it[0].toInt()
+                            db.noteDao().update(db.noteDao().getNoteById(noteID).apply{ MainData = dataID })
+                        }
                         //open new note
                         runOnUiThread {
                             thisActivity.startActivity(Intent(thisActivity, NoteViewerActivity::class.java).apply{putExtra("noteID", noteID)})
@@ -127,19 +140,19 @@ class TextEditorActivity : DrawerActivity() {
         binding.deleteButton.setOnClickListener {
             AlertDialog.Builder(thisActivity).run{
                 setPositiveButton(R.string.activity_text_editor_dialog_remove_note_positive_button) { _, _ ->
-                    if (dataID != -1){
+                    if (dataID != 0){
                         GlobalScope.launch {
-                            if (editedNote.MainData == editedData.IdData){
+                            if (editedNote?.MainData == dataID){
                                 with(db.dataDao().getDataFromNote(noteID).map { it.IdData }.toMutableList()){
-                                    remove(editedData.IdData)
+                                    remove(dataID)
                                     if(size == 0)
-                                        editedNote.MainData = null
+                                        editedNote!!.MainData = null
                                     else
-                                        editedNote.MainData = this[0]
-                                    db.noteDao().update(editedNote)
+                                        editedNote!!.MainData = this[0]
+                                    db.noteDao().update(editedNote!!)
                                 }
                             }
-                            db.dataDao().delete(editedData)
+                            editedData?.let { it1 -> db.dataDao().delete(it1) }
                         }
                     }
                     finish()
@@ -154,7 +167,7 @@ class TextEditorActivity : DrawerActivity() {
         binding.shareButton.setOnClickListener {
             Intent(Intent.ACTION_SEND).apply{
                 type = "text/plain"
-                putExtra(Intent.EXTRA_TEXT, editedData.Content)
+                putExtra(Intent.EXTRA_TEXT, editedData?.Content)
                 startActivity(Intent.createChooser(this, getString(R.string.activity_text_editor_share)))
                 //startActivity(this)
             }
@@ -225,55 +238,56 @@ class TextEditorActivity : DrawerActivity() {
     /** Load parameters passed from another activity */
     private fun loadParameters() {
         val parameters = intent.extras
-        if (parameters == null) {
-            Toast.makeText(
-                applicationContext,
-                R.string.activity_text_editor_error_parameters,
-                Toast.LENGTH_SHORT
-            ).show()
-        } else {
+        if (parameters != null) {
             dataID = parameters.getInt("dataID")
             noteID = parameters.getInt("noteID")
         }
     }
 
-    /** Load [Note] with id [noteID] and [Data] with id [dataID]  */
-    private fun loadData(){
-        if(dataID != -1){
-            editedData = db.dataDao().getDataById(dataID)
-            fontSize = editedData.Size!!
-            fontColor = editedData.Color!!
-            when(editedData.Info){
-                "B" -> bold = true
-                "I" -> italic = true
-                "BI" -> {
-                    bold = true
-                    italic = true}
-            }
-        }
-        if(noteID != -1){
+    /** Load [Data] and [Note] form database. Load [bold], [italic], [fontColor], [fontSize] from [Data] */
+    private fun loadFromDB() {
+        if (noteID != 0) {
             editedNote = db.noteDao().getNoteById(noteID)
+        }
+        if (dataID != 0) {
+            editedData = db.dataDao().getDataById(dataID)
+            editedData?.let {
+                it.Size?.let {size -> fontSize = size}
+                it.Color?.let { color -> fontColor = color}
+                when(it.Info){
+                    "B" -> bold = true
+                    "I" -> italic = true
+                    "BI" -> {
+                        bold = true
+                        italic = true}
+                }
+            }
+            if (noteID == 0) {
+                noteID = editedData?.NoteId?:0
+                editedNote = db.noteDao().getNoteById(noteID)
+            }
         }
     }
 
-    /** Set loaded [Data] into layout */
-    private fun setData(){
-        if(dataID != -1) {
+    /** Set loaded [Data] and [Note] into layout */
+    private fun setLayout(){
+        if(dataID != 0) {
             //show data in textField
-            setText(editedData.Content)
-            //load graphic options
+            editedData?.Content?.let { setText(it) }
+            //set italic text
             setItalicText(italic)
             if (italic) {
                 binding.italicTextButton.isChecked = true
             }
+            //set bold text
             setBoldText(bold)
             if (bold) {
                 binding.boldTextButton.isChecked = true
             }
-
+            //set font size
             binding.editedText.textSize = fontSize.toFloat()
             fontSizeList.indexOf(fontSize).let { if(it!=-1 && binding.textSizeSpinner.adapter != null) binding.textSizeSpinner.setSelection(it) }
-
+            //set font color
             binding.editedText.setTextColor(
                 resources.getColor(
                     NoteColorConverter.enumToColor(
@@ -281,12 +295,11 @@ class TextEditorActivity : DrawerActivity() {
                     ), null
                 )
             )
-            //set background
-            binding.editedText.background = ResourcesCompat.getDrawable(
-                resources,
-                NoteColorConverter.enumToColor(editedNote.Color),
-                null
-            )
+            //TODO set background
+            editedNote?.Color?.let {
+                binding.root.background =
+                    ResourcesCompat.getDrawable(resources, NoteColorConverter.enumToColor(it), null)
+            }
         }
     }
 
@@ -345,7 +358,7 @@ class TextEditorActivity : DrawerActivity() {
     }
 
     /** Set content into text edit */
-    private fun setText(content: String?){
+    private fun setText(content: String){
         binding.editedText.text = Editable.Factory.getInstance().newEditable(content)
     }
 
@@ -359,10 +372,10 @@ class TextEditorActivity : DrawerActivity() {
         }
     }
 
-    /** Logic for back button */
+    /** Logic for back button. Show discard changes dialog */
     override fun onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
+        if (binding.root.isDrawerOpen(GravityCompat.START)) {
+            binding.root.closeDrawer(GravityCompat.START)
         } else {
             AlertDialog.Builder(thisActivity).run{
                 setPositiveButton(R.string.activity_text_editor_discard_changes_positive) { _, _ ->
