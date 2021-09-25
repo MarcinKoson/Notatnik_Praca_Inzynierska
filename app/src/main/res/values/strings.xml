@@ -45,6 +45,7 @@
     <string name="activity_note_viewer_add_data">Add data to note</string>
     <string name="activity_note_viewer_tag_button_description">Add tag</string>
     <string name="activity_note_viewer_background_button_description">Background color</string>
+    <string name="activity_note_viewer_favorite_note_button">Favorite note checkbox</string>
     <string name="activity_note_viewer_without_group">No group</string>
     <string name="activity_note_viewer_error_id_note">ERROR: bad note ID</string>
     <string name="activity_note_viewer_error_cannot_open">ERROR: cannot open data</string>
@@ -91,8 +92,8 @@
     <string name="activity_text_editor_share">Share</string>
     <string name="activity_text_editor_mic">Speech to text</string>
     <string name="activity_text_editor_stt_error">Cannot start speech to text</string>
-    <string name="activity_text_editor_text_color_button_description">Color</string>
-    <string name="activity_text_editor_text_size_button_description">Size</string>
+    <string name="activity_text_editor_text_color_button_description">Font color</string>
+    <string name="activity_text_editor_text_size_button_description">Font size</string>
     <string name="activity_text_editor_italic_button_description">Italic</string>
     <string name="activity_text_editor_bold_button_description">Bold</string>
     <string name="activity_text_editor_error_parameters" translatable="false">ERROR: bad note ID</string>
@@ -171,6 +172,7 @@
     <string name="activity_settings_gui_summary">Show or hide elements of the interface</string>
     <string name="activity_settings_navigation_drawer">Navigation drawer</string>
     <string name="activity_settings_list_of_notes">List of notes</string>
+    <string name="activity_settings_search">Search notes</string>
     <string name="activity_settings_add_note">Add note</string>
     <string name="activity_settings_note_viewer">Note viewer</string>
     <string name="activity_settings_text_editor">Text editor</string>

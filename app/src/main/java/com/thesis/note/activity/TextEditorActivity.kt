@@ -79,6 +79,7 @@ class TextEditorActivity : DrawerActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTextEditorLayoutBinding.inflate(layoutInflater)
+        loadSettings()
         setDrawerLayout(binding.root,binding.toolbar,binding.navigationView)
         db = AppDatabase.invoke(this)
         loadParameters()
@@ -391,4 +392,51 @@ class TextEditorActivity : DrawerActivity() {
             }.show()
         }
     }
+
+    /** Load settings related to this activity */
+    private fun loadSettings(){
+        binding.deleteButton.also { item ->
+            with(sharedPreferences.getBoolean("text_editor_delete", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
+            }
+        }
+        binding.shareButton.also { item ->
+            with(sharedPreferences.getBoolean("text_editor_share", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
+            }
+        }
+        binding.micButton.also { item ->
+            with(sharedPreferences.getBoolean("text_editor_speech_to_text", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
+            }
+        }
+        binding.textColorButton.also { item ->
+            with(sharedPreferences.getBoolean("text_editor_color", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
+            }
+        }
+        binding.textSizeSpinner.also { item ->
+            with(sharedPreferences.getBoolean("text_editor_size", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
+            }
+        }
+        binding.italicTextButton.also { item ->
+            with(sharedPreferences.getBoolean("text_editor_italic", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
+            }
+        }
+        binding.boldTextButton.also { item ->
+            with(sharedPreferences.getBoolean("text_editor_bold", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
+            }
+        }
+    }
+
 }

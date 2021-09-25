@@ -6,6 +6,6 @@ import com.thesis.note.R
 
 class SettingsSearch : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.settings_image_note, rootKey)
+        setPreferencesFromResource(R.xml.settings_search, rootKey)
     }
 }

@@ -13,6 +13,11 @@
         />
 
     <Preference
+        app:title="@string/activity_settings_search"
+        app:fragment="com.thesis.note.settings.SettingsSearch"
+        />
+
+    <Preference
         app:title="@string/activity_settings_add_note"
         app:fragment="com.thesis.note.settings.SettingsAddNotes"
         />

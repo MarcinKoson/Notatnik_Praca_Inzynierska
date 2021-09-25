@@ -1,6 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- TODO -->
 <androidx.preference.PreferenceScreen
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <SwitchPreference
+        app:key="search_name"
+        app:title="@string/fragment_search_name"
+        />
+
+    <SwitchPreference
+        app:key="search_content"
+        app:title="@string/fragment_search_content"
+        />
+
+    <SwitchPreference
+        app:key="search_favorite"
+        app:title="@string/fragment_search_favorite"
+        />
+
+    <SwitchPreference
+        app:key="search_type"
+        app:title="@string/fragment_search_type_of_note"
+        />
+
+    <SwitchPreference
+        app:key="search_date"
+        app:title="@string/fragment_search_date_label"
+        />
+
+    <SwitchPreference
+        app:key="search_group"
+        app:title="@string/fragment_search_groups"
+        />
+
+    <SwitchPreference
+        app:key="search_tag"
+        app:title="@string/fragment_search_tags"
+        />
 
 </androidx.preference.PreferenceScreen>

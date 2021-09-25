@@ -76,7 +76,7 @@
                 android:background="@drawable/frame_transparent"
                 android:layout_width="35dp"
                 android:layout_height="30dp"
-                android:contentDescription="@string/activity_text_editor_save_button_description"
+                android:contentDescription="@string/activity_text_editor_text_size_button_description"
                 android:layout_margin="4dp" />
 
             <CheckBox

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
 import android.os.Looper
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
@@ -67,6 +68,7 @@ class RecordingEditorActivity : DrawerActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRecordingEditorBinding.inflate(layoutInflater)
+        loadSettings()
         setDrawerLayout(binding.root,binding.toolbar,binding.navigationView)
         db = AppDatabase(this)
         loadParameters()
@@ -288,6 +290,22 @@ class RecordingEditorActivity : DrawerActivity() {
     private fun setSoundRecorderIsEnabled(value:Boolean){
         binding.soundRecorderRecordButton.isEnabled = value
         binding.soundRecorderCancelButton.isEnabled = value
+    }
+
+    /** Load settings related to this activity */
+    private fun loadSettings(){
+        binding.deleteButton.also { item ->
+            with(sharedPreferences.getBoolean("recording_editor_delete", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
+            }
+        }
+        binding.shareButton.also { item ->
+            with(sharedPreferences.getBoolean("recording_editor_share", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
+            }
+        }
     }
 
 }

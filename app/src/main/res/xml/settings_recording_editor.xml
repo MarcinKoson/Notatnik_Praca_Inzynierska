@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- TODO -->
 <androidx.preference.PreferenceScreen
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <SwitchPreference
+        app:key="recording_editor_delete"
+        app:title="@string/activity_recording_editor_delete"
+        />
+
+    <SwitchPreference
+        app:key="recording_editor_share"
+        app:title="@string/activity_recording_editor_share_button"
+        />
 
 </androidx.preference.PreferenceScreen>

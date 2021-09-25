@@ -3,9 +3,11 @@ package com.thesis.note.fragment
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.os.Bundle
+import android.view.View
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import androidx.preference.PreferenceManager
 import com.thesis.note.R
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Group
@@ -83,7 +85,7 @@ class SearchFragment(
     /** On create dialog callback */
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = DialogFragmentSearchBinding.inflate(requireActivity().layoutInflater)
-
+        loadSettings()
         //Type of note spinner
         binding.typeOfNoteSpinner.adapter = ArrayAdapter(
             this.requireContext(),
@@ -208,5 +210,84 @@ class SearchFragment(
             binding.groupSpinner.setSelection(1+groupsList.indexOf(groupsList.first { it.IdGroup == lastSearchValues.group }))
         if(lastSearchValues?.tag != null)
             binding.tagSpinner.setSelection(1+tagsList.indexOf(tagsList.first { it.IdTag == lastSearchValues.tag }))
+    }
+
+    /** Load settings related to this fragment */
+    private fun loadSettings() {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.context)
+        if(!sharedPreferences.getBoolean("search_name", true)){
+            binding.nameLabel.apply{
+                isEnabled = false
+                visibility = View.GONE
+            }
+            binding.editTextName.apply{
+                isEnabled = false
+                visibility = View.GONE
+            }
+        }
+        if(!sharedPreferences.getBoolean("search_content", true)){
+            binding.contentLabel.apply{
+                isEnabled = false
+                visibility = View.GONE
+            }
+            binding.editTextContent.apply{
+                isEnabled = false
+                visibility = View.GONE
+            }
+        }
+        if(!sharedPreferences.getBoolean("search_favorite", true)){
+            binding.favoriteSearchCheckBox.apply{
+                isEnabled = false
+                visibility = View.GONE
+            }
+        }
+        if(!sharedPreferences.getBoolean("search_type", true)){
+            binding.typeOfNoteLabel.apply{
+                isEnabled = false
+                visibility = View.GONE
+            }
+            binding.typeOfNoteSpinner.apply{
+                isEnabled = false
+                visibility = View.GONE
+            }
+        }
+        if(!sharedPreferences.getBoolean("search_date", true)){
+            binding.dateLabel.apply{
+                isEnabled = false
+                visibility = View.GONE
+            }
+            binding.dateMinButton.apply{
+                isEnabled = false
+                visibility = View.GONE
+            }
+            binding.dateHelpLabel.apply{
+                isEnabled = false
+                visibility = View.GONE
+            }
+            binding.dateMaxButton.apply{
+                isEnabled = false
+                visibility = View.GONE
+            }
+        }
+        if(!sharedPreferences.getBoolean("search_group", true)){
+            binding.groupLabel.apply{
+                isEnabled = false
+                visibility = View.GONE
+            }
+            binding.groupSpinner.apply{
+                isEnabled = false
+                visibility = View.GONE
+            }
+        }
+        if(!sharedPreferences.getBoolean("search_tag", true)){
+            binding.tagsLabel.apply{
+                isEnabled = false
+                visibility = View.GONE
+            }
+            binding.tagSpinner.apply{
+                isEnabled = false
+                visibility = View.GONE
+            }
+        }
     }
 }

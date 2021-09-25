@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -69,6 +70,7 @@ class NoteViewerActivity : DrawerActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNoteViewerBinding.inflate(layoutInflater)
+        loadSettings()
         setDrawerLayout(binding.root, binding.toolbar, binding.navigationView)
         //------------------------------------------------------------------------------------------
         db = AppDatabase(this)
@@ -429,4 +431,45 @@ class NoteViewerActivity : DrawerActivity() {
             }
         }
     }
+
+    /** Load settings related to this activity */
+    private fun loadSettings(){
+        binding.deleteButton.also { item ->
+            with(sharedPreferences.getBoolean("note_viewer_delete", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
+            }
+        }
+        binding.shareButton.also { item ->
+            with(sharedPreferences.getBoolean("note_viewer_share", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
+            }
+        }
+        binding.tagButton.also { item ->
+            with(sharedPreferences.getBoolean("note_viewer_tag", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
+            }
+        }
+        binding.backgroundColorButton.also { item ->
+            with(sharedPreferences.getBoolean("note_viewer_background_color", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
+            }
+        }
+        binding.addButton.also { item ->
+            with(sharedPreferences.getBoolean("note_viewer_add_data", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
+            }
+        }
+        binding.favoriteCheckBox.also { item ->
+            with(sharedPreferences.getBoolean("note_viewer_favorite", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
+            }
+        }
+    }
+
 }

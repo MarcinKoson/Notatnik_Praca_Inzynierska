@@ -2,6 +2,7 @@ package com.thesis.note.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
@@ -55,6 +56,7 @@ class ListEditorActivity : DrawerActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityListEditorLayoutBinding.inflate(layoutInflater)
+        loadSettings()
         setDrawerLayout(binding.root,binding.toolbar,binding.navigationView)
         db = AppDatabase.invoke(this)
         //add empty list item for new notes
@@ -198,6 +200,22 @@ class ListEditorActivity : DrawerActivity() {
             setItemViewCacheSize(256)
             adapter = ListEditorAdapter(editedListData).apply {
                 attachItemTouchHelperToRecyclerView(binding.listRecyclerView)
+            }
+        }
+    }
+
+    /** Load settings related to this activity */
+    private fun loadSettings(){
+        binding.deleteButton.also { item ->
+            with(sharedPreferences.getBoolean("list_editor_delete", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
+            }
+        }
+        binding.shareButton.also { item ->
+            with(sharedPreferences.getBoolean("list_editor_share", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
             }
         }
     }

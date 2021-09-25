@@ -22,7 +22,7 @@ class DebugActivity : DrawerActivity()  {
         setContentView(binding.root)
         //-----------------------------------------------------------------------
         binding.templateButton.setOnClickListener{
-            Intent(this, XTemplateEmptyActivity::class.java).run{
+            Intent(this, TemplateEmptyActivity::class.java).run{
                 startActivity(this)
             }
 
@@ -35,7 +35,5 @@ class DebugActivity : DrawerActivity()  {
         }
         //-----------------------------------------------------------------------
     }
+
 }
-
-
-

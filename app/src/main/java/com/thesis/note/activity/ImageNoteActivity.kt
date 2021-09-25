@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -78,6 +79,7 @@ class ImageNoteActivity : DrawerActivity()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityImageNoteBinding.inflate(layoutInflater)
+        loadSettings()
         setDrawerLayout(binding.root,binding.toolbar,binding.navigationView)
         //open database
         db = AppDatabase(this)
@@ -336,6 +338,34 @@ class ImageNoteActivity : DrawerActivity()
         OldImage(1),
         NewCameraImage(2),
         NewGalleryImage(3)
+    }
+
+    /** Load settings related to this activity */
+    private fun loadSettings(){
+        binding.deleteButton.also { item ->
+            with(sharedPreferences.getBoolean("image_note_delete", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
+            }
+        }
+        binding.shareButton.also { item ->
+            with(sharedPreferences.getBoolean("image_note_share", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
+            }
+        }
+        binding.openCameraButton.also { item ->
+            with(sharedPreferences.getBoolean("image_note_camera", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
+            }
+        }
+        binding.openGalleryButton.also { item ->
+            with(sharedPreferences.getBoolean("image_note_gallery", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
+            }
+        }
     }
 
 }

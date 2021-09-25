@@ -59,8 +59,6 @@
         <activity android:name=".activity.TextEditorActivity"
             />
 
-        <activity android:name=".test.XTemplateEmptyActivity"
-            />
 
         <activity android:name=".test.DebugActivity"
             android:noHistory="true"

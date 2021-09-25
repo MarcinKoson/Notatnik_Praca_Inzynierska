@@ -5,17 +5,17 @@ import com.thesis.note.activity.DrawerActivity
 import com.thesis.note.databinding.XTemplateEmptyLayoutBinding
 
 /**
- * Template for activity with drawer. Change [XTemplateEmptyLayoutBinding] to binding class of your layout.
+ * Template for activity with drawer.
  */
-class XTemplateEmptyActivity : DrawerActivity() {
+class TemplateEmptyActivity : DrawerActivity() {
 
     /** View binding */
-    private lateinit var binding: XTemplateEmptyLayoutBinding //CHANGE TO YOUR LAYOUT BINDING CLASS
+    private lateinit var binding: XTemplateEmptyLayoutBinding
 
     /** On create callback */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = XTemplateEmptyLayoutBinding.inflate(layoutInflater) //CHANGE TO YOUR LAYOUT BINDING CLASS
+        binding = XTemplateEmptyLayoutBinding.inflate(layoutInflater)
         setDrawerLayout(binding.root,binding.toolbar,binding.navigationView)
     }
 }
