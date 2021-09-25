@@ -21,12 +21,13 @@ class SettingsActivity : DrawerActivity(),  PreferenceFragmentCompat.OnPreferenc
     private lateinit var binding: ActivitySettingsBinding
 
     /** Shared preferences */
-    private val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+    private lateinit var sharedPreferences: SharedPreferences
 
     /** On create callback */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         setDrawerLayout(binding.root,binding.toolbar,binding.navigationView)
         sharedPreferences.registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener)
     }
