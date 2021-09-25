@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- TODO -->
 <androidx.preference.PreferenceScreen
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <SwitchPreference
+        app:key="add_notes_text"
+        app:title="@string/fragment_add_note_text"
+        />
+
+    <SwitchPreference
+        app:key="add_notes_list"
+        app:title="@string/fragment_add_note_list"
+        />
+
+    <SwitchPreference
+        app:key="add_notes_image"
+        app:title="@string/fragment_add_note_image"
+        />
+
+    <SwitchPreference
+        app:key="add_notes_recording"
+        app:title="@string/fragment_add_note_sound"
+        />
 
 </androidx.preference.PreferenceScreen>

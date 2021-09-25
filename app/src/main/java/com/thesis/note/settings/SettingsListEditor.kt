@@ -4,8 +4,8 @@ import android.os.Bundle
 import androidx.preference.PreferenceFragmentCompat
 import com.thesis.note.R
 
-class SettingsRecordingEditorFragment : PreferenceFragmentCompat() {
+class SettingsListEditor : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.settings_recording_editor, rootKey)
+        setPreferencesFromResource(R.xml.settings_list_editor, rootKey)
     }
 }

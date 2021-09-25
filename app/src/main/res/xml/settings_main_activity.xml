@@ -3,4 +3,19 @@
 <androidx.preference.PreferenceScreen
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <SwitchPreference
+        app:key="main_activity_add"
+        app:title="@string/activity_main_add_button_description"
+        />
+
+    <SwitchPreference
+        app:key="main_activity_sort"
+        app:title="@string/activity_main_sort_button_description"
+        />
+
+    <SwitchPreference
+        app:key="main_activity_search"
+        app:title="@string/activity_main_search_button_description"
+        />
+
 </androidx.preference.PreferenceScreen>

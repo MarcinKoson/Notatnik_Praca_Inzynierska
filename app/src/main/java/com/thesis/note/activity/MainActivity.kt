@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.MutableLiveData
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import com.thesis.note.SortNotesType
 import com.thesis.note.database.AppDatabase
@@ -60,6 +61,7 @@ class MainActivity : DrawerActivity(), SearchFragment.SearchInterface
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+        loadSettings()
         setDrawerLayout(binding.root,binding.toolbar,binding.navigationView)
         db = AppDatabase(this)
         GlobalScope.launch {
@@ -279,4 +281,30 @@ class MainActivity : DrawerActivity(), SearchFragment.SearchInterface
             sharedPrefs.edit().putBoolean("notFirstStart", true).apply()
         }
     }
+
+    /** Load settings related to this activity */
+    private fun loadSettings(){
+        //load settings
+        with(PreferenceManager.getDefaultSharedPreferences(thisActivity)){
+            binding.floatingActionButton.also { item ->
+                with(this.getBoolean("main_activity_add", true)) {
+                    item.isEnabled = this
+                    item.visibility = if(this) View.VISIBLE else View.GONE
+                }
+            }
+            binding.searchButton.also { item ->
+                with(this.getBoolean("main_activity_search", true)) {
+                    item.isEnabled = this
+                    item.visibility = if(this) View.VISIBLE else View.GONE
+                }
+            }
+            binding.sortButton.also { item ->
+                with(this.getBoolean("main_activity_sort", true)) {
+                    item.isEnabled = this
+                    item.visibility = if(this) View.VISIBLE else View.GONE
+                }
+            }
+        }
+    }
+
 }

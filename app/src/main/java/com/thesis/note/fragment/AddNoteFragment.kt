@@ -5,12 +5,14 @@ import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
+import androidx.preference.PreferenceManager
 import com.thesis.note.R
 import com.thesis.note.activity.ImageNoteActivity
 import com.thesis.note.activity.ListEditorActivity
@@ -34,6 +36,34 @@ class AddNoteFragment(val noteID:Int = -1):DialogFragment(), ActivityCompat.OnRe
         if(noteID != -1){
             binding.addNoteHeader.text = getString(R.string.fragment_add_data_to_note_header)
         }
+        //load settings
+        with(PreferenceManager.getDefaultSharedPreferences(context)){
+            binding.addTextNote.also { item ->
+                with(this.getBoolean("add_notes_text", true)) {
+                    item.isEnabled = this
+                    item.visibility = if(this) View.VISIBLE else View.GONE
+                }
+            }
+            binding.addListNote.also { item ->
+                with(this.getBoolean("add_notes_list", true)) {
+                    item.isEnabled = this
+                    item.visibility = if(this) View.VISIBLE else View.GONE
+                }
+            }
+            binding.addImageNote.also { item ->
+                with(this.getBoolean("add_notes_image", true)) {
+                    item.isEnabled = this
+                    item.visibility = if(this) View.VISIBLE else View.GONE
+                }
+            }
+            binding.addSoundNote.also { item ->
+                with(this.getBoolean("add_notes_recording", true)) {
+                    item.isEnabled = this
+                    item.visibility = if(this) View.VISIBLE else View.GONE
+                }
+            }
+        }
+
 
         //Add text note button listener
         binding.addTextNote.setOnClickListener{

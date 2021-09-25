@@ -4,8 +4,8 @@ import android.os.Bundle
 import androidx.preference.PreferenceFragmentCompat
 import com.thesis.note.R
 
-class SettingsNoteViewerFragment : PreferenceFragmentCompat() {
+class SettingsTextEditor : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.settings_note_viewer, rootKey)
+        setPreferencesFromResource(R.xml.settings_text_editor, rootKey)
     }
 }
