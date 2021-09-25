@@ -2,7 +2,6 @@ package com.thesis.note.activity
 
 import android.os.Bundle
 import com.google.android.flexbox.FlexboxLayoutManager
-import com.thesis.note.DrawerActivity
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.databinding.ActivityLabelEditorBinding
 import com.thesis.note.fragment.AddLabelFragment

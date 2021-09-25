@@ -12,7 +12,6 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.flexbox.FlexboxLayoutManager
-import com.thesis.note.DrawerActivity
 import com.thesis.note.R
 import com.thesis.note.database.*
 import com.thesis.note.database.entity.*

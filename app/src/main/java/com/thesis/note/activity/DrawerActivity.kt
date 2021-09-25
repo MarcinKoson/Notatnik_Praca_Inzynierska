@@ -1,4 +1,4 @@
-package com.thesis.note
+package com.thesis.note.activity
 
 import android.content.Context
 import android.content.Intent
@@ -12,10 +12,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.preference.PreferenceManager
 import com.google.android.material.navigation.NavigationView
-import com.thesis.note.activity.GroupsEditorActivity
-import com.thesis.note.activity.MainActivity
-import com.thesis.note.activity.SettingsActivity
-import com.thesis.note.activity.TagEditorActivity
+import com.thesis.note.R
 import com.thesis.note.fragment.AddNoteFragment
 import com.thesis.note.fragment.SearchFragment
 import com.thesis.note.test.DebugActivity
@@ -39,7 +36,7 @@ abstract class DrawerActivity :
         navigationView.setNavigationItemSelectedListener(navigationItemSelectedListener)
         ActionBarDrawerToggle(
             this,drawerLayout,toolbar,
-            R.string.action_bar_drawer_toggle_open,R.string.action_bar_drawer_toggle_close
+            R.string.action_bar_drawer_toggle_open, R.string.action_bar_drawer_toggle_close
         ).apply {
             drawerLayout.addDrawerListener(this)
             isDrawerIndicatorEnabled = true

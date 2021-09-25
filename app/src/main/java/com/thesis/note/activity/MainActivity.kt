@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.GridLayoutManager
-import com.thesis.note.DrawerActivity
 import com.thesis.note.SortNotesType
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.NoteColor

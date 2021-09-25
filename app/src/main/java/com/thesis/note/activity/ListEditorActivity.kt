@@ -6,7 +6,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
 import com.google.android.flexbox.FlexboxLayoutManager
-import com.thesis.note.DrawerActivity
 import com.thesis.note.R
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.ListData

@@ -15,7 +15,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
-import com.thesis.note.DrawerActivity
 import com.thesis.note.R
 import com.thesis.note.database.*
 import com.thesis.note.database.entity.Data

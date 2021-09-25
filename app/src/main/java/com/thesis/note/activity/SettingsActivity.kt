@@ -5,13 +5,9 @@ import android.os.Bundle
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
-import com.thesis.note.DrawerActivity
 import com.thesis.note.R
 import com.thesis.note.databinding.ActivitySettingsBinding
 
-
-
-//TODO GUI settings
 //TODO first installation settings
 /**
  *

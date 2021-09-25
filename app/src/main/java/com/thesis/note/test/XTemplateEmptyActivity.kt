@@ -1,7 +1,7 @@
 package com.thesis.note.test
 
 import android.os.Bundle
-import com.thesis.note.DrawerActivity
+import com.thesis.note.activity.DrawerActivity
 import com.thesis.note.databinding.XTemplateEmptyLayoutBinding
 
 /**

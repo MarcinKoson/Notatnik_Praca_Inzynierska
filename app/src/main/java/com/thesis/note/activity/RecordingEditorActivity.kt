@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
 import androidx.core.content.res.ResourcesCompat
-import com.thesis.note.DrawerActivity
 import com.thesis.note.R
 import com.thesis.note.SoundPlayer
 import com.thesis.note.SoundRecorder

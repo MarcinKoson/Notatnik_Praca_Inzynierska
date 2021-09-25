@@ -2,7 +2,7 @@ package com.thesis.note.test
 
 import android.content.Intent
 import android.os.Bundle
-import com.thesis.note.DrawerActivity
+import com.thesis.note.activity.DrawerActivity
 import com.thesis.note.activity.ListEditorActivity
 import com.thesis.note.databinding.XActivityDebugBinding
 
