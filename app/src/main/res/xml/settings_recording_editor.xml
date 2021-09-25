@@ -5,11 +5,13 @@
     <SwitchPreference
         app:key="recording_editor_delete"
         app:title="@string/activity_recording_editor_delete"
+        app:defaultValue="true"
         />
 
     <SwitchPreference
         app:key="recording_editor_share"
         app:title="@string/activity_recording_editor_share_button"
+        app:defaultValue="true"
         />
 
 </androidx.preference.PreferenceScreen>

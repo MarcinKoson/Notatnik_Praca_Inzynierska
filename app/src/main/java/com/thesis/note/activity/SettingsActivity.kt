@@ -8,7 +8,6 @@ import androidx.preference.PreferenceManager
 import com.thesis.note.R
 import com.thesis.note.databinding.ActivitySettingsBinding
 
-//TODO first installation settings
 /**
  *
  */

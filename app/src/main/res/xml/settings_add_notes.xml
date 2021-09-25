@@ -5,21 +5,25 @@
     <SwitchPreference
         app:key="add_notes_text"
         app:title="@string/fragment_add_note_text"
+        app:defaultValue="true"
         />
 
     <SwitchPreference
         app:key="add_notes_list"
         app:title="@string/fragment_add_note_list"
+        app:defaultValue="true"
         />
 
     <SwitchPreference
         app:key="add_notes_image"
         app:title="@string/fragment_add_note_image"
+        app:defaultValue="true"
         />
 
     <SwitchPreference
         app:key="add_notes_recording"
         app:title="@string/fragment_add_note_sound"
+        app:defaultValue="true"
         />
 
 </androidx.preference.PreferenceScreen>

@@ -5,36 +5,43 @@
     <SwitchPreference
         app:key="text_editor_delete"
         app:title="@string/activity_text_editor_delete_button_description"
+        app:defaultValue="true"
         />
 
     <SwitchPreference
         app:key="text_editor_share"
         app:title="@string/activity_text_editor_share_button_description"
+        app:defaultValue="true"
         />
 
     <SwitchPreference
         app:key="text_editor_speech_to_text"
         app:title="@string/activity_text_editor_mic"
+        app:defaultValue="true"
         />
 
     <SwitchPreference
         app:key="text_editor_color"
         app:title="@string/activity_text_editor_text_color_button_description"
+        app:defaultValue="true"
         />
 
     <SwitchPreference
         app:key="text_editor_size"
         app:title="@string/activity_text_editor_text_size_button_description"
+        app:defaultValue="true"
         />
 
     <SwitchPreference
         app:key="text_editor_italic"
         app:title="@string/activity_text_editor_italic_button_description"
+        app:defaultValue="true"
         />
 
     <SwitchPreference
         app:key="text_editor_bold"
         app:title="@string/activity_text_editor_bold_button_description"
+        app:defaultValue="true"
         />
 
 </androidx.preference.PreferenceScreen>

@@ -9,6 +9,7 @@
         app:dialogTitle="@string/activity_settings_theme_dialog"
         app:entries="@array/themes"
         app:entryValues="@array/themes_values"
+        app:defaultValue="blue"
         />
 
     <ListPreference

@@ -5,16 +5,19 @@
     <SwitchPreference
         app:key="main_activity_add"
         app:title="@string/activity_main_add_button_description"
+        app:defaultValue="true"
         />
 
     <SwitchPreference
         app:key="main_activity_sort"
         app:title="@string/activity_main_sort_button_description"
+        app:defaultValue="true"
         />
 
     <SwitchPreference
         app:key="main_activity_search"
         app:title="@string/activity_main_search_button_description"
+        app:defaultValue="true"
         />
 
 </androidx.preference.PreferenceScreen>
