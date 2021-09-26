@@ -296,9 +296,8 @@ class TextEditorActivity : DrawerActivity() {
                     ), null
                 )
             )
-            //TODO set background
             editedNote?.Color?.let {
-                binding.root.background =
+                binding.editedText.background =
                     ResourcesCompat.getDrawable(resources, ColorConverter.enumToColor(it), null)
             }
         }

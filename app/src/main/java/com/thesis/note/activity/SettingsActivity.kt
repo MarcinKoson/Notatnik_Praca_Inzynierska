@@ -9,7 +9,7 @@ import com.thesis.note.R
 import com.thesis.note.databinding.ActivitySettingsBinding
 
 /**
- *
+ * Activity with logic for settings
  */
 class SettingsActivity : DrawerActivity(),  PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
     /** View binding */
