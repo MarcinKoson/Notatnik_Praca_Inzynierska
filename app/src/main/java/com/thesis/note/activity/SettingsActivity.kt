@@ -34,10 +34,11 @@ class SettingsActivity : DrawerActivity(),  PreferenceFragmentCompat.OnPreferenc
     private val onSharedPreferenceChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
         when(key){
             "theme" -> {
-                //TODO Theme update after change
+                setActivityTheme(sharedPreferences.getString("theme", ""))
+                recreate()
             }
             "language" -> {
-                //TODO language update after change
+                sharedPreferences.getString("language", "")?.let { setLocale(it) }
             }
             "navigation_drawer_favorites" -> {
                 binding.navigationView.menu.findItem(R.id.favorites).also { item ->
@@ -89,4 +90,5 @@ class SettingsActivity : DrawerActivity(),  PreferenceFragmentCompat.OnPreferenc
             .commit()
         return true
     }
+
 }
