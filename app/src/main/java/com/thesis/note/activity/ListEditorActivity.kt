@@ -10,8 +10,8 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.thesis.note.R
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.ListData
-import com.thesis.note.database.NoteColor
-import com.thesis.note.database.NoteColorConverter
+import com.thesis.note.database.Color
+import com.thesis.note.database.ColorConverter
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
 import com.thesis.note.databinding.ActivityListEditorLayoutBinding
@@ -69,7 +69,7 @@ class ListEditorActivity : DrawerActivity() {
                 //Set background color
                 editedNote?.Color?.let {
                     binding.root.background =
-                        ResourcesCompat.getDrawable(resources, NoteColorConverter.enumToColor(it), null)
+                        ResourcesCompat.getDrawable(resources, ColorConverter.enumToColor(it), null)
                 }
             }
         }
@@ -87,8 +87,8 @@ class ListEditorActivity : DrawerActivity() {
                 noteID != 0 -> {
                     //add new data to db
                     GlobalScope.launch {
-                        val addedData = db.dataDao().insertAll(editedListData.run { this.idData = 0; this.noteID = thisActivity.noteID; getData() })
-                        editedNote?.apply { Date = Date(); if(MainData==null) MainData=addedData[0].toInt()}?.let { it1 ->
+                        val addedData = db.dataDao().insert(editedListData.run { this.idData = 0; this.noteID = thisActivity.noteID; getData() })
+                        editedNote?.apply { Date = Date(); if(MainData==null) MainData=addedData.toInt()}?.let { it1 ->
                             db.noteDao().update(it1)
                         }
                     }
@@ -96,12 +96,12 @@ class ListEditorActivity : DrawerActivity() {
                 else -> {
                     //add new note
                     GlobalScope.launch {
-                        db.noteDao().insertAll(Note(0, "", null, null, false, null, Date(), null, NoteColor.White)).also {
-                            noteID = it[0].toInt()
+                        db.noteDao().insert(Note(0, "", null, null, false, null, Date(), null, Color.White)).also {
+                            noteID = it.toInt()
                             editedListData.noteID = noteID
                         }
-                        db.dataDao().insertAll(editedListData.run{  editedListData.idData=0 ; getData() }).also{
-                            dataID = it[0].toInt()
+                        db.dataDao().insert(editedListData.run{  editedListData.idData=0 ; getData() }).also{
+                            dataID = it.toInt()
                             db.noteDao().update(db.noteDao().getNoteById(noteID).apply{ MainData = dataID })
                         }
                         //open new note

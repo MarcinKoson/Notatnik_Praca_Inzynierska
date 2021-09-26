@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import com.thesis.note.SortNotesType
 import com.thesis.note.database.AppDatabase
-import com.thesis.note.database.NoteColor
+import com.thesis.note.database.Color
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.*
 import com.thesis.note.databinding.ActivityMainBinding
@@ -257,24 +257,24 @@ class MainActivity : DrawerActivity(), SearchFragment.SearchInterface
         val notFirstStart = sharedPrefs.getBoolean("notFirstStart", false)
         if(!notFirstStart){
             val db = AppDatabase(thisActivity)
-            db.groupDao().insertAll(Group(0,"Grupa 1",null))
-            db.groupDao().insertAll(Group(0,"Grupa 2",null))
-            db.groupDao().insertAll(Group(0,"Grupa 3",null))
-            db.tagDao().insertAll(Tag(0,"Tag 1"))
-            db.tagDao().insertAll(Tag(0,"Tag 2"))
-            db.tagDao().insertAll(Tag(0,"Tag 3"))
+            db.groupDao().insert(Group(0,"Grupa 1",null))
+            db.groupDao().insert(Group(0,"Grupa 2",null))
+            db.groupDao().insert(Group(0,"Grupa 3",null))
+            db.tagDao().insert(Tag(0,"Tag 1"))
+            db.tagDao().insert(Tag(0,"Tag 2"))
+            db.tagDao().insert(Tag(0,"Tag 3"))
 
-            var note = db.noteDao().insertAll(Note(0,"Note",null,null,false,null, Date(),null,NoteColor.Cyan))
-            var data = db.dataDao().insertAll(Data(0,note[0].toInt(),NoteType.Text,"example",null,16,NoteColor.Black))
-            db.noteDao().update(db.noteDao().getNoteById(note[0].toInt()).apply { this.MainData = data[0].toInt() })
+            var note = db.noteDao().insert(Note(0,"Note",null,null,false,null, Date(),null,Color.Cyan))
+            var data = db.dataDao().insert(Data(0,note.toInt(),NoteType.Text,"example",null,16,Color.Black))
+            db.noteDao().update(db.noteDao().getNoteById(note.toInt()).apply { this.MainData = data.toInt() })
 
-            note = db.noteDao().insertAll(Note(0,"Bold",null,null,false,null, Date(),null,NoteColor.Teal))
-            data = db.dataDao().insertAll(Data(0,note[0].toInt(),NoteType.Text,"example","B",16,NoteColor.Purple))
-            db.noteDao().update(db.noteDao().getNoteById(note[0].toInt()).apply { this.MainData = data[0].toInt() })
+            note = db.noteDao().insert(Note(0,"Bold",null,null,false,null, Date(),null,Color.Teal))
+            data = db.dataDao().insert(Data(0,note.toInt(),NoteType.Text,"example","B",16,Color.Purple))
+            db.noteDao().update(db.noteDao().getNoteById(note.toInt()).apply { this.MainData = data.toInt() })
 
-            note = db.noteDao().insertAll(Note(0,"Italic",null,null,false,null, Date(),null,NoteColor.Yellow))
-            data = db.dataDao().insertAll(Data(0,note[0].toInt(),NoteType.Text,"example","I",16,NoteColor.Black))
-            db.noteDao().update(db.noteDao().getNoteById(note[0].toInt()).apply { this.MainData = data[0].toInt() })
+            note = db.noteDao().insert(Note(0,"Italic",null,null,false,null, Date(),null,Color.Yellow))
+            data = db.dataDao().insert(Data(0,note.toInt(),NoteType.Text,"example","I",16,Color.Black))
+            db.noteDao().update(db.noteDao().getNoteById(note.toInt()).apply { this.MainData = data.toInt() })
 
             loadNotes()
             runOnUiThread { displayedListOfNotes.value = listOfNotes }

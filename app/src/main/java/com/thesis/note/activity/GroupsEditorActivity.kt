@@ -33,7 +33,7 @@ class GroupsEditorActivity : LabelEditorActivity<Group>(){
     }
 
     override fun addNewLabel(toAdd: String): Group {
-        return db.groupDao().getId(db.groupDao().insertAll(Group(0,toAdd,null))[0].toInt())
+        return db.groupDao().getId(db.groupDao().insert(Group(0,toAdd,null)).toInt())
     }
 
 }

@@ -1,6 +1,9 @@
 package com.thesis.note.database
 
-enum class NoteColor(val id:Int){
+/**
+ * List of all available colors.
+ */
+enum class Color(val id:Int){
     Black(0),
     White(1),
 
@@ -27,8 +30,7 @@ enum class NoteColor(val id:Int){
     GrayDark(21);
 
     companion object {
-        fun fromID(id: Int): NoteColor? = values().firstOrNull { it.id == id }
-
+        fun fromID(id: Int): Color? = values().firstOrNull { it.id == id }
     }
-}
 
+}

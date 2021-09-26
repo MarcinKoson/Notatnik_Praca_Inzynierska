@@ -14,8 +14,8 @@ import com.thesis.note.R
 import com.thesis.note.SoundPlayer
 import com.thesis.note.SoundRecorder
 import com.thesis.note.database.AppDatabase
-import com.thesis.note.database.NoteColor
-import com.thesis.note.database.NoteColorConverter
+import com.thesis.note.database.Color
+import com.thesis.note.database.ColorConverter
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
@@ -107,7 +107,7 @@ class RecordingEditorActivity : DrawerActivity() {
                 noteID != 0 -> {
                     //add new data to db
                     GlobalScope.launch {
-                        db.dataDao().insertAll(Data(0, noteID, NoteType.Recording, soundPlayer.filePath ?:"", null,null,null))
+                        db.dataDao().insert(Data(0, noteID, NoteType.Recording, soundPlayer.filePath ?:"", null,null,null))
                         db.noteDao().update(db.noteDao().getNoteById(noteID).apply { Date = Date() })
                     }
                     Toast.makeText(applicationContext, R.string.activity_recording_editor_save_OK, Toast.LENGTH_SHORT).show()
@@ -120,12 +120,12 @@ class RecordingEditorActivity : DrawerActivity() {
                     GlobalScope.launch {
                         val newNote = db
                             .noteDao()
-                            .insertAll(Note(0, "", null, null, false, null, Date(), null, NoteColor.White))
-                            .let{ db.noteDao().getNoteById(it[0].toInt()) }
+                            .insert(Note(0, "", null, null, false, null, Date(), null, Color.White))
+                            .let{ db.noteDao().getNoteById(it.toInt()) }
                         val newDataID = db
                             .dataDao()
-                            .insertAll(Data(0, newNote.IdNote, NoteType.Recording, soundPlayer.filePath ?:"", null, null,null))
-                        db.noteDao().update(newNote.apply { MainData = newDataID[0].toInt() })
+                            .insert(Data(0, newNote.IdNote, NoteType.Recording, soundPlayer.filePath ?:"", null, null,null))
+                        db.noteDao().update(newNote.apply { MainData = newDataID.toInt() })
                         startActivity(noteViewerActivityIntent.apply { putExtra("noteID", newNote.IdNote) })
                     }
                     Toast.makeText(thisActivity, R.string.activity_recording_editor_save_OK, Toast.LENGTH_SHORT).show()
@@ -221,7 +221,7 @@ class RecordingEditorActivity : DrawerActivity() {
                 //Set background color
                 editedNote?.Color?.let {
                     binding.root.background =
-                        ResourcesCompat.getDrawable(resources, NoteColorConverter.enumToColor(it), null)
+                        ResourcesCompat.getDrawable(resources, ColorConverter.enumToColor(it), null)
                 }
             }
         }

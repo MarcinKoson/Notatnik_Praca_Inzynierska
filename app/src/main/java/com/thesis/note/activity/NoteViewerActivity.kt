@@ -64,7 +64,7 @@ class NoteViewerActivity : DrawerActivity() {
     private lateinit var tagsOfNoteList: List<TagOfNote>
 
     /** Current background color */
-    private var backgroundColor: NoteColor? = null
+    private var backgroundColor: Color? = null
 
     /** On create callback. Layout init and setting listeners */
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -213,10 +213,10 @@ class NoteViewerActivity : DrawerActivity() {
         //Color picker fragment listener
         supportFragmentManager.setFragmentResultListener("color", this) { _, bundle ->
             val result = bundle.getInt("colorID")
-            backgroundColor = NoteColorConverter().intToEnum(result)
+            backgroundColor = ColorConverter().intToEnum(result)
             binding.root.background = ResourcesCompat.getDrawable(
                 resources,
-                NoteColorConverter.enumToColor(backgroundColor),
+                ColorConverter.enumToColor(backgroundColor),
                 null
             )
         }
@@ -392,7 +392,7 @@ class NoteViewerActivity : DrawerActivity() {
         backgroundColor = note.Color
         binding.root.background = ResourcesCompat.getDrawable(
             resources,
-            NoteColorConverter.enumToColor(note.Color),
+            ColorConverter.enumToColor(note.Color),
             null
         )
     }

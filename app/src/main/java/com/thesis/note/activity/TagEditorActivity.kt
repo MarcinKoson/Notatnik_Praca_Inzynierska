@@ -33,7 +33,7 @@ class TagEditorActivity : LabelEditorActivity<Tag>() {
     }
 
     override fun addNewLabel(toAdd: String): Tag {
-        return db.tagDao().getId(db.tagDao().insertAll(Tag(0,toAdd))[0].toInt())
+        return db.tagDao().getId(db.tagDao().insert(Tag(0,toAdd)).toInt())
     }
 
 }

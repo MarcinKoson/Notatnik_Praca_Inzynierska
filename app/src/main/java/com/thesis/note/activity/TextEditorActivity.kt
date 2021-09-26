@@ -70,7 +70,7 @@ class TextEditorActivity : DrawerActivity() {
     private var fontSize : Int = Constants.TEXT_SIZE_SMALL.toInt()
 
     /** Current font color */
-    private var fontColor = NoteColor.Black
+    private var fontColor = Color.Black
 
     /** List of size of font */
     val fontSizeList = listOf(8,12,16,21,25,27,30)
@@ -108,8 +108,8 @@ class TextEditorActivity : DrawerActivity() {
                 noteID != 0 -> {
                     //add new data to db
                     GlobalScope.launch {
-                        val addedData = db.dataDao().insertAll(Data(0, noteID, NoteType.Text, binding.editedText.text.toString(), getInfo(),fontSize,fontColor))
-                        editedNote?.apply { Date = Date(); if(MainData==null) MainData=addedData[0].toInt()}?.let { it1 ->
+                        val addedData = db.dataDao().insert(Data(0, noteID, NoteType.Text, binding.editedText.text.toString(), getInfo(),fontSize,fontColor))
+                        editedNote?.apply { Date = Date(); if(MainData==null) MainData=addedData.toInt()}?.let { it1 ->
                             db.noteDao().update(it1)
                         }
                     }
@@ -118,12 +118,12 @@ class TextEditorActivity : DrawerActivity() {
                     //add new note
                     GlobalScope.launch {
                         //add new note
-                        db.noteDao().insertAll(Note(0, "", null, null, false, null, Date(), null, NoteColor.White)).also {
-                            noteID = it[0].toInt()
+                        db.noteDao().insert(Note(0, "", null, null, false, null, Date(), null, Color.White)).also {
+                            noteID = it.toInt()
                         }
                         //add new data
-                        db.dataDao().insertAll(Data(0, noteID, NoteType.Text, binding.editedText.text.toString(), getInfo(),fontSize,fontColor)).also {
-                            dataID = it[0].toInt()
+                        db.dataDao().insert(Data(0, noteID, NoteType.Text, binding.editedText.text.toString(), getInfo(),fontSize,fontColor)).also {
+                            dataID = it.toInt()
                             db.noteDao().update(db.noteDao().getNoteById(noteID).apply{ MainData = dataID })
                         }
                         //open new note
@@ -195,8 +195,8 @@ class TextEditorActivity : DrawerActivity() {
         //ColorPickerFragment result listener
         supportFragmentManager.setFragmentResultListener("color",this) { _, bundle ->
             val result = bundle.getInt("colorID")
-            fontColor = NoteColorConverter().intToEnum(result)!!
-            binding.editedText.setTextColor(resources.getColor(NoteColorConverter.enumToColor(fontColor),null))
+            fontColor = ColorConverter().intToEnum(result)!!
+            binding.editedText.setTextColor(resources.getColor(ColorConverter.enumToColor(fontColor),null))
         }
 
         //Text size spinner setup
@@ -291,7 +291,7 @@ class TextEditorActivity : DrawerActivity() {
             //set font color
             binding.editedText.setTextColor(
                 resources.getColor(
-                    NoteColorConverter.enumToColor(
+                    ColorConverter.enumToColor(
                         fontColor
                     ), null
                 )
@@ -299,7 +299,7 @@ class TextEditorActivity : DrawerActivity() {
             //TODO set background
             editedNote?.Color?.let {
                 binding.root.background =
-                    ResourcesCompat.getDrawable(resources, NoteColorConverter.enumToColor(it), null)
+                    ResourcesCompat.getDrawable(resources, ColorConverter.enumToColor(it), null)
             }
         }
     }

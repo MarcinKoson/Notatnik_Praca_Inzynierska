@@ -19,8 +19,8 @@ import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide
 import com.thesis.note.R
 import com.thesis.note.database.AppDatabase
-import com.thesis.note.database.NoteColor
-import com.thesis.note.database.NoteColorConverter
+import com.thesis.note.database.Color
+import com.thesis.note.database.ColorConverter
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
@@ -95,7 +95,7 @@ class ImageNoteActivity : DrawerActivity()
                     //Set background color
                     binding.root.background = ResourcesCompat.getDrawable(
                         resources,
-                        NoteColorConverter.enumToColor(editedNote?.Color),
+                        ColorConverter.enumToColor(editedNote?.Color),
                         null
                     )
                 }
@@ -289,8 +289,8 @@ class ImageNoteActivity : DrawerActivity()
             noteID != 0 -> {
                 //add new data to db
                 GlobalScope.launch {
-                    val addedData = db.dataDao().insertAll(Data(0, noteID, NoteType.Image, newImage.path,null,null,null))
-                    editedNote?.apply { Date = Date(); if(MainData==null) MainData=addedData[0].toInt()}?.let {
+                    val addedData = db.dataDao().insert(Data(0, noteID, NoteType.Image, newImage.path,null,null,null))
+                    editedNote?.apply { Date = Date(); if(MainData==null) MainData=addedData.toInt()}?.let {
                         db.noteDao().update(it)
                     }
                 }
@@ -298,11 +298,11 @@ class ImageNoteActivity : DrawerActivity()
             else -> {
                 //create new Note and Data
                 GlobalScope.launch {
-                    db.noteDao().insertAll(Note(0, "", null, null, false, null, Date(), null, NoteColor.White)).also{
-                        noteID = it[0].toInt()
+                    db.noteDao().insert(Note(0, "", null, null, false, null, Date(), null, Color.White)).also{
+                        noteID = it.toInt()
                     }
-                    db.dataDao().insertAll(Data(0, noteID, NoteType.Image,newImage.path,null,null,null)).also{
-                        dataID = it[0].toInt()
+                    db.dataDao().insert(Data(0, noteID, NoteType.Image,newImage.path,null,null,null)).also{
+                        dataID = it.toInt()
                         db.noteDao().update(db.noteDao().getNoteById(noteID).apply{ MainData = dataID })
                     }
                     //open new note

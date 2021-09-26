@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.thesis.note.R
 import com.thesis.note.database.ListData
-import com.thesis.note.database.NoteColorConverter
+import com.thesis.note.database.ColorConverter
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
@@ -106,7 +106,7 @@ class NoteViewerAdapter (
         binding.noteViewerTextContent.text = dataList[position].Content
         binding.noteViewerTextContent.setTextColor(
             holder.itemView.resources.getColor(
-                NoteColorConverter.enumToColor(dataList[position].Color),null
+                ColorConverter.enumToColor(dataList[position].Color),null
             )
         )
         binding.noteViewerTextContent.textSize = dataList[position].Size?.toFloat()!!

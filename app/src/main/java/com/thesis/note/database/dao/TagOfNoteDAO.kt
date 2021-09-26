@@ -16,7 +16,7 @@ interface TagOfNoteDAO {
     fun insertAll(vararg insert: TagOfNote): List<Long>
 
     @Insert
-    fun insert(insert: Data): Long
+    fun insert(insert: TagOfNote): Long
 
     @Delete
     fun delete(delete: TagOfNote)
