@@ -24,6 +24,7 @@ import com.thesis.note.SoundPlayer
  */
 class NoteViewerAdapter (
     private var dataList:List<Data>,
+    private var onListLoadedListener: () -> Unit,
     private var onDataClickListener: OnDataClickListener
     ) :RecyclerView.Adapter<NoteViewerAdapter.DataHolder>() {
 
@@ -121,6 +122,7 @@ class NoteViewerAdapter (
     private fun setListData(holder: DataHolder, position: Int){
         val binding = RecyclerViewNoteViewerListBinding.bind(holder.objectLayout)
         //Init RecyclerView
+        onListLoadedListener.invoke()
         val viewManager = LinearLayoutManager(binding.root.context)
         val viewAdapter = ListViewerAdapter(ListData().apply { loadData(dataList[position])}).apply {
             attachItemTouchHelperToRecyclerView(binding.listItemsRecyclerView)

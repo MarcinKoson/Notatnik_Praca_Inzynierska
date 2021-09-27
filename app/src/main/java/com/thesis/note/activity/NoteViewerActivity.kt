@@ -5,12 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.GravityCompat
+import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.thesis.note.R
@@ -213,6 +214,7 @@ class NoteViewerActivity : DrawerActivity() {
         //Color picker fragment listener
         supportFragmentManager.setFragmentResultListener("color", this) { _, bundle ->
             val result = bundle.getInt("colorID")
+            showDiscardChangesDialog = true
             backgroundColor = ColorConverter().intToEnum(result)
             binding.root.background = ResourcesCompat.getDrawable(
                 resources,
@@ -233,7 +235,8 @@ class NoteViewerActivity : DrawerActivity() {
 
         //Favorite button listener
         binding.favoriteCheckBox.setOnClickListener {
-                note.Favorite = binding.favoriteCheckBox.isChecked
+            note.Favorite = binding.favoriteCheckBox.isChecked
+            showDiscardChangesDialog = true
         }
 
     }
@@ -250,7 +253,7 @@ class NoteViewerActivity : DrawerActivity() {
                 dataList = db.dataDao().getDataFromNote(noteID)
                 //set new data to recycler view
                 runOnUiThread {
-                    val viewAdapter = NoteViewerAdapter(dataList, onDataClickListener)
+                    val viewAdapter = NoteViewerAdapter(dataList, {thisActivity.showDiscardChangesDialog = true}, onDataClickListener)
                     binding.noteViewerRecyclerView.adapter = viewAdapter
                     viewAdapter.notifyDataSetChanged()
                 }
@@ -354,6 +357,8 @@ class NoteViewerActivity : DrawerActivity() {
     private fun setNote(){
         //Set note name
         binding.noteName.text = Editable.Factory.getInstance().newEditable(note.Name)
+        //Set note name change listener
+        binding.noteName.doOnTextChanged { _, _, _, _ -> showDiscardChangesDialog = true }
         //Set date
         binding.noteDate.text = DateConverter().dateToString(note.Date)
         //Set favorite
@@ -372,6 +377,15 @@ class NoteViewerActivity : DrawerActivity() {
         if (group != null) {
             binding.groupSpinner.setSelection(groupsList.indexOf(group) + 1)
         }
+        //Set listener for group change
+        binding.groupSpinner.post {
+            binding.groupSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
+                    showDiscardChangesDialog = true
+                }
+                override fun onNothingSelected(parentView: AdapterView<*>?) {}
+            }
+        }
         //Init tag RecyclerView
         val tagsViewManager = FlexboxLayoutManager(thisActivity)
         val filteredTags = tagsList.filter { tag -> (tagsOfNoteList.any { tagOfNote -> tagOfNote.TagID == tag.IdTag }) }
@@ -382,7 +396,7 @@ class NoteViewerActivity : DrawerActivity() {
         }
         //Init data RecyclerView
         val viewManager = LinearLayoutManager(thisActivity)
-        val viewAdapter = NoteViewerAdapter(dataList, onDataClickListener)
+        val viewAdapter = NoteViewerAdapter(dataList, {thisActivity.showDiscardChangesDialog = true} , onDataClickListener)
         binding.noteViewerRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
@@ -395,26 +409,6 @@ class NoteViewerActivity : DrawerActivity() {
             ColorConverter.enumToColor(note.Color),
             null
         )
-    }
-
-    /** Logic for back button */
-    override fun onBackPressed() {
-        if (binding.root.isDrawerOpen(GravityCompat.START)) {
-            binding.root.closeDrawer(GravityCompat.START)
-        } else {
-            AlertDialog.Builder(thisActivity).run{
-                setPositiveButton(R.string.activity_note_viewer_discard_changes_positive) { _, _ ->
-                    GlobalScope.launch {
-                        runOnUiThread {
-                            super.onBackPressed()
-                        }
-                    }
-                }
-                setNegativeButton(R.string.activity_note_viewer_discard_changes_negative) { _, _ -> }
-                setTitle(R.string.activity_note_viewer_discard_changes)
-                create()
-            }.show()
-        }
     }
 
     /** Update list notes in database*/

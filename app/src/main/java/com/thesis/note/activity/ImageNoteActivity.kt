@@ -241,6 +241,7 @@ class ImageNoteActivity : DrawerActivity()
     { result: ActivityResult ->
         if (result.resultCode == Activity.RESULT_OK) {
             imageState = ImageState.NewGalleryImage
+            showDiscardChangesDialog = true
             //Handle loaded image from gallery
             result.data?.data?.let {
                 galleryImage =
@@ -251,6 +252,9 @@ class ImageNoteActivity : DrawerActivity()
             }
             galleryImage?.let { setImage(it) }
         }
+        else{
+            Toast.makeText(applicationContext, R.string.activity_image_note_no_image, Toast.LENGTH_SHORT).show()
+        }
     }
 
     /** Register a request to start an activity for result for getting image from camera */
@@ -258,6 +262,7 @@ class ImageNoteActivity : DrawerActivity()
     { result: ActivityResult ->
         if (result.resultCode == Activity.RESULT_OK) {
             imageState = ImageState.NewCameraImage
+            showDiscardChangesDialog = true
             cameraImage?.path?.let{ setImage(it)}
         }
         else{

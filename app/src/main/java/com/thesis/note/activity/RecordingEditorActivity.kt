@@ -249,8 +249,8 @@ class RecordingEditorActivity : DrawerActivity() {
             filePath = createFile().absolutePath
             durationTextView = binding.soundRecorderTimeNow
             handler = Handler(Looper.getMainLooper())
-            binding.soundRecorderRecordButton.setOnClickListener { if(isWorking) stopRecording() else startRecording() }
-            binding.soundRecorderCancelButton.setOnClickListener { cancelRecording() }
+            binding.soundRecorderRecordButton.setOnClickListener { if(isWorking) stopRecording() else { startRecording(); showDiscardChangesDialog = true} }
+            binding.soundRecorderCancelButton.setOnClickListener { cancelRecording(); showDiscardChangesDialog = false }
             onStartRecordingListener = {
                 setSoundPlayerIsEnabled(false)
                 binding.soundRecorderRecordButton.setBackgroundResource(R.drawable.ic_baseline_check)

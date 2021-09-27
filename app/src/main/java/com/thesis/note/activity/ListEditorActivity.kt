@@ -58,6 +58,7 @@ class ListEditorActivity : DrawerActivity() {
         binding = ActivityListEditorLayoutBinding.inflate(layoutInflater)
         loadSettings()
         setDrawerLayout(binding.root,binding.toolbar,binding.navigationView)
+        showDiscardChangesDialog = true
         db = AppDatabase.invoke(this)
         //add empty list item for new notes
         editedListData.itemsList.add(ListData.ListItem())

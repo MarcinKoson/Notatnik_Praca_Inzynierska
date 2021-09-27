@@ -8,13 +8,16 @@ import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.text.Editable
 import android.view.View
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.GravityCompat
+import androidx.core.widget.doOnTextChanged
+import com.thesis.note.Constants
 import com.thesis.note.R
 import com.thesis.note.database.*
 import com.thesis.note.database.entity.Data
@@ -24,9 +27,6 @@ import com.thesis.note.fragment.ColorPickerFragment
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
-import android.widget.AdapterView
-import android.widget.AdapterView.OnItemSelectedListener
-import com.thesis.note.Constants
 
 /**
  * Activity for text editing.
@@ -87,6 +87,8 @@ class TextEditorActivity : DrawerActivity() {
             loadFromDB()
             runOnUiThread {
                 setLayout()
+                //listener for changes in text
+                binding.editedText.doOnTextChanged { _, _, _, _ -> showDiscardChangesDialog = true }
             }
         }
 
@@ -176,6 +178,7 @@ class TextEditorActivity : DrawerActivity() {
 
         //Speech to text button listener
         binding.micButton.setOnClickListener {
+            showDiscardChangesDialog = true
             Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
                 putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
                 putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
@@ -197,6 +200,7 @@ class TextEditorActivity : DrawerActivity() {
             val result = bundle.getInt("colorID")
             fontColor = ColorConverter().intToEnum(result)!!
             binding.editedText.setTextColor(resources.getColor(ColorConverter.enumToColor(fontColor),null))
+            showDiscardChangesDialog = true
         }
 
         //Text size spinner setup
@@ -204,18 +208,22 @@ class TextEditorActivity : DrawerActivity() {
             adapter = ArrayAdapter(thisActivity, android.R.layout.simple_spinner_item, fontSizeList).apply {
                 setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             }
-            fontSizeList.indexOf(fontSize).let { if(it!=-1) setSelection(it) }
-            onItemSelectedListener = object : OnItemSelectedListener {
-                override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
-                    fontSize = fontSizeList[position]
-                    binding.editedText.textSize = fontSizeList[position].toFloat()
+            fontSizeList.indexOf(fontSize).let { if(it!=-1) setSelection(it)  }
+            post {
+                onItemSelectedListener = object : OnItemSelectedListener {
+                    override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
+                        showDiscardChangesDialog = true
+                        fontSize = fontSizeList[position]
+                        binding.editedText.textSize = fontSizeList[position].toFloat()
+                    }
+                    override fun onNothingSelected(parentView: AdapterView<*>?) {}
                 }
-                override fun onNothingSelected(parentView: AdapterView<*>?) {}
             }
         }
 
         //Italic button listener
         binding.italicTextButton.setOnClickListener{
+            showDiscardChangesDialog = true
             if(italic){
                 setItalicText(false)
             }
@@ -226,6 +234,7 @@ class TextEditorActivity : DrawerActivity() {
 
         //Bold button listener
         binding.boldTextButton.setOnClickListener {
+            showDiscardChangesDialog = true
             if(bold){
                 setBoldText(false)
             }
@@ -233,7 +242,6 @@ class TextEditorActivity : DrawerActivity() {
                 setBoldText(true)
             }
         }
-
     }
 
     /** Load parameters passed from another activity */
@@ -369,26 +377,6 @@ class TextEditorActivity : DrawerActivity() {
             val resultArray = result.data!!.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
             val recognizedText = resultArray?.get(0)
             binding.editedText.text = binding.editedText.text?.append(" $recognizedText")
-        }
-    }
-
-    /** Logic for back button. Show discard changes dialog */
-    override fun onBackPressed() {
-        if (binding.root.isDrawerOpen(GravityCompat.START)) {
-            binding.root.closeDrawer(GravityCompat.START)
-        } else {
-            AlertDialog.Builder(thisActivity).run{
-                setPositiveButton(R.string.activity_text_editor_discard_changes_positive) { _, _ ->
-                    GlobalScope.launch {
-                        runOnUiThread {
-                            super.onBackPressed()
-                        }
-                    }
-                }
-                setNegativeButton(R.string.activity_text_editor_discard_changes_negative) { _, _ -> }
-                setTitle(R.string.activity_text_editor_discard_changes)
-                create()
-            }.show()
         }
     }
 
