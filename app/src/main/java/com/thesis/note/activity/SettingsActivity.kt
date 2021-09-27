@@ -38,7 +38,10 @@ class SettingsActivity : DrawerActivity(),  PreferenceFragmentCompat.OnPreferenc
                 recreate()
             }
             "language" -> {
-                sharedPreferences.getString("language", "")?.let { setLocale(it) }
+                sharedPreferences.getString("language", "")?.let {
+                    setLocale(it)
+                    recreate()
+                }
             }
             "navigation_drawer_favorites" -> {
                 binding.navigationView.menu.findItem(R.id.favorites).also { item ->
