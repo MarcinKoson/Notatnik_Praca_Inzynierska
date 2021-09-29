@@ -2,7 +2,7 @@ package com.thesis.note.test
 
 import android.content.Intent
 import android.os.Bundle
-import com.thesis.note.DrawerActivity
+import com.thesis.note.activity.DrawerActivity
 import com.thesis.note.activity.ListEditorActivity
 import com.thesis.note.databinding.XActivityDebugBinding
 
@@ -22,7 +22,7 @@ class DebugActivity : DrawerActivity()  {
         setContentView(binding.root)
         //-----------------------------------------------------------------------
         binding.templateButton.setOnClickListener{
-            Intent(this, XTemplateEmptyActivity::class.java).run{
+            Intent(this, TemplateEmptyActivity::class.java).run{
                 startActivity(this)
             }
 
@@ -35,7 +35,5 @@ class DebugActivity : DrawerActivity()  {
         }
         //-----------------------------------------------------------------------
     }
+
 }
-
-
-

@@ -9,11 +9,11 @@ import com.thesis.note.fragment.SearchFragment
  */
 class TagEditorActivity : LabelEditorActivity<Tag>() {
 
-    override fun deleteT(toDelete: Tag) {
+    override fun deleteLabel(toDelete: Tag) {
         db.tagDao().delete(toDelete)
     }
 
-    override fun updateT(toUpdate: Tag, newString: String) {
+    override fun updateLabel(toUpdate: Tag, newString: String) {
         db.tagDao().update(toUpdate.apply { Name = newString })
     }
 
@@ -28,13 +28,12 @@ class TagEditorActivity : LabelEditorActivity<Tag>() {
         return db.tagDao().getAll().toMutableList()
     }
 
-    override fun getName(value: Tag): String {
-        return value.Name
+    override fun getName(label: Tag): String {
+        return label.Name
     }
 
-    override fun addNewT(toAdd: String): Tag {
-        return db.tagDao()
-            .getId(db.tagDao().insertAll(Tag(0,toAdd))[0].toInt())
+    override fun addNewLabel(toAdd: String): Tag {
+        return db.tagDao().getId(db.tagDao().insert(Tag(0,toAdd)).toInt())
     }
 
 }

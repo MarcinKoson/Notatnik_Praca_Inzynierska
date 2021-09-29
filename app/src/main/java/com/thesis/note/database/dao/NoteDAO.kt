@@ -19,7 +19,7 @@ interface NoteDAO {
     fun insertAll(vararg insert: Note): List<Long>
 
     @Insert
-    fun insert(insert: Data): Long
+    fun insert(insert: Note): Long
 
     @Delete
     fun delete(delete: Note)

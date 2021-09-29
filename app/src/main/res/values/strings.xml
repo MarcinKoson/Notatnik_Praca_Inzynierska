@@ -45,6 +45,7 @@
     <string name="activity_note_viewer_add_data">Add data to note</string>
     <string name="activity_note_viewer_tag_button_description">Add tag</string>
     <string name="activity_note_viewer_background_button_description">Background color</string>
+    <string name="activity_note_viewer_favorite_note_button">Favorite note checkbox</string>
     <string name="activity_note_viewer_without_group">No group</string>
     <string name="activity_note_viewer_error_id_note">ERROR: bad note ID</string>
     <string name="activity_note_viewer_error_cannot_open">ERROR: cannot open data</string>
@@ -91,8 +92,8 @@
     <string name="activity_text_editor_share">Share</string>
     <string name="activity_text_editor_mic">Speech to text</string>
     <string name="activity_text_editor_stt_error">Cannot start speech to text</string>
-    <string name="activity_text_editor_text_color_button_description">Color</string>
-    <string name="activity_text_editor_text_size_button_description">Size</string>
+    <string name="activity_text_editor_text_color_button_description">Font color</string>
+    <string name="activity_text_editor_text_size_button_description">Font size</string>
     <string name="activity_text_editor_italic_button_description">Italic</string>
     <string name="activity_text_editor_bold_button_description">Bold</string>
     <string name="activity_text_editor_error_parameters" translatable="false">ERROR: bad note ID</string>
@@ -121,7 +122,6 @@
     <string name="fragment_add_note_no_permissions">No permissions</string>
 
     <string name="sound_player_time_zero" translatable="false">0:00</string>
-
 
     <string name="fragment_sort_notes_header">Sort notes</string>
     <string name="fragment_sort_notes_alphabetically">Alphabetically</string>
@@ -161,5 +161,51 @@
     <string name="activity_label_edit">Edit</string>
     <string name="activity_label_delete">Delete</string>
     <string name="activity_label_add_label_hint">enter name</string>
+
+    <string name="activity_settings_theme">Theme</string>
+    <string name="activity_settings_theme_dialog">Choose theme</string>
+    <string name="activity_settings_theme_summary">Choose theme of application</string>
+    <string name="activity_settings_language">Language</string>
+    <string name="activity_settings_language_dialog">Choose language</string>
+    <string name="activity_settings_language_summary">Change language</string>
+    <string name="activity_settings_gui">GUI modification</string>
+    <string name="activity_settings_gui_summary">Show or hide elements of the interface</string>
+    <string name="activity_settings_navigation_drawer">Navigation drawer</string>
+    <string name="activity_settings_list_of_notes">List of notes</string>
+    <string name="activity_settings_search">Search notes</string>
+    <string name="activity_settings_add_note">Add note</string>
+    <string name="activity_settings_note_viewer">Note viewer</string>
+    <string name="activity_settings_text_editor">Text editor</string>
+    <string name="activity_settings_list_editor">List editor</string>
+    <string name="activity_settings_image_note">Image editor</string>
+    <string name="activity_settings_recorder">Recording editor</string>
+
+    <string name="array_themes_blue">Blue</string>
+    <string name="array_themes_green">Green</string>
+    <string name="array_themes_orange">Orange</string>
+    <string name="array_themes_red">Red</string>
+    <string-array name="themes">
+        <item name="b">@string/array_themes_blue</item>
+        <item name="o">@string/array_themes_green</item>
+        <item name="o">@string/array_themes_orange</item>
+        <item name="o">@string/array_themes_red</item>
+    </string-array>
+    <string-array name="themes_values">
+        <item>blue</item>
+        <item>green</item>
+        <item>orange</item>
+        <item>red</item>
+    </string-array>
+
+    <string name="array_languages_polish">Polish</string>
+    <string name="array_languages_english">English</string>
+    <string-array name="languages">
+        <item name="polish">@string/array_languages_polish</item>
+        <item name="english">@string/array_languages_english</item>
+    </string-array>
+    <string-array name="languages_values">
+        <item>pl</item>
+        <item>en</item>
+    </string-array>
 
 </resources>

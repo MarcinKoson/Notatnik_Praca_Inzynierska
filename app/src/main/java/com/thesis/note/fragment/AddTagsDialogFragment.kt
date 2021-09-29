@@ -55,7 +55,7 @@ class AddTagsDialogFragment : DialogFragment(){
                 object:TagListAdapter.OnTagClickListener{
                     override fun onTagClick(position: Int) {
                         GlobalScope.launch {
-                            db.tagOfNoteDAO().insertAll(TagOfNote(0,filteredTagsList[position].IdTag,noteID))
+                            db.tagOfNoteDAO().insert(TagOfNote(0,filteredTagsList[position].IdTag,noteID))
                             setFragmentResult("addedTag", bundleOf("tagID" to filteredTagsList[position].IdTag))
                         }
                         dismiss()

@@ -2,16 +2,20 @@ package com.thesis.note.database
 
 import com.thesis.note.database.entity.Data
 
-/** Class for working with [Data] with [NoteType.List] */
+/** Class for working with [Data] of [NoteType.List] */
 class ListData {
+
     /** Id of data in db */
     var idData:Int = -1
+
     /** Id of note */
     var noteID:Int = -1
+
     /** Size */
     var size: Int? = null
+
     /** Note color */
-    var color: NoteColor? = null
+    var color: Color? = null
 
     /** Class with info about single list item. */
     class ListItem{
@@ -54,7 +58,7 @@ class ListData {
         return Data(idData,noteID, NoteType.List,content,info, size, color)
     }
 
-    /** */
+    /** Move list item at [formPosition] to [toPosition] */
     fun moveListItem(formPosition:Int, toPosition: Int){
         val itemToMove = itemsList[formPosition]
         itemsList.removeAt(formPosition)

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <SwitchPreference
+        app:key="image_note_delete"
+        app:title="@string/activity_image_note_delete"
+        app:defaultValue="true"
+        />
+
+    <SwitchPreference
+        app:key="image_note_share"
+        app:title="@string/activity_image_note_share_button"
+        app:defaultValue="true"
+        />
+
+    <SwitchPreference
+        app:key="image_note_camera"
+        app:title="@string/activity_image_note_camera"
+        app:defaultValue="true"
+        />
+
+    <SwitchPreference
+        app:key="image_note_gallery"
+        app:title="@string/activity_image_note_gallery"
+        app:defaultValue="true"
+        />
+
+</androidx.preference.PreferenceScreen>

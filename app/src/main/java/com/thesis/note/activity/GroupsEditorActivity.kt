@@ -9,12 +9,12 @@ import com.thesis.note.fragment.SearchFragment
  */
 class GroupsEditorActivity : LabelEditorActivity<Group>(){
 
-    override fun deleteT(toDelete: Group) {
-            db.groupDao().delete(toDelete)
+    override fun deleteLabel(toDelete: Group) {
+        db.groupDao().delete(toDelete)
     }
 
-    override fun updateT(toUpdate: Group, newString: String) {
-            db.groupDao().update(toUpdate.apply { Name = newString })
+    override fun updateLabel(toUpdate: Group, newString: String) {
+        db.groupDao().update(toUpdate.apply { Name = newString })
     }
 
     override fun onLabelClickListener(toOpen: Group) {
@@ -28,11 +28,12 @@ class GroupsEditorActivity : LabelEditorActivity<Group>(){
         return db.groupDao().getAll().toMutableList()
     }
 
-    override fun getName(value: Group): String {
-        return value.Name
+    override fun getName(label: Group): String {
+        return label.Name
     }
 
-    override fun addNewT(toAdd: String): Group {
-        return db.groupDao().getId(db.groupDao().insertAll(Group(0,toAdd,null))[0].toInt())
+    override fun addNewLabel(toAdd: String): Group {
+        return db.groupDao().getId(db.groupDao().insert(Group(0,toAdd,null)).toInt())
     }
+
 }

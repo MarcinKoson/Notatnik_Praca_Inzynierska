@@ -148,7 +148,7 @@ class NoteTilesAdapter (
         }
         //set background
         root.setBackgroundColor(
-            holder.itemView.resources.getColor(NoteColorConverter.enumToColor(noteList[position].Color), null))
+            holder.itemView.resources.getColor(ColorConverter.enumToColor(noteList[position].Color), null))
         //checking group
         if (noteList[position].GroupID != null)
             GlobalScope.launch {
@@ -165,7 +165,7 @@ class NoteTilesAdapter (
         //set graphic
         binding.noteContent.setTextColor(
             holder.itemView.resources.getColor(
-                NoteColorConverter.enumToColor(
+                ColorConverter.enumToColor(
                     mainData?.Color
                 ), null
             )

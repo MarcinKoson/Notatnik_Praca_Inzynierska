@@ -2,16 +2,16 @@ package com.thesis.note.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
 import com.google.android.flexbox.FlexboxLayoutManager
-import com.thesis.note.DrawerActivity
 import com.thesis.note.R
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.database.ListData
-import com.thesis.note.database.NoteColor
-import com.thesis.note.database.NoteColorConverter
+import com.thesis.note.database.Color
+import com.thesis.note.database.ColorConverter
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
 import com.thesis.note.databinding.ActivityListEditorLayoutBinding
@@ -23,10 +23,11 @@ import java.util.*
 /**
  *  Activity for list editing.
  *
- * When creating [Intent] of this activity, you should put extended data with
+ * When creating [Intent] of this activity, you can put extended data with
  * putExtra("noteID", yourNoteID) and putExtra("dataID", yourDataID).
- * If passed id equals "-1" activity interprets this as new data or new note.
- * Default value for [noteID] and [dataID] is "-1".
+ * Activity will load [Note] and [Data] with passed id.
+ * If passed id equals "0" activity interprets this as new data or new note.
+ * Default value for [noteID] and [dataID] is "0".
  *
  */
 class ListEditorActivity : DrawerActivity() {
@@ -39,58 +40,69 @@ class ListEditorActivity : DrawerActivity() {
     /** Database */
     lateinit var db: AppDatabase
 
-    /** Edited [Data] id */
-    private var dataID:Int = -1
-
-    /** Edited [ListData] */
-    private var listData = ListData()
-
     /** Edited [Note] id */
-    private var noteID:Int = -1
+    private var noteID : Int = 0
 
     /** Edited [Note] */
-    private lateinit var editedNote:Note
+    private var editedNote : Note? = null
 
-    /** On create callback */
+    /** Edited [Data] id */
+    private var dataID : Int = 0
+
+    /** Edited [ListData] */
+    private var editedListData = ListData()
+
+    /** On create callback. Loading data, layout init and setting listeners */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityListEditorLayoutBinding.inflate(layoutInflater)
+        loadSettings()
         setDrawerLayout(binding.root,binding.toolbar,binding.navigationView)
+        showDiscardChangesDialog = true
         db = AppDatabase.invoke(this)
-        listData.itemsList.add(ListData.ListItem())
+        //add empty list item for new notes
+        editedListData.itemsList.add(ListData.ListItem())
         loadParameters()
         GlobalScope.launch {
-            if(noteID != -1)
-                loadData()
-            runOnUiThread { initRecyclerView() }
+            loadFromDB()
+            runOnUiThread {
+                initRecyclerView()
+                //Set background color
+                editedNote?.Color?.let {
+                    binding.root.background =
+                        ResourcesCompat.getDrawable(resources, ColorConverter.enumToColor(it), null)
+                }
+            }
         }
 
-        //Save button listener
+        //Save button listener.
         binding.saveButton.setOnClickListener {
             when {
-                dataID != -1 -> {
+                dataID != 0 -> {
                     //update
                     GlobalScope.launch {
-                        db.dataDao().update(listData.getData())
-                        db.noteDao().update(editedNote.apply { Date = Date() })
+                        db.dataDao().update(editedListData.getData())
+                        editedNote?.apply { Date = Date() }?.let { it1 -> db.noteDao().update(it1) }
                     }
                 }
-                noteID != -1 -> {
+                noteID != 0 -> {
                     //add new data to db
                     GlobalScope.launch {
-                        val addedData = db.dataDao().insertAll(listData.run { this.idData = 0; this.noteID = thisActivity.noteID; getData() })
-                        db.noteDao().update(editedNote.apply { Date = Date(); if(MainData==null) MainData=addedData[0].toInt()})
+                        val addedData = db.dataDao().insert(editedListData.run { this.idData = 0; this.noteID = thisActivity.noteID; getData() })
+                        editedNote?.apply { Date = Date(); if(MainData==null) MainData=addedData.toInt()}?.let { it1 ->
+                            db.noteDao().update(it1)
+                        }
                     }
                 }
                 else -> {
+                    //add new note
                     GlobalScope.launch {
-                        //add new note
-                        db.noteDao().insertAll(Note(0, "", null, null, false, null, Date(), null, NoteColor.White)).also {
-                            noteID = it[0].toInt()
-                            listData.noteID = noteID
+                        db.noteDao().insert(Note(0, "", null, null, false, null, Date(), null, Color.White)).also {
+                            noteID = it.toInt()
+                            editedListData.noteID = noteID
                         }
-                        db.dataDao().insertAll(listData.run{  listData.idData=0 ; getData() }).also{
-                            dataID = it[0].toInt()
+                        db.dataDao().insert(editedListData.run{  editedListData.idData=0 ; getData() }).also{
+                            dataID = it.toInt()
                             db.noteDao().update(db.noteDao().getNoteById(noteID).apply{ MainData = dataID })
                         }
                         //open new note
@@ -108,19 +120,19 @@ class ListEditorActivity : DrawerActivity() {
         binding.deleteButton.setOnClickListener {
             AlertDialog.Builder(thisActivity).run{
                 setPositiveButton(R.string.activity_list_editor_dialog_remove_note_positive_button) { _, _ ->
-                    if (dataID != -1){
+                    if (dataID != 0){
                         GlobalScope.launch {
-                            if (editedNote.MainData == dataID){
+                            if (editedNote?.MainData == dataID){
                                 with(db.dataDao().getDataFromNote(noteID).map { it.IdData }.toMutableList()){
                                     remove(dataID)
                                     if(size == 0)
-                                        editedNote.MainData = null
+                                        editedNote!!.MainData = null
                                     else
-                                        editedNote.MainData = this[0]
-                                    db.noteDao().update(editedNote)
+                                        editedNote!!.MainData = this[0]
+                                    db.noteDao().update(editedNote!!)
                                 }
                             }
-                            db.dataDao().delete(listData.getData())
+                            db.dataDao().delete(editedListData.getData())
                         }
                     }
                     finish()
@@ -134,7 +146,7 @@ class ListEditorActivity : DrawerActivity() {
         //Share button listener
         binding.shareButton.setOnClickListener {
             var noteContent = ""
-            listData.itemsList.forEach {
+            editedListData.itemsList.forEach {
                 if(!it.checked){
                     noteContent += "•" + it.text + "\r\n"
                 }
@@ -149,8 +161,8 @@ class ListEditorActivity : DrawerActivity() {
 
         //Add list item button listener
         binding.addListItemButton.setOnClickListener {
-            listData.itemsList.add(ListData.ListItem())
-            binding.listRecyclerView.adapter?.notifyItemInserted(listData.itemsList.size-1)
+            editedListData.itemsList.add(ListData.ListItem())
+            binding.listRecyclerView.adapter?.notifyItemInserted(editedListData.itemsList.size-1)
         }
     }
 
@@ -163,35 +175,50 @@ class ListEditorActivity : DrawerActivity() {
         }
     }
 
+    /** Load [Data] and [Note] form database */
+    private fun loadFromDB(){
+        if(noteID != 0){
+            editedNote = db.noteDao().getNoteById(noteID)
+        }
+        if(dataID != 0) {
+            editedListData = ListData().apply {
+                loadData(db.dataDao().getDataById(dataID))
+            }
+            if(noteID == 0){
+                noteID = editedListData.noteID
+                editedNote = db.noteDao().getNoteById(noteID)
+            }
+        }
+        else{
+            editedListData.noteID = noteID
+        }
+    }
+
     /** Recycler view initialization. Should be running on UI thread*/
     private fun initRecyclerView(){
         binding.listRecyclerView.apply {
             layoutManager = FlexboxLayoutManager(thisActivity)
             setItemViewCacheSize(256)
-            adapter = ListEditorAdapter(listData).apply {
+            adapter = ListEditorAdapter(editedListData).apply {
                 attachItemTouchHelperToRecyclerView(binding.listRecyclerView)
             }
         }
     }
 
-    /** Load [Data] with id [dataID] from database */
-    private fun loadData(){
-        editedNote = db.noteDao().getNoteById(noteID)
-        runOnUiThread {
-            //Set background color
-            binding.root.background = ResourcesCompat.getDrawable(
-                resources,
-                NoteColorConverter.enumToColor(editedNote.Color),
-                null
-            )
-        }
-        if(dataID != -1) {
-            listData = ListData().apply {
-                loadData(db.dataDao().getDataById(dataID))
+    /** Load settings related to this activity */
+    private fun loadSettings(){
+        binding.deleteButton.also { item ->
+            with(sharedPreferences.getBoolean("list_editor_delete", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
             }
         }
-        else{
-            listData.noteID = noteID
+        binding.shareButton.also { item ->
+            with(sharedPreferences.getBoolean("list_editor_share", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
+            }
         }
     }
+
 }

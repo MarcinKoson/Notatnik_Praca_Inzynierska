@@ -2,7 +2,6 @@ package com.thesis.note.activity
 
 import android.os.Bundle
 import com.google.android.flexbox.FlexboxLayoutManager
-import com.thesis.note.DrawerActivity
 import com.thesis.note.database.AppDatabase
 import com.thesis.note.databinding.ActivityLabelEditorBinding
 import com.thesis.note.fragment.AddLabelFragment
@@ -11,16 +10,16 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 /**
- *  Abstract class for editing labels
+ *  Abstract class for editing labels.
  */
 abstract class LabelEditorActivity<T> : DrawerActivity() {
-    /** This activity */
+    /** This activity. Is initiated in [onCreate]. */
     lateinit var thisActivity: LabelEditorActivity<T>
 
-    /** View binding */
-    private lateinit var binding: ActivityLabelEditorBinding
+    /** View binding. Is initiated in [onCreate]. */
+    lateinit var binding: ActivityLabelEditorBinding
 
-    /** Database */
+    /** Database. Is initiated in [onCreate]. */
     lateinit var db: AppDatabase
 
     /** Current list of labels */
@@ -29,15 +28,20 @@ abstract class LabelEditorActivity<T> : DrawerActivity() {
     /** Adapter for recycler view */
     private lateinit var labelAdapter: LabelAdapter
 
-    /** On create callback */
+    /** On create callback.
+     * It init variables, set layout, load labels and init recycler view, sets listeners for buttons and fragments. */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //init
         thisActivity = this
         db = AppDatabase.invoke(this)
         binding = ActivityLabelEditorBinding.inflate(layoutInflater)
+        //set layout
         setDrawerLayout(binding.root,binding.toolbar,binding.navigationView)
+        //load list of labels
         GlobalScope.launch {
             listOfLabels = loadList()
+            //init recycler view
             binding.labelRecyclerView.apply{
                 layoutManager = FlexboxLayoutManager(thisActivity)
                 labelAdapter = LabelAdapter(listOfLabels.map { getName(it) }.toMutableList()).apply {
@@ -48,15 +52,15 @@ abstract class LabelEditorActivity<T> : DrawerActivity() {
                 adapter = labelAdapter
             }
         }
-        //Add button listener
+        //Add button listener. Opens [AddLabelFragment].
         binding.floatingActionButton.setOnClickListener {
             AddLabelFragment().show(supportFragmentManager,"add")
         }
-        //AddLabelFragment listener
+        //AddLabelFragment result listener. It adds new label to database
         supportFragmentManager.setFragmentResultListener("newLabel",this){_, bundle ->
             GlobalScope.launch {
                 bundle.getString("name")?.let { name ->
-                    addNewT(name).also {
+                    addNewLabel(name).also {
                         listOfLabels.add(it)
                         runOnUiThread { labelAdapter.addNew(getName(it)) }
                     }
@@ -65,38 +69,37 @@ abstract class LabelEditorActivity<T> : DrawerActivity() {
         }
     }
 
-    /** callback called when label is deleted */
+    /** Callback called when label is deleted. It removes label from database */
     private fun onDeleteLabelListener(position: Int) {
         GlobalScope.launch {
-            deleteT(listOfLabels[position])
+            deleteLabel(listOfLabels[position])
             listOfLabels.removeAt(position)
         }
     }
 
-    /** callback called when label is edited */
+    /** Callback called when label is edited. It updates name of label in database. */
     private fun onEditLabelListener(position: Int, newString: String) {
         GlobalScope.launch {
-            updateT(listOfLabels[position], newString)
+            updateLabel(listOfLabels[position], newString)
         }
     }
 
-    /** Delete [toDelete] from db */
-    abstract fun deleteT(toDelete: T)
+    /** Delete [toDelete] from database */
+    abstract fun deleteLabel(toDelete: T)
 
-    /** Add new label to db with name [toAdd]. Return label from db */
-    abstract fun addNewT(toAdd: String) : T
+    /** Add new label to database with name [toAdd]. Return label from database */
+    abstract fun addNewLabel(toAdd: String) : T
 
     /** Update [toUpdate] to new name [newString] */
-    abstract fun updateT(toUpdate:T , newString: String)
+    abstract fun updateLabel(toUpdate:T, newString: String)
 
     /** Callback called when label is clicked */
     abstract fun onLabelClickListener(toOpen: T)
 
-    /** Load all labels from db */
+    /** Load all labels from database */
     abstract fun loadList():MutableList<T>
 
     /** Get name from label, that will be shown in recycler view */
-    abstract fun getName(value:T):String
+    abstract fun getName(label:T):String
 
 }
-

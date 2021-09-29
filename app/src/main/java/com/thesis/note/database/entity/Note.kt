@@ -1,7 +1,7 @@
 package com.thesis.note.database.entity
 
 import androidx.room.*
-import com.thesis.note.database.NoteColor
+import com.thesis.note.database.Color
 import java.util.*
 
 @Entity(
@@ -27,5 +27,5 @@ data class Note (
     var Importance: Int?,
     var Date: Date?,
     var Location: String?,
-    var Color: NoteColor?
+    var Color: Color?
 )

@@ -7,7 +7,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
 import com.google.android.flexbox.FlexboxLayoutManager
-import com.thesis.note.database.NoteColor
+import com.thesis.note.database.Color
 import com.thesis.note.databinding.DialogFragmentColorPickerBinding
 import com.thesis.note.recycler_view_adapters.ColorListAdapter
 import com.thesis.note.recycler_view_adapters.ColorListAdapter.OnColorClickListener
@@ -15,10 +15,10 @@ import com.thesis.note.recycler_view_adapters.ColorListAdapter.OnColorClickListe
 /**
  *  Fragment for picking color. It takes list of colors and shows them
  *  After selecting a color it sets fragment result with resultKey 'color'
- *  and bundle with [NoteColor.id] as Int 'colorID'
+ *  and bundle with [Color.id] as Int 'colorID'
  *
  */
-class ColorPickerFragment(private val colorList:List<NoteColor>):DialogFragment(){
+class ColorPickerFragment(private val colorList:List<Color>):DialogFragment(){
 
     /** View binding */
     private lateinit var binding: DialogFragmentColorPickerBinding

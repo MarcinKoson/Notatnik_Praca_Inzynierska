@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <SwitchPreference
+        app:key="list_editor_delete"
+        app:title="@string/activity_list_editor_delete"
+        app:defaultValue="true"
+        />
+
+    <SwitchPreference
+        app:key="list_editor_share"
+        app:title="@string/activity_list_editor_share_button"
+        app:defaultValue="true"
+        />
+
+</androidx.preference.PreferenceScreen>

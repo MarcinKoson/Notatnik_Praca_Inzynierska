@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <SwitchPreference
+        app:key="note_viewer_delete"
+        app:title="@string/activity_note_viewer_delete_button_description"
+        app:defaultValue="true"
+        />
+
+    <SwitchPreference
+        app:key="note_viewer_share"
+        app:title="@string/activity_note_viewer_share_button_description"
+        app:defaultValue="true"
+        />
+
+    <SwitchPreference
+        app:key="note_viewer_tag"
+        app:title="@string/activity_note_viewer_tag_button_description"
+        app:defaultValue="true"
+        />
+
+    <SwitchPreference
+        app:key="note_viewer_background_color"
+        app:title="@string/activity_note_viewer_background_button_description"
+        app:defaultValue="true"
+        />
+
+    <SwitchPreference
+        app:key="note_viewer_add_data"
+        app:title="@string/activity_note_viewer_add_data"
+        app:defaultValue="true"
+        />
+
+    <SwitchPreference
+        app:key="note_viewer_favorite"
+        app:title="@string/activity_note_viewer_favorite_note_button"
+        app:defaultValue="true"
+        />
+
+</androidx.preference.PreferenceScreen>

@@ -4,15 +4,16 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.GravityCompat
+import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.flexbox.FlexboxLayoutManager
-import com.thesis.note.DrawerActivity
 import com.thesis.note.R
 import com.thesis.note.database.*
 import com.thesis.note.database.entity.*
@@ -46,7 +47,7 @@ class NoteViewerActivity : DrawerActivity() {
     lateinit var db: AppDatabase
 
     /** Viewed [Note] id */
-    var noteID: Int = -1
+    var noteID: Int = 0
 
     /** Viewed [Note] */
     private lateinit var note: Note
@@ -64,17 +65,18 @@ class NoteViewerActivity : DrawerActivity() {
     private lateinit var tagsOfNoteList: List<TagOfNote>
 
     /** Current background color */
-    private var backgroundColor: NoteColor? = null
+    private var backgroundColor: Color? = null
 
-    /** On create callback */
+    /** On create callback. Layout init and setting listeners */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNoteViewerBinding.inflate(layoutInflater)
+        loadSettings()
         setDrawerLayout(binding.root, binding.toolbar, binding.navigationView)
         //------------------------------------------------------------------------------------------
         db = AppDatabase(this)
         loadParameters()
-        if(noteID != -1) {
+        if(noteID != 0) {
             GlobalScope.launch {
                 loadNote()
                 setNote()
@@ -212,10 +214,11 @@ class NoteViewerActivity : DrawerActivity() {
         //Color picker fragment listener
         supportFragmentManager.setFragmentResultListener("color", this) { _, bundle ->
             val result = bundle.getInt("colorID")
-            backgroundColor = NoteColorConverter().intToEnum(result)
+            showDiscardChangesDialog = true
+            backgroundColor = ColorConverter().intToEnum(result)
             binding.root.background = ResourcesCompat.getDrawable(
                 resources,
-                NoteColorConverter.enumToColor(backgroundColor),
+                ColorConverter.enumToColor(backgroundColor),
                 null
             )
         }
@@ -232,24 +235,25 @@ class NoteViewerActivity : DrawerActivity() {
 
         //Favorite button listener
         binding.favoriteCheckBox.setOnClickListener {
-                note.Favorite = binding.favoriteCheckBox.isChecked
+            note.Favorite = binding.favoriteCheckBox.isChecked
+            showDiscardChangesDialog = true
         }
 
     }
 
-    /** On resume callback */
+    /** On resume callback. Loads data from database. */
     @SuppressLint("NotifyDataSetChanged")
     override fun onResume() {
         super.onResume()
         //Update data
-        if(noteID != -1){
+        if(noteID != 0){
             GlobalScope.launch {
                 note = db.noteDao().getNoteById(noteID)
                 //load data form db
                 dataList = db.dataDao().getDataFromNote(noteID)
                 //set new data to recycler view
                 runOnUiThread {
-                    val viewAdapter = NoteViewerAdapter(dataList, onDataClickListener)
+                    val viewAdapter = NoteViewerAdapter(dataList, {thisActivity.showDiscardChangesDialog = true}, onDataClickListener)
                     binding.noteViewerRecyclerView.adapter = viewAdapter
                     viewAdapter.notifyDataSetChanged()
                 }
@@ -353,6 +357,8 @@ class NoteViewerActivity : DrawerActivity() {
     private fun setNote(){
         //Set note name
         binding.noteName.text = Editable.Factory.getInstance().newEditable(note.Name)
+        //Set note name change listener
+        binding.noteName.doOnTextChanged { _, _, _, _ -> showDiscardChangesDialog = true }
         //Set date
         binding.noteDate.text = DateConverter().dateToString(note.Date)
         //Set favorite
@@ -371,6 +377,15 @@ class NoteViewerActivity : DrawerActivity() {
         if (group != null) {
             binding.groupSpinner.setSelection(groupsList.indexOf(group) + 1)
         }
+        //Set listener for group change
+        binding.groupSpinner.post {
+            binding.groupSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
+                    showDiscardChangesDialog = true
+                }
+                override fun onNothingSelected(parentView: AdapterView<*>?) {}
+            }
+        }
         //Init tag RecyclerView
         val tagsViewManager = FlexboxLayoutManager(thisActivity)
         val filteredTags = tagsList.filter { tag -> (tagsOfNoteList.any { tagOfNote -> tagOfNote.TagID == tag.IdTag }) }
@@ -381,7 +396,7 @@ class NoteViewerActivity : DrawerActivity() {
         }
         //Init data RecyclerView
         val viewManager = LinearLayoutManager(thisActivity)
-        val viewAdapter = NoteViewerAdapter(dataList, onDataClickListener)
+        val viewAdapter = NoteViewerAdapter(dataList, {thisActivity.showDiscardChangesDialog = true} , onDataClickListener)
         binding.noteViewerRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
@@ -391,29 +406,9 @@ class NoteViewerActivity : DrawerActivity() {
         backgroundColor = note.Color
         binding.root.background = ResourcesCompat.getDrawable(
             resources,
-            NoteColorConverter.enumToColor(note.Color),
+            ColorConverter.enumToColor(note.Color),
             null
         )
-    }
-
-    /** Logic for back button */
-    override fun onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            AlertDialog.Builder(thisActivity).run{
-                setPositiveButton(R.string.activity_note_viewer_discard_changes_positive) { _, _ ->
-                    GlobalScope.launch {
-                        runOnUiThread {
-                            super.onBackPressed()
-                        }
-                    }
-                }
-                setNegativeButton(R.string.activity_note_viewer_discard_changes_negative) { _, _ -> }
-                setTitle(R.string.activity_note_viewer_discard_changes)
-                create()
-            }.show()
-        }
     }
 
     /** Update list notes in database*/
@@ -430,4 +425,45 @@ class NoteViewerActivity : DrawerActivity() {
             }
         }
     }
+
+    /** Load settings related to this activity */
+    private fun loadSettings(){
+        binding.deleteButton.also { item ->
+            with(sharedPreferences.getBoolean("note_viewer_delete", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
+            }
+        }
+        binding.shareButton.also { item ->
+            with(sharedPreferences.getBoolean("note_viewer_share", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
+            }
+        }
+        binding.tagButton.also { item ->
+            with(sharedPreferences.getBoolean("note_viewer_tag", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
+            }
+        }
+        binding.backgroundColorButton.also { item ->
+            with(sharedPreferences.getBoolean("note_viewer_background_color", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
+            }
+        }
+        binding.addButton.also { item ->
+            with(sharedPreferences.getBoolean("note_viewer_add_data", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
+            }
+        }
+        binding.favoriteCheckBox.also { item ->
+            with(sharedPreferences.getBoolean("note_viewer_favorite", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
+            }
+        }
+    }
+
 }

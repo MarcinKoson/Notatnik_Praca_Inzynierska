@@ -4,6 +4,9 @@ import androidx.room.TypeConverter
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * Type converter for storing [Date] in database.
+ */
 class DateConverter {
 
     @TypeConverter

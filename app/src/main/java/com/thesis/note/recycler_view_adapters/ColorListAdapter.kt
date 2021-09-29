@@ -6,15 +6,15 @@ import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.thesis.note.R
-import com.thesis.note.database.NoteColor
-import com.thesis.note.database.NoteColorConverter
+import com.thesis.note.database.Color
+import com.thesis.note.database.ColorConverter
 import com.thesis.note.databinding.RecyclerViewColorPickerBinding
 
 /**
  * [RecyclerView] adapter for showing list of colors
  */
 class ColorListAdapter (
-    private val colorList:List<NoteColor>,
+    private val colorList:List<Color>,
     private val onColorClickListener: OnColorClickListener
     ) :RecyclerView.Adapter<ColorListAdapter.ColorHolder>() {
 
@@ -53,7 +53,7 @@ class ColorListAdapter (
             onColorClickListener.onColorClick(position)
         }
         binding.colorChooseButton.backgroundTintList =
-            holder.itemView.resources.getColorStateList(NoteColorConverter.enumToColor(colorList[position]),null)
+            holder.itemView.resources.getColorStateList(ColorConverter.enumToColor(colorList[position]),null)
     }
 
     /**  */

@@ -5,12 +5,14 @@ import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
+import androidx.preference.PreferenceManager
 import com.thesis.note.R
 import com.thesis.note.activity.ImageNoteActivity
 import com.thesis.note.activity.ListEditorActivity
@@ -23,7 +25,7 @@ import com.thesis.note.databinding.DialogFragmentAddNoteBinding
  *  It checks if all needed permissions are granted
  *  and if not it asks user for them
  */
-class AddNoteFragment(val noteID:Int = -1):DialogFragment(), ActivityCompat.OnRequestPermissionsResultCallback{
+class AddNoteFragment(val noteID:Int = 0):DialogFragment(), ActivityCompat.OnRequestPermissionsResultCallback{
 
     /** View binding */
     private lateinit var binding: DialogFragmentAddNoteBinding
@@ -34,12 +36,40 @@ class AddNoteFragment(val noteID:Int = -1):DialogFragment(), ActivityCompat.OnRe
         if(noteID != -1){
             binding.addNoteHeader.text = getString(R.string.fragment_add_data_to_note_header)
         }
+        //load settings
+        with(PreferenceManager.getDefaultSharedPreferences(context)){
+            binding.addTextNote.also { item ->
+                with(this.getBoolean("add_notes_text", true)) {
+                    item.isEnabled = this
+                    item.visibility = if(this) View.VISIBLE else View.GONE
+                }
+            }
+            binding.addListNote.also { item ->
+                with(this.getBoolean("add_notes_list", true)) {
+                    item.isEnabled = this
+                    item.visibility = if(this) View.VISIBLE else View.GONE
+                }
+            }
+            binding.addImageNote.also { item ->
+                with(this.getBoolean("add_notes_image", true)) {
+                    item.isEnabled = this
+                    item.visibility = if(this) View.VISIBLE else View.GONE
+                }
+            }
+            binding.addSoundNote.also { item ->
+                with(this.getBoolean("add_notes_recording", true)) {
+                    item.isEnabled = this
+                    item.visibility = if(this) View.VISIBLE else View.GONE
+                }
+            }
+        }
+
 
         //Add text note button listener
         binding.addTextNote.setOnClickListener{
             startActivity(Intent(requireContext(), TextEditorActivity::class.java).apply{
                 putExtra("noteID", noteID)
-                putExtra("dataID", -1)
+                putExtra("dataID", 0)
             })
             dismiss()
         }
@@ -47,7 +77,7 @@ class AddNoteFragment(val noteID:Int = -1):DialogFragment(), ActivityCompat.OnRe
         binding.addListNote.setOnClickListener{
             startActivity(Intent(requireContext(), ListEditorActivity::class.java).apply{
                 putExtra("noteID", noteID)
-                putExtra("dataID", -1)
+                putExtra("dataID", 0)
             })
             dismiss()
         }
@@ -85,7 +115,7 @@ class AddNoteFragment(val noteID:Int = -1):DialogFragment(), ActivityCompat.OnRe
     private fun launchImageNote(){
         startActivity(Intent(this.context, ImageNoteActivity::class.java).apply{
             putExtra("noteID", noteID)
-            putExtra("dataID", -1)
+            putExtra("dataID", 0)
         })
         dismiss()
     }
@@ -117,7 +147,7 @@ class AddNoteFragment(val noteID:Int = -1):DialogFragment(), ActivityCompat.OnRe
     private fun launchSoundNote(){
         startActivity(Intent(this.context, RecordingEditorActivity::class.java).apply{
             putExtra("noteID", noteID)
-            putExtra("dataID", -1)
+            putExtra("dataID", 0)
         })
         dismiss()
     }

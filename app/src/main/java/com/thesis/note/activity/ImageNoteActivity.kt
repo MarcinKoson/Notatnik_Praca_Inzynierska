@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -16,11 +17,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider.getUriForFile
 import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide
-import com.thesis.note.DrawerActivity
 import com.thesis.note.R
 import com.thesis.note.database.AppDatabase
-import com.thesis.note.database.NoteColor
-import com.thesis.note.database.NoteColorConverter
+import com.thesis.note.database.Color
+import com.thesis.note.database.ColorConverter
 import com.thesis.note.database.NoteType
 import com.thesis.note.database.entity.Data
 import com.thesis.note.database.entity.Note
@@ -36,10 +36,12 @@ import java.util.*
 /**
  *  Activity for image editing.
  *
- *  When creating [Intent] of this activity, you should put extended data with
- *  putExtra("noteID", yourNoteID) and putExtra("dataID", yourDataID).
- *  If passed id equals "-1" activity interprets this as new data or new note.
- *  Default value for [noteID] and [dataID] is "-1".
+ * When creating [Intent] of this activity, you can put extended data with
+ * putExtra("noteID", yourNoteID) and putExtra("dataID", yourDataID).
+ * Activity will load [Note] and [Data] with passed id.
+ * If passed id equals "0" activity interprets this as new data or new note.
+ * Default value for [noteID] and [dataID] is "0".
+ *
  */
 class ImageNoteActivity : DrawerActivity()
 {
@@ -52,37 +54,52 @@ class ImageNoteActivity : DrawerActivity()
     /** Database */
     private lateinit var db: AppDatabase
 
-    /** Edited [Note] id */
-    private var noteID = -1
+    /** Edited [Note]  id */
+    private var noteID:Int = 0
 
     /** Edited [Note] */
-    private lateinit var editedNote: Note
+    private var editedNote: Note? = null
 
     /** Edited [Data] id */
-    private var dataID = -1
+    private var dataID:Int = 0
 
     /** Edited [Data] */
-    private lateinit var editedData: Data
+    private var editedData: Data? = null
 
-    /** Image from camera*/
+    /** Image from camera */
     private var cameraImage : File? = null
 
-    /** Image from gallery*/
+    /** Image from gallery */
     private var galleryImage : Bitmap? = null
 
     /** State of current loaded image */
     private var imageState = ImageState.NoImage
 
-    /** On create callback */
+    /** On create callback. Loading data, layout init and setting listeners. */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityImageNoteBinding.inflate(layoutInflater)
+        loadSettings()
         setDrawerLayout(binding.root,binding.toolbar,binding.navigationView)
         //open database
         db = AppDatabase(this)
         loadParameters()
-        if(noteID != -1){
-            loadData()
+        GlobalScope.launch {
+            loadFromDB()
+            runOnUiThread{
+                if(dataID != 0) {
+                    setImage(editedData!!.Content)
+                    imageState = ImageState.OldImage
+                }
+                if(noteID != 0){
+                    //Set background color
+                    binding.root.background = ResourcesCompat.getDrawable(
+                        resources,
+                        ColorConverter.enumToColor(editedNote?.Color),
+                        null
+                    )
+                }
+            }
         }
 
         //Save button listener
@@ -122,20 +139,20 @@ class ImageNoteActivity : DrawerActivity()
         binding.deleteButton.setOnClickListener {
             AlertDialog.Builder(thisActivity).run{
                 setPositiveButton(R.string.activity_image_note_dialog_remove_note_positive_button) { _, _ ->
-                    if (dataID != -1){
+                    if (dataID != 0){
                         GlobalScope.launch {
-                            if (editedNote.MainData == editedData.IdData){
+                            if (editedNote?.MainData == dataID){
                                 with(db.dataDao().getDataFromNote(noteID).map { it.IdData }.toMutableList()){
-                                    remove(editedData.IdData)
+                                    remove(dataID)
                                     if(size == 0)
-                                        editedNote.MainData = null
+                                        editedNote!!.MainData = null
                                     else
-                                        editedNote.MainData = this[0]
-                                    db.noteDao().update(editedNote)
+                                        editedNote!!.MainData = this[0]
+                                    db.noteDao().update(editedNote!!)
                                 }
                             }
-                            db.dataDao().delete(editedData)
-                            try{ File(editedData.Content).delete() }catch(ex:Exception){}
+                            editedData?.let { it1 -> db.dataDao().delete(it1) }
+                            try{ File(editedData?.Content?:"").delete() }catch(ex:Exception){}
                         }
                     }
                     finish()
@@ -161,7 +178,7 @@ class ImageNoteActivity : DrawerActivity()
                 ImageState.OldImage -> {
                     Intent(Intent.ACTION_SEND).apply{
                         type = "image/jpg"
-                        putExtra(Intent.EXTRA_STREAM,getUriForFile(thisActivity,"com.thesis.note.fileprovider", File(editedData.Content)))
+                        putExtra(Intent.EXTRA_STREAM,getUriForFile(thisActivity,"com.thesis.note.fileprovider", File(editedData?.Content?:"")))
                         startActivity(Intent.createChooser(this, getString(R.string.activity_image_note_share)))
                         //startActivity(this)
                     }
@@ -204,22 +221,17 @@ class ImageNoteActivity : DrawerActivity()
         }
     }
 
-    /** Load [Data] with id [dataID]  */
-    private fun loadData(){
-        GlobalScope.launch {
+    /** Load [Data] and [Note] form database. */
+    private fun loadFromDB(){
+        if (noteID != 0) {
             editedNote = db.noteDao().getNoteById(noteID)
-            if(dataID != -1){
-                editedData = db.dataDao().getDataById(dataID)
-                runOnUiThread{
-                    setImage(editedData.Content)
-                    imageState = ImageState.OldImage
-                    //Set background color
-                    binding.root.background = ResourcesCompat.getDrawable(
-                        resources,
-                        NoteColorConverter.enumToColor(editedNote.Color),
-                        null
-                    )
-                }
+        }
+        if (dataID != 0) {
+            editedData = db.dataDao().getDataById(dataID)
+
+            if (noteID == 0) {
+                noteID = editedData?.NoteId?:0
+                editedNote = db.noteDao().getNoteById(noteID)
             }
         }
     }
@@ -229,6 +241,7 @@ class ImageNoteActivity : DrawerActivity()
     { result: ActivityResult ->
         if (result.resultCode == Activity.RESULT_OK) {
             imageState = ImageState.NewGalleryImage
+            showDiscardChangesDialog = true
             //Handle loaded image from gallery
             result.data?.data?.let {
                 galleryImage =
@@ -239,6 +252,9 @@ class ImageNoteActivity : DrawerActivity()
             }
             galleryImage?.let { setImage(it) }
         }
+        else{
+            Toast.makeText(applicationContext, R.string.activity_image_note_no_image, Toast.LENGTH_SHORT).show()
+        }
     }
 
     /** Register a request to start an activity for result for getting image from camera */
@@ -246,6 +262,7 @@ class ImageNoteActivity : DrawerActivity()
     { result: ActivityResult ->
         if (result.resultCode == Activity.RESULT_OK) {
             imageState = ImageState.NewCameraImage
+            showDiscardChangesDialog = true
             cameraImage?.path?.let{ setImage(it)}
         }
         else{
@@ -267,32 +284,35 @@ class ImageNoteActivity : DrawerActivity()
     /** Save image into db */
     private fun saveImageToDB(newImage: File){
         when{
-            dataID != -1 -> {
+            dataID != 0 -> {
                 //update
                 GlobalScope.launch {
                     db.dataDao().update(db.dataDao().getDataById(dataID).apply { Content = newImage.path; Info = null })
-                    db.noteDao().update(editedNote.apply { Date = Date()})
+                    editedNote?.apply { Date = Date()}?.let { db.noteDao().update(it) }
                 }
             }
-            noteID != -1 -> {
+            noteID != 0 -> {
                 //add new data to db
                 GlobalScope.launch {
-                    val addedData = db.dataDao().insertAll(Data(0, noteID, NoteType.Image, newImage.path,null,null,null))
-                    db.noteDao().update(editedNote.apply { Date = Date(); if(MainData==null) MainData=addedData[0].toInt()})
+                    val addedData = db.dataDao().insert(Data(0, noteID, NoteType.Image, newImage.path,null,null,null))
+                    editedNote?.apply { Date = Date(); if(MainData==null) MainData=addedData.toInt()}?.let {
+                        db.noteDao().update(it)
+                    }
                 }
             }
             else -> {
-                //create intent for note viewer
-                val noteViewerActivityIntent = Intent(this, NoteViewerActivity::class.java)
                 //create new Note and Data
                 GlobalScope.launch {
-                    val newNoteID = db.noteDao().insertAll(Note(0, "", null, null, false, null, Date(), null, NoteColor.White))
-                    val newDataID = db.dataDao().insertAll(Data(0, newNoteID[0].toInt(), NoteType.Image,newImage.path,null,null,null))
-                    db.noteDao().update(db.noteDao().getNoteById(newNoteID[0].toInt()).apply { MainData = newDataID[0].toInt() })
-                    //open note
-                    noteViewerActivityIntent.run {
-                        putExtra("noteID", newNoteID[0].toInt())
-                        startActivity(this)
+                    db.noteDao().insert(Note(0, "", null, null, false, null, Date(), null, Color.White)).also{
+                        noteID = it.toInt()
+                    }
+                    db.dataDao().insert(Data(0, noteID, NoteType.Image,newImage.path,null,null,null)).also{
+                        dataID = it.toInt()
+                        db.noteDao().update(db.noteDao().getNoteById(noteID).apply{ MainData = dataID })
+                    }
+                    //open new note
+                    runOnUiThread {
+                        thisActivity.startActivity(Intent(thisActivity, NoteViewerActivity::class.java).apply{putExtra("noteID", noteID)})
                     }
                 }
             }
@@ -323,6 +343,34 @@ class ImageNoteActivity : DrawerActivity()
         OldImage(1),
         NewCameraImage(2),
         NewGalleryImage(3)
+    }
+
+    /** Load settings related to this activity */
+    private fun loadSettings(){
+        binding.deleteButton.also { item ->
+            with(sharedPreferences.getBoolean("image_note_delete", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
+            }
+        }
+        binding.shareButton.also { item ->
+            with(sharedPreferences.getBoolean("image_note_share", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
+            }
+        }
+        binding.openCameraButton.also { item ->
+            with(sharedPreferences.getBoolean("image_note_camera", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
+            }
+        }
+        binding.openGalleryButton.also { item ->
+            with(sharedPreferences.getBoolean("image_note_gallery", true)) {
+                item.isEnabled = this
+                item.visibility = if(this) View.VISIBLE else View.GONE
+            }
+        }
     }
 
 }

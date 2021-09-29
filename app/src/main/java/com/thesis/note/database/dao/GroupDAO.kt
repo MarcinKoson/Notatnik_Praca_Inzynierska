@@ -16,7 +16,7 @@ interface GroupDAO {
     fun insertAll(vararg insert: Group): List<Long>
 
     @Insert
-    fun insert(insert: Data): Long
+    fun insert(insert: Group): Long
 
     @Delete
     fun delete(delete: Group)
