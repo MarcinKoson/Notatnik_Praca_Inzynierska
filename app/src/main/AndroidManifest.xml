@@ -33,6 +33,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name=".widget.NoteWidget.actionEditNote" />
             </intent-filter>
 
             <meta-data
@@ -84,6 +85,8 @@
         <activity android:name=".activity.TagEditorActivity" />
 
         <activity android:name=".activity.TextEditorActivity" />
+
+        <activity android:name=".activity.TextWidgetEditorActivity" />
 
         <activity
             android:name=".test.DebugActivity"

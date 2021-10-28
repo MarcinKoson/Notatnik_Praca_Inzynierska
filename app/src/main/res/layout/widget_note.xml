@@ -3,6 +3,11 @@
     android:theme="@style/Theme.Note.AppWidgetContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/widget_note_text_layout"
     >
 
+    <TextView
+        android:id="@+id/widget_note_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </RelativeLayout>
