@@ -21,17 +21,11 @@ import com.thesis.note.database.entity.TextWidget
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-//Preview image
-//update after save
-//remove data on delete
-//pending intent
-//widget text editor
-
 /**
  *
  */
 class NoteWidget : AppWidgetProvider() {
-    val actionEditNote = "actionEditNote"
+    private val actionEditNote = "actionEditNote"
 
     override fun onUpdate(
         context: Context,
@@ -55,7 +49,7 @@ class NoteWidget : AppWidgetProvider() {
                     //load data
                     views.setTextViewText(R.id.widget_note_text,dataWidget.Content)
                     views.setTextColor(R.id.widget_note_text,ContextCompat.getColor(context, ColorConverter.enumToColor(dataWidget.FontColor)))
-                    dataWidget.Size?.let { views.setTextViewTextSize(R.id.widget_note_text,TypedValue.COMPLEX_UNIT_PX, it) }
+                    dataWidget.Size.let { views.setTextViewTextSize(R.id.widget_note_text,TypedValue.COMPLEX_UNIT_PX, it) }
                     //views
                     views.setInt(R.id.widget_note_text_layout, "setBackgroundColor", ContextCompat.getColor(context, ColorConverter.enumToColor(dataWidget.Color)))
                 }
@@ -67,7 +61,7 @@ class NoteWidget : AppWidgetProvider() {
                         Intent(context, NoteWidget::class.java).apply {
                             putExtra("textWidgetID", dataWidget?.IdTextWidget ?: newWidget)
                             action = actionEditNote
-                            data = Uri.parse(this.toUri(Intent.URI_INTENT_SCHEME));
+                            data = Uri.parse(this.toUri(Intent.URI_INTENT_SCHEME))
                         },
                         PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
                 )
