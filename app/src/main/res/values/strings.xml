@@ -210,6 +210,7 @@
 
     <string name="widget_last_notes_title">Notes</string>
     <string name="widget_last_notes_description">Show last edited notes</string>
+    <string name="widget_last_notes_note_no_name">no name</string>
 
     <string name="widget_note_description">Text note widget</string>
 

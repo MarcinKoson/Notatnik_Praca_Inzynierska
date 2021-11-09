@@ -40,7 +40,7 @@ class LastNotesWidget : AppWidgetProvider() {
                 //set views
                 views.setOnClickPendingIntent(R.id.widget_last_note_title, PendingIntent.getBroadcast(context, 0, Intent(context, LastNotesWidget::class.java).setAction(actionOpenApp), PendingIntent.FLAG_IMMUTABLE))
                 if(allNotes.count()>0) {
-                    views.setTextViewText(R.id.widget_last_note_0, allNotes[0].Name)
+                    views.setTextViewText(R.id.widget_last_note_0, if(allNotes[0].Name != "") allNotes[0].Name else context.resources.getString(R.string.widget_last_notes_note_no_name))
                     views.setOnClickPendingIntent(
                         R.id.widget_last_note_0,
                         PendingIntent.getBroadcast(
@@ -55,7 +55,7 @@ class LastNotesWidget : AppWidgetProvider() {
                     views.setTextViewText(R.id.widget_last_note_0, "")
                 }
                 if(allNotes.count()>1) {
-                    views.setTextViewText(R.id.widget_last_note_1, allNotes[1].Name)
+                    views.setTextViewText(R.id.widget_last_note_1, if(allNotes[1].Name != "") allNotes[1].Name else context.resources.getString(R.string.widget_last_notes_note_no_name))
                     views.setOnClickPendingIntent(
                         R.id.widget_last_note_1,
                         PendingIntent.getBroadcast(
@@ -70,7 +70,7 @@ class LastNotesWidget : AppWidgetProvider() {
                     views.setTextViewText(R.id.widget_last_note_1, "")
                 }
                 if(allNotes.count()>2) {
-                    views.setTextViewText(R.id.widget_last_note_2, allNotes[2].Name)
+                    views.setTextViewText(R.id.widget_last_note_2, if(allNotes[2].Name != "") allNotes[2].Name else context.resources.getString(R.string.widget_last_notes_note_no_name))
                     views.setOnClickPendingIntent(
                         R.id.widget_last_note_2,
                         PendingIntent.getBroadcast(
@@ -85,7 +85,7 @@ class LastNotesWidget : AppWidgetProvider() {
                     views.setTextViewText(R.id.widget_last_note_2, "")
                 }
                 if(allNotes.count()>3) {
-                    views.setTextViewText(R.id.widget_last_note_3, allNotes[3].Name)
+                    views.setTextViewText(R.id.widget_last_note_3, if(allNotes[3].Name != "") allNotes[3].Name else context.resources.getString(R.string.widget_last_notes_note_no_name))
                     views.setOnClickPendingIntent(
                         R.id.widget_last_note_3,
                         PendingIntent.getBroadcast(
