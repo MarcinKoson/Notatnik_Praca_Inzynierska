@@ -49,7 +49,7 @@ class NoteWidget : AppWidgetProvider() {
                     //load data
                     views.setTextViewText(R.id.widget_note_text,dataWidget.Content)
                     views.setTextColor(R.id.widget_note_text,ContextCompat.getColor(context, ColorConverter.enumToColor(dataWidget.FontColor)))
-                    dataWidget.Size.let { views.setTextViewTextSize(R.id.widget_note_text,TypedValue.COMPLEX_UNIT_PX, it) }
+                    views.setTextViewTextSize(R.id.widget_note_text,TypedValue.COMPLEX_UNIT_DIP , dataWidget.Size)
                     //views
                     views.setInt(R.id.widget_note_text_layout, "setBackgroundColor", ContextCompat.getColor(context, ColorConverter.enumToColor(dataWidget.Color)))
                 }
