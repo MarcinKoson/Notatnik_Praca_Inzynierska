@@ -162,5 +162,9 @@
     <string name="activity_settings_recorder">Edytor nagrań</string>
     <string name="activity_note_viewer_favorite_note_button">"Przycisk wyboru ulubionej notatki "</string>
     <string name="activity_settings_search">Szukanie notatek</string>
+    <string name="widget_last_notes_title">Notatki</string>
+    <string name="widget_last_notes_description">Pokazuje ostatnio modyfikowane notatki</string>
+    <string name="widget_note_description">Widget z notatkami tekstowymi</string>
+    <string name="widget_last_notes_note_no_name">brak nazwy</string>
 
 </resources>

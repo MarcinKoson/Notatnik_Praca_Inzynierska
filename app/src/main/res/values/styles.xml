@@ -1,8 +1,11 @@
 <resources>
-
     <style name="FavoriteCheckBox">
         <item name="android:background">@drawable/favorite_note_check_box</item>
         <item name="android:button">?android:attr/listChoiceIndicatorMultiple</item>
     </style>
 
+    <style name="Widget.Note.AppWidget.Container" parent="android:Widget">
+        <item name="android:id">@android:id/background</item>
+        <item name="android:background">@color/white</item>
+    </style>
 </resources>

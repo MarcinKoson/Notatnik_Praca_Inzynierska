@@ -2,63 +2,7 @@
 <project version="4">
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
-      <map>
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.15648148148148147" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/app_icon.xml" value="0.4" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/favorite_note_check_box.xml" value="0.13333333333333333" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/frame_transparent.xml" value="0.14722222222222223" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_cancel.xml" value="0.14722222222222223" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_format_size.xml" value="0.2518518518518518" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_mic.xml" value="0.14722222222222223" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_pause.xml" value="0.14722222222222223" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_star.xml" value="0.13333333333333333" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_star_border.xml" value="0.13333333333333333" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_star_checked.xml" value="0.13333333333333333" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_star_outline.xml" value="0.13333333333333333" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_baseline_star_outline_checked.xml" value="0.13333333333333333" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/ic_launcher_background.xml" value="0.25833333333333336" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/drawable/text_editor_bold_checkbox.xml" value="0.13333333333333333" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/activity_image_note.xml" value="0.20018115942028986" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/activity_list_editor_layout.xml" value="0.23596014492753623" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/activity_note_viewer.xml" value="0.22146739130434784" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/activity_recording_editor.xml" value="0.2677083333333333" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/activity_settings.xml" value="0.20018115942028986" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/activity_text_editor_layout.xml" value="0.2164855072463768" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/dialog_fragment_add_note.xml" value="0.22146739130434784" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/dialog_fragment_color_picker.xml" value="0.18840579710144928" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/dialog_fragment_search.xml" value="0.2421875" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/fragment_sound_player.xml" value="0.21105072463768115" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/recycler_view_list_item.xml" value="0.2164855072463768" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/recycler_view_note_tile_image.xml" value="0.18840579710144928" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/recycler_view_note_tile_list.xml" value="0.18840579710144928" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/recycler_view_note_tile_recording.xml" value="0.18840579710144928" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/recycler_view_note_tile_text.xml" value="0.2677083333333333" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/recycler_view_note_viewer_recording.xml" value="0.21105072463768115" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/x_activity_debug.xml" value="0.18840579710144928" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/layout/x_activity_test.xml" value="0.2" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.13333333333333333" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.13333333333333333" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/1.xml" value="0.15625" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/as.xml" value="0.15625" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/asdf.xml" value="0.15625" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/asdfqwer.xml" value="0.15625" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/asdghv.xml" value="0.15625" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/awd.xml" value="0.15625" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/axcv.xml" value="0.15625" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/sdf.xml" value="0.15625" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/settings.xml" value="0.1" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/settings_add_notes.xml" value="0.15625" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/settings_gui.xml" value="0.15625" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/settings_image_note.xml" value="0.15625" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/settings_list_editor.xml" value="0.15625" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/settings_main_activity.xml" value="0.15625" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/settings_navigation_drawer.xml" value="0.15625" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/settings_note_viewer.xml" value="0.15625" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/settings_recording_editor.xml" value="0.15625" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/settings_search.xml" value="0.14175724637681159" />
-        <entry key="..\:/Studia/Notatnik/app/src/main/res/xml/settings_text_editor.xml" value="0.15625" />
-      </map>
-    </option>
+      </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
