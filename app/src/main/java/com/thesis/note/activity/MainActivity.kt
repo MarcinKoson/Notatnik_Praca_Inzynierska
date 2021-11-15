@@ -264,6 +264,7 @@ class MainActivity : DrawerActivity(), SearchFragment.SearchInterface
             db.tagDao().insert(Tag(0,"Tag 2"))
             db.tagDao().insert(Tag(0,"Tag 3"))
 
+            /*
             var note = db.noteDao().insert(Note(0,"Note",null,null,false,null, Date(),null,Color.Cyan))
             var data = db.dataDao().insert(Data(0,note.toInt(),NoteType.Text,"example",null,16,Color.Black))
             db.noteDao().update(db.noteDao().getNoteById(note.toInt()).apply { this.MainData = data.toInt() })
@@ -278,7 +279,7 @@ class MainActivity : DrawerActivity(), SearchFragment.SearchInterface
 
             loadNotes()
             runOnUiThread { displayedListOfNotes.value = listOfNotes }
-
+            */
             sharedPrefs.edit().putBoolean("notFirstStart", true).apply()
         }
     }
