@@ -39,8 +39,10 @@ class SettingsActivity : DrawerActivity(),  PreferenceFragmentCompat.OnPreferenc
             }
             "language" -> {
                 sharedPreferences.getString("language", "")?.let {
-                    setLocale(it)
-                    recreate()
+                    if(it != ""){
+                        setLocale(it)
+                        recreate()
+                    }
                 }
             }
             "navigation_drawer_favorites" -> {
