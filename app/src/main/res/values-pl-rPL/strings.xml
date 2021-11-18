@@ -166,5 +166,7 @@
     <string name="widget_last_notes_description">Pokazuje ostatnio modyfikowane notatki</string>
     <string name="widget_note_description">Widget z notatkami tekstowymi</string>
     <string name="widget_last_notes_note_no_name">brak nazwy</string>
+    <string name="settings_about">O aplikacji</string>
+    <string name="fragment_about_info">info</string>
 
 </resources>
