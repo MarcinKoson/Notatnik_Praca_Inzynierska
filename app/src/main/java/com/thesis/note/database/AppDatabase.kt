@@ -5,14 +5,14 @@ import androidx.room.*
 import com.thesis.note.database.dao.*
 import com.thesis.note.database.entity.*
 
-@Database(entities = [Note::class, Group::class, Tag::class, TagOfNote::class,Widget::class,Data::class], version = 1,exportSchema = false)
+@Database(entities = [Note::class, Group::class, Tag::class, TagOfNote::class,TextWidget::class,Data::class], version = 1,exportSchema = false)
 @TypeConverters(NoteTypeConverter::class, ColorConverter::class, DateConverter::class)
 abstract class AppDatabase : RoomDatabase(){
     abstract fun noteDao(): NoteDAO
     abstract fun tagDao(): TagDAO
     abstract fun groupDao(): GroupDAO
     abstract fun tagOfNoteDAO(): TagOfNoteDAO
-    abstract fun widgetDao(): WidgetDAO
+    abstract fun textWidgetDao(): TextWidgetDAO
     abstract fun dataDao(): DataDAO
 
     companion object {

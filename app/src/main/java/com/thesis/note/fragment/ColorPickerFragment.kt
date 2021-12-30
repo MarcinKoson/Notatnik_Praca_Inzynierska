@@ -27,9 +27,16 @@ class ColorPickerFragment(private val colorList:List<Color>):DialogFragment(){
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = DialogFragmentColorPickerBinding.inflate(requireActivity().layoutInflater)
         val viewManager = FlexboxLayoutManager(binding.root.context)
+        val tag = this.tag
         val viewAdapter = ColorListAdapter(colorList, object: OnColorClickListener{
             override fun onColorClick(position: Int) {
-                setFragmentResult("color", bundleOf("colorID" to colorList[position].id))
+                if(tag == "widgetBackground"){
+                    setFragmentResult("widgetBackground", bundleOf("colorID" to colorList[position].id))
+                }
+                else{
+                    setFragmentResult("color", bundleOf("colorID" to colorList[position].id))
+                }
+
                 dismiss()
             }
         })

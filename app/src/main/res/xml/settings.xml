@@ -27,4 +27,9 @@
         app:summary="@string/activity_settings_gui_summary"
     />
 
+    <Preference
+        app:key="about"
+        app:title="@string/settings_about"
+        />
+
 </androidx.preference.PreferenceScreen>

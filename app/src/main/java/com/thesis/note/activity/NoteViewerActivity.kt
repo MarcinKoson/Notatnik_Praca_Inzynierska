@@ -24,6 +24,7 @@ import com.thesis.note.fragment.ColorPickerFragment
 import com.thesis.note.recycler_view_adapters.ListViewerAdapter
 import com.thesis.note.recycler_view_adapters.NoteViewerAdapter
 import com.thesis.note.recycler_view_adapters.TagListAdapter
+import com.thesis.note.widget.LastNotesWidget
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.File
@@ -105,6 +106,8 @@ class NoteViewerActivity : DrawerActivity() {
                 note.Favorite = binding.favoriteCheckBox.isChecked
                 //Update
                 db.noteDao().update(note)
+                //Update widget
+                LastNotesWidget.updateAllWidgets(thisActivity)
                 //Close activity
                 runOnUiThread{
                     Toast.makeText(thisActivity, R.string.activity_note_viewer_save_OK, Toast.LENGTH_SHORT).show()
@@ -125,6 +128,8 @@ class NoteViewerActivity : DrawerActivity() {
                             }
                         }
                         db.noteDao().delete(note)
+                        //Update widget
+                        LastNotesWidget.updateAllWidgets(thisActivity)
                         thisActivity.finish()
                     }
                 }

@@ -19,7 +19,7 @@ class DebugActivity : DrawerActivity()  {
         //Toast.makeText(applicationContext, "debug", Toast.LENGTH_SHORT).show()
         super.onCreate(savedInstanceState)
         binding = XActivityDebugBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setDrawerLayout(binding.root,binding.toolbar,binding.navigationView)
         //-----------------------------------------------------------------------
         binding.templateButton.setOnClickListener{
             Intent(this, TemplateEmptyActivity::class.java).run{

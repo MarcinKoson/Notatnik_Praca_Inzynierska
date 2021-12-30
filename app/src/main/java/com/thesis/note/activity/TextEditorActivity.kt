@@ -170,7 +170,7 @@ class TextEditorActivity : DrawerActivity() {
         binding.shareButton.setOnClickListener {
             Intent(Intent.ACTION_SEND).apply{
                 type = "text/plain"
-                putExtra(Intent.EXTRA_TEXT, editedData?.Content)
+                putExtra(Intent.EXTRA_TEXT, binding.editedText.text.toString())
                 startActivity(Intent.createChooser(this, getString(R.string.activity_text_editor_share)))
                 //startActivity(this)
             }

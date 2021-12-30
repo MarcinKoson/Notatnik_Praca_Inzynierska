@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.thesis.note">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <queries>
@@ -10,9 +10,11 @@
             <action android:name="android.intent.action.VIEW" />
             <data android:scheme="http" />
         </intent>
+
         <intent>
             <action android:name="android.media.action.IMAGE_CAPTURE" />
         </intent>
+
         <intent>
             <action android:name="android.intent.action.GET_CONTENT" />
         </intent>
@@ -24,48 +26,72 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Note.Blue"
-    >
+        android:theme="@style/Theme.Note.Blue">
 
-        <activity android:name=".activity.GroupsEditorActivity"
-            />
+        <receiver
+            android:name=".widget.NoteWidget"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name=".widget.NoteWidget.actionEditNote" />
+            </intent-filter>
 
-        <activity android:name=".activity.ImageNoteActivity"
-            android:noHistory="false"
-            />
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_note_info" />
+        </receiver>
 
-        <activity android:name=".activity.ListEditorActivity"
-            />
+        <receiver
+            android:name=".widget.LastNotesWidget"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name=".widget.LastNotesWidget.actionOpenApp" />
+                <action android:name=".widget.LastNotesWidget.actionOpenNote0" />
+                <action android:name=".widget.LastNotesWidget.actionOpenNote1" />
+                <action android:name=".widget.LastNotesWidget.actionOpenNote2" />
+                <action android:name=".widget.LastNotesWidget.actionOpenNote3" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_last_notes_info" />
+        </receiver>
+
+        <activity android:name=".activity.GroupsEditorActivity" />
+
+        <activity
+            android:name=".activity.ImageNoteActivity"
+            android:noHistory="false" />
+
+        <activity android:name=".activity.ListEditorActivity" />
 
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.NoteViewerActivity"
-            />
+        <activity android:name=".activity.NoteViewerActivity" />
 
-        <activity android:name=".activity.SettingsActivity"
-            android:noHistory="false"/>
+        <activity
+            android:name=".activity.SettingsActivity"
+            android:noHistory="false" />
 
-        <activity android:name=".activity.RecordingEditorActivity"
-            />
+        <activity android:name=".activity.RecordingEditorActivity" />
 
-        <activity android:name=".activity.TagEditorActivity"
-            />
+        <activity android:name=".activity.TagEditorActivity" />
 
-        <activity android:name=".activity.TextEditorActivity"
-            />
+        <activity android:name=".activity.TextEditorActivity" />
 
+        <activity android:name=".activity.TextWidgetEditorActivity" />
 
-        <activity android:name=".test.DebugActivity"
-            android:noHistory="true"
-            />
-
-        <activity android:name=".test.TestActivity"
-            />
+        <activity
+            android:name=".test.DebugActivity"
+            android:noHistory="true" />
+        <activity android:name=".test.TestActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
