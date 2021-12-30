@@ -2,7 +2,7 @@
     <string name="not_implemented">Not implemented</string>
 
     <string name="app_name">Notes</string>
-    <string name="app_version" translatable="false">v0.9-alpha</string>
+    <string name="app_version" translatable="false">v0.9</string>
 
     <string name="action_bar_drawer_toggle_open">Open drawer</string>
     <string name="action_bar_drawer_toggle_close">Close drawer</string>
@@ -217,7 +217,7 @@
 
     <string name="settings_about">About application</string>
     <string name="fragment_about_author" translatable="false">Marcin Kosoń</string>
-    <string name="fragment_about_info">info</string>
+    <string name="fragment_about_info"></string>
 
 
 
