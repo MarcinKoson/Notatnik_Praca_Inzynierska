@@ -69,8 +69,11 @@ abstract class LabelEditorActivity<T> : DrawerActivity() {
         }
     }
 
+
+
     /** Callback called when label is deleted. It removes label from database */
     private fun onDeleteLabelListener(position: Int) {
+
         GlobalScope.launch {
             deleteLabel(listOfLabels[position])
             listOfLabels.removeAt(position)

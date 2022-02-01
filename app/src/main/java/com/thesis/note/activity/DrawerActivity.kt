@@ -201,7 +201,7 @@ abstract class DrawerActivity :
                 }
             }
             R.id.drawer_debug -> {
-                Intent(this, DebugActivity::class.java).run {
+                Intent(this, TextWidgetEditorActivity::class.java).run {
                     startActivity(this)
                 }
             }

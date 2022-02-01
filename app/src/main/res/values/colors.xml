@@ -54,13 +54,5 @@
     <color name="orange_600">#FFFB8C00</color>
     <color name="gray_600">#FF757575</color>
 
-    <!-- light blue -->
-    <color name="light_blue_50">#FFE1F5FE</color>
-    <color name="light_blue_200">#FF81D4FA</color>
-    <color name="light_blue_600">#FF039BE5</color>
-    <color name="light_blue_900">#FF01579B</color>
-
-    <color name="dfgd">#0000FF</color>
-
 
 </resources>

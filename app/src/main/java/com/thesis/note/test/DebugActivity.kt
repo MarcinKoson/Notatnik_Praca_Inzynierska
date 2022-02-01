@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.thesis.note.activity.DrawerActivity
 import com.thesis.note.activity.ListEditorActivity
+import com.thesis.note.activity.TextWidgetEditorActivity
 import com.thesis.note.databinding.XActivityDebugBinding
 
 class DebugActivity : DrawerActivity()  {
@@ -29,7 +30,7 @@ class DebugActivity : DrawerActivity()  {
         }
         //-----------------------------------------------------------------------
         binding.testButton.setOnClickListener{
-            Intent(this, ListEditorActivity::class.java).run{
+            Intent(this, TextWidgetEditorActivity::class.java).run{
                 startActivity(this)
             }
         }

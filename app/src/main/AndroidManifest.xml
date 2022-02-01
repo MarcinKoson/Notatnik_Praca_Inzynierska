@@ -26,7 +26,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Note.Blue">
+        android:theme="@style/Theme.Note.Blue"
+        >
 
         <receiver
             android:name=".widget.NoteWidget"
@@ -66,7 +67,8 @@
 
         <activity android:name=".activity.ListEditorActivity" />
 
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".activity.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

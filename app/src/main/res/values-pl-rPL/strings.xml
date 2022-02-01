@@ -55,9 +55,6 @@
     <string name="activity_text_editor_discard_changes">Czy porzucić zmiany?</string>
     <string name="activity_text_editor_discard_changes_positive">Porzuć</string>
     <string name="activity_text_editor_discard_changes_negative">Anuluj</string>
-    <string name="activity_note_viewer_discard_changes">Czy porzucić zmiany?</string>
-    <string name="activity_note_viewer_discard_changes_positive">Porzuć</string>
-    <string name="activity_note_viewer_discard_changes_negative">Anuluj</string>
     <string name="fragment_search_header">Wyszukaj</string>
     <string name="fragment_search_ok">OK</string>
     <string name="fragment_search_name">Nazwa</string>
@@ -83,7 +80,6 @@
     <string name="activity_image_note_delete">Usuń</string>
     <string name="activity_image_save_OK">Zapisano</string>
     <string name="activity_list_editor_save">Zapisz</string>
-    <string name="activity_list_editor_share">Share</string>
     <string name="activity_list_editor_delete">Usuń</string>
     <string name="activity_list_editor_add_list_item">Dodaj element</string>
     <string name="fragment_add_note_list">Dodaj listę</string>
@@ -96,7 +92,6 @@
     <string name="activity_recording_editor_sound_recorder_pause">Pauza</string>
     <string name="activity_recording_editor_sound_recorder_cancel">Odrzuć</string>
     <string name="activity_recording_editor_save">Zapisz</string>
-    <string name="activity_recording_editor_share">Share</string>
     <string name="activity_recording_editor_delete">Usuń</string>
     <string name="activity_recording_editor_save_OK">Zapisano</string>
     <string name="activity_recording_editor_play_label">Obecne nagranie</string>

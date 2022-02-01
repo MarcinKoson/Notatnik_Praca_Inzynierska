@@ -25,6 +25,7 @@ class LabelAdapter(private val labelList: MutableList<String>)
     /** Listener called when label should be edited */
     var onEditLabelListener: (Int,String) -> Unit = {_,_ -> }
 
+
     /**  */
     class LabelHolder(
         val objectLayout: ConstraintLayout,
@@ -51,6 +52,8 @@ class LabelAdapter(private val labelList: MutableList<String>)
         )
     }
 
+    var isEditingNow = false
+
     /**  */
     override fun onBindViewHolder(holder: LabelHolder, position: Int) {
         val binding = RecyclerViewLabelBinding.bind(holder.objectLayout)
@@ -58,6 +61,7 @@ class LabelAdapter(private val labelList: MutableList<String>)
         binding.labelText.text = labelList[position]
 
         binding.deleteButton.setOnClickListener {
+            if(!isEditingNow){
             //create remove dialog
             AlertDialog.Builder(holder.objectLayout.context).run{
                 setPositiveButton(R.string.activity_note_viewer_dialog_remove_tag_positive_button) { _, _ ->
@@ -69,17 +73,20 @@ class LabelAdapter(private val labelList: MutableList<String>)
                 setTitle(R.string.activity_label_dialog_remove_note)
                 create()
             }.show()
-        }
+        }}
 
         binding.editButton.setOnClickListener {
+            isEditingNow = true
             binding.editButton.visibility = View.GONE
             binding.saveButton.visibility = View.VISIBLE
             binding.labelText.visibility = View.GONE
             binding.labelEdit.text = Editable.Factory().newEditable(binding.labelText.text)
             binding.labelEdit.visibility = View.VISIBLE
+
         }
 
         binding.saveButton.setOnClickListener {
+            isEditingNow = false
             binding.labelText.text = binding.labelEdit.text.toString()
             labelList[position] = binding.labelEdit.text.toString()
             binding.labelEdit.visibility = View.GONE
